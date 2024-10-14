@@ -364,20 +364,7 @@ class {{ service.async_client_name }}:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.{{ method.transport_safe_name|snake_case }}]
 
-        {% if method.field_headers %}
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                {% for field_header in method.field_headers %}
-                {% if not method.client_streaming %}
-                ("{{ field_header.raw }}", request.{{ field_header.disambiguated }}),
-                {% endif %}
-                {% endfor %}
-            )),
-        )
-        {% endif %}
-
+{{ shared_macros.create_metadata(method) }}
 {{ shared_macros.add_api_version_header_to_metadata(service.version) }}
 {{ shared_macros.auto_populate_uuid4_fields(api, method) }}
 
@@ -526,11 +513,7 @@ class {{ service.async_client_name }}:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.set_iam_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.set_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -645,11 +628,7 @@ class {{ service.async_client_name }}:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_iam_policy,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.get_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -702,11 +681,7 @@ class {{ service.async_client_name }}:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.test_iam_permissions,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

@@ -49,6 +49,12 @@ from .transports.base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import CloudRedisGrpcTransport
 from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 from .transports.rest import CloudRedisRestTransport
+try:
+    from .transports.rest_asyncio import AsyncCloudRedisRestTransport
+    HAS_ASYNC_REST_DEPENDENCIES = True
+except ImportError as e: # pragma: NO COVER
+    HAS_ASYNC_REST_DEPENDENCIES = False
+    ASYNC_REST_EXCEPTION = e
 
 
 class CloudRedisClientMeta(type):
@@ -62,6 +68,8 @@ class CloudRedisClientMeta(type):
     _transport_registry["grpc"] = CloudRedisGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudRedisGrpcAsyncIOTransport
     _transport_registry["rest"] = CloudRedisRestTransport
+    if HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
+        _transport_registry["rest_asyncio"] = AsyncCloudRedisRestTransport
 
     def get_transport_class(cls,
             label: Optional[str] = None,
@@ -76,6 +84,8 @@ class CloudRedisClientMeta(type):
             The transport class to use.
         """
         # If a specific transport is requested, return that one.
+        if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
+            raise ASYNC_REST_EXCEPTION
         if label:
             return cls._transport_registry[label]
 
@@ -576,16 +586,38 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 self._use_mtls_endpoint))
 
         if not transport_provided:
-            import google.auth._default  # type: ignore
-
-            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
-                credentials = google.auth._default.get_api_key_credentials(api_key_value)
-
             transport_init: Union[Type[CloudRedisTransport], Callable[..., CloudRedisTransport]] = (
                 CloudRedisClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., CloudRedisTransport], transport)
             )
+
+            if "rest_asyncio" in str(transport_init):
+                unsupported_params = {
+                    "google.api_core.client_options.ClientOptions.credentials_file": self._client_options.credentials_file,
+                    "google.api_core.client_options.ClientOptions.scopes": self._client_options.scopes,
+                    "google.api_core.client_options.ClientOptions.quota_project_id": self._client_options.quota_project_id,
+                    "google.api_core.client_options.ClientOptions.client_cert_source": self._client_options.client_cert_source,
+                    "google.api_core.client_options.ClientOptions.api_audience": self._client_options.api_audience,
+
+                }
+                provided_unsupported_params = [name for name, value in unsupported_params.items() if value is not None]
+                if provided_unsupported_params:
+                    raise core_exceptions.AsyncRestUnsupportedParameterError(  # type: ignore
+                        f"The following provided parameters are not supported for `transport=rest_asyncio`: {', '.join(provided_unsupported_params)}"
+                    )
+                self._transport = transport_init(
+                    credentials=credentials,
+                    host=self._api_endpoint,
+                    client_info=client_info,
+                )
+                return
+
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
+
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
                 credentials=credentials,
@@ -694,7 +726,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_instances]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -806,7 +838,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_instance]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -910,7 +942,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_instance_auth_string]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1066,7 +1098,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_instance]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1211,7 +1243,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_instance]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1341,7 +1373,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.upgrade_instance]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1481,7 +1513,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.import_instance]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1618,7 +1650,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.export_instance]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1749,7 +1781,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.failover_instance]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1875,7 +1907,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_instance]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2016,7 +2048,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.reschedule_maintenance]
 
-         # Certain fields should be provided within the metadata header;
+        # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2090,11 +2122,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_operations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2144,11 +2172,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2202,11 +2226,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.delete_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.delete_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2255,11 +2275,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.cancel_operation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.cancel_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2273,6 +2289,62 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Send the request.
         rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+    def wait_operation(
+        self,
+        request: Optional[operations_pb2.WaitOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Waits until the specified long-running operation is done or reaches at most
+        a specified timeout, returning the latest state.
+
+        If the operation is already done, the latest state is immediately returned.
+        If the timeout specified is greater than the default HTTP/RPC timeout, the HTTP/RPC
+        timeout is used.  If the server does not support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.WaitOperationRequest`):
+                The request object. Request message for
+                `WaitOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.WaitOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.wait_operation]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
 
     def get_location(
         self,
@@ -2305,11 +2377,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_location,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_location]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2359,11 +2427,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_locations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_locations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

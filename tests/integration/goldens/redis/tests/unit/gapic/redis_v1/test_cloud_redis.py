@@ -23,7 +23,7 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
-from collections.abc import Iterable
+from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 import json
 import math
@@ -31,10 +31,23 @@ import pytest
 from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
+try:
+    import aiohttp  # type: ignore
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
+    from google.api_core.operations_v1 import AsyncOperationsRestClient
+    HAS_ASYNC_REST_EXTRA = True
+except ImportError: # pragma: NO COVER
+    HAS_ASYNC_REST_EXTRA = False
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
 from google.protobuf import json_format
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError: # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -66,8 +79,20 @@ from google.type import timeofday_pb2  # type: ignore
 import google.auth
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint so the client can produce a different
@@ -808,25 +833,6 @@ def test_list_instances(request_type, transport: str = 'grpc'):
     assert response.unreachable == ['unreachable_value']
 
 
-def test_list_instances_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.list_instances),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.list_instances()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ListInstancesRequest()
-
-
 def test_list_instances_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -889,35 +895,12 @@ def test_list_instances_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_list_instances_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.list_instances),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
-        ))
-        response = await client.list_instances()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ListInstancesRequest()
-
-@pytest.mark.asyncio
 async def test_list_instances_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -948,7 +931,7 @@ async def test_list_instances_async_use_cached_wrapped_rpc(transport: str = "grp
 @pytest.mark.asyncio
 async def test_list_instances_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ListInstancesRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -982,7 +965,6 @@ async def test_list_instances_async(transport: str = 'grpc_asyncio', request_typ
 @pytest.mark.asyncio
 async def test_list_instances_async_from_dict():
     await test_list_instances_async(request_type=dict)
-
 
 def test_list_instances_field_headers():
     client = CloudRedisClient(
@@ -1018,7 +1000,7 @@ def test_list_instances_field_headers():
 @pytest.mark.asyncio
 async def test_list_instances_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1089,7 +1071,7 @@ def test_list_instances_flattened_error():
 @pytest.mark.asyncio
 async def test_list_instances_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1117,7 +1099,7 @@ async def test_list_instances_flattened_async():
 @pytest.mark.asyncio
 async def test_list_instances_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1231,7 +1213,7 @@ def test_list_instances_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_instances_async_pager():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1280,7 +1262,7 @@ async def test_list_instances_async_pager():
 @pytest.mark.asyncio
 async def test_list_instances_async_pages():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1412,25 +1394,6 @@ def test_get_instance(request_type, transport: str = 'grpc'):
     assert response.available_maintenance_versions == ['available_maintenance_versions_value']
 
 
-def test_get_instance_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.get_instance),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.get_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceRequest()
-
-
 def test_get_instance_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1491,60 +1454,12 @@ def test_get_instance_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_instance_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.get_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance(
-            name='name_value',
-            display_name='display_name_value',
-            location_id='location_id_value',
-            alternative_location_id='alternative_location_id_value',
-            redis_version='redis_version_value',
-            reserved_ip_range='reserved_ip_range_value',
-            secondary_ip_range='secondary_ip_range_value',
-            host='host_value',
-            port=453,
-            current_location_id='current_location_id_value',
-            state=cloud_redis.Instance.State.CREATING,
-            status_message='status_message_value',
-            tier=cloud_redis.Instance.Tier.BASIC,
-            memory_size_gb=1499,
-            authorized_network='authorized_network_value',
-            persistence_iam_identity='persistence_iam_identity_value',
-            connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
-            auth_enabled=True,
-            transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
-            replica_count=1384,
-            read_endpoint='read_endpoint_value',
-            read_endpoint_port=1920,
-            read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
-            customer_managed_key='customer_managed_key_value',
-            suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
-            maintenance_version='maintenance_version_value',
-            available_maintenance_versions=['available_maintenance_versions_value'],
-        ))
-        response = await client.get_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceRequest()
-
-@pytest.mark.asyncio
 async def test_get_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1575,7 +1490,7 @@ async def test_get_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_
 @pytest.mark.asyncio
 async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1660,7 +1575,6 @@ async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=
 async def test_get_instance_async_from_dict():
     await test_get_instance_async(request_type=dict)
 
-
 def test_get_instance_field_headers():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1695,7 +1609,7 @@ def test_get_instance_field_headers():
 @pytest.mark.asyncio
 async def test_get_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1766,7 +1680,7 @@ def test_get_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_get_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1794,7 +1708,7 @@ async def test_get_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_get_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1839,25 +1753,6 @@ def test_get_instance_auth_string(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.InstanceAuthString)
     assert response.auth_string == 'auth_string_value'
-
-
-def test_get_instance_auth_string_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.get_instance_auth_string),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.get_instance_auth_string()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
 
 
 def test_get_instance_auth_string_non_empty_request_with_auto_populated_field():
@@ -1920,34 +1815,12 @@ def test_get_instance_auth_string_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_get_instance_auth_string_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.get_instance_auth_string),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
-            auth_string='auth_string_value',
-        ))
-        response = await client.get_instance_auth_string()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
-
-@pytest.mark.asyncio
 async def test_get_instance_auth_string_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1978,7 +1851,7 @@ async def test_get_instance_auth_string_async_use_cached_wrapped_rpc(transport: 
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceAuthStringRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2010,7 +1883,6 @@ async def test_get_instance_auth_string_async(transport: str = 'grpc_asyncio', r
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_async_from_dict():
     await test_get_instance_auth_string_async(request_type=dict)
-
 
 def test_get_instance_auth_string_field_headers():
     client = CloudRedisClient(
@@ -2046,7 +1918,7 @@ def test_get_instance_auth_string_field_headers():
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2117,7 +1989,7 @@ def test_get_instance_auth_string_flattened_error():
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2145,7 +2017,7 @@ async def test_get_instance_auth_string_flattened_async():
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2187,25 +2059,6 @@ def test_create_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_instance_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.create_instance),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.create_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.CreateInstanceRequest()
 
 
 def test_create_instance_non_empty_request_with_auto_populated_field():
@@ -2275,34 +2128,12 @@ def test_create_instance_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_create_instance_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.create_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        response = await client.create_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.CreateInstanceRequest()
-
-@pytest.mark.asyncio
 async def test_create_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2338,7 +2169,7 @@ async def test_create_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 @pytest.mark.asyncio
 async def test_create_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.CreateInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2369,7 +2200,6 @@ async def test_create_instance_async(transport: str = 'grpc_asyncio', request_ty
 @pytest.mark.asyncio
 async def test_create_instance_async_from_dict():
     await test_create_instance_async(request_type=dict)
-
 
 def test_create_instance_field_headers():
     client = CloudRedisClient(
@@ -2405,7 +2235,7 @@ def test_create_instance_field_headers():
 @pytest.mark.asyncio
 async def test_create_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2486,7 +2316,7 @@ def test_create_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_create_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2524,7 +2354,7 @@ async def test_create_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_create_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2568,25 +2398,6 @@ def test_update_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_instance_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.update_instance),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.update_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpdateInstanceRequest()
 
 
 def test_update_instance_non_empty_request_with_auto_populated_field():
@@ -2652,34 +2463,12 @@ def test_update_instance_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_update_instance_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.update_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        response = await client.update_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpdateInstanceRequest()
-
-@pytest.mark.asyncio
 async def test_update_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2715,7 +2504,7 @@ async def test_update_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 @pytest.mark.asyncio
 async def test_update_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpdateInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2746,7 +2535,6 @@ async def test_update_instance_async(transport: str = 'grpc_asyncio', request_ty
 @pytest.mark.asyncio
 async def test_update_instance_async_from_dict():
     await test_update_instance_async(request_type=dict)
-
 
 def test_update_instance_field_headers():
     client = CloudRedisClient(
@@ -2782,7 +2570,7 @@ def test_update_instance_field_headers():
 @pytest.mark.asyncio
 async def test_update_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2858,7 +2646,7 @@ def test_update_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_update_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2892,7 +2680,7 @@ async def test_update_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_update_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2935,25 +2723,6 @@ def test_upgrade_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_upgrade_instance_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.upgrade_instance),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.upgrade_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpgradeInstanceRequest()
 
 
 def test_upgrade_instance_non_empty_request_with_auto_populated_field():
@@ -3023,34 +2792,12 @@ def test_upgrade_instance_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_upgrade_instance_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.upgrade_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        response = await client.upgrade_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.UpgradeInstanceRequest()
-
-@pytest.mark.asyncio
 async def test_upgrade_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3086,7 +2833,7 @@ async def test_upgrade_instance_async_use_cached_wrapped_rpc(transport: str = "g
 @pytest.mark.asyncio
 async def test_upgrade_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.UpgradeInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3117,7 +2864,6 @@ async def test_upgrade_instance_async(transport: str = 'grpc_asyncio', request_t
 @pytest.mark.asyncio
 async def test_upgrade_instance_async_from_dict():
     await test_upgrade_instance_async(request_type=dict)
-
 
 def test_upgrade_instance_field_headers():
     client = CloudRedisClient(
@@ -3153,7 +2899,7 @@ def test_upgrade_instance_field_headers():
 @pytest.mark.asyncio
 async def test_upgrade_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3229,7 +2975,7 @@ def test_upgrade_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_upgrade_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3263,7 +3009,7 @@ async def test_upgrade_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_upgrade_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3306,25 +3052,6 @@ def test_import_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_import_instance_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.import_instance),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.import_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ImportInstanceRequest()
 
 
 def test_import_instance_non_empty_request_with_auto_populated_field():
@@ -3392,34 +3119,12 @@ def test_import_instance_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_import_instance_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.import_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        response = await client.import_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ImportInstanceRequest()
-
-@pytest.mark.asyncio
 async def test_import_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3455,7 +3160,7 @@ async def test_import_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 @pytest.mark.asyncio
 async def test_import_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ImportInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3486,7 +3191,6 @@ async def test_import_instance_async(transport: str = 'grpc_asyncio', request_ty
 @pytest.mark.asyncio
 async def test_import_instance_async_from_dict():
     await test_import_instance_async(request_type=dict)
-
 
 def test_import_instance_field_headers():
     client = CloudRedisClient(
@@ -3522,7 +3226,7 @@ def test_import_instance_field_headers():
 @pytest.mark.asyncio
 async def test_import_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3598,7 +3302,7 @@ def test_import_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_import_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3632,7 +3336,7 @@ async def test_import_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_import_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3675,25 +3379,6 @@ def test_export_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_instance_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.export_instance),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.export_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ExportInstanceRequest()
 
 
 def test_export_instance_non_empty_request_with_auto_populated_field():
@@ -3761,34 +3446,12 @@ def test_export_instance_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_export_instance_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.export_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        response = await client.export_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.ExportInstanceRequest()
-
-@pytest.mark.asyncio
 async def test_export_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3824,7 +3487,7 @@ async def test_export_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 @pytest.mark.asyncio
 async def test_export_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.ExportInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3855,7 +3518,6 @@ async def test_export_instance_async(transport: str = 'grpc_asyncio', request_ty
 @pytest.mark.asyncio
 async def test_export_instance_async_from_dict():
     await test_export_instance_async(request_type=dict)
-
 
 def test_export_instance_field_headers():
     client = CloudRedisClient(
@@ -3891,7 +3553,7 @@ def test_export_instance_field_headers():
 @pytest.mark.asyncio
 async def test_export_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3967,7 +3629,7 @@ def test_export_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_export_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4001,7 +3663,7 @@ async def test_export_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_export_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4044,25 +3706,6 @@ def test_failover_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_failover_instance_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.failover_instance),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.failover_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.FailoverInstanceRequest()
 
 
 def test_failover_instance_non_empty_request_with_auto_populated_field():
@@ -4130,34 +3773,12 @@ def test_failover_instance_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_failover_instance_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.failover_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        response = await client.failover_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.FailoverInstanceRequest()
-
-@pytest.mark.asyncio
 async def test_failover_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4193,7 +3814,7 @@ async def test_failover_instance_async_use_cached_wrapped_rpc(transport: str = "
 @pytest.mark.asyncio
 async def test_failover_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.FailoverInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4224,7 +3845,6 @@ async def test_failover_instance_async(transport: str = 'grpc_asyncio', request_
 @pytest.mark.asyncio
 async def test_failover_instance_async_from_dict():
     await test_failover_instance_async(request_type=dict)
-
 
 def test_failover_instance_field_headers():
     client = CloudRedisClient(
@@ -4260,7 +3880,7 @@ def test_failover_instance_field_headers():
 @pytest.mark.asyncio
 async def test_failover_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4336,7 +3956,7 @@ def test_failover_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_failover_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4370,7 +3990,7 @@ async def test_failover_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_failover_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4413,25 +4033,6 @@ def test_delete_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_instance_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.delete_instance),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.delete_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.DeleteInstanceRequest()
 
 
 def test_delete_instance_non_empty_request_with_auto_populated_field():
@@ -4499,34 +4100,12 @@ def test_delete_instance_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_delete_instance_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.delete_instance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        response = await client.delete_instance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.DeleteInstanceRequest()
-
-@pytest.mark.asyncio
 async def test_delete_instance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4562,7 +4141,7 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(transport: str = "gr
 @pytest.mark.asyncio
 async def test_delete_instance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.DeleteInstanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4593,7 +4172,6 @@ async def test_delete_instance_async(transport: str = 'grpc_asyncio', request_ty
 @pytest.mark.asyncio
 async def test_delete_instance_async_from_dict():
     await test_delete_instance_async(request_type=dict)
-
 
 def test_delete_instance_field_headers():
     client = CloudRedisClient(
@@ -4629,7 +4207,7 @@ def test_delete_instance_field_headers():
 @pytest.mark.asyncio
 async def test_delete_instance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4700,7 +4278,7 @@ def test_delete_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_instance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4730,7 +4308,7 @@ async def test_delete_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_instance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4772,25 +4350,6 @@ def test_reschedule_maintenance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_reschedule_maintenance_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.reschedule_maintenance),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.reschedule_maintenance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
 
 
 def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
@@ -4858,34 +4417,12 @@ def test_reschedule_maintenance_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_reschedule_maintenance_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.reschedule_maintenance),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name='operations/spam')
-        )
-        response = await client.reschedule_maintenance()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
-
-@pytest.mark.asyncio
 async def test_reschedule_maintenance_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CloudRedisAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4921,7 +4458,7 @@ async def test_reschedule_maintenance_async_use_cached_wrapped_rpc(transport: st
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.RescheduleMaintenanceRequest):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4952,7 +4489,6 @@ async def test_reschedule_maintenance_async(transport: str = 'grpc_asyncio', req
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_async_from_dict():
     await test_reschedule_maintenance_async(request_type=dict)
-
 
 def test_reschedule_maintenance_field_headers():
     client = CloudRedisClient(
@@ -4988,7 +4524,7 @@ def test_reschedule_maintenance_field_headers():
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5067,7 +4603,7 @@ def test_reschedule_maintenance_flattened_error():
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_flattened_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5103,7 +4639,7 @@ async def test_reschedule_maintenance_flattened_async():
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_flattened_error_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5116,44 +4652,6 @@ async def test_reschedule_maintenance_flattened_error_async():
             schedule_time=timestamp_pb2.Timestamp(seconds=751),
         )
 
-
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.ListInstancesRequest,
-    dict,
-])
-def test_list_instances_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = cloud_redis.ListInstancesResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = cloud_redis.ListInstancesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_instances(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListInstancesPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
 
 def test_list_instances_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5266,66 +4764,6 @@ def test_list_instances_rest_unset_required_fields():
 
     unset_fields = transport.list_instances._get_unset_required_fields({})
     assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_instances_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_list_instances") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_list_instances") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = cloud_redis.ListInstancesResponse.to_json(cloud_redis.ListInstancesResponse())
-
-        request = cloud_redis.ListInstancesRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = cloud_redis.ListInstancesResponse()
-
-        client.list_instances(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_instances_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.ListInstancesRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_instances(request)
 
 
 def test_list_instances_rest_flattened():
@@ -5443,94 +4881,6 @@ def test_list_instances_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.GetInstanceRequest,
-    dict,
-])
-def test_get_instance_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = cloud_redis.Instance(
-              name='name_value',
-              display_name='display_name_value',
-              location_id='location_id_value',
-              alternative_location_id='alternative_location_id_value',
-              redis_version='redis_version_value',
-              reserved_ip_range='reserved_ip_range_value',
-              secondary_ip_range='secondary_ip_range_value',
-              host='host_value',
-              port=453,
-              current_location_id='current_location_id_value',
-              state=cloud_redis.Instance.State.CREATING,
-              status_message='status_message_value',
-              tier=cloud_redis.Instance.Tier.BASIC,
-              memory_size_gb=1499,
-              authorized_network='authorized_network_value',
-              persistence_iam_identity='persistence_iam_identity_value',
-              connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
-              auth_enabled=True,
-              transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
-              replica_count=1384,
-              read_endpoint='read_endpoint_value',
-              read_endpoint_port=1920,
-              read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
-              customer_managed_key='customer_managed_key_value',
-              suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
-              maintenance_version='maintenance_version_value',
-              available_maintenance_versions=['available_maintenance_versions_value'],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = cloud_redis.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.get_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, cloud_redis.Instance)
-    assert response.name == 'name_value'
-    assert response.display_name == 'display_name_value'
-    assert response.location_id == 'location_id_value'
-    assert response.alternative_location_id == 'alternative_location_id_value'
-    assert response.redis_version == 'redis_version_value'
-    assert response.reserved_ip_range == 'reserved_ip_range_value'
-    assert response.secondary_ip_range == 'secondary_ip_range_value'
-    assert response.host == 'host_value'
-    assert response.port == 453
-    assert response.current_location_id == 'current_location_id_value'
-    assert response.state == cloud_redis.Instance.State.CREATING
-    assert response.status_message == 'status_message_value'
-    assert response.tier == cloud_redis.Instance.Tier.BASIC
-    assert response.memory_size_gb == 1499
-    assert response.authorized_network == 'authorized_network_value'
-    assert response.persistence_iam_identity == 'persistence_iam_identity_value'
-    assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
-    assert response.auth_enabled is True
-    assert response.transit_encryption_mode == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
-    assert response.replica_count == 1384
-    assert response.read_endpoint == 'read_endpoint_value'
-    assert response.read_endpoint_port == 1920
-    assert response.read_replicas_mode == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
-    assert response.customer_managed_key == 'customer_managed_key_value'
-    assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
-    assert response.maintenance_version == 'maintenance_version_value'
-    assert response.available_maintenance_versions == ['available_maintenance_versions_value']
-
 def test_get_instance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -5642,66 +4992,6 @@ def test_get_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = cloud_redis.Instance.to_json(cloud_redis.Instance())
-
-        request = cloud_redis.GetInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = cloud_redis.Instance()
-
-        client.get_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.GetInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_instance(request)
-
-
 def test_get_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5754,49 +5044,6 @@ def test_get_instance_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
         )
 
-
-def test_get_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.GetInstanceAuthStringRequest,
-    dict,
-])
-def test_get_instance_auth_string_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = cloud_redis.InstanceAuthString(
-              auth_string='auth_string_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = cloud_redis.InstanceAuthString.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.get_instance_auth_string(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, cloud_redis.InstanceAuthString)
-    assert response.auth_string == 'auth_string_value'
 
 def test_get_instance_auth_string_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -5909,66 +5156,6 @@ def test_get_instance_auth_string_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_instance_auth_string_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance_auth_string") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance_auth_string") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
-
-        request = cloud_redis.GetInstanceAuthStringRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = cloud_redis.InstanceAuthString()
-
-        client.get_instance_auth_string(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_instance_auth_string_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.GetInstanceAuthStringRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_instance_auth_string(request)
-
-
 def test_get_instance_auth_string_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6021,108 +5208,6 @@ def test_get_instance_auth_string_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
         )
 
-
-def test_get_instance_auth_string_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.CreateInstanceRequest,
-    dict,
-])
-def test_create_instance_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = cloud_redis.CreateInstanceRequest.meta.fields["instance"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else: # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["instance"].items(): # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["instance"][field])):
-                    del request_init["instance"][field][i][subfield]
-            else:
-                del request_init["instance"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.create_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 def test_create_instance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6250,67 +5335,6 @@ def test_create_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(("instanceId", )) & set(("parent", "instanceId", "instance", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_create_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_create_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.CreateInstanceRequest.pb(cloud_redis.CreateInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.CreateInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.CreateInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_instance(request)
-
-
 def test_create_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6365,108 +5389,6 @@ def test_create_instance_rest_flattened_error(transport: str = 'rest'):
             instance=cloud_redis.Instance(name='name_value'),
         )
 
-
-def test_create_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.UpdateInstanceRequest,
-    dict,
-])
-def test_update_instance_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
-    request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = cloud_redis.UpdateInstanceRequest.meta.fields["instance"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else: # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["instance"].items(): # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["instance"][field])):
-                    del request_init["instance"][field][i][subfield]
-            else:
-                del request_init["instance"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.update_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 def test_update_instance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6578,67 +5500,6 @@ def test_update_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask", )) & set(("updateMask", "instance", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_update_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_update_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.UpdateInstanceRequest.pb(cloud_redis.UpdateInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.UpdateInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.UpdateInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_instance(request)
-
-
 def test_update_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6691,44 +5552,6 @@ def test_update_instance_rest_flattened_error(transport: str = 'rest'):
             instance=cloud_redis.Instance(name='name_value'),
         )
 
-
-def test_update_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.UpgradeInstanceRequest,
-    dict,
-])
-def test_upgrade_instance_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.upgrade_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 def test_upgrade_instance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -6847,67 +5670,6 @@ def test_upgrade_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", "redisVersion", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_upgrade_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_upgrade_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_upgrade_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.UpgradeInstanceRequest.pb(cloud_redis.UpgradeInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.UpgradeInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.upgrade_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_upgrade_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.UpgradeInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.upgrade_instance(request)
-
-
 def test_upgrade_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6960,44 +5722,6 @@ def test_upgrade_instance_rest_flattened_error(transport: str = 'rest'):
             redis_version='redis_version_value',
         )
 
-
-def test_upgrade_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.ImportInstanceRequest,
-    dict,
-])
-def test_import_instance_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.import_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 def test_import_instance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7112,67 +5836,6 @@ def test_import_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", "inputConfig", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_import_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_import_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_import_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.ImportInstanceRequest.pb(cloud_redis.ImportInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.ImportInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.import_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_import_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.ImportInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.import_instance(request)
-
-
 def test_import_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7225,44 +5888,6 @@ def test_import_instance_rest_flattened_error(transport: str = 'rest'):
             input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value')),
         )
 
-
-def test_import_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.ExportInstanceRequest,
-    dict,
-])
-def test_export_instance_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.export_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 def test_export_instance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7377,67 +6002,6 @@ def test_export_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", "outputConfig", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_export_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_export_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.ExportInstanceRequest.pb(cloud_redis.ExportInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.ExportInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_export_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.ExportInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.export_instance(request)
-
-
 def test_export_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7490,44 +6054,6 @@ def test_export_instance_rest_flattened_error(transport: str = 'rest'):
             output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value')),
         )
 
-
-def test_export_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.FailoverInstanceRequest,
-    dict,
-])
-def test_failover_instance_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.failover_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 def test_failover_instance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7642,67 +6168,6 @@ def test_failover_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_failover_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_failover_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_failover_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.FailoverInstanceRequest.pb(cloud_redis.FailoverInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.FailoverInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.failover_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_failover_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.FailoverInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.failover_instance(request)
-
-
 def test_failover_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7755,44 +6220,6 @@ def test_failover_instance_rest_flattened_error(transport: str = 'rest'):
             data_protection_mode=cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS,
         )
 
-
-def test_failover_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.DeleteInstanceRequest,
-    dict,
-])
-def test_delete_instance_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.delete_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 def test_delete_instance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -7906,67 +6333,6 @@ def test_delete_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_instance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_delete_instance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_delete_instance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.DeleteInstanceRequest.pb(cloud_redis.DeleteInstanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.DeleteInstanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_instance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.DeleteInstanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_instance(request)
-
-
 def test_delete_instance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8017,44 +6383,6 @@ def test_delete_instance_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
         )
 
-
-def test_delete_instance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    cloud_redis.RescheduleMaintenanceRequest,
-    dict,
-])
-def test_reschedule_maintenance_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name='operations/spam')
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.reschedule_maintenance(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 def test_reschedule_maintenance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -8169,67 +6497,6 @@ def test_reschedule_maintenance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name", "rescheduleType", )))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_reschedule_maintenance_rest_interceptors(null_interceptor):
-    transport = transports.CloudRedisRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
-        )
-    client = CloudRedisClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "post_reschedule_maintenance") as post, \
-         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_reschedule_maintenance") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cloud_redis.RescheduleMaintenanceRequest.pb(cloud_redis.RescheduleMaintenanceRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
-
-        request = cloud_redis.RescheduleMaintenanceRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.reschedule_maintenance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_reschedule_maintenance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.RescheduleMaintenanceRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.reschedule_maintenance(request)
-
-
 def test_reschedule_maintenance_rest_flattened():
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8283,13 +6550,6 @@ def test_reschedule_maintenance_rest_flattened_error(transport: str = 'rest'):
             reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
             schedule_time=timestamp_pb2.Timestamp(seconds=751),
         )
-
-
-def test_reschedule_maintenance_rest_error():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 def test_credentials_transport_error():
@@ -8379,15 +6639,4482 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
-@pytest.mark.parametrize("transport_name", [
-    "grpc",
-    "rest",
-])
-def test_transport_kind(transport_name):
-    transport = CloudRedisClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = CloudRedisClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_instances_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_instances),
+            '__call__') as call:
+        call.return_value = cloud_redis.ListInstancesResponse()
+        client.list_instances(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ListInstancesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_instance_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance),
+            '__call__') as call:
+        call.return_value = cloud_redis.Instance()
+        client.get_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_instance_auth_string_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        call.return_value = cloud_redis.InstanceAuthString()
+        client.get_instance_auth_string(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceAuthStringRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_instance_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_instance),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.create_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.CreateInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_instance_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_instance),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.update_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.UpdateInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_upgrade_instance_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.upgrade_instance),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.upgrade_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.UpgradeInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_instance_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.import_instance),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.import_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ImportInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_instance_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.export_instance),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.export_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ExportInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_failover_instance_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.failover_instance),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.failover_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.FailoverInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_instance_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_instance),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.delete_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.DeleteInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reschedule_maintenance_empty_call_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.reschedule_maintenance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.RescheduleMaintenanceRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = CloudRedisAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_instances_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_instances),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse(
+            next_page_token='next_page_token_value',
+            unreachable=['unreachable_value'],
+        ))
+        await client.list_instances(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ListInstancesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_instance_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance(
+            name='name_value',
+            display_name='display_name_value',
+            location_id='location_id_value',
+            alternative_location_id='alternative_location_id_value',
+            redis_version='redis_version_value',
+            reserved_ip_range='reserved_ip_range_value',
+            secondary_ip_range='secondary_ip_range_value',
+            host='host_value',
+            port=453,
+            current_location_id='current_location_id_value',
+            state=cloud_redis.Instance.State.CREATING,
+            status_message='status_message_value',
+            tier=cloud_redis.Instance.Tier.BASIC,
+            memory_size_gb=1499,
+            authorized_network='authorized_network_value',
+            persistence_iam_identity='persistence_iam_identity_value',
+            connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+            auth_enabled=True,
+            transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+            replica_count=1384,
+            read_endpoint='read_endpoint_value',
+            read_endpoint_port=1920,
+            read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+            customer_managed_key='customer_managed_key_value',
+            suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+            maintenance_version='maintenance_version_value',
+            available_maintenance_versions=['available_maintenance_versions_value'],
+        ))
+        await client.get_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
+            auth_string='auth_string_value',
+        ))
+        await client.get_instance_auth_string(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceAuthStringRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_instance_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        await client.create_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.CreateInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_instance_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        await client.update_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.UpdateInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_upgrade_instance_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.upgrade_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        await client.upgrade_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.UpgradeInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_import_instance_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.import_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        await client.import_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ImportInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_instance_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.export_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        await client.export_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ExportInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_failover_instance_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.failover_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        await client.failover_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.FailoverInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_instance_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_instance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        await client.delete_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.DeleteInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_empty_call_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        await client.reschedule_maintenance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.RescheduleMaintenanceRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = CloudRedisClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_instances_rest_bad_request(request_type=cloud_redis.ListInstancesRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_instances(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.ListInstancesRequest,
+  dict,
+])
+def test_list_instances_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.ListInstancesResponse(
+              next_page_token='next_page_token_value',
+              unreachable=['unreachable_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_instances(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInstancesPager)
+    assert response.next_page_token == 'next_page_token_value'
+    assert response.unreachable == ['unreachable_value']
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_instances_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_list_instances") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_list_instances") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.ListInstancesResponse.to_json(cloud_redis.ListInstancesResponse())
+        req.return_value.content = return_value
+
+        request = cloud_redis.ListInstancesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.ListInstancesResponse()
+
+        client.list_instances(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_instance_rest_bad_request(request_type=cloud_redis.GetInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_instance(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.GetInstanceRequest,
+  dict,
+])
+def test_get_instance_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.Instance(
+              name='name_value',
+              display_name='display_name_value',
+              location_id='location_id_value',
+              alternative_location_id='alternative_location_id_value',
+              redis_version='redis_version_value',
+              reserved_ip_range='reserved_ip_range_value',
+              secondary_ip_range='secondary_ip_range_value',
+              host='host_value',
+              port=453,
+              current_location_id='current_location_id_value',
+              state=cloud_redis.Instance.State.CREATING,
+              status_message='status_message_value',
+              tier=cloud_redis.Instance.Tier.BASIC,
+              memory_size_gb=1499,
+              authorized_network='authorized_network_value',
+              persistence_iam_identity='persistence_iam_identity_value',
+              connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+              auth_enabled=True,
+              transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+              replica_count=1384,
+              read_endpoint='read_endpoint_value',
+              read_endpoint_port=1920,
+              read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+              customer_managed_key='customer_managed_key_value',
+              suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+              maintenance_version='maintenance_version_value',
+              available_maintenance_versions=['available_maintenance_versions_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.Instance)
+    assert response.name == 'name_value'
+    assert response.display_name == 'display_name_value'
+    assert response.location_id == 'location_id_value'
+    assert response.alternative_location_id == 'alternative_location_id_value'
+    assert response.redis_version == 'redis_version_value'
+    assert response.reserved_ip_range == 'reserved_ip_range_value'
+    assert response.secondary_ip_range == 'secondary_ip_range_value'
+    assert response.host == 'host_value'
+    assert response.port == 453
+    assert response.current_location_id == 'current_location_id_value'
+    assert response.state == cloud_redis.Instance.State.CREATING
+    assert response.status_message == 'status_message_value'
+    assert response.tier == cloud_redis.Instance.Tier.BASIC
+    assert response.memory_size_gb == 1499
+    assert response.authorized_network == 'authorized_network_value'
+    assert response.persistence_iam_identity == 'persistence_iam_identity_value'
+    assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
+    assert response.auth_enabled is True
+    assert response.transit_encryption_mode == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
+    assert response.replica_count == 1384
+    assert response.read_endpoint == 'read_endpoint_value'
+    assert response.read_endpoint_port == 1920
+    assert response.read_replicas_mode == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
+    assert response.customer_managed_key == 'customer_managed_key_value'
+    assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
+    assert response.maintenance_version == 'maintenance_version_value'
+    assert response.available_maintenance_versions == ['available_maintenance_versions_value']
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.Instance.to_json(cloud_redis.Instance())
+        req.return_value.content = return_value
+
+        request = cloud_redis.GetInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.Instance()
+
+        client.get_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_instance_auth_string_rest_bad_request(request_type=cloud_redis.GetInstanceAuthStringRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_instance_auth_string(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.GetInstanceAuthStringRequest,
+  dict,
+])
+def test_get_instance_auth_string_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.InstanceAuthString(
+              auth_string='auth_string_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis.InstanceAuthString.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_instance_auth_string(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.InstanceAuthString)
+    assert response.auth_string == 'auth_string_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_instance_auth_string_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance_auth_string") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance_auth_string") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
+        req.return_value.content = return_value
+
+        request = cloud_redis.GetInstanceAuthStringRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.InstanceAuthString()
+
+        client.get_instance_auth_string(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_instance_rest_bad_request(request_type=cloud_redis.CreateInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_instance(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.CreateInstanceRequest,
+  dict,
+])
+def test_create_instance_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_redis.CreateInstanceRequest.meta.fields["instance"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["instance"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["instance"][field])):
+                    del request_init["instance"][field][i][subfield]
+            else:
+                del request_init["instance"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_create_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_create_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.CreateInstanceRequest.pb(cloud_redis.CreateInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.CreateInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_instance_rest_bad_request(request_type=cloud_redis.UpdateInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_instance(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.UpdateInstanceRequest,
+  dict,
+])
+def test_update_instance_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
+    request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_redis.UpdateInstanceRequest.meta.fields["instance"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["instance"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["instance"][field])):
+                    del request_init["instance"][field][i][subfield]
+            else:
+                del request_init["instance"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_update_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_update_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.UpdateInstanceRequest.pb(cloud_redis.UpdateInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.UpdateInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_upgrade_instance_rest_bad_request(request_type=cloud_redis.UpgradeInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.upgrade_instance(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.UpgradeInstanceRequest,
+  dict,
+])
+def test_upgrade_instance_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.upgrade_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_upgrade_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_upgrade_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_upgrade_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.UpgradeInstanceRequest.pb(cloud_redis.UpgradeInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.UpgradeInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.upgrade_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_import_instance_rest_bad_request(request_type=cloud_redis.ImportInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.import_instance(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.ImportInstanceRequest,
+  dict,
+])
+def test_import_instance_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.import_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_import_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_import_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.ImportInstanceRequest.pb(cloud_redis.ImportInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.ImportInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.import_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_instance_rest_bad_request(request_type=cloud_redis.ExportInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.export_instance(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.ExportInstanceRequest,
+  dict,
+])
+def test_export_instance_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.export_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_export_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_export_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.ExportInstanceRequest.pb(cloud_redis.ExportInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.ExportInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_failover_instance_rest_bad_request(request_type=cloud_redis.FailoverInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.failover_instance(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.FailoverInstanceRequest,
+  dict,
+])
+def test_failover_instance_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.failover_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_failover_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_failover_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_failover_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.FailoverInstanceRequest.pb(cloud_redis.FailoverInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.FailoverInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.failover_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_instance_rest_bad_request(request_type=cloud_redis.DeleteInstanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_instance(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.DeleteInstanceRequest,
+  dict,
+])
+def test_delete_instance_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_instance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_delete_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_delete_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.DeleteInstanceRequest.pb(cloud_redis.DeleteInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.DeleteInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_reschedule_maintenance_rest_bad_request(request_type=cloud_redis.RescheduleMaintenanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.reschedule_maintenance(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.RescheduleMaintenanceRequest,
+  dict,
+])
+def test_reschedule_maintenance_rest_call_success(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.reschedule_maintenance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_reschedule_maintenance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_reschedule_maintenance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "pre_reschedule_maintenance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.RescheduleMaintenanceRequest.pb(cloud_redis.RescheduleMaintenanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = cloud_redis.RescheduleMaintenanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.reschedule_maintenance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    locations_pb2.GetLocationRequest,
+    dict,
+])
+def test_get_location_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(request_type=locations_pb2.ListLocationsRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    locations_pb2.ListLocationsRequest,
+    dict,
+])
+def test_list_locations_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOperationRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.CancelOperationRequest,
+    dict,
+])
+def test_cancel_operation_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = '{}'
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(request_type=operations_pb2.DeleteOperationRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.DeleteOperationRequest,
+    dict,
+])
+def test_delete_operation_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = '{}'
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.GetOperationRequest,
+    dict,
+])
+def test_get_operation_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperationsRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.ListOperationsRequest,
+    dict,
+])
+def test_list_operations_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_wait_operation_rest_bad_request(request_type=operations_pb2.WaitOperationRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.wait_operation(request)
+
+
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.WaitOperationRequest,
+    dict,
+])
+def test_wait_operation_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+
+        req.return_value = response_value
+
+        response = client.wait_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+def test_initialize_client_w_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_instances_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_instances),
+            '__call__') as call:
+        client.list_instances(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ListInstancesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_instance_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance),
+            '__call__') as call:
+        client.get_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_instance_auth_string_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        client.get_instance_auth_string(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceAuthStringRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_instance_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_instance),
+            '__call__') as call:
+        client.create_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.CreateInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_instance_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_instance),
+            '__call__') as call:
+        client.update_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.UpdateInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_upgrade_instance_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.upgrade_instance),
+            '__call__') as call:
+        client.upgrade_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.UpgradeInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_instance_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.import_instance),
+            '__call__') as call:
+        client.import_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ImportInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_instance_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.export_instance),
+            '__call__') as call:
+        client.export_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ExportInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_failover_instance_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.failover_instance),
+            '__call__') as call:
+        client.failover_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.FailoverInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_instance_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_instance),
+            '__call__') as call:
+        client.delete_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.DeleteInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reschedule_maintenance_empty_call_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        client.reschedule_maintenance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.RescheduleMaintenanceRequest()
+
+        assert args[0] == request_msg
+
+
+def test_cloud_redis_rest_lro_client():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+def test_transport_kind_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = CloudRedisAsyncClient.get_transport_class("rest_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "rest_asyncio"
+
+
+@pytest.mark.asyncio
+async def test_list_instances_rest_asyncio_bad_request(request_type=cloud_redis.ListInstancesRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.list_instances(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.ListInstancesRequest,
+  dict,
+])
+async def test_list_instances_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.ListInstancesResponse(
+              next_page_token='next_page_token_value',
+              unreachable=['unreachable_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.list_instances(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInstancesAsyncPager)
+    assert response.next_page_token == 'next_page_token_value'
+    assert response.unreachable == ['unreachable_value']
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_list_instances_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_list_instances") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_list_instances") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.ListInstancesResponse.to_json(cloud_redis.ListInstancesResponse())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.ListInstancesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.ListInstancesResponse()
+
+        await client.list_instances(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_get_instance_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.get_instance(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.GetInstanceRequest,
+  dict,
+])
+async def test_get_instance_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.Instance(
+              name='name_value',
+              display_name='display_name_value',
+              location_id='location_id_value',
+              alternative_location_id='alternative_location_id_value',
+              redis_version='redis_version_value',
+              reserved_ip_range='reserved_ip_range_value',
+              secondary_ip_range='secondary_ip_range_value',
+              host='host_value',
+              port=453,
+              current_location_id='current_location_id_value',
+              state=cloud_redis.Instance.State.CREATING,
+              status_message='status_message_value',
+              tier=cloud_redis.Instance.Tier.BASIC,
+              memory_size_gb=1499,
+              authorized_network='authorized_network_value',
+              persistence_iam_identity='persistence_iam_identity_value',
+              connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+              auth_enabled=True,
+              transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+              replica_count=1384,
+              read_endpoint='read_endpoint_value',
+              read_endpoint_port=1920,
+              read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+              customer_managed_key='customer_managed_key_value',
+              suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+              maintenance_version='maintenance_version_value',
+              available_maintenance_versions=['available_maintenance_versions_value'],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.get_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.Instance)
+    assert response.name == 'name_value'
+    assert response.display_name == 'display_name_value'
+    assert response.location_id == 'location_id_value'
+    assert response.alternative_location_id == 'alternative_location_id_value'
+    assert response.redis_version == 'redis_version_value'
+    assert response.reserved_ip_range == 'reserved_ip_range_value'
+    assert response.secondary_ip_range == 'secondary_ip_range_value'
+    assert response.host == 'host_value'
+    assert response.port == 453
+    assert response.current_location_id == 'current_location_id_value'
+    assert response.state == cloud_redis.Instance.State.CREATING
+    assert response.status_message == 'status_message_value'
+    assert response.tier == cloud_redis.Instance.Tier.BASIC
+    assert response.memory_size_gb == 1499
+    assert response.authorized_network == 'authorized_network_value'
+    assert response.persistence_iam_identity == 'persistence_iam_identity_value'
+    assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
+    assert response.auth_enabled is True
+    assert response.transit_encryption_mode == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
+    assert response.replica_count == 1384
+    assert response.read_endpoint == 'read_endpoint_value'
+    assert response.read_endpoint_port == 1920
+    assert response.read_replicas_mode == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
+    assert response.customer_managed_key == 'customer_managed_key_value'
+    assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
+    assert response.maintenance_version == 'maintenance_version_value'
+    assert response.available_maintenance_versions == ['available_maintenance_versions_value']
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_get_instance_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_get_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_get_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.Instance.to_json(cloud_redis.Instance())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.GetInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.Instance()
+
+        await client.get_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceAuthStringRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.get_instance_auth_string(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.GetInstanceAuthStringRequest,
+  dict,
+])
+async def test_get_instance_auth_string_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.InstanceAuthString(
+              auth_string='auth_string_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cloud_redis.InstanceAuthString.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.get_instance_auth_string(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.InstanceAuthString)
+    assert response.auth_string == 'auth_string_value'
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_get_instance_auth_string_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_get_instance_auth_string") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_get_instance_auth_string") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.GetInstanceAuthStringRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.InstanceAuthString()
+
+        await client.get_instance_auth_string(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_create_instance_rest_asyncio_bad_request(request_type=cloud_redis.CreateInstanceRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.create_instance(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.CreateInstanceRequest,
+  dict,
+])
+async def test_create_instance_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'projects/sample1/locations/sample2'}
+    request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_redis.CreateInstanceRequest.meta.fields["instance"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["instance"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["instance"][field])):
+                    del request_init["instance"][field][i][subfield]
+            else:
+                del request_init["instance"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.create_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_create_instance_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_create_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_create_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.CreateInstanceRequest.pb(cloud_redis.CreateInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.CreateInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        await client.create_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_update_instance_rest_asyncio_bad_request(request_type=cloud_redis.UpdateInstanceRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.update_instance(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.UpdateInstanceRequest,
+  dict,
+])
+async def test_update_instance_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
+    request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_redis.UpdateInstanceRequest.meta.fields["instance"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else: # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["instance"].items(): # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["instance"][field])):
+                    del request_init["instance"][field][i][subfield]
+            else:
+                del request_init["instance"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.update_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_update_instance_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_update_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_update_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.UpdateInstanceRequest.pb(cloud_redis.UpdateInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.UpdateInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        await client.update_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_upgrade_instance_rest_asyncio_bad_request(request_type=cloud_redis.UpgradeInstanceRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.upgrade_instance(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.UpgradeInstanceRequest,
+  dict,
+])
+async def test_upgrade_instance_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.upgrade_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_upgrade_instance_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_upgrade_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_upgrade_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.UpgradeInstanceRequest.pb(cloud_redis.UpgradeInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.UpgradeInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        await client.upgrade_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_import_instance_rest_asyncio_bad_request(request_type=cloud_redis.ImportInstanceRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.import_instance(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.ImportInstanceRequest,
+  dict,
+])
+async def test_import_instance_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.import_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_import_instance_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_import_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_import_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.ImportInstanceRequest.pb(cloud_redis.ImportInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.ImportInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        await client.import_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_export_instance_rest_asyncio_bad_request(request_type=cloud_redis.ExportInstanceRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.export_instance(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.ExportInstanceRequest,
+  dict,
+])
+async def test_export_instance_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.export_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_export_instance_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_export_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_export_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.ExportInstanceRequest.pb(cloud_redis.ExportInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.ExportInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        await client.export_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_failover_instance_rest_asyncio_bad_request(request_type=cloud_redis.FailoverInstanceRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.failover_instance(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.FailoverInstanceRequest,
+  dict,
+])
+async def test_failover_instance_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.failover_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_failover_instance_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_failover_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_failover_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.FailoverInstanceRequest.pb(cloud_redis.FailoverInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.FailoverInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        await client.failover_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_delete_instance_rest_asyncio_bad_request(request_type=cloud_redis.DeleteInstanceRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.delete_instance(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.DeleteInstanceRequest,
+  dict,
+])
+async def test_delete_instance_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.delete_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_delete_instance_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_delete_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_delete_instance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.DeleteInstanceRequest.pb(cloud_redis.DeleteInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.DeleteInstanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        await client.delete_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_rest_asyncio_bad_request(request_type=cloud_redis.RescheduleMaintenanceRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.reschedule_maintenance(request)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.RescheduleMaintenanceRequest,
+  dict,
+])
+async def test_reschedule_maintenance_rest_asyncio_call_success(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+        req.return_value = response_value
+        response = await client.reschedule_maintenance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("null_interceptor", [True, False])
+async def test_reschedule_maintenance_rest_asyncio_interceptors(null_interceptor):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(
+        credentials=async_anonymous_credentials(),
+        interceptor=None if null_interceptor else transports.AsyncCloudRedisRestInterceptor(),
+        )
+    client = CloudRedisAsyncClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_reschedule_maintenance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_reschedule_maintenance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.RescheduleMaintenanceRequest.pb(cloud_redis.RescheduleMaintenanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.read = mock.AsyncMock(return_value=return_value)
+
+        request = cloud_redis.RescheduleMaintenanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        await client.reschedule_maintenance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_get_location_rest_asyncio_bad_request(request_type=locations_pb2.GetLocationRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.get_location(request)
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+    locations_pb2.GetLocationRequest,
+    dict,
+])
+async def test_get_location_rest_asyncio(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+
+        req.return_value = response_value
+
+        response = await client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+@pytest.mark.asyncio
+async def test_list_locations_rest_asyncio_bad_request(request_type=locations_pb2.ListLocationsRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.list_locations(request)
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+    locations_pb2.ListLocationsRequest,
+    dict,
+])
+async def test_list_locations_rest_asyncio(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    request_init = {'name': 'projects/sample1'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+
+        req.return_value = response_value
+
+        response = await client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+@pytest.mark.asyncio
+async def test_cancel_operation_rest_asyncio_bad_request(request_type=operations_pb2.CancelOperationRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.cancel_operation(request)
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.CancelOperationRequest,
+    dict,
+])
+async def test_cancel_operation_rest_asyncio(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = '{}'
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+
+        req.return_value = response_value
+
+        response = await client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+@pytest.mark.asyncio
+async def test_delete_operation_rest_asyncio_bad_request(request_type=operations_pb2.DeleteOperationRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.delete_operation(request)
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.DeleteOperationRequest,
+    dict,
+])
+async def test_delete_operation_rest_asyncio(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = '{}'
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+
+        req.return_value = response_value
+
+        response = await client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+@pytest.mark.asyncio
+async def test_get_operation_rest_asyncio_bad_request(request_type=operations_pb2.GetOperationRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.get_operation(request)
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.GetOperationRequest,
+    dict,
+])
+async def test_get_operation_rest_asyncio(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+
+        req.return_value = response_value
+
+        response = await client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+@pytest.mark.asyncio
+async def test_list_operations_rest_asyncio_bad_request(request_type=operations_pb2.ListOperationsRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.list_operations(request)
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.ListOperationsRequest,
+    dict,
+])
+async def test_list_operations_rest_asyncio(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+
+        req.return_value = response_value
+
+        response = await client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+@pytest.mark.asyncio
+async def test_wait_operation_rest_asyncio_bad_request(request_type=operations_pb2.WaitOperationRequest):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    request = request_type()
+    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.read = mock.AsyncMock(return_value=b'{}')
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        await client.wait_operation(request)
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("request_type", [
+    operations_pb2.WaitOperationRequest,
+    dict,
+])
+async def test_wait_operation_rest_asyncio(request_type):
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(AsyncAuthorizedSession, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
+
+        req.return_value = response_value
+
+        response = await client.wait_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+def test_initialize_client_w_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_instances_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_instances),
+            '__call__') as call:
+        await client.list_instances(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ListInstancesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance),
+            '__call__') as call:
+        await client.get_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        await client.get_instance_auth_string(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.GetInstanceAuthStringRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_instance),
+            '__call__') as call:
+        await client.create_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.CreateInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_instance),
+            '__call__') as call:
+        await client.update_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.UpdateInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_upgrade_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.upgrade_instance),
+            '__call__') as call:
+        await client.upgrade_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.UpgradeInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_import_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.import_instance),
+            '__call__') as call:
+        await client.import_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ImportInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.export_instance),
+            '__call__') as call:
+        await client.export_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.ExportInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_failover_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.failover_instance),
+            '__call__') as call:
+        await client.failover_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.FailoverInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_instance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_instance),
+            '__call__') as call:
+        await client.delete_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.DeleteInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_empty_call_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        await client.reschedule_maintenance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cloud_redis.RescheduleMaintenanceRequest()
+
+        assert args[0] == request_msg
+
+
+def test_cloud_redis_rest_asyncio_lro_client():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+operations_v1.AsyncOperationsRestClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+def test_unsupported_parameter_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    options = client_options.ClientOptions(quota_project_id="octopus")
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
+        client = CloudRedisAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport="rest_asyncio",
+            client_options=options
+    )
+
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
@@ -8433,6 +11160,7 @@ def test_cloud_redis_base_transport():
         'get_location',
         'list_locations',
         'get_operation',
+        'wait_operation',
         'cancel_operation',
         'delete_operation',
         'list_operations',
@@ -8629,23 +11357,6 @@ def test_cloud_redis_http_transport_client_cert_source_for_mtls():
             client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_cloud_redis_rest_lro_client():
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize("transport_name", [
@@ -9000,300 +11711,6 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_location_rest_bad_request(transport: str = 'rest', request_type=locations_pb2.GetLocationRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-@pytest.mark.parametrize("request_type", [
-    locations_pb2.GetLocationRequest,
-    dict,
-])
-def test_get_location_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-def test_list_locations_rest_bad_request(transport: str = 'rest', request_type=locations_pb2.ListLocationsRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-@pytest.mark.parametrize("request_type", [
-    locations_pb2.ListLocationsRequest,
-    dict,
-])
-def test_list_locations_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-def test_cancel_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.CancelOperationRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-@pytest.mark.parametrize("request_type", [
-    operations_pb2.CancelOperationRequest,
-    dict,
-])
-def test_cancel_operation_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = '{}'
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-def test_delete_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.DeleteOperationRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-@pytest.mark.parametrize("request_type", [
-    operations_pb2.DeleteOperationRequest,
-    dict,
-])
-def test_delete_operation_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = '{}'
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-def test_get_operation_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.GetOperationRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2/operations/sample3'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-@pytest.mark.parametrize("request_type", [
-    operations_pb2.GetOperationRequest,
-    dict,
-])
-def test_get_operation_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1/locations/sample2/operations/sample3'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-def test_list_operations_rest_bad_request(transport: str = 'rest', request_type=operations_pb2.ListOperationsRequest):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({'name': 'projects/sample1/locations/sample2'}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-@pytest.mark.parametrize("request_type", [
-    operations_pb2.ListOperationsRequest,
-    dict,
-])
-def test_list_operations_rest(request_type):
-    client = CloudRedisClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {'name': 'projects/sample1/locations/sample2'}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
 
 def test_delete_operation(transport: str = "grpc"):
     client = CloudRedisClient(
@@ -9319,7 +11736,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9367,7 +11784,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9408,7 +11825,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -9448,7 +11865,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9496,7 +11913,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9537,7 +11954,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -9546,6 +11963,134 @@ async def test_cancel_operation_from_dict_async():
             None
         )
         response = await client.cancel_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+def test_wait_operation(transport: str = "grpc"):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.WaitOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+        response = client.wait_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+@pytest.mark.asyncio
+async def test_wait_operation(transport: str = "grpc_asyncio"):
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = operations_pb2.WaitOperationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.wait_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+def test_wait_operation_field_headers():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.WaitOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
+        call.return_value = operations_pb2.Operation()
+
+        client.wait_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+@pytest.mark.asyncio
+async def test_wait_operation_field_headers_async():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = operations_pb2.WaitOperationRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.wait_operation(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
+def test_wait_operation_from_dict():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        response = client.wait_operation(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+@pytest.mark.asyncio
+async def test_wait_operation_from_dict_async():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        response = await client.wait_operation(
             request={
                 "name": "locations",
             }
@@ -9577,7 +12122,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9625,7 +12170,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9666,7 +12211,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -9706,7 +12251,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9754,7 +12299,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9795,7 +12340,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -9835,7 +12380,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9883,7 +12428,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9924,7 +12469,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -9964,7 +12509,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=async_anonymous_credentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10011,7 +12556,7 @@ def test_get_location_field_headers():
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=async_anonymous_credentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10052,7 +12597,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = CloudRedisAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -10068,21 +12613,53 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = CloudRedisClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport
-        )
-        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
 
 def test_client_ctx():
     transports = [

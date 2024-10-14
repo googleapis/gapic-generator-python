@@ -294,9 +294,14 @@ class Generator:
                         ('transport' in template_name
                          and not self._is_desired_transport(template_name, opts))
                         or
-                        # TODO(yon-mg) - remove when rest async implementation resolved
-                        # temporarily stop async client gen while rest async is unkown
-                        ('async' in template_name and 'grpc' not in opts.transport)
+                        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA.
+                        ('async_client' in template_name and 'grpc' not in opts.transport and
+                         not api_schema.all_library_settings[api_schema.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled)
+                        or
+                        ('rest_asyncio' in template_name and
+                         not api_schema.all_library_settings[api_schema.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled)
+                        or
+                        ('rest_base' in template_name and 'rest' not in opts.transport)
                 ):
                     continue
 
@@ -319,7 +324,7 @@ class Generator:
 
     def _is_desired_transport(self, template_name: str, opts: Options) -> bool:
         """Returns true if template name contains a desired transport"""
-        desired_transports = ['__init__', 'base'] + opts.transport
+        desired_transports = ['__init__', 'base', 'README'] + opts.transport
         return any(transport in template_name for transport in desired_transports)
 
     def _get_file(

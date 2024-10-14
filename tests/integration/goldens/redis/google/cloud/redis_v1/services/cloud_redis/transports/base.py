@@ -177,6 +177,41 @@ class CloudRedisTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_location: gapic_v1.method.wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: gapic_v1.method.wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: gapic_v1.method.wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: gapic_v1.method.wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: gapic_v1.method.wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.wait_operation: gapic_v1.method.wrap_method(
+                self.wait_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
          }
 
     def close(self):
@@ -325,6 +360,15 @@ class CloudRedisTransport(abc.ABC):
     ) -> Callable[
         [operations_pb2.DeleteOperationRequest],
         None,
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def wait_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.WaitOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
