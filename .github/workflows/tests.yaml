@@ -340,7 +340,7 @@ jobs:
       - name: Install nox.
         run: |
             python -m pip install nox
-      - name: Run blacken and lint on the generated output.
+      - name: Run the `unit` nox session
         run: |
           nox -f tests/integration/goldens/asset/noxfile.py -s unit-3.12
           nox -f tests/integration/goldens/credentials/noxfile.py -s unit-3.12
