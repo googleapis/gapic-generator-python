@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.19.2](https://github.com/googleapis/gapic-generator-python/compare/v1.19.1...v1.19.2) (2024-10-16)
+
+
+### Bug Fixes
+
+* Allow `google-cloud-kms` 3.x ([#2226](https://github.com/googleapis/gapic-generator-python/issues/2226)) ([5e07501](https://github.com/googleapis/gapic-generator-python/commit/5e075016a2119782e611cd51335fa0af7e4c18c2))
+
 ## [1.19.1](https://github.com/googleapis/gapic-generator-python/compare/v1.19.0...v1.19.1) (2024-10-10)
 
 
