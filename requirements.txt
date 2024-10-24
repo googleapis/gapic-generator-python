@@ -8,7 +8,7 @@ aiohappyeyeballs==2.4.3 \
     --hash=sha256:75cf88a15106a5002a8eb1dab212525c00d1f4c0fa96e551c9fbe6f09a621586 \
     --hash=sha256:8a7a83727b2756f394ab2895ea0765a0a8c475e3c71e98d43d76f22b4b435572
     # via aiohttp
-aiohttp==3.10.9 \
+aiohttp==3.10.10 \
     --hash=sha256:02d1d6610588bcd743fae827bd6f2e47e0d09b346f230824b4c6fb85c6065f9c \
     --hash=sha256:03690541e4cc866eef79626cfa1ef4dd729c5c1408600c8cb9e12e1137eed6ab \
     --hash=sha256:0bc059ecbce835630e635879f5f480a742e130d9821fbe3d2f76610a6698ee25 \
@@ -336,7 +336,7 @@ grpc-google-iam-v1==0.13.1 \
     --hash=sha256:3ff4b2fd9d990965e410965253c0da6f66205d5a8291c4c31c6ebecca18a9001 \
     --hash=sha256:c3e86151a981811f30d5e7330f271cee53e73bb87755e88cc3b6f0c7b5fe374e
     # via -r requirements.in
-grpcio==1.66.2 \
+grpcio==1.67.0 \
     --hash=sha256:02697eb4a5cbe5a9639f57323b4c37bcb3ab2d48cec5da3dc2f13334d72790dd \
     --hash=sha256:03b0b307ba26fae695e067b94cbb014e27390f8bc5ac7a3a39b7723fed085604 \
     --hash=sha256:05bc2ceadc2529ab0b227b1310d249d95d9001cd106aa4d31e8871ad3c428d73 \
@@ -446,7 +446,7 @@ libcst==1.5.0 \
     --hash=sha256:d92c5ae2e2dc9356ad7e3d05077d9b7e5065423e45788fd86729c88729e45c6e \
     --hash=sha256:fc80ea16c7d44e38f193e4d4ef7ff1e0ba72d8e60e8b61ac6f4c87f070a118bd
     # via -r requirements.in
-markupsafe==3.0.1 \
+markupsafe==3.0.2 \
     --hash=sha256:0778de17cff1acaeccc3ff30cd99a3fd5c50fc58ad3d6c0e0c4c58092b859396 \
     --hash=sha256:0f84af7e813784feb4d5e4ff7db633aba6c8ca64a833f61d8e4eade234ef0c38 \
     --hash=sha256:17b2aea42a7280db02ac644db1d634ad47dcc96faf38ab304fe26ba2680d359a \
@@ -838,7 +838,7 @@ urllib3==2.2.3 \
     --hash=sha256:ca899ca043dcb1bafa3e262d73aa25c465bfb49e0bd9dd5d59f1d0acba2f8fac \
     --hash=sha256:e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9
     # via requests
-yarl==1.14.0 \
+yarl==1.15.5 \
     --hash=sha256:047b258e00b99091b6f90355521f026238c63bd76dcf996d93527bb13320eefd \
     --hash=sha256:06ff23462398333c78b6f4f8d3d70410d657a471c2c5bbe6086133be43fc8f1a \
     --hash=sha256:07f9eaf57719d6721ab15805d85f4b01a5b509a0868d7320134371bcb652152d \
