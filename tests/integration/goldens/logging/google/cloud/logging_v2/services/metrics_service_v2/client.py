@@ -424,9 +424,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         Raises:
             ValueError: If the configured universe domain is not valid.
         """
-        self._is_universe_domain_valid = (self._is_universe_domain_valid or
-            MetricsServiceV2Client._compare_universes(self.universe_domain, self.transport._credentials))
-        return self._is_universe_domain_valid
+
+        # universe validation is disabled until further notice per b/349488459
+        return True
 
     @property
     def api_endpoint(self):
