@@ -434,7 +434,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             ValueError: If the configured universe domain is not valid.
         """
 
-        # universe validation is disabled until further notice per b/349488459
+        # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
     @property
