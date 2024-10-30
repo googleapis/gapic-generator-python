@@ -3027,26 +3027,6 @@ def test_metrics_service_v2_auth_adc():
         transports.MetricsServiceV2GrpcAsyncIOTransport,
     ],
 )
-def test_metrics_service_v2_transport_auth_adc(transport_class):
-    # If credentials and host are not provided, the transport class should use
-    # ADC credentials.
-    with mock.patch.object(google.auth, 'default', autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class(quota_project_id="octopus", scopes=["1", "2"])
-        adc.assert_called_once_with(
-            scopes=["1", "2"],
-            default_scopes=(                'https://www.googleapis.com/auth/cloud-platform',                'https://www.googleapis.com/auth/cloud-platform.read-only',                'https://www.googleapis.com/auth/logging.admin',                'https://www.googleapis.com/auth/logging.read',                'https://www.googleapis.com/auth/logging.write',),
-            quota_project_id="octopus",
-        )
-
-
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.MetricsServiceV2GrpcTransport,
-        transports.MetricsServiceV2GrpcAsyncIOTransport,
-    ],
-)
 def test_metrics_service_v2_transport_auth_gdch_credentials(transport_class):
     host = 'https://language.com'
     api_audience_tests = [None, 'https://language2.com']
@@ -3060,6 +3040,26 @@ def test_metrics_service_v2_transport_auth_gdch_credentials(transport_class):
             gdch_mock.with_gdch_audience.assert_called_once_with(
                 e
             )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.MetricsServiceV2GrpcTransport,
+        transports.MetricsServiceV2GrpcAsyncIOTransport,
+    ],
+)
+def test_metrics_service_v2_transport_auth_adc(transport_class):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(google.auth, 'default', autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+        adc.assert_called_once_with(
+            scopes=["1", "2"],
+            default_scopes=(                'https://www.googleapis.com/auth/cloud-platform',                'https://www.googleapis.com/auth/cloud-platform.read-only',                'https://www.googleapis.com/auth/logging.admin',                'https://www.googleapis.com/auth/logging.read',                'https://www.googleapis.com/auth/logging.write',),
+            quota_project_id="octopus",
+        )
 
 
 @pytest.mark.parametrize(

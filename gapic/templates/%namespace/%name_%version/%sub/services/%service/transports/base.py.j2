@@ -107,8 +107,10 @@ class {{ service.name }}Transport(abc.ABC):
 
         # Save the scopes.
         self._scopes = scopes
+        {% if 'grpc' in opts.transport %}
         if not hasattr(self, "_ignore_credentials"):
             self._ignore_credentials: bool = False
+        {% endif %}
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -121,7 +123,7 @@ class {{ service.name }}Transport(abc.ABC):
                                 **scopes_kwargs,
                                 quota_project_id=quota_project_id
                             )
-        elif credentials is None and not self._ignore_credentials:
+        elif credentials is None{% if 'grpc' in opts.transport %} and not self._ignore_credentials{% endif %}:
             credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
@@ -134,9 +136,11 @@ class {{ service.name }}Transport(abc.ABC):
         # Save the credentials.
         self._credentials = credentials
 
+        {% if 'grpc' in opts.transport %}
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ':' not in host:
             host += ':443'
+        {% endif %}
         self._host = host
 
     @property

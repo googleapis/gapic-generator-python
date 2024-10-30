@@ -1160,30 +1160,6 @@ def test_{{ service.name|snake_case }}_auth_adc():
         )
 
 
-{% if 'grpc' in opts.transport %}
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.{{ service.name }}GrpcTransport,
-        transports.{{ service.name }}GrpcAsyncIOTransport,
-    ],
-)
-def test_{{ service.name|snake_case }}_transport_auth_adc(transport_class):
-    # If credentials and host are not provided, the transport class should use
-    # ADC credentials.
-    with mock.patch.object(google.auth, 'default', autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class(quota_project_id="octopus", scopes=["1", "2"])
-        adc.assert_called_once_with(
-            scopes=["1", "2"],
-            default_scopes=(
-                {%- for scope in service.oauth_scopes %}
-                '{{ scope }}',
-                {%- endfor %}),
-            quota_project_id="octopus",
-        )
-
-
 {% if 'grpc' in opts.transport and 'rest' in opts.transport %}
 @pytest.mark.parametrize(
     "transport_class",
@@ -1222,6 +1198,30 @@ def test_{{ service.name|snake_case }}_transport_auth_gdch_credentials(transport
             gdch_mock.with_gdch_audience.assert_called_once_with(
                 e
             )
+
+
+{% if 'grpc' in opts.transport %}
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.{{ service.name }}GrpcTransport,
+        transports.{{ service.name }}GrpcAsyncIOTransport,
+    ],
+)
+def test_{{ service.name|snake_case }}_transport_auth_adc(transport_class):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(google.auth, 'default', autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+        adc.assert_called_once_with(
+            scopes=["1", "2"],
+            default_scopes=(
+                {%- for scope in service.oauth_scopes %}
+                '{{ scope }}',
+                {%- endfor %}),
+            quota_project_id="octopus",
+        )
 
 
 @pytest.mark.parametrize(
