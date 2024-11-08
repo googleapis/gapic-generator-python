@@ -582,10 +582,49 @@ class MessageType:
     def resource_path(self) -> Optional[str]:
         """If this message describes a resource, return the path to the resource.
         If there are multiple paths, returns the first one."""
-        return next(
+        pattern = next(
             iter(self.options.Extensions[resource_pb2.resource].pattern),
             None
         )
+
+        if not pattern:
+            return pattern
+
+        idx = pattern.rfind(':')
+        if idx >= 0:
+            # 去掉 :prefix
+            return pattern[:idx]
+        else:
+            return pattern
+    
+    # 返回全部patterns
+    @property
+    def resource_paths(self) -> Sequence[Tuple[str, str]]:
+        patterns = self.options.Extensions[resource_pb2.resource].pattern
+
+        seq = 0
+        patternRes = []
+        for pattern in patterns:
+            seq += 1
+            idx = pattern.rfind(':')
+            if idx >= 0:
+                # 分别存储 pattern 和 别名
+                patternRes.append((
+                    pattern[:idx],   # 去掉alias的pattern
+                    "_" + pattern[idx+1:], # alias
+                ))
+            else:
+                alias = "_" + str(seq)
+                if seq == 1:
+                    alias = "" # 第一个为空串, 后面 2,3,4
+
+                patternRes.append((
+                    pattern,
+                    alias,
+                ))
+            
+        
+        return patternRes
 
     @property
     def resource_type(self) -> Optional[str]:
@@ -601,8 +640,27 @@ class MessageType:
     def resource_path_args(self) -> Sequence[str]:
         return self.PATH_ARG_RE.findall(self.resource_path or '')
 
+    @property
+    def all_resource_path_args(self) -> Sequence[Tuple[str, str, str]]:
+        # self.resource_path 原始的pattern字符串
+        res_paths = []
+        for res_path in self.resource_paths:
+            res_paths.append((
+                self.PATH_ARG_RE.findall(res_path[0] or ''),
+                res_path[0], # 原始pattern
+                res_path[1], # alias
+            ))
+
+        return res_paths
+    
     @utils.cached_property
     def path_regex_str(self) -> str:
+        return self.path_regex_str_imp(None)
+
+    def path_regex_str_imp(self, res_path: str | None) -> str:
+        if res_path == None:
+            res_path = self.resource_path
+
         # The indirection here is a little confusing:
         # we're using the resource path template as the base of a regex,
         # with each resource ID segment being captured by a regex.
@@ -620,7 +678,7 @@ class MessageType:
                 # as/{a}-{b}/cs/{c}%{d}_{e}
                 # This is discouraged but permitted by AIP4231
                 lambda m: "(?P<{name}>.+?)".format(name=m.groups()[0]),
-                self.resource_path or ''
+                res_path or ''
             ) +
             "$"
         )

@@ -53,7 +53,7 @@ class {{ service.name }}Transport(abc.ABC):
         {% endfor %}
     )
 
-    DEFAULT_HOST: str = {% if service.host %}'{{ service.host }}'{% else %}{{ '' }}{% endif %}
+    DEFAULT_HOST: str = {% if service.host %}'{{ service.host }}'{% else %}{{ '""' }}{% endif %}
 
     def __init__(
             self, *,
