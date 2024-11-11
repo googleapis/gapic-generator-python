@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
@@ -56,6 +57,8 @@ except ImportError as e: # pragma: NO COVER
     HAS_ASYNC_REST_DEPENDENCIES = False
     ASYNC_REST_EXCEPTION = e
 
+
+_LOGGER = logging.getLogger(__name__)
 
 class CloudRedisClientMeta(type):
     """Metaclass for the CloudRedis client.
@@ -350,11 +353,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+        log_level_env = os.getenv("GOOGLE_SDK_PYTHON_LOGGING_LEVEL", "CRITICAL").upper()
         if use_client_cert not in ("true", "false"):
             raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env, log_level_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -455,6 +459,15 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         """
         return self._universe_domain
 
+    @property
+    def client_id(self) -> str:
+        """Return the unique id of the client instance.
+
+        Returns:
+            str: The unique id of the client instance.
+        """
+        return self._client_id
+
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
             transport: Optional[Union[str, CloudRedisTransport, Callable[..., CloudRedisTransport]]] = None,
@@ -522,13 +535,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = CloudRedisClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env, self._log_level = CloudRedisClient._read_environment_variables()
         self._client_cert_source = CloudRedisClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = CloudRedisClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint = None # updated below, depending on `transport`
+        self._client_id = str(uuid.uuid4())
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
+
+        # Setup logging.
+        try:
+            from google.api_core.client_logging import setup_logging
+            setup_logging(log_level=self._log_level)
+        except ImportError:
+            # do nothing
+            pass
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
@@ -604,6 +626,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
+            # TODO(ohmayr): add extra fields to include information from;
+            # client options.
+            # client info.
+            # any other required fields in the design document.
+            _LOGGER.info(" CloudRedisClient client is successfully constructed.", extra={"json_fields": {}})
+
     def list_instances(self,
             request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,
             *,
@@ -678,6 +706,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 resolve additional pages automatically.
 
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -729,6 +773,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata=metadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -790,6 +839,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             google.cloud.redis_v1.types.Instance:
                 A Memorystore for Redis instance.
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -830,6 +895,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata=metadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -894,6 +964,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             google.cloud.redis_v1.types.InstanceAuthString:
                 Instance AUTH string details.
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -934,6 +1020,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata=metadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1046,6 +1137,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 Memorystore for Redis instance.
 
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1098,6 +1205,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata_type=cloud_redis.OperationMetadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1193,6 +1305,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 Memorystore for Redis instance.
 
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1243,6 +1371,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata_type=cloud_redis.OperationMetadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1323,6 +1456,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 Memorystore for Redis instance.
 
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1373,6 +1522,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata_type=cloud_redis.OperationMetadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1463,6 +1617,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 Memorystore for Redis instance.
 
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1513,6 +1683,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata_type=cloud_redis.OperationMetadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1600,6 +1775,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 Memorystore for Redis instance.
 
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1650,6 +1841,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata_type=cloud_redis.OperationMetadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1731,6 +1927,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 Memorystore for Redis instance.
 
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1781,6 +1993,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata_type=cloud_redis.OperationMetadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1859,6 +2076,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                       }
 
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -1907,6 +2140,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata_type=cloud_redis.OperationMetadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1996,6 +2234,22 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 Memorystore for Redis instance.
 
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+
+        # Fields I can't log here for response:
+        # response headers, status
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
@@ -2048,6 +2302,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata_type=cloud_redis.OperationMetadata,
         )
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 

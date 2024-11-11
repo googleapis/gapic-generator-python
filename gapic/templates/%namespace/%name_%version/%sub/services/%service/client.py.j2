@@ -10,6 +10,7 @@ from collections import OrderedDict
 {% if service.any_extended_operations_methods %}
 import functools
 {% endif %}
+import logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
@@ -77,6 +78,7 @@ except ImportError as e: # pragma: NO COVER
 {% endif %}{# if rest_async_io_enabled #}
 {% endif %}
 
+_LOGGER = logging.getLogger(__name__)
 
 class {{ service.client_name }}Meta(type):
     """Metaclass for the {{ service.name }} client.
@@ -327,11 +329,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+        log_level_env = os.getenv("GOOGLE_SDK_PYTHON_LOGGING_LEVEL", "CRITICAL").upper()
         if use_client_cert not in ("true", "false"):
             raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env, log_level_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -432,6 +435,16 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         """
         return self._universe_domain
     
+    
+    @property
+    def client_id(self) -> str:
+        """Return the unique id of the client instance.
+        
+        Returns:
+            str: The unique id of the client instance.
+        """
+        return self._client_id
+    
     def __init__(self, *,
             credentials: Optional[ga_credentials.Credentials] = None,
             transport: Optional[Union[str, {{ service.name }}Transport, Callable[..., {{ service.name }}Transport]]] = None,
@@ -502,13 +515,22 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = {{ service.client_name }}._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env, self._log_level = {{ service.client_name }}._read_environment_variables()
         self._client_cert_source = {{ service.client_name }}._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = {{ service.client_name }}._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint = None # updated below, depending on `transport`
+        self._client_id = str(uuid.uuid4())
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
+
+        # Setup logging.
+        try:
+            from google.api_core.client_logging import setup_logging
+            setup_logging(log_level=self._log_level)
+        except ImportError:
+            # do nothing
+            pass
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
@@ -596,6 +618,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 always_use_jwt_access=True,
                 api_audience=self._client_options.api_audience,
             )
+
+            # TODO(ohmayr): add extra fields to include information from;
+            # client options.
+            # client info.
+            # any other required fields in the design document.
+            _LOGGER.info(" {{ service.client_name }} client is successfully constructed.", extra={"json_fields": {}})
 
 
     {% for method in service.methods.values() %}
