@@ -353,7 +353,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        log_level_env = os.getenv("GOOGLE_SDK_PYTHON_LOGGING_LEVEL", "CRITICAL").upper()
+        log_level_env = os.getenv("GOOGLE_SDK_PYTHON_LOGGING_LEVEL", "").upper()
         if use_client_cert not in ("true", "false"):
             raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
@@ -626,11 +626,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
-            # TODO(ohmayr): add extra fields to include information from;
-            # client options.
-            # client info.
-            # any other required fields in the design document.
-            _LOGGER.info(" CloudRedisClient client is successfully constructed.", extra={"json_fields": {}})
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info(" CloudRedisClient client is successfully constructed.", extra={"json_fields": {}})
 
     def list_instances(self,
             request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,
@@ -717,7 +717,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -777,7 +777,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -850,7 +850,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -899,7 +899,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -975,7 +975,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -1024,7 +1024,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1148,7 +1148,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -1209,7 +1209,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1316,7 +1316,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -1375,7 +1375,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1467,7 +1467,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -1526,7 +1526,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1628,7 +1628,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -1687,7 +1687,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1786,7 +1786,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -1845,7 +1845,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -1938,7 +1938,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -1997,7 +1997,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -2087,7 +2087,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -2144,7 +2144,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 
@@ -2245,7 +2245,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.info("request is initiated.", extra={"json_fields": {}})
+        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -2306,7 +2306,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info("response is received.", extra={"json_fields": {}})
+        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
 

@@ -329,7 +329,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        log_level_env = os.getenv("GOOGLE_SDK_PYTHON_LOGGING_LEVEL", "CRITICAL").upper()
+        log_level_env = os.getenv("GOOGLE_SDK_PYTHON_LOGGING_LEVEL", "").upper()
         if use_client_cert not in ("true", "false"):
             raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
@@ -619,11 +619,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 api_audience=self._client_options.api_audience,
             )
 
-            # TODO(ohmayr): add extra fields to include information from;
-            # client options.
-            # client info.
-            # any other required fields in the design document.
-            _LOGGER.info(" {{ service.client_name }} client is successfully constructed.", extra={"json_fields": {}})
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        _LOGGER.info(" {{ service.client_name }} client is successfully constructed.", extra={"json_fields": {}})
 
 
     {% for method in service.methods.values() %}
