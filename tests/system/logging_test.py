@@ -57,16 +57,16 @@ def identity_request(identity):
 
 
 def test_env_var_settings(log_level=""):
-    os.environ["GOOGLE_SDK_PYTHON_LOGGING_LEVEL"] = log_level
+    os.environ["GOOGLE_SDK_PYTHON_LOGGING_TARGET"] = log_level
     
     # echo request
     echo = construct_echo_client()
     response = echo_request(echo)
     
     # identity request
-    identity = construct_identity_client()
-    response = identity_request(identity)
-    print(f"Test completed with env var set to: {os.getenv('GOOGLE_SDK_PYTHON_LOGGING_LEVEL')}")
+    # identity = construct_identity_client()
+    # response = identity_request(identity)
+    print(f"Test completed with env var set to: {os.getenv('GOOGLE_SDK_PYTHON_LOGGING_TARGET')}")
 
 
 def test_base_logger_settings():
@@ -146,7 +146,7 @@ def test_structured_log_settings():
 
 def test_root_logger_and_env_var():
 
-    os.environ["GOOGLE_SDK_PYTHON_LOGGING_LEVEL"] = "DEBUG"
+    os.environ["GOOGLE_SDK_PYTHON_LOGGING_TARGET"] = "google"
 
     base_logger = logging.getLogger()
     base_logger.setLevel("INFO")
@@ -162,7 +162,7 @@ def test_root_logger_and_env_var():
     # identity request
     identity = construct_identity_client()
     response = identity_request(identity)
-    print("structured log test completed.")
+    print("root logger and env var test completed.")
 
 
 def test_base_logger_and_env_var():
@@ -170,7 +170,7 @@ def test_base_logger_and_env_var():
     # behaviour caused by attaching the streamhandler twice to the logger
     # with namespace = "google".
 
-    os.environ["GOOGLE_SDK_PYTHON_LOGGING_LEVEL"] = "DEBUG"
+    os.environ["GOOGLE_SDK_PYTHON_LOGGING_TARGET"] = "google"
 
     base_logger = logging.getLogger("google")
     base_logger.setLevel("INFO")
@@ -190,7 +190,7 @@ def test_base_logger_and_env_var():
 
 def test_module_logger_and_env_var():
 
-    os.environ["GOOGLE_SDK_PYTHON_LOGGING_LEVEL"] = "DEBUG"
+    os.environ["GOOGLE_SDK_PYTHON_LOGGING_TARGET"] = "google"
 
     module_logger = logging.getLogger("google.showcase_v1beta1.services.echo")
     module_logger.setLevel("DEBUG")
@@ -236,16 +236,16 @@ Install the changes in from python-api-core:
 # Test default settings: (Expected: No logs.)
 # test_env_var_settings(log_level="")
 
-# Test GOOGLE_SDK_PYTHON_LOGGING_LEVEL=DEBUG (Expected: logs for google APIs only.)
-# test_env_var_settings(log_level="DEBUG")
+# Test GOOGLE_SDK_PYTHON_LOGGING_TARGET=google (Expected: logs for google APIs only.)
+# test_env_var_settings(log_level="google")
 
-# Test GOOGLE_SDK_PYTHON_LOGGING_LEVEL=123 (Expected: No logs. Defaults to "WARNING".)
+# Test GOOGLE_SDK_PYTHON_LOGGING_TARGET=123 (Expected: No logs. Silently ignores.)
 # test_env_var_settings(log_level="123")
 
 # Test Base Logger configured using code. (Expected: logs for google APIs only.)
 # test_base_logger_settings()
 
-# Test root Logger configured using code. (Expected: All logs.)
+# Test root Logger configured using code. (Expected: All logs except google API logs.)
 # test_root_logger_settings()
 
 # Test module logger ("google.showcase_v1beta1.services.echo") configured using code. (Expected: logs for echo service only.)
@@ -254,13 +254,13 @@ Install the changes in from python-api-core:
 # Test module logger ("google.showcase_v1beta1.services.echo") with structured logging format configured using code. (Expected: logs for echo service only.)
 # test_structured_log_settings()
 
-# Test root logger and env variable (Expected: Root logger settings take precedence i.e. logs at `INFO` level shall appear only.)
+# Test root logger and env variable (Expected: All logs appear.)
 # test_root_logger_and_env_var()
 
-# Test base logger and env variable (NOTE: This results in unexpected behaviour due to a stream handler being attached twice to the logger.)
+# Test base logger and env variable (Expected: logs for google APIs only. code changes take precedence i.e. only logs at INFO level are displayed.)
 # test_base_logger_and_env_var()
 
-# Test module logger and env variable.
+# Test "google.showcase_v1beta1.services.echo" child logger configured using code changes and and "google" parent logger configured using env variable.
 # NOTE: This results in unexpected behaviour i.e. we see duplicated logs due to logs being propogated upstream.
-#       A possible solution is to set logger.propogate = False to get around this. (uncomment in code)
+#       A possible solution is to set logger.propogate = False on the child logger to get around this. (uncomment in test code above)
 # test_module_logger_and_env_var()

@@ -329,12 +329,13 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        log_level_env = os.getenv("GOOGLE_SDK_PYTHON_LOGGING_LEVEL", "").upper()
+        # log_level_env = os.getenv("GOOGLE_SDK_PYTHON_LOGGING_LEVEL", "").upper()
+        log_system_env = os.getenv("GOOGLE_SDK_PYTHON_LOGGING_TARGET", "").lower()
         if use_client_cert not in ("true", "false"):
             raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env, log_level_env
+        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env, log_system_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -515,7 +516,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env, self._log_level = {{ service.client_name }}._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env, self._log_system = {{ service.client_name }}._read_environment_variables()
         self._client_cert_source = {{ service.client_name }}._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = {{ service.client_name }}._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint = None # updated below, depending on `transport`
@@ -527,7 +528,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # Setup logging.
         try:
             from google.api_core.client_logging import setup_logging
-            setup_logging(log_level=self._log_level)
+            # setup_logging(log_level=self._log_level)
+            setup_logging(namespace=self._log_system)
         except ImportError:
             # do nothing
             pass
