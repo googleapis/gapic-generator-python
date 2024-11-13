@@ -242,7 +242,7 @@ Install the changes in from python-api-core:
 # Test GOOGLE_SDK_PYTHON_LOGGING_TARGET=123 (Expected: No logs. Silently ignores.)
 # test_env_var_settings(log_level="123")
 
-# Test Base Logger configured using code. (Expected: logs for google APIs only.)
+# Test logger named "google" configured using code. (Expected: logs for google APIs only.)
 # test_base_logger_settings()
 
 # Test root Logger configured using code. (Expected: All logs except google API logs.)
@@ -254,10 +254,10 @@ Install the changes in from python-api-core:
 # Test module logger ("google.showcase_v1beta1.services.echo") with structured logging format configured using code. (Expected: logs for echo service only.)
 # test_structured_log_settings()
 
-# Test root logger and env variable (Expected: All logs appear.)
+# Test root logger configured using code and GOOGLE_SDK_PYTHON_LOGGING_TARGET=google (Expected: All logs appear.)
 # test_root_logger_and_env_var()
 
-# Test base logger and env variable (Expected: logs for google APIs only. code changes take precedence i.e. only logs at INFO level are displayed.)
+# Test logger named "google" configured using both code and env variable (Expected: logs for google APIs only. code changes take precedence i.e. only logs at INFO level are displayed.)
 # test_base_logger_and_env_var()
 
 # Test "google.showcase_v1beta1.services.echo" child logger configured using code changes and and "google" parent logger configured using env variable.
