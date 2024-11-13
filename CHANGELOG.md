@@ -1,6 +1,33 @@
 # Changelog
 
 
+## [1.20.2](https://github.com/googleapis/gapic-generator-python/compare/v1.20.1...v1.20.2) (2024-10-30)
+
+
+### Bug Fixes
+
+* Disable universe-domain validation ([#2236](https://github.com/googleapis/gapic-generator-python/issues/2236)) ([ecaa41e](https://github.com/googleapis/gapic-generator-python/commit/ecaa41e7984a8aa2244138cce99cb91a87872c54))
+
+## [1.20.1](https://github.com/googleapis/gapic-generator-python/compare/v1.20.0...v1.20.1) (2024-10-25)
+
+
+### Bug Fixes
+
+* Allow google-cloud-documentai 3.x ([#2237](https://github.com/googleapis/gapic-generator-python/issues/2237)) ([946adf1](https://github.com/googleapis/gapic-generator-python/commit/946adf16d8a1cf83019eaa9b6a9e8b1baf95159d))
+
+## [1.20.0](https://github.com/googleapis/gapic-generator-python/compare/v1.19.1...v1.20.0) (2024-10-23)
+
+
+### Features
+
+* Add support for Python 3.13 ([#2215](https://github.com/googleapis/gapic-generator-python/issues/2215)) ([4e1f9c6](https://github.com/googleapis/gapic-generator-python/commit/4e1f9c623065e5917dbd1d2178228776b7ea536d))
+
+
+### Bug Fixes
+
+* Added underscores in services/types in index.rst.j2 ([#2232](https://github.com/googleapis/gapic-generator-python/issues/2232)) ([f2053ee](https://github.com/googleapis/gapic-generator-python/commit/f2053ee04127f1f0d23fd04438ee4607ee1ce76c))
+* Allow `google-cloud-kms` 3.x ([#2226](https://github.com/googleapis/gapic-generator-python/issues/2226)) ([5e07501](https://github.com/googleapis/gapic-generator-python/commit/5e075016a2119782e611cd51335fa0af7e4c18c2))
+
 ## [1.19.1](https://github.com/googleapis/gapic-generator-python/compare/v1.19.0...v1.19.1) (2024-10-10)
 
 
