@@ -28,7 +28,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 
 from google.cloud.location import locations_pb2 # type: ignore
-from google.cloud.redis_v1.types import cloud_redis
+from google.cloud.redis_v1.types import cloud_redis_pb2  # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
@@ -230,34 +230,34 @@ class CloudRedisTransport(abc.ABC):
 
     @property
     def list_instances(self) -> Callable[
-            [cloud_redis.ListInstancesRequest],
+            [cloud_redis_pb2.ListInstancesRequest],
             Union[
-                cloud_redis.ListInstancesResponse,
-                Awaitable[cloud_redis.ListInstancesResponse]
+                cloud_redis_pb2.ListInstancesResponse,
+                Awaitable[cloud_redis_pb2.ListInstancesResponse]
             ]]:
         raise NotImplementedError()
 
     @property
     def get_instance(self) -> Callable[
-            [cloud_redis.GetInstanceRequest],
+            [cloud_redis_pb2.GetInstanceRequest],
             Union[
-                cloud_redis.Instance,
-                Awaitable[cloud_redis.Instance]
+                cloud_redis_pb2.Instance,
+                Awaitable[cloud_redis_pb2.Instance]
             ]]:
         raise NotImplementedError()
 
     @property
     def get_instance_auth_string(self) -> Callable[
-            [cloud_redis.GetInstanceAuthStringRequest],
+            [cloud_redis_pb2.GetInstanceAuthStringRequest],
             Union[
-                cloud_redis.InstanceAuthString,
-                Awaitable[cloud_redis.InstanceAuthString]
+                cloud_redis_pb2.InstanceAuthString,
+                Awaitable[cloud_redis_pb2.InstanceAuthString]
             ]]:
         raise NotImplementedError()
 
     @property
     def create_instance(self) -> Callable[
-            [cloud_redis.CreateInstanceRequest],
+            [cloud_redis_pb2.CreateInstanceRequest],
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]
@@ -266,7 +266,7 @@ class CloudRedisTransport(abc.ABC):
 
     @property
     def update_instance(self) -> Callable[
-            [cloud_redis.UpdateInstanceRequest],
+            [cloud_redis_pb2.UpdateInstanceRequest],
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]
@@ -275,7 +275,7 @@ class CloudRedisTransport(abc.ABC):
 
     @property
     def upgrade_instance(self) -> Callable[
-            [cloud_redis.UpgradeInstanceRequest],
+            [cloud_redis_pb2.UpgradeInstanceRequest],
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]
@@ -284,7 +284,7 @@ class CloudRedisTransport(abc.ABC):
 
     @property
     def import_instance(self) -> Callable[
-            [cloud_redis.ImportInstanceRequest],
+            [cloud_redis_pb2.ImportInstanceRequest],
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]
@@ -293,7 +293,7 @@ class CloudRedisTransport(abc.ABC):
 
     @property
     def export_instance(self) -> Callable[
-            [cloud_redis.ExportInstanceRequest],
+            [cloud_redis_pb2.ExportInstanceRequest],
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]
@@ -302,7 +302,7 @@ class CloudRedisTransport(abc.ABC):
 
     @property
     def failover_instance(self) -> Callable[
-            [cloud_redis.FailoverInstanceRequest],
+            [cloud_redis_pb2.FailoverInstanceRequest],
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]
@@ -311,7 +311,7 @@ class CloudRedisTransport(abc.ABC):
 
     @property
     def delete_instance(self) -> Callable[
-            [cloud_redis.DeleteInstanceRequest],
+            [cloud_redis_pb2.DeleteInstanceRequest],
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]
@@ -320,7 +320,7 @@ class CloudRedisTransport(abc.ABC):
 
     @property
     def reschedule_maintenance(self) -> Callable[
-            [cloud_redis.RescheduleMaintenanceRequest],
+            [cloud_redis_pb2.RescheduleMaintenanceRequest],
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]

@@ -43,7 +43,7 @@ import dataclasses
 from typing import Any, Dict, List, Callable, Tuple, Optional, Sequence, Union
 
 
-from google.cloud.redis_v1.types import cloud_redis
+from google.cloud.redis_v1.types import cloud_redis_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 
@@ -171,7 +171,7 @@ class AsyncCloudRedisRestInterceptor:
 
 
     """
-    async def pre_create_instance(self, request: cloud_redis.CreateInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.CreateInstanceRequest, Sequence[Tuple[str, str]]]:
+    async def pre_create_instance(self, request: cloud_redis_pb2.CreateInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.CreateInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -188,7 +188,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def pre_delete_instance(self, request: cloud_redis.DeleteInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.DeleteInstanceRequest, Sequence[Tuple[str, str]]]:
+    async def pre_delete_instance(self, request: cloud_redis_pb2.DeleteInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.DeleteInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -205,7 +205,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def pre_export_instance(self, request: cloud_redis.ExportInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ExportInstanceRequest, Sequence[Tuple[str, str]]]:
+    async def pre_export_instance(self, request: cloud_redis_pb2.ExportInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.ExportInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for export_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -222,7 +222,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def pre_failover_instance(self, request: cloud_redis.FailoverInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.FailoverInstanceRequest, Sequence[Tuple[str, str]]]:
+    async def pre_failover_instance(self, request: cloud_redis_pb2.FailoverInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.FailoverInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for failover_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -239,7 +239,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def pre_get_instance(self, request: cloud_redis.GetInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.GetInstanceRequest, Sequence[Tuple[str, str]]]:
+    async def pre_get_instance(self, request: cloud_redis_pb2.GetInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.GetInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -247,7 +247,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_get_instance(self, response: cloud_redis.Instance) -> cloud_redis.Instance:
+    async def post_get_instance(self, response: cloud_redis_pb2.Instance) -> cloud_redis_pb2.Instance:
         """Post-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the response
@@ -256,7 +256,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def pre_get_instance_auth_string(self, request: cloud_redis.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.GetInstanceAuthStringRequest, Sequence[Tuple[str, str]]]:
+    async def pre_get_instance_auth_string(self, request: cloud_redis_pb2.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.GetInstanceAuthStringRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_instance_auth_string
 
         Override in a subclass to manipulate the request or metadata
@@ -264,7 +264,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_get_instance_auth_string(self, response: cloud_redis.InstanceAuthString) -> cloud_redis.InstanceAuthString:
+    async def post_get_instance_auth_string(self, response: cloud_redis_pb2.InstanceAuthString) -> cloud_redis_pb2.InstanceAuthString:
         """Post-rpc interceptor for get_instance_auth_string
 
         Override in a subclass to manipulate the response
@@ -273,7 +273,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def pre_import_instance(self, request: cloud_redis.ImportInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ImportInstanceRequest, Sequence[Tuple[str, str]]]:
+    async def pre_import_instance(self, request: cloud_redis_pb2.ImportInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.ImportInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for import_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -290,7 +290,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def pre_list_instances(self, request: cloud_redis.ListInstancesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ListInstancesRequest, Sequence[Tuple[str, str]]]:
+    async def pre_list_instances(self, request: cloud_redis_pb2.ListInstancesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.ListInstancesRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -298,7 +298,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return request, metadata
 
-    async def post_list_instances(self, response: cloud_redis.ListInstancesResponse) -> cloud_redis.ListInstancesResponse:
+    async def post_list_instances(self, response: cloud_redis_pb2.ListInstancesResponse) -> cloud_redis_pb2.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the response
@@ -307,7 +307,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def pre_reschedule_maintenance(self, request: cloud_redis.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.RescheduleMaintenanceRequest, Sequence[Tuple[str, str]]]:
+    async def pre_reschedule_maintenance(self, request: cloud_redis_pb2.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.RescheduleMaintenanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for reschedule_maintenance
 
         Override in a subclass to manipulate the request or metadata
@@ -324,7 +324,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def pre_update_instance(self, request: cloud_redis.UpdateInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.UpdateInstanceRequest, Sequence[Tuple[str, str]]]:
+    async def pre_update_instance(self, request: cloud_redis_pb2.UpdateInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.UpdateInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -341,7 +341,7 @@ class AsyncCloudRedisRestInterceptor:
         """
         return response
 
-    async def pre_upgrade_instance(self, request: cloud_redis.UpgradeInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.UpgradeInstanceRequest, Sequence[Tuple[str, str]]]:
+    async def pre_upgrade_instance(self, request: cloud_redis_pb2.UpgradeInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis_pb2.UpgradeInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for upgrade_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -717,7 +717,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.CreateInstanceRequest, *,
+                    request: cloud_redis_pb2.CreateInstanceRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
@@ -725,7 +725,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             r"""Call the create instance method over HTTP.
 
             Args:
-                request (~.cloud_redis.CreateInstanceRequest):
+                request (~.cloud_redis_pb2.CreateInstanceRequest):
                     The request object. Request for
                 [CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -798,7 +798,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.DeleteInstanceRequest, *,
+                    request: cloud_redis_pb2.DeleteInstanceRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
@@ -806,7 +806,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             r"""Call the delete instance method over HTTP.
 
             Args:
-                request (~.cloud_redis.DeleteInstanceRequest):
+                request (~.cloud_redis_pb2.DeleteInstanceRequest):
                     The request object. Request for
                 [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -878,7 +878,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.ExportInstanceRequest, *,
+                    request: cloud_redis_pb2.ExportInstanceRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
@@ -886,7 +886,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             r"""Call the export instance method over HTTP.
 
             Args:
-                request (~.cloud_redis.ExportInstanceRequest):
+                request (~.cloud_redis_pb2.ExportInstanceRequest):
                     The request object. Request for
                 [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -960,7 +960,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.FailoverInstanceRequest, *,
+                    request: cloud_redis_pb2.FailoverInstanceRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
@@ -968,7 +968,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             r"""Call the failover instance method over HTTP.
 
             Args:
-                request (~.cloud_redis.FailoverInstanceRequest):
+                request (~.cloud_redis_pb2.FailoverInstanceRequest):
                     The request object. Request for
                 [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -1041,15 +1041,15 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.GetInstanceRequest, *,
+                    request: cloud_redis_pb2.GetInstanceRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> cloud_redis.Instance:
+                    ) -> cloud_redis_pb2.Instance:
             r"""Call the get instance method over HTTP.
 
             Args:
-                request (~.cloud_redis.GetInstanceRequest):
+                request (~.cloud_redis_pb2.GetInstanceRequest):
                     The request object. Request for
                 [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -1059,7 +1059,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.cloud_redis.Instance:
+                ~.cloud_redis_pb2.Instance:
                     A Memorystore for Redis instance.
             """
 
@@ -1083,8 +1083,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
 
             # Return the response
-            resp = cloud_redis.Instance()
-            pb_resp = cloud_redis.Instance.pb(resp)
+            resp = cloud_redis_pb2.Instance()
+            pb_resp = resp
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance(resp)
@@ -1117,15 +1117,15 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.GetInstanceAuthStringRequest, *,
+                    request: cloud_redis_pb2.GetInstanceAuthStringRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> cloud_redis.InstanceAuthString:
+                    ) -> cloud_redis_pb2.InstanceAuthString:
             r"""Call the get instance auth string method over HTTP.
 
             Args:
-                request (~.cloud_redis.GetInstanceAuthStringRequest):
+                request (~.cloud_redis_pb2.GetInstanceAuthStringRequest):
                     The request object. Request for
                 [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -1135,7 +1135,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.cloud_redis.InstanceAuthString:
+                ~.cloud_redis_pb2.InstanceAuthString:
                     Instance AUTH string details.
             """
 
@@ -1159,8 +1159,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
 
             # Return the response
-            resp = cloud_redis.InstanceAuthString()
-            pb_resp = cloud_redis.InstanceAuthString.pb(resp)
+            resp = cloud_redis_pb2.InstanceAuthString()
+            pb_resp = resp
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance_auth_string(resp)
@@ -1194,7 +1194,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.ImportInstanceRequest, *,
+                    request: cloud_redis_pb2.ImportInstanceRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
@@ -1202,7 +1202,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             r"""Call the import instance method over HTTP.
 
             Args:
-                request (~.cloud_redis.ImportInstanceRequest):
+                request (~.cloud_redis_pb2.ImportInstanceRequest):
                     The request object. Request for
                 [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -1275,15 +1275,15 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.ListInstancesRequest, *,
+                    request: cloud_redis_pb2.ListInstancesRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
-                    ) -> cloud_redis.ListInstancesResponse:
+                    ) -> cloud_redis_pb2.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
             Args:
-                request (~.cloud_redis.ListInstancesRequest):
+                request (~.cloud_redis_pb2.ListInstancesRequest):
                     The request object. Request for
                 [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -1293,7 +1293,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.cloud_redis.ListInstancesResponse:
+                ~.cloud_redis_pb2.ListInstancesResponse:
                     Response for
                 [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
 
@@ -1319,8 +1319,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
 
             # Return the response
-            resp = cloud_redis.ListInstancesResponse()
-            pb_resp = cloud_redis.ListInstancesResponse.pb(resp)
+            resp = cloud_redis_pb2.ListInstancesResponse()
+            pb_resp = resp
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_list_instances(resp)
@@ -1354,7 +1354,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.RescheduleMaintenanceRequest, *,
+                    request: cloud_redis_pb2.RescheduleMaintenanceRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
@@ -1362,7 +1362,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             r"""Call the reschedule maintenance method over HTTP.
 
             Args:
-                request (~.cloud_redis.RescheduleMaintenanceRequest):
+                request (~.cloud_redis_pb2.RescheduleMaintenanceRequest):
                     The request object. Request for
                 [RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -1436,7 +1436,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.UpdateInstanceRequest, *,
+                    request: cloud_redis_pb2.UpdateInstanceRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
@@ -1444,7 +1444,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             r"""Call the update instance method over HTTP.
 
             Args:
-                request (~.cloud_redis.UpdateInstanceRequest):
+                request (~.cloud_redis_pb2.UpdateInstanceRequest):
                     The request object. Request for
                 [UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -1518,7 +1518,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             return response
 
         async def __call__(self,
-                    request: cloud_redis.UpgradeInstanceRequest, *,
+                    request: cloud_redis_pb2.UpgradeInstanceRequest, *,
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, str]]=(),
@@ -1526,7 +1526,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             r"""Call the upgrade instance method over HTTP.
 
             Args:
-                request (~.cloud_redis.UpgradeInstanceRequest):
+                request (~.cloud_redis_pb2.UpgradeInstanceRequest):
                     The request object. Request for
                 [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
                 retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -1630,67 +1630,67 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def create_instance(self) -> Callable[
-            [cloud_redis.CreateInstanceRequest],
+            [cloud_redis_pb2.CreateInstanceRequest],
             operations_pb2.Operation]:
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_instance(self) -> Callable[
-            [cloud_redis.DeleteInstanceRequest],
+            [cloud_redis_pb2.DeleteInstanceRequest],
             operations_pb2.Operation]:
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def export_instance(self) -> Callable[
-            [cloud_redis.ExportInstanceRequest],
+            [cloud_redis_pb2.ExportInstanceRequest],
             operations_pb2.Operation]:
         return self._ExportInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def failover_instance(self) -> Callable[
-            [cloud_redis.FailoverInstanceRequest],
+            [cloud_redis_pb2.FailoverInstanceRequest],
             operations_pb2.Operation]:
         return self._FailoverInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_instance(self) -> Callable[
-            [cloud_redis.GetInstanceRequest],
-            cloud_redis.Instance]:
+            [cloud_redis_pb2.GetInstanceRequest],
+            cloud_redis_pb2.Instance]:
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_instance_auth_string(self) -> Callable[
-            [cloud_redis.GetInstanceAuthStringRequest],
-            cloud_redis.InstanceAuthString]:
+            [cloud_redis_pb2.GetInstanceAuthStringRequest],
+            cloud_redis_pb2.InstanceAuthString]:
         return self._GetInstanceAuthString(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def import_instance(self) -> Callable[
-            [cloud_redis.ImportInstanceRequest],
+            [cloud_redis_pb2.ImportInstanceRequest],
             operations_pb2.Operation]:
         return self._ImportInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_instances(self) -> Callable[
-            [cloud_redis.ListInstancesRequest],
-            cloud_redis.ListInstancesResponse]:
+            [cloud_redis_pb2.ListInstancesRequest],
+            cloud_redis_pb2.ListInstancesResponse]:
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def reschedule_maintenance(self) -> Callable[
-            [cloud_redis.RescheduleMaintenanceRequest],
+            [cloud_redis_pb2.RescheduleMaintenanceRequest],
             operations_pb2.Operation]:
         return self._RescheduleMaintenance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_instance(self) -> Callable[
-            [cloud_redis.UpdateInstanceRequest],
+            [cloud_redis_pb2.UpdateInstanceRequest],
             operations_pb2.Operation]:
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def upgrade_instance(self) -> Callable[
-            [cloud_redis.UpgradeInstanceRequest],
+            [cloud_redis_pb2.UpgradeInstanceRequest],
             operations_pb2.Operation]:
         return self._UpgradeInstance(self._session, self._host, self._interceptor)  # type: ignore
 

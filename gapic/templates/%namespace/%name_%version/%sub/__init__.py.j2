@@ -2,6 +2,7 @@
 
 {% block content %}
 
+{% set protobuf_pythonic_types_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.protobuf_pythonic_types_enabled %}
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
 from {{package_path}} import gapic_version as package_version
 
@@ -29,10 +30,10 @@ from .services.{{ service.name|snake_case }} import {{ service.async_client_name
 {% for proto in api.protos.values()|sort(attribute='name')
         if proto.meta.address.subpackage == api.subpackage_view %}
 {% for message in proto.messages.values()|sort(attribute='name') %}
-from .types.{{ proto.module_name }} import {{ message.name }}
+from .types.{{ proto.module_name }}{%if protobuf_pythonic_types_enabled %}_pb2{% endif %} import {{ message.name }}
 {% endfor %}
 {% for enum in proto.enums.values()|sort(attribute='name') %}
-from .types.{{ proto.module_name }} import {{ enum.name }}
+from .types.{{ proto.module_name }}{%if protobuf_pythonic_types_enabled %}_pb2{% endif %} import {{ enum.name }}
 {% endfor %}
 {% endfor %}
 

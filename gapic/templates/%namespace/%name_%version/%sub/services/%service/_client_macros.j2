@@ -17,6 +17,8 @@
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 {% macro client_method(method, name, snippet_index, api, service, full_extended_lro=False) %}
+    {% set protobuf_pythonic_types_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.protobuf_pythonic_types_enabled %}
+
     def {{ name }}(self,
             {% if not method.client_streaming %}
             request: Optional[Union[{{ method.input.ident }}, dict]] = None,
@@ -97,7 +99,7 @@
                              'the individual field arguments should be set.')
 
         {% endif %}
-        {% if method.input.ident.package != method.ident.package %}{# request lives in a different package, so there is no proto wrapper #}
+        {% if protobuf_pythonic_types_enabled or method.input.ident.package != method.ident.package %}{# request lives in a different package, so there is no proto wrapper #}
         if isinstance(request, dict):
             # - The request isn't a proto-plus wrapped type,
             #   so it must be constructed via keyword expansion.
@@ -113,22 +115,26 @@
         {% endif %}{# different request package #}
 
             {#- Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
-            {% if method.flattened_fields and method.input.ident.package == method.ident.package %}
+            {% if not protobuf_pythonic_types_enabled and method.flattened_fields and method.input.ident.package == method.ident.package %}
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             {% endif %}
-            {% for key, field in method.flattened_fields.items() if not field.repeated or method.input.ident.package == method.ident.package %}
+            {% for key, field in method.flattened_fields.items() if not field.repeated or (not protobuf_pythonic_types_enabled and method.input.ident.package == method.ident.package) %}
             if {{ field.name }} is not None:
                 {# Repeated values is a special case, because values can be lists. #}
                 {# In order to not confuse the marshalling logic, extend these fields instead of assigning #}
                 {% if field.ident.ident|string() == "struct_pb2.Value" and field.repeated %}
                 request.{{ key }}.extend({{ field.name }})
                 {% else %}
+                {% if protobuf_pythonic_types_enabled and field.message %}
+                request.{{ key }}.MergeFrom({{ key }})
+                {% else %}
                 request.{{ key }} = {{ field.name }}
+                {% endif %}
                 {% endif %}{# struct_pb2.Value #}
             {% endfor %}
             {# Map-y fields can be _updated_, however #}
-            {% for key, field in method.flattened_fields.items() if field.repeated and method.input.ident.package != method.ident.package %}
+            {% for key, field in method.flattened_fields.items() if field.repeated and (protobuf_pythonic_types_enabled or method.input.ident.package != method.ident.package) %}
             {% if field.map %} {# map implies repeated, but repeated does NOT imply map#}
             if {{ field.name }}:
                 request.{{ key }}.update({{ field.name }})
@@ -138,7 +144,7 @@
                 request.{{ key }}.extend({{ field.name }})
             {% endif %} {# field.map #}
             {% endfor %} {# method.flattened_fields.items() #}
-            {% endif %} {# method.client_streaming #}
+            {% endif %} {# method.client_streaming #}    
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

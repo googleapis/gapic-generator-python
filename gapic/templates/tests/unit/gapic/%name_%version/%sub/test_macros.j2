@@ -1690,7 +1690,7 @@ def test_unsupported_parameter_rest_asyncio():
 {% else %}
 {% if 'rest' in transport %}
 {{ bad_request_test(service, method, transport, is_async) }}
-{{ call_success_test(service, method, transport, is_async) }}
+{{ call_success_test(service, method, api, transport, is_async) }}
 {{ inteceptor_class_test(service, method, transport, is_async) }}
 {% endif %}{# if 'rest' in transport #}
 {% endif %}{# is_rest_unsupported_method(method, is_async) == 'False' and method.http_options #}
@@ -1857,7 +1857,9 @@ def test_initialize_client_w_{{transport_name}}():
  # As support is added for the above methods, the relevant guard can be removed from within the macro
  # TODO(https://github.com/googleapis/gapic-generator-python/issues/2142): Clean up `rest_required_tests` as we add support for each of the method types metioned above.
 #}
-{% macro call_success_test(service, method, transport, is_async) %}
+{% macro call_success_test(service, method, api, transport, is_async) %}
+{% set protobuf_pythonic_types_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.protobuf_pythonic_types_enabled %}
+
 {% set await_prefix = get_await_prefix(is_async) %}
 {% set async_prefix = get_async_prefix(is_async) %}
 {% set async_decorator = get_async_decorator(is_async) %}
@@ -1899,6 +1901,7 @@ def test_initialize_client_w_{{transport_name}}():
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
+    {% if not protobuf_pythonic_types_enabled %}
     # Determine if the message type is proto-plus or protobuf
     test_field = {{ method.input.ident }}.meta.fields["{{ field.name }}"]
 
@@ -1958,6 +1961,7 @@ def test_initialize_client_w_{{transport_name}}():
                     del request_init["{{ field.name }}"][field][i][subfield]
             else:
                 del request_init["{{ field.name }}"][field][subfield]
+    {% endif %}
     {% endif %}
     {% endfor %}
     request = request_type(**request_init)

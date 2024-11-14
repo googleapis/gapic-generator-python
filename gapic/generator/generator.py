@@ -274,6 +274,8 @@ class Generator:
                         and proto.meta.address.subpackage != api_schema.subpackage_view
                 ):
                     continue
+                if api_schema.all_library_settings[api_schema.naming.proto_package].python_settings.experimental_features.protobuf_pythonic_types_enabled:
+                    continue
 
                 answer.update(
                     self._get_file(

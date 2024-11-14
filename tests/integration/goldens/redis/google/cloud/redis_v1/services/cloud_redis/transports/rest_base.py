@@ -25,7 +25,7 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 
-from google.cloud.redis_v1.types import cloud_redis
+from google.cloud.redis_v1.types import cloud_redis_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 
@@ -110,7 +110,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.CreateInstanceRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -155,7 +155,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.DeleteInstanceRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -192,7 +192,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.ExportInstanceRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -238,7 +238,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.FailoverInstanceRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -283,7 +283,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.GetInstanceRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -319,7 +319,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.GetInstanceAuthStringRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -356,7 +356,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.ImportInstanceRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -401,7 +401,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.ListInstancesRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -438,7 +438,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.RescheduleMaintenanceRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -484,7 +484,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.UpdateInstanceRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -530,7 +530,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = cloud_redis.UpgradeInstanceRequest.pb(request)
+            pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 

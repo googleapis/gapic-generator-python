@@ -115,6 +115,9 @@ class Address(BaseAddress):
         Returns:
             bool: Whether the given package uses proto-plus types or not.
         """
+        if self.proto_package.startswith(self.api_naming.proto_package) and hasattr(self.api_naming, "protobuf_pythonic_types_enabled") and self.api_naming.protobuf_pythonic_types_enabled:
+            return False
+
         return self.proto_package.startswith(self.api_naming.proto_package) or (
             hasattr(self.api_naming, "proto_plus_deps")
             and self.proto_package in self.api_naming.proto_plus_deps
@@ -204,6 +207,7 @@ class Address(BaseAddress):
                 alias=self.module_alias,
             )
 
+        use_protobuf_types = hasattr(self.api_naming, "protobuf_pythonic_types_enabled") and self.api_naming.protobuf_pythonic_types_enabled
         # If this is part of the proto package that we are generating,
         # rewrite the package to our structure.
         if self.proto_package.startswith(self.api_naming.proto_package):
@@ -211,8 +215,8 @@ class Address(BaseAddress):
                 package=self.api_naming.module_namespace + (
                     self.api_naming.versioned_module_name,
                 ) + self.subpackage + ('types',),
-                module=self.module,
-                alias=self.module_alias,
+                module= self.module + ('_pb2' if use_protobuf_types else ''),
+                alias='' if use_protobuf_types else self.module_alias,
             )
 
         if self.is_proto_plus_type:
@@ -240,10 +244,11 @@ class Address(BaseAddress):
 
         # Check if this is a generated type
         # Use the original module name rather than the module_alias
+        use_protobuf_types = hasattr(self.api_naming, "protobuf_pythonic_types_enabled") and self.api_naming.protobuf_pythonic_types_enabled
         if self.proto_package.startswith(self.api_naming.proto_package):
             return '.'.join(self.api_naming.module_namespace + (
                 self.api_naming.versioned_module_name,
-            ) + self.subpackage + ('types',) + self.parent + (self.name, ))
+            ) + self.subpackage + ('types',) + self.parent + (self.name + ("_pb2" if use_protobuf_types else ""), ))
         elif self.is_proto_plus_type:
             return ".".join(
                 self.convert_to_versioned_package()

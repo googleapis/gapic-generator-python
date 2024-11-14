@@ -1,6 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+{% set protobuf_pythonic_types_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.protobuf_pythonic_types_enabled %}
 
 {% for method in service.methods.values() | selectattr('paged_result_field') %}
 {% if loop.first %}
@@ -71,7 +72,11 @@ class {{ method.name }}Pager:
                 sent along with the request as metadata.
         """
         self._method = method
+        {% if protobuf_pythonic_types_enabled %}
+        self._request = request
+        {% else %}
         self._request = {{ method.input.ident }}(request)
+        {% endif %}
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -148,7 +153,11 @@ class {{ method.name }}AsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
+        {% if protobuf_pythonic_types_enabled %}
+        self._request = request
+        {% else %}
         self._request = {{ method.input.ident }}(request)
+        {% endif %}
         self._response = response
         self._retry = retry
         self._timeout = timeout

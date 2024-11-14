@@ -44,6 +44,7 @@ class Naming(abc.ABC):
     proto_package: str = ''
     _warehouse_package_name: str = ''
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
+    protobuf_pythonic_types_enabled: bool = False
 
     def __post_init__(self):
         if not self.product_name:
@@ -152,7 +153,18 @@ class Naming(abc.ABC):
                 package_info,
                 proto_plus_deps=opts.proto_plus_deps,
             )
+        package = ".".join(package_info.module_namespace) + f".{package_info.module_name}.{package_info.version}"
 
+        if "publishing" in opts.service_yaml_config:
+            if "library_settings" in opts.service_yaml_config["publishing"]:
+                for setting in opts.service_yaml_config["publishing"]["library_settings"]:
+                    if package == setting["version"]:
+                        if "protobuf_pythonic_types_enabled" in setting["python_settings"]["experimental_features"]:
+                            package_info = dataclasses.replace(
+                                package_info,
+                                protobuf_pythonic_types_enabled = setting["python_settings"]["experimental_features"]["protobuf_pythonic_types_enabled"]
+                            )
+                                    
         # Done; return the naming information.
         return package_info
 

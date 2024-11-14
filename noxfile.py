@@ -251,7 +251,8 @@ def showcase_library(
                         'version': 'google.showcase.v1beta1',
                         'python_settings': {
                             'experimental_features': {
-                                'rest_async_io_enabled': True
+                                'rest_async_io_enabled': True,
+                                'protobuf_pythonic_types_enabled': True
                             }
                         }
                     }

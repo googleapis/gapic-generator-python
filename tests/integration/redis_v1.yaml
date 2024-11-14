@@ -80,3 +80,4 @@ publishing:
     python_settings:
       experimental_features:
         rest_async_io_enabled: true
+        protobuf_pythonic_types_enabled: true

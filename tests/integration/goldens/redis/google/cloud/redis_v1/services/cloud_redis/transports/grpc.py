@@ -26,7 +26,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.location import locations_pb2 # type: ignore
-from google.cloud.redis_v1.types import cloud_redis
+from google.cloud.redis_v1.types import cloud_redis_pb2  # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
 from .base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 
@@ -273,8 +273,8 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
 
     @property
     def list_instances(self) -> Callable[
-            [cloud_redis.ListInstancesRequest],
-            cloud_redis.ListInstancesResponse]:
+            [cloud_redis_pb2.ListInstancesRequest],
+            cloud_redis_pb2.ListInstancesResponse]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists all Redis instances owned by a project in either the
@@ -301,15 +301,15 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'list_instances' not in self._stubs:
             self._stubs['list_instances'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/ListInstances',
-                request_serializer=cloud_redis.ListInstancesRequest.serialize,
-                response_deserializer=cloud_redis.ListInstancesResponse.deserialize,
+                request_serializer=cloud_redis_pb2.ListInstancesRequest.SerializeToString,
+                response_deserializer=cloud_redis_pb2.ListInstancesResponse.FromString,
             )
         return self._stubs['list_instances']
 
     @property
     def get_instance(self) -> Callable[
-            [cloud_redis.GetInstanceRequest],
-            cloud_redis.Instance]:
+            [cloud_redis_pb2.GetInstanceRequest],
+            cloud_redis_pb2.Instance]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets the details of a specific Redis instance.
@@ -327,15 +327,15 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'get_instance' not in self._stubs:
             self._stubs['get_instance'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/GetInstance',
-                request_serializer=cloud_redis.GetInstanceRequest.serialize,
-                response_deserializer=cloud_redis.Instance.deserialize,
+                request_serializer=cloud_redis_pb2.GetInstanceRequest.SerializeToString,
+                response_deserializer=cloud_redis_pb2.Instance.FromString,
             )
         return self._stubs['get_instance']
 
     @property
     def get_instance_auth_string(self) -> Callable[
-            [cloud_redis.GetInstanceAuthStringRequest],
-            cloud_redis.InstanceAuthString]:
+            [cloud_redis_pb2.GetInstanceAuthStringRequest],
+            cloud_redis_pb2.InstanceAuthString]:
         r"""Return a callable for the get instance auth string method over gRPC.
 
         Gets the AUTH string for a Redis instance. If AUTH is
@@ -356,14 +356,14 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'get_instance_auth_string' not in self._stubs:
             self._stubs['get_instance_auth_string'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/GetInstanceAuthString',
-                request_serializer=cloud_redis.GetInstanceAuthStringRequest.serialize,
-                response_deserializer=cloud_redis.InstanceAuthString.deserialize,
+                request_serializer=cloud_redis_pb2.GetInstanceAuthStringRequest.SerializeToString,
+                response_deserializer=cloud_redis_pb2.InstanceAuthString.FromString,
             )
         return self._stubs['get_instance_auth_string']
 
     @property
     def create_instance(self) -> Callable[
-            [cloud_redis.CreateInstanceRequest],
+            [cloud_redis_pb2.CreateInstanceRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the create instance method over gRPC.
 
@@ -395,14 +395,14 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'create_instance' not in self._stubs:
             self._stubs['create_instance'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/CreateInstance',
-                request_serializer=cloud_redis.CreateInstanceRequest.serialize,
+                request_serializer=cloud_redis_pb2.CreateInstanceRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['create_instance']
 
     @property
     def update_instance(self) -> Callable[
-            [cloud_redis.UpdateInstanceRequest],
+            [cloud_redis_pb2.UpdateInstanceRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the update instance method over gRPC.
 
@@ -426,14 +426,14 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'update_instance' not in self._stubs:
             self._stubs['update_instance'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/UpdateInstance',
-                request_serializer=cloud_redis.UpdateInstanceRequest.serialize,
+                request_serializer=cloud_redis_pb2.UpdateInstanceRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['update_instance']
 
     @property
     def upgrade_instance(self) -> Callable[
-            [cloud_redis.UpgradeInstanceRequest],
+            [cloud_redis_pb2.UpgradeInstanceRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the upgrade instance method over gRPC.
 
@@ -453,14 +453,14 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'upgrade_instance' not in self._stubs:
             self._stubs['upgrade_instance'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/UpgradeInstance',
-                request_serializer=cloud_redis.UpgradeInstanceRequest.serialize,
+                request_serializer=cloud_redis_pb2.UpgradeInstanceRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['upgrade_instance']
 
     @property
     def import_instance(self) -> Callable[
-            [cloud_redis.ImportInstanceRequest],
+            [cloud_redis_pb2.ImportInstanceRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the import instance method over gRPC.
 
@@ -487,14 +487,14 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'import_instance' not in self._stubs:
             self._stubs['import_instance'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/ImportInstance',
-                request_serializer=cloud_redis.ImportInstanceRequest.serialize,
+                request_serializer=cloud_redis_pb2.ImportInstanceRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['import_instance']
 
     @property
     def export_instance(self) -> Callable[
-            [cloud_redis.ExportInstanceRequest],
+            [cloud_redis_pb2.ExportInstanceRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the export instance method over gRPC.
 
@@ -518,14 +518,14 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'export_instance' not in self._stubs:
             self._stubs['export_instance'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/ExportInstance',
-                request_serializer=cloud_redis.ExportInstanceRequest.serialize,
+                request_serializer=cloud_redis_pb2.ExportInstanceRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['export_instance']
 
     @property
     def failover_instance(self) -> Callable[
-            [cloud_redis.FailoverInstanceRequest],
+            [cloud_redis_pb2.FailoverInstanceRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the failover instance method over gRPC.
 
@@ -546,14 +546,14 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'failover_instance' not in self._stubs:
             self._stubs['failover_instance'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/FailoverInstance',
-                request_serializer=cloud_redis.FailoverInstanceRequest.serialize,
+                request_serializer=cloud_redis_pb2.FailoverInstanceRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['failover_instance']
 
     @property
     def delete_instance(self) -> Callable[
-            [cloud_redis.DeleteInstanceRequest],
+            [cloud_redis_pb2.DeleteInstanceRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the delete instance method over gRPC.
 
@@ -573,14 +573,14 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'delete_instance' not in self._stubs:
             self._stubs['delete_instance'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/DeleteInstance',
-                request_serializer=cloud_redis.DeleteInstanceRequest.serialize,
+                request_serializer=cloud_redis_pb2.DeleteInstanceRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['delete_instance']
 
     @property
     def reschedule_maintenance(self) -> Callable[
-            [cloud_redis.RescheduleMaintenanceRequest],
+            [cloud_redis_pb2.RescheduleMaintenanceRequest],
             operations_pb2.Operation]:
         r"""Return a callable for the reschedule maintenance method over gRPC.
 
@@ -600,7 +600,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         if 'reschedule_maintenance' not in self._stubs:
             self._stubs['reschedule_maintenance'] = self.grpc_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/RescheduleMaintenance',
-                request_serializer=cloud_redis.RescheduleMaintenanceRequest.serialize,
+                request_serializer=cloud_redis_pb2.RescheduleMaintenanceRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['reschedule_maintenance']

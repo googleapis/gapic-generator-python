@@ -40,7 +40,7 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 from google.cloud.redis_v1.services.cloud_redis import pagers
-from google.cloud.redis_v1.types import cloud_redis
+from google.cloud.redis_v1.types import cloud_redis_pb2  # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -605,7 +605,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             )
 
     def list_instances(self,
-            request: Optional[Union[cloud_redis.ListInstancesRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.ListInstancesRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -651,7 +651,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.ListInstancesRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.ListInstancesRequest_pb2, dict]):
                 The request object. Request for
                 [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
             parent (str):
@@ -686,12 +686,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.ListInstancesRequest):
-            request = cloud_redis.ListInstancesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.ListInstancesRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.ListInstancesRequest()
             if parent is not None:
                 request.parent = parent
 
@@ -733,13 +734,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def get_instance(self,
-            request: Optional[Union[cloud_redis.GetInstanceRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.GetInstanceRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
-            ) -> cloud_redis.Instance:
+            ) -> cloud_redis_pb2.Instance:
         r"""Gets the details of a specific Redis instance.
 
         .. code-block:: python
@@ -769,7 +770,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.GetInstanceRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.GetInstanceRequest_pb2, dict]):
                 The request object. Request for
                 [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
             name (str):
@@ -787,7 +788,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.redis_v1.types.Instance:
+            google.cloud.redis_v1.types.Instance_pb2:
                 A Memorystore for Redis instance.
         """
         # Create or coerce a protobuf request object.
@@ -798,12 +799,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.GetInstanceRequest):
-            request = cloud_redis.GetInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.GetInstanceRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.GetInstanceRequest()
             if name is not None:
                 request.name = name
 
@@ -834,13 +836,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def get_instance_auth_string(self,
-            request: Optional[Union[cloud_redis.GetInstanceAuthStringRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.GetInstanceAuthStringRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
-            ) -> cloud_redis.InstanceAuthString:
+            ) -> cloud_redis_pb2.InstanceAuthString:
         r"""Gets the AUTH string for a Redis instance. If AUTH is
         not enabled for the instance the response will be empty.
         This information is not included in the details returned
@@ -873,7 +875,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.GetInstanceAuthStringRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.GetInstanceAuthStringRequest_pb2, dict]):
                 The request object. Request for
                 [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
             name (str):
@@ -891,7 +893,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.redis_v1.types.InstanceAuthString:
+            google.cloud.redis_v1.types.InstanceAuthString_pb2:
                 Instance AUTH string details.
         """
         # Create or coerce a protobuf request object.
@@ -902,12 +904,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.GetInstanceAuthStringRequest):
-            request = cloud_redis.GetInstanceAuthStringRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.GetInstanceAuthStringRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.GetInstanceAuthStringRequest()
             if name is not None:
                 request.name = name
 
@@ -938,11 +941,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def create_instance(self,
-            request: Optional[Union[cloud_redis.CreateInstanceRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.CreateInstanceRequest, dict]] = None,
             *,
             parent: Optional[str] = None,
             instance_id: Optional[str] = None,
-            instance: Optional[cloud_redis.Instance] = None,
+            instance: Optional[cloud_redis_pb2.Instance] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1000,7 +1003,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.CreateInstanceRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.CreateInstanceRequest_pb2, dict]):
                 The request object. Request for
                 [CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].
             parent (str):
@@ -1026,7 +1029,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 This corresponds to the ``instance_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            instance (google.cloud.redis_v1.types.Instance):
+            instance (google.cloud.redis_v1.types.Instance_pb2):
                 Required. A Redis [Instance] resource
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1042,7 +1045,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
+                :class:`google.cloud.redis_v1.types.Instance_pb2` A
                 Memorystore for Redis instance.
 
         """
@@ -1054,18 +1057,19 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.CreateInstanceRequest):
-            request = cloud_redis.CreateInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.CreateInstanceRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.CreateInstanceRequest()
             if parent is not None:
                 request.parent = parent
             if instance_id is not None:
                 request.instance_id = instance_id
             if instance is not None:
-                request.instance = instance
+                request.instance.MergeFrom(instance)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1094,18 +1098,18 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            cloud_redis.Instance,
-            metadata_type=cloud_redis.OperationMetadata,
+            cloud_redis_pb2.Instance,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
     def update_instance(self,
-            request: Optional[Union[cloud_redis.UpdateInstanceRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.UpdateInstanceRequest, dict]] = None,
             *,
             update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            instance: Optional[cloud_redis.Instance] = None,
+            instance: Optional[cloud_redis_pb2.Instance] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1153,7 +1157,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.UpdateInstanceRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.UpdateInstanceRequest_pb2, dict]):
                 The request object. Request for
                 [UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance].
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -1171,7 +1175,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            instance (google.cloud.redis_v1.types.Instance):
+            instance (google.cloud.redis_v1.types.Instance_pb2):
                 Required. Update description. Only fields specified in
                 update_mask are updated.
 
@@ -1189,7 +1193,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
+                :class:`google.cloud.redis_v1.types.Instance_pb2` A
                 Memorystore for Redis instance.
 
         """
@@ -1201,16 +1205,17 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.UpdateInstanceRequest):
-            request = cloud_redis.UpdateInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.UpdateInstanceRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.UpdateInstanceRequest()
             if update_mask is not None:
-                request.update_mask = update_mask
+                request.update_mask.MergeFrom(update_mask)
             if instance is not None:
-                request.instance = instance
+                request.instance.MergeFrom(instance)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1239,15 +1244,15 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            cloud_redis.Instance,
-            metadata_type=cloud_redis.OperationMetadata,
+            cloud_redis_pb2.Instance,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
     def upgrade_instance(self,
-            request: Optional[Union[cloud_redis.UpgradeInstanceRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.UpgradeInstanceRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             redis_version: Optional[str] = None,
@@ -1290,7 +1295,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.UpgradeInstanceRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.UpgradeInstanceRequest_pb2, dict]):
                 The request object. Request for
                 [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
             name (str):
@@ -1319,7 +1324,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
+                :class:`google.cloud.redis_v1.types.Instance_pb2` A
                 Memorystore for Redis instance.
 
         """
@@ -1331,12 +1336,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.UpgradeInstanceRequest):
-            request = cloud_redis.UpgradeInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.UpgradeInstanceRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.UpgradeInstanceRequest()
             if name is not None:
                 request.name = name
             if redis_version is not None:
@@ -1369,18 +1375,18 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            cloud_redis.Instance,
-            metadata_type=cloud_redis.OperationMetadata,
+            cloud_redis_pb2.Instance,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
     def import_instance(self,
-            request: Optional[Union[cloud_redis.ImportInstanceRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.ImportInstanceRequest, dict]] = None,
             *,
             name: Optional[str] = None,
-            input_config: Optional[cloud_redis.InputConfig] = None,
+            input_config: Optional[cloud_redis_pb2.InputConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1430,7 +1436,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.ImportInstanceRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.ImportInstanceRequest_pb2, dict]):
                 The request object. Request for
                 [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
             name (str):
@@ -1441,7 +1447,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            input_config (google.cloud.redis_v1.types.InputConfig):
+            input_config (google.cloud.redis_v1.types.InputConfig_pb2):
                 Required. Specify data to be
                 imported.
 
@@ -1459,7 +1465,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
+                :class:`google.cloud.redis_v1.types.Instance_pb2` A
                 Memorystore for Redis instance.
 
         """
@@ -1471,16 +1477,17 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.ImportInstanceRequest):
-            request = cloud_redis.ImportInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.ImportInstanceRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.ImportInstanceRequest()
             if name is not None:
                 request.name = name
             if input_config is not None:
-                request.input_config = input_config
+                request.input_config.MergeFrom(input_config)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1509,18 +1516,18 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            cloud_redis.Instance,
-            metadata_type=cloud_redis.OperationMetadata,
+            cloud_redis_pb2.Instance,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
     def export_instance(self,
-            request: Optional[Union[cloud_redis.ExportInstanceRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.ExportInstanceRequest, dict]] = None,
             *,
             name: Optional[str] = None,
-            output_config: Optional[cloud_redis.OutputConfig] = None,
+            output_config: Optional[cloud_redis_pb2.OutputConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1567,7 +1574,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.ExportInstanceRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.ExportInstanceRequest_pb2, dict]):
                 The request object. Request for
                 [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
             name (str):
@@ -1578,7 +1585,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            output_config (google.cloud.redis_v1.types.OutputConfig):
+            output_config (google.cloud.redis_v1.types.OutputConfig_pb2):
                 Required. Specify data to be
                 exported.
 
@@ -1596,7 +1603,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
+                :class:`google.cloud.redis_v1.types.Instance_pb2` A
                 Memorystore for Redis instance.
 
         """
@@ -1608,16 +1615,17 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.ExportInstanceRequest):
-            request = cloud_redis.ExportInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.ExportInstanceRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.ExportInstanceRequest()
             if name is not None:
                 request.name = name
             if output_config is not None:
-                request.output_config = output_config
+                request.output_config.MergeFrom(output_config)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1646,18 +1654,18 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            cloud_redis.Instance,
-            metadata_type=cloud_redis.OperationMetadata,
+            cloud_redis_pb2.Instance,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
     def failover_instance(self,
-            request: Optional[Union[cloud_redis.FailoverInstanceRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.FailoverInstanceRequest, dict]] = None,
             *,
             name: Optional[str] = None,
-            data_protection_mode: Optional[cloud_redis.FailoverInstanceRequest.DataProtectionMode] = None,
+            data_protection_mode: Optional[cloud_redis_pb2.FailoverInstanceRequest.DataProtectionMode] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
@@ -1697,7 +1705,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.FailoverInstanceRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.FailoverInstanceRequest_pb2, dict]):
                 The request object. Request for
                 [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
             name (str):
@@ -1708,7 +1716,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            data_protection_mode (google.cloud.redis_v1.types.FailoverInstanceRequest.DataProtectionMode):
+            data_protection_mode (google.cloud.redis_v1.types.FailoverInstanceRequest.DataProtectionMode_pb2):
                 Optional. Available data protection modes that the user
                 can choose. If it's unspecified, data protection mode
                 will be LIMITED_DATA_LOSS by default.
@@ -1727,7 +1735,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
+                :class:`google.cloud.redis_v1.types.Instance_pb2` A
                 Memorystore for Redis instance.
 
         """
@@ -1739,12 +1747,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.FailoverInstanceRequest):
-            request = cloud_redis.FailoverInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.FailoverInstanceRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.FailoverInstanceRequest()
             if name is not None:
                 request.name = name
             if data_protection_mode is not None:
@@ -1777,15 +1786,15 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            cloud_redis.Instance,
-            metadata_type=cloud_redis.OperationMetadata,
+            cloud_redis_pb2.Instance,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
     def delete_instance(self,
-            request: Optional[Union[cloud_redis.DeleteInstanceRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.DeleteInstanceRequest, dict]] = None,
             *,
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1826,7 +1835,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.DeleteInstanceRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.DeleteInstanceRequest_pb2, dict]):
                 The request object. Request for
                 [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
             name (str):
@@ -1867,12 +1876,13 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.DeleteInstanceRequest):
-            request = cloud_redis.DeleteInstanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.DeleteInstanceRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.DeleteInstanceRequest()
             if name is not None:
                 request.name = name
 
@@ -1904,17 +1914,17 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             response,
             self._transport.operations_client,
             empty_pb2.Empty,
-            metadata_type=cloud_redis.OperationMetadata,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
         # Done; return the response.
         return response
 
     def reschedule_maintenance(self,
-            request: Optional[Union[cloud_redis.RescheduleMaintenanceRequest, dict]] = None,
+            request: Optional[Union[cloud_redis_pb2.RescheduleMaintenanceRequest, dict]] = None,
             *,
             name: Optional[str] = None,
-            reschedule_type: Optional[cloud_redis.RescheduleMaintenanceRequest.RescheduleType] = None,
+            reschedule_type: Optional[cloud_redis_pb2.RescheduleMaintenanceRequest.RescheduleType] = None,
             schedule_time: Optional[timestamp_pb2.Timestamp] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1955,7 +1965,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.redis_v1.types.RescheduleMaintenanceRequest, dict]):
+            request (Union[google.cloud.redis_v1.types.RescheduleMaintenanceRequest_pb2, dict]):
                 The request object. Request for
                 [RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance].
             name (str):
@@ -1966,7 +1976,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            reschedule_type (google.cloud.redis_v1.types.RescheduleMaintenanceRequest.RescheduleType):
+            reschedule_type (google.cloud.redis_v1.types.RescheduleMaintenanceRequest.RescheduleType_pb2):
                 Required. If reschedule type is SPECIFIC_TIME, must set
                 up schedule_time as well.
 
@@ -1992,7 +2002,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
+                :class:`google.cloud.redis_v1.types.Instance_pb2` A
                 Memorystore for Redis instance.
 
         """
@@ -2004,18 +2014,19 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        # - Use the request object if provided (there's no risk of modifying the input as
-        #   there are no flattened fields), or create one.
-        if not isinstance(request, cloud_redis.RescheduleMaintenanceRequest):
-            request = cloud_redis.RescheduleMaintenanceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
+        if isinstance(request, dict):
+            # - The request isn't a proto-plus wrapped type,
+            #   so it must be constructed via keyword expansion.
+            request = cloud_redis_pb2.RescheduleMaintenanceRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = cloud_redis_pb2.RescheduleMaintenanceRequest()
             if name is not None:
                 request.name = name
             if reschedule_type is not None:
                 request.reschedule_type = reschedule_type
             if schedule_time is not None:
-                request.schedule_time = schedule_time
+                request.schedule_time.MergeFrom(schedule_time)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2044,8 +2055,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            cloud_redis.Instance,
-            metadata_type=cloud_redis.OperationMetadata,
+            cloud_redis_pb2.Instance,
+            metadata_type=cloud_redis_pb2.OperationMetadata,
         )
 
         # Done; return the response.

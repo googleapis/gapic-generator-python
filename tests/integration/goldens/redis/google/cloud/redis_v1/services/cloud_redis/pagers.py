@@ -24,14 +24,14 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.redis_v1.types import cloud_redis
+from google.cloud.redis_v1.types import cloud_redis_pb2  # type: ignore
 
 
 class ListInstancesPager:
     """A pager for iterating through ``list_instances`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.redis_v1.types.ListInstancesResponse` object, and
+    :class:`google.cloud.redis_v1.types.ListInstancesResponse_pb2` object, and
     provides an ``__iter__`` method to iterate through its
     ``instances`` field.
 
@@ -40,14 +40,14 @@ class ListInstancesPager:
     through the ``instances`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.redis_v1.types.ListInstancesResponse`
+    All the usual :class:`google.cloud.redis_v1.types.ListInstancesResponse_pb2`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
     def __init__(self,
-            method: Callable[..., cloud_redis.ListInstancesResponse],
-            request: cloud_redis.ListInstancesRequest,
-            response: cloud_redis.ListInstancesResponse,
+            method: Callable[..., cloud_redis_pb2.ListInstancesResponse],
+            request: cloud_redis_pb2.ListInstancesRequest,
+            response: cloud_redis_pb2.ListInstancesResponse,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -57,9 +57,9 @@ class ListInstancesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.redis_v1.types.ListInstancesRequest):
+            request (google.cloud.redis_v1.types.ListInstancesRequest_pb2):
                 The initial request object.
-            response (google.cloud.redis_v1.types.ListInstancesResponse):
+            response (google.cloud.redis_v1.types.ListInstancesResponse_pb2):
                 The initial response object.
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
@@ -68,7 +68,7 @@ class ListInstancesPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = cloud_redis.ListInstancesRequest(request)
+        self._request = request
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -78,14 +78,14 @@ class ListInstancesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterator[cloud_redis.ListInstancesResponse]:
+    def pages(self) -> Iterator[cloud_redis_pb2.ListInstancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterator[cloud_redis.Instance]:
+    def __iter__(self) -> Iterator[cloud_redis_pb2.Instance]:
         for page in self.pages:
             yield from page.instances
 
@@ -97,7 +97,7 @@ class ListInstancesAsyncPager:
     """A pager for iterating through ``list_instances`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.redis_v1.types.ListInstancesResponse` object, and
+    :class:`google.cloud.redis_v1.types.ListInstancesResponse_pb2` object, and
     provides an ``__aiter__`` method to iterate through its
     ``instances`` field.
 
@@ -106,14 +106,14 @@ class ListInstancesAsyncPager:
     through the ``instances`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.redis_v1.types.ListInstancesResponse`
+    All the usual :class:`google.cloud.redis_v1.types.ListInstancesResponse_pb2`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
     def __init__(self,
-            method: Callable[..., Awaitable[cloud_redis.ListInstancesResponse]],
-            request: cloud_redis.ListInstancesRequest,
-            response: cloud_redis.ListInstancesResponse,
+            method: Callable[..., Awaitable[cloud_redis_pb2.ListInstancesResponse]],
+            request: cloud_redis_pb2.ListInstancesRequest,
+            response: cloud_redis_pb2.ListInstancesResponse,
             *,
             retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -123,9 +123,9 @@ class ListInstancesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.redis_v1.types.ListInstancesRequest):
+            request (google.cloud.redis_v1.types.ListInstancesRequest_pb2):
                 The initial request object.
-            response (google.cloud.redis_v1.types.ListInstancesResponse):
+            response (google.cloud.redis_v1.types.ListInstancesResponse_pb2):
                 The initial response object.
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
@@ -134,7 +134,7 @@ class ListInstancesAsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = cloud_redis.ListInstancesRequest(request)
+        self._request = request
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -144,13 +144,13 @@ class ListInstancesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterator[cloud_redis.ListInstancesResponse]:
+    async def pages(self) -> AsyncIterator[cloud_redis_pb2.ListInstancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
-    def __aiter__(self) -> AsyncIterator[cloud_redis.Instance]:
+    def __aiter__(self) -> AsyncIterator[cloud_redis_pb2.Instance]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.instances:
