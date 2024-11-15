@@ -53,6 +53,7 @@ jobs:
         run: nox -s mypy-${{ matrix.python }}
   showcase:
     strategy:
+      fail-fast: false
       # Run showcase tests on the lowest and highest supported runtimes
       matrix:
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `showcase_w_rest_async` target when async rest is GA.
@@ -138,6 +139,7 @@ jobs:
             nox -s ${{ matrix.target }}
   # TODO(yon-mg): add compute unit tests
   showcase-unit:
+    fail-fast: false
     strategy:
       matrix:
         python: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
