@@ -139,8 +139,8 @@ jobs:
             nox -s ${{ matrix.target }}
   # TODO(yon-mg): add compute unit tests
   showcase-unit:
-    fail-fast: false
-    strategy:
+      strategy:
+        fail-fast: false
       matrix:
         python: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `_w_rest_async` variant when async rest is GA.
