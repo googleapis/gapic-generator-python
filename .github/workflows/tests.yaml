@@ -56,7 +56,7 @@ jobs:
       # Run showcase tests on the lowest and highest supported runtimes
       matrix:
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `showcase_w_rest_async` target when async rest is GA.
-        python: ["3.7", "3.13"]
+        python: ["3.8", "3.13"]
         target: [showcase, showcase_alternative_templates, showcase_w_rest_async]
     runs-on: ubuntu-latest
     steps:
@@ -140,7 +140,7 @@ jobs:
   showcase-unit:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `_w_rest_async` variant when async rest is GA.
         variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
     runs-on: ubuntu-latest
@@ -240,7 +240,7 @@ jobs:
   unit:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -261,7 +261,7 @@ jobs:
   fragment:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
         variant: ['', _alternative_templates]
     runs-on: ubuntu-latest
     steps:

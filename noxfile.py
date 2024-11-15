@@ -34,7 +34,6 @@ ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
 ALL_PYTHON = (
-    "3.7",
     "3.8",
     "3.9",
     "3.10",
@@ -314,11 +313,11 @@ def showcase_library(
             f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
             # Install the library with a constraints file.
-            if session.python == "3.7":
+            if session.python == "3.8":
                 session.install("-e", tmp_dir, "-r", constraints_path)
                 if rest_async_io_enabled:
                     # NOTE: We re-install `google-api-core` and `google-auth` to override the respective
-                    # versions for each specified in constraints-3.7.txt. This is needed because async REST
+                    # versions for each specified in constraints-3.8.txt. This is needed because async REST
                     # is not supported with the minimum version of `google-api-core` and `google-auth`.
                     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2211): Remove hardcoded dependencies
                     # from here and add a new constraints file for testing the minimum supported versions for async REST feature.
@@ -454,7 +453,7 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
     # Run the tests.
     # NOTE: async rest is not supported against the minimum supported version of google-api-core.
     # Therefore, we ignore the coverage requirement in this case.
-    if session.python == "3.7" and rest_async_io_enabled:
+    if session.python == "3.8" and rest_async_io_enabled:
         session.run(
             "py.test",
             *(
