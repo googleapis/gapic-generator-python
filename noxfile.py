@@ -294,13 +294,15 @@ def showcase_library(
         session.run(
             *cmd_tup, external=True,
         )
-
-        shutil.copy("tests/system/resources/echo_pb2.py", f"{tmp_dir}/google/showcase_v1beta1/types/echo_pb2.py")
-        shutil.copy("tests/system/resources/echo_pb2.pyi", f"{tmp_dir}/google/showcase_v1beta1/types/echo_pb2.pyi")
-        shutil.copy("tests/system/resources/identity_pb2.py", f"{tmp_dir}/google/showcase_v1beta1/types/identity_pb2.py")
-        shutil.copy("tests/system/resources/identity_pb2.pyi", f"{tmp_dir}/google/showcase_v1beta1/types/identity_pb2.pyi")
-        shutil.copy("tests/system/resources/messaging_pb2.py", f"{tmp_dir}/google/showcase_v1beta1/types/messaging_pb2.py")
-        shutil.copy("tests/system/resources/messaging_pb2.pyi", f"{tmp_dir}/google/showcase_v1beta1/types/messaging_pb2.pyi")
+        # Temporary code to facilitate testing of nextgen protobuf API
+        # Piggy back on `rest_async_io_enabled` temporarily
+        if rest_async_io_enabled:
+            shutil.copy("tests/system/resources/echo_pb2.py", f"{tmp_dir}/google/showcase_v1beta1/types/echo_pb2.py")
+            shutil.copy("tests/system/resources/echo_pb2.pyi", f"{tmp_dir}/google/showcase_v1beta1/types/echo_pb2.pyi")
+            shutil.copy("tests/system/resources/identity_pb2.py", f"{tmp_dir}/google/showcase_v1beta1/types/identity_pb2.py")
+            shutil.copy("tests/system/resources/identity_pb2.pyi", f"{tmp_dir}/google/showcase_v1beta1/types/identity_pb2.pyi")
+            shutil.copy("tests/system/resources/messaging_pb2.py", f"{tmp_dir}/google/showcase_v1beta1/types/messaging_pb2.py")
+            shutil.copy("tests/system/resources/messaging_pb2.pyi", f"{tmp_dir}/google/showcase_v1beta1/types/messaging_pb2.pyi")
         # Install the generated showcase library.
         if templates == "DEFAULT":
             # Use the constraints file for the specific python runtime version.
