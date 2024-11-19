@@ -21,6 +21,7 @@ __version__ = package_version.__version__
 from .services.cloud_redis import CloudRedisClient
 from .services.cloud_redis import CloudRedisAsyncClient
 
+from .types import cloud_redis_pb2
 from .types.cloud_redis_pb2 import CreateInstanceRequest
 from .types.cloud_redis_pb2 import DeleteInstanceRequest
 from .types.cloud_redis_pb2 import ExportInstanceRequest

@@ -4,9 +4,8 @@
 
 {% set protobuf_pythonic_types_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.protobuf_pythonic_types_enabled %}
 
-{% if not protobuf_pythonic_types_enabled %}
 {% for _, proto in api.protos|dictsort if proto.file_to_generate and proto.messages or proto.enums %}
-from .{{proto.module_name }} import (
+from .{{proto.module_name }}{%if protobuf_pythonic_types_enabled %}_pb2{% endif %} import (
   {% for _, message in proto.messages|dictsort %}
     {{message.name }},
   {% endfor %}
@@ -26,7 +25,5 @@ __all__ = (
   {% endfor %}
   {% endfor %}
 )
-
-{% endif %}{# not protobuf_pythonic_types_enabled #}
 
 {% endblock %}
