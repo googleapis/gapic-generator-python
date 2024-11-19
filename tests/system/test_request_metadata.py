@@ -16,6 +16,7 @@ import pytest
 
 from google import showcase
 
+
 def test_metadata_string(echo):
     echo.echo(
         showcase.EchoRequest(
@@ -37,7 +38,7 @@ def test_metadata_binary(echo):
         metadata=[('some-key-bin', b'some_value')]
     )
 
-    if isinstance(echo.transport, type(echo).get_transport_class("grpc")):            
+    if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
         # See https://github.com/googleapis/gapic-generator-python/issues/2250
         # and https://github.com/grpc/grpc/pull/38127.
         # When the metadata key ends in `-bin`, the value should be of type
