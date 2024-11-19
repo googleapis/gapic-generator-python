@@ -310,7 +310,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                     should be retried.
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata has
+                    sent along with the request as metadata. If the metadata key has
                     suffix `-bin`, the value must be bytes.
 
             Returns:
@@ -385,7 +385,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                     should be retried.
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata has
+                    sent along with the request as metadata. If the metadata key has
                     suffix `-bin`, the value must be bytes.
 
             Returns:
@@ -460,7 +460,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                     should be retried.
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata has
+                    sent along with the request as metadata. If the metadata key has
                     suffix `-bin`, the value must be bytes.
 
             Returns:
@@ -535,7 +535,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                     should be retried.
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata has
+                    sent along with the request as metadata. If the metadata key has
                     suffix `-bin`, the value must be bytes.
 
             Returns:
