@@ -21,6 +21,7 @@ import warnings
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
+from google.api_core.grpc_helpers import GrpcStream
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -1208,7 +1209,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
-            ) -> Iterable[logging.TailLogEntriesResponse]:
+            ) -> Union[Iterable[logging.TailLogEntriesResponse], GrpcStream[logging.TailLogEntriesResponse]]:
         r"""Streaming read of log entries as they are ingested.
         Until the stream is terminated, it will continue reading
         logs.
@@ -1260,7 +1261,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[google.cloud.logging_v2.types.TailLogEntriesResponse]:
+            Union[Iterable[logging.TailLogEntriesResponse], GrpcStream[logging.TailLogEntriesResponse]]:
                 Result returned from TailLogEntries.
         """
 

@@ -19,6 +19,7 @@ from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Opt
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
+from google.api_core.grpc_helpers_async import GrpcAsyncStream
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -898,7 +899,7 @@ class LoggingServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
-            ) -> Awaitable[AsyncIterable[logging.TailLogEntriesResponse]]:
+            ) -> Union[Awaitable[AsyncIterable[logging.TailLogEntriesResponse]], Awaitable[GrpcAsyncStream[logging.TailLogEntriesResponse]]]:
         r"""Streaming read of log entries as they are ingested.
         Until the stream is terminated, it will continue reading
         logs.
@@ -950,7 +951,7 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[google.cloud.logging_v2.types.TailLogEntriesResponse]:
+            Union[AsyncIterable[google.cloud.logging_v2.types.TailLogEntriesResponse], GrpcAsyncStream[google.cloud.logging_v2.types.TailLogEntriesResponse]]:
                 Result returned from TailLogEntries.
         """
 

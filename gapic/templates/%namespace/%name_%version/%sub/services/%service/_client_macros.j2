@@ -36,7 +36,7 @@
             {% elif not method.server_streaming %}
             ) -> {{ method.client_output.ident }}:
             {% else %}
-            ) -> Iterable[{{ method.client_output.ident }}]:
+            ) -> Union[Iterable[{{ method.client_output.ident }}], GrpcStream[{{ method.client_output.ident }}]]:
             {% endif %}
         r"""{{ method.meta.doc|rst(width=72, indent=8)|trim }}
 
@@ -75,7 +75,7 @@
             {% if not method.server_streaming %}
             {{ method.client_output.ident.sphinx }}:
             {% else %}
-            Iterable[{{ method.client_output.ident.sphinx }}]:
+            Union[Iterable[{{ method.client_output.ident }}], GrpcStream[{{ method.client_output.ident }}]]:
             {% endif %}
                 {{ method.client_output.meta.doc|rst(width=72, indent=16, source_format="rst") }}
         {% endif %}

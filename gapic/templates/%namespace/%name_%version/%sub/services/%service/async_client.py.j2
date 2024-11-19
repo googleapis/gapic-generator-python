@@ -17,6 +17,13 @@ import warnings
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
 from {{package_path}} import gapic_version as package_version
 
+{% set import_ns = namespace(has_streaming_methods=false) %}
+{%- for method in service.methods.values() if method.server_streaming %}
+{% set import_ns.has_streaming_methods = True %}
+{% endfor -%}
+{% if import_ns.has_streaming_methods == True %}
+from google.api_core.grpc_helpers_async import GrpcAsyncStream
+{% endif %}
 from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -263,7 +270,7 @@ class {{ service.async_client_name }}:
             {% if not method.server_streaming %}
             ) -> {{ method.client_output_async.ident }}:
             {% else %}
-            ) -> Awaitable[AsyncIterable[{{ method.client_output_async.ident }}]]:
+            ) -> Union[Awaitable[AsyncIterable[{{ method.client_output_async.ident }}]], Awaitable[GrpcAsyncStream[{{ method.client_output_async.ident }}]]]:
             {% endif %}
         r"""{{ method.meta.doc|rst(width=72, indent=8)|trim }}
 
@@ -302,7 +309,7 @@ class {{ service.async_client_name }}:
             {% if not method.server_streaming %}
             {{ method.client_output_async.ident.sphinx }}:
             {% else %}
-            AsyncIterable[{{ method.client_output_async.ident.sphinx }}]:
+            Union[AsyncIterable[{{ method.client_output_async.ident.sphinx }}], GrpcAsyncStream[{{ method.client_output_async.ident.sphinx }}]]:
             {% endif %}
                 {{ method.client_output_async.meta.doc|rst(width=72, indent=16, source_format='rst') }}
         {% endif %}
