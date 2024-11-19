@@ -28,7 +28,7 @@ dependencies = [
     # Ensure that the lower bounds of these dependencies match what we have in the
     # templated setup.py.j2: https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
     "click >= 6.7",
-    "google-api-core[grpc] >= 2.15.0, <3.0.0dev",
+    "google-api-core[grpc] >= 2.17.1, <3.0.0dev",
     "googleapis-common-protos >= 1.55.0",
     "grpcio >= 1.24.3",
     # 2.11.0 is required which adds the `default` argument to `jinja-filters.map()`
