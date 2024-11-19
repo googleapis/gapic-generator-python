@@ -249,7 +249,7 @@ class AssetServiceRestInterceptor:
 
 
     """
-    def pre_analyze_iam_policy(self, request: asset_service.AnalyzeIamPolicyRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeIamPolicyRequest, Sequence[Tuple[str, str]]]:
+    def pre_analyze_iam_policy(self, request: asset_service.AnalyzeIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -266,7 +266,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_analyze_iam_policy_longrunning(self, request: asset_service.AnalyzeIamPolicyLongrunningRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeIamPolicyLongrunningRequest, Sequence[Tuple[str, str]]]:
+    def pre_analyze_iam_policy_longrunning(self, request: asset_service.AnalyzeIamPolicyLongrunningRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeIamPolicyLongrunningRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_iam_policy_longrunning
 
         Override in a subclass to manipulate the request or metadata
@@ -283,7 +283,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_analyze_move(self, request: asset_service.AnalyzeMoveRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeMoveRequest, Sequence[Tuple[str, str]]]:
+    def pre_analyze_move(self, request: asset_service.AnalyzeMoveRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeMoveRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_move
 
         Override in a subclass to manipulate the request or metadata
@@ -300,7 +300,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_analyze_org_policies(self, request: asset_service.AnalyzeOrgPoliciesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeOrgPoliciesRequest, Sequence[Tuple[str, str]]]:
+    def pre_analyze_org_policies(self, request: asset_service.AnalyzeOrgPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_org_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -317,7 +317,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_analyze_org_policy_governed_assets(self, request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, Sequence[Tuple[str, str]]]:
+    def pre_analyze_org_policy_governed_assets(self, request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_org_policy_governed_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -334,7 +334,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_analyze_org_policy_governed_containers(self, request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, Sequence[Tuple[str, str]]]:
+    def pre_analyze_org_policy_governed_containers(self, request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_org_policy_governed_containers
 
         Override in a subclass to manipulate the request or metadata
@@ -351,7 +351,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_batch_get_assets_history(self, request: asset_service.BatchGetAssetsHistoryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.BatchGetAssetsHistoryRequest, Sequence[Tuple[str, str]]]:
+    def pre_batch_get_assets_history(self, request: asset_service.BatchGetAssetsHistoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.BatchGetAssetsHistoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_get_assets_history
 
         Override in a subclass to manipulate the request or metadata
@@ -368,7 +368,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_batch_get_effective_iam_policies(self, request: asset_service.BatchGetEffectiveIamPoliciesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.BatchGetEffectiveIamPoliciesRequest, Sequence[Tuple[str, str]]]:
+    def pre_batch_get_effective_iam_policies(self, request: asset_service.BatchGetEffectiveIamPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.BatchGetEffectiveIamPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_get_effective_iam_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -385,7 +385,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_create_feed(self, request: asset_service.CreateFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.CreateFeedRequest, Sequence[Tuple[str, str]]]:
+    def pre_create_feed(self, request: asset_service.CreateFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.CreateFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -402,7 +402,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_create_saved_query(self, request: asset_service.CreateSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.CreateSavedQueryRequest, Sequence[Tuple[str, str]]]:
+    def pre_create_saved_query(self, request: asset_service.CreateSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.CreateSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -419,7 +419,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_delete_feed(self, request: asset_service.DeleteFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.DeleteFeedRequest, Sequence[Tuple[str, str]]]:
+    def pre_delete_feed(self, request: asset_service.DeleteFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.DeleteFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -427,7 +427,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def pre_delete_saved_query(self, request: asset_service.DeleteSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.DeleteSavedQueryRequest, Sequence[Tuple[str, str]]]:
+    def pre_delete_saved_query(self, request: asset_service.DeleteSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.DeleteSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -435,7 +435,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def pre_export_assets(self, request: asset_service.ExportAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ExportAssetsRequest, Sequence[Tuple[str, str]]]:
+    def pre_export_assets(self, request: asset_service.ExportAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ExportAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -452,7 +452,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_get_feed(self, request: asset_service.GetFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.GetFeedRequest, Sequence[Tuple[str, str]]]:
+    def pre_get_feed(self, request: asset_service.GetFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.GetFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -469,7 +469,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_get_saved_query(self, request: asset_service.GetSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.GetSavedQueryRequest, Sequence[Tuple[str, str]]]:
+    def pre_get_saved_query(self, request: asset_service.GetSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.GetSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -486,7 +486,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_list_assets(self, request: asset_service.ListAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ListAssetsRequest, Sequence[Tuple[str, str]]]:
+    def pre_list_assets(self, request: asset_service.ListAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -503,7 +503,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_list_feeds(self, request: asset_service.ListFeedsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ListFeedsRequest, Sequence[Tuple[str, str]]]:
+    def pre_list_feeds(self, request: asset_service.ListFeedsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListFeedsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_feeds
 
         Override in a subclass to manipulate the request or metadata
@@ -520,7 +520,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_list_saved_queries(self, request: asset_service.ListSavedQueriesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ListSavedQueriesRequest, Sequence[Tuple[str, str]]]:
+    def pre_list_saved_queries(self, request: asset_service.ListSavedQueriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListSavedQueriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_saved_queries
 
         Override in a subclass to manipulate the request or metadata
@@ -537,7 +537,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_query_assets(self, request: asset_service.QueryAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.QueryAssetsRequest, Sequence[Tuple[str, str]]]:
+    def pre_query_assets(self, request: asset_service.QueryAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.QueryAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -554,7 +554,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_search_all_iam_policies(self, request: asset_service.SearchAllIamPoliciesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.SearchAllIamPoliciesRequest, Sequence[Tuple[str, str]]]:
+    def pre_search_all_iam_policies(self, request: asset_service.SearchAllIamPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SearchAllIamPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_all_iam_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -571,7 +571,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_search_all_resources(self, request: asset_service.SearchAllResourcesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.SearchAllResourcesRequest, Sequence[Tuple[str, str]]]:
+    def pre_search_all_resources(self, request: asset_service.SearchAllResourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SearchAllResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_all_resources
 
         Override in a subclass to manipulate the request or metadata
@@ -588,7 +588,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_update_feed(self, request: asset_service.UpdateFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.UpdateFeedRequest, Sequence[Tuple[str, str]]]:
+    def pre_update_feed(self, request: asset_service.UpdateFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.UpdateFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -605,7 +605,7 @@ class AssetServiceRestInterceptor:
         """
         return response
 
-    def pre_update_saved_query(self, request: asset_service.UpdateSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.UpdateSavedQueryRequest, Sequence[Tuple[str, str]]]:
+    def pre_update_saved_query(self, request: asset_service.UpdateSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.UpdateSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -623,8 +623,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -794,7 +794,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.AnalyzeIamPolicyRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.AnalyzeIamPolicyResponse:
             r"""Call the analyze iam policy method over HTTP.
 
@@ -805,8 +805,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.AnalyzeIamPolicyResponse:
@@ -869,7 +870,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.AnalyzeIamPolicyLongrunningRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the analyze iam policy
         longrunning method over HTTP.
@@ -881,8 +882,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -945,7 +947,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.AnalyzeMoveRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.AnalyzeMoveResponse:
             r"""Call the analyze move method over HTTP.
 
@@ -956,8 +958,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.AnalyzeMoveResponse:
@@ -1019,7 +1022,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.AnalyzeOrgPoliciesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.AnalyzeOrgPoliciesResponse:
             r"""Call the analyze org policies method over HTTP.
 
@@ -1030,8 +1033,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.AnalyzeOrgPoliciesResponse:
@@ -1093,7 +1097,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.AnalyzeOrgPolicyGovernedAssetsResponse:
             r"""Call the analyze org policy
         governed assets method over HTTP.
@@ -1105,8 +1109,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.AnalyzeOrgPolicyGovernedAssetsResponse:
@@ -1168,7 +1173,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.AnalyzeOrgPolicyGovernedContainersResponse:
             r"""Call the analyze org policy
         governed containers method over HTTP.
@@ -1180,8 +1185,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.AnalyzeOrgPolicyGovernedContainersResponse:
@@ -1243,7 +1249,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.BatchGetAssetsHistoryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.BatchGetAssetsHistoryResponse:
             r"""Call the batch get assets history method over HTTP.
 
@@ -1253,8 +1259,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.BatchGetAssetsHistoryResponse:
@@ -1314,7 +1321,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.BatchGetEffectiveIamPoliciesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
             r"""Call the batch get effective iam
         policies method over HTTP.
@@ -1326,8 +1333,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.BatchGetEffectiveIamPoliciesResponse:
@@ -1390,7 +1398,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.CreateFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.Feed:
             r"""Call the create feed method over HTTP.
 
@@ -1400,8 +1408,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.Feed:
@@ -1472,7 +1481,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.CreateSavedQueryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.SavedQuery:
             r"""Call the create saved query method over HTTP.
 
@@ -1482,8 +1491,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.SavedQuery:
@@ -1547,7 +1557,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.DeleteFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ):
             r"""Call the delete feed method over HTTP.
 
@@ -1557,8 +1567,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_http_options()
@@ -1606,7 +1617,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.DeleteSavedQueryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ):
             r"""Call the delete saved query method over HTTP.
 
@@ -1616,8 +1627,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_http_options()
@@ -1666,7 +1678,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.ExportAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the export assets method over HTTP.
 
@@ -1676,8 +1688,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1740,7 +1753,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.GetFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.Feed:
             r"""Call the get feed method over HTTP.
 
@@ -1750,8 +1763,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.Feed:
@@ -1819,7 +1833,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.GetSavedQueryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.SavedQuery:
             r"""Call the get saved query method over HTTP.
 
@@ -1829,8 +1843,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.SavedQuery:
@@ -1892,7 +1907,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.ListAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.ListAssetsResponse:
             r"""Call the list assets method over HTTP.
 
@@ -1902,8 +1917,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.ListAssetsResponse:
@@ -1963,7 +1979,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.ListFeedsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.ListFeedsResponse:
             r"""Call the list feeds method over HTTP.
 
@@ -1973,8 +1989,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.ListFeedsResponse:
@@ -2034,7 +2051,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.ListSavedQueriesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.ListSavedQueriesResponse:
             r"""Call the list saved queries method over HTTP.
 
@@ -2044,8 +2061,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.ListSavedQueriesResponse:
@@ -2106,7 +2124,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.QueryAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.QueryAssetsResponse:
             r"""Call the query assets method over HTTP.
 
@@ -2116,8 +2134,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.QueryAssetsResponse:
@@ -2179,7 +2198,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.SearchAllIamPoliciesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.SearchAllIamPoliciesResponse:
             r"""Call the search all iam policies method over HTTP.
 
@@ -2189,8 +2208,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.SearchAllIamPoliciesResponse:
@@ -2250,7 +2270,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.SearchAllResourcesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.SearchAllResourcesResponse:
             r"""Call the search all resources method over HTTP.
 
@@ -2260,8 +2280,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.SearchAllResourcesResponse:
@@ -2322,7 +2343,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.UpdateFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.Feed:
             r"""Call the update feed method over HTTP.
 
@@ -2332,8 +2353,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.Feed:
@@ -2404,7 +2426,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 request: asset_service.UpdateSavedQueryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.SavedQuery:
             r"""Call the update saved query method over HTTP.
 
@@ -2414,8 +2436,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 ~.asset_service.SavedQuery:
@@ -2667,7 +2690,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             request: operations_pb2.GetOperationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> operations_pb2.Operation:
 
             r"""Call the get operation method over HTTP.
@@ -2678,8 +2701,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                    sent along with the request as metadata. If the metadata key has
+                    suffix `-bin`, the value must be bytes.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.

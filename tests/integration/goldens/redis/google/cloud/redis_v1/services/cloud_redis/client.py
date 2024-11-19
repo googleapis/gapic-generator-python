@@ -610,7 +610,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             parent: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.ListInstancesPager:
         r"""Lists all Redis instances owned by a project in either the
         specified location (region) or all locations.
@@ -666,8 +666,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.cloud.redis_v1.services.cloud_redis.pagers.ListInstancesPager:
@@ -738,7 +739,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
 
@@ -783,8 +784,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.cloud.redis_v1.types.Instance:
@@ -839,7 +841,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> cloud_redis.InstanceAuthString:
         r"""Gets the AUTH string for a Redis instance. If AUTH is
         not enabled for the instance the response will be empty.
@@ -887,8 +889,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.cloud.redis_v1.types.InstanceAuthString:
@@ -945,7 +948,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             instance: Optional[cloud_redis.Instance] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation.Operation:
         r"""Creates a Redis instance based on the specified tier and memory
         size.
@@ -1034,8 +1037,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1108,7 +1112,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             instance: Optional[cloud_redis.Instance] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation.Operation:
         r"""Updates the metadata and configuration of a specific
         Redis instance.
@@ -1181,8 +1185,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1253,7 +1258,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             redis_version: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation.Operation:
         r"""Upgrades Redis instance to the newer Redis version
         specified in the request.
@@ -1311,8 +1316,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1383,7 +1389,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             input_config: Optional[cloud_redis.InputConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation.Operation:
         r"""Import a Redis RDB snapshot file from Cloud Storage
         into a Redis instance.
@@ -1451,8 +1457,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1523,7 +1530,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             output_config: Optional[cloud_redis.OutputConfig] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation.Operation:
         r"""Export Redis instance data into a Redis RDB format
         file in Cloud Storage.
@@ -1588,8 +1595,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1660,7 +1668,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             data_protection_mode: Optional[cloud_redis.FailoverInstanceRequest.DataProtectionMode] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation.Operation:
         r"""Initiates a failover of the primary node to current
         replica node for a specific STANDARD tier Cloud
@@ -1719,8 +1727,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1790,7 +1799,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             name: Optional[str] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation.Operation:
         r"""Deletes a specific Redis instance.  Instance stops
         serving and data is deleted.
@@ -1840,8 +1849,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1918,7 +1928,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             schedule_time: Optional[timestamp_pb2.Timestamp] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation.Operation:
         r"""Reschedule maintenance for a given instance in a
         given project and location.
@@ -1984,8 +1994,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
 
         Returns:
             google.api_core.operation.Operation:
@@ -2070,7 +2081,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
 
@@ -2081,8 +2092,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         Returns:
             ~.operations_pb2.ListOperationsResponse:
                 Response message for ``ListOperations`` method.
@@ -2120,7 +2132,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
 
@@ -2131,8 +2143,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         Returns:
             ~.operations_pb2.Operation:
                 An ``Operation`` object.
@@ -2170,7 +2183,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
 
@@ -2186,8 +2199,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         Returns:
             None
         """
@@ -2220,7 +2234,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
 
@@ -2235,8 +2249,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         Returns:
             None
         """
@@ -2269,7 +2284,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.Operation:
         r"""Waits until the specified long-running operation is done or reaches at most
         a specified timeout, returning the latest state.
@@ -2286,8 +2301,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         Returns:
             ~.operations_pb2.Operation:
                 An ``Operation`` object.
@@ -2325,7 +2341,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
 
@@ -2336,8 +2352,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         Returns:
             ~.location_pb2.Location:
                 Location object.
@@ -2375,7 +2392,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
 
@@ -2386,8 +2403,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         Returns:
             ~.location_pb2.ListLocationsResponse:
                 Response message for ``ListLocations`` method.

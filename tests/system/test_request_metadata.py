@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google import showcase
+import pytest
 
+from google import showcase
 
 def test_metadata_string(echo):
     echo.echo(
@@ -27,9 +28,6 @@ def test_metadata_string(echo):
 
 
 def test_metadata_binary(echo):
-    # See https://github.com/googleapis/gapic-generator-python/issues/2250
-    # When the metadata key ends in `-bin`, the value should be of type
-    # `bytes`` rather than `str``.
     echo.echo(
         showcase.EchoRequest(
             content="The hail in Wales falls mainly on the snails.",
@@ -38,3 +36,18 @@ def test_metadata_binary(echo):
         ),
         metadata=[('some-key-bin', b'some_value')]
     )
+
+    if isinstance(echo.transport, type(echo).get_transport_class("grpc")):            
+        # See https://github.com/googleapis/gapic-generator-python/issues/2250
+        # and https://github.com/grpc/grpc/pull/38127.
+        # When the metadata key ends in `-bin`, the value should be of type
+        # `bytes`` rather than `str``. Otherwise, gRPC raises a TypeError.
+        with pytest.raises(TypeError, match="(?i)expected bytes"):
+            echo.echo(
+                showcase.EchoRequest(
+                    content="The hail in Wales falls mainly on the snails.",
+                    request_id="some_value",
+                    other_request_id="",
+                ),
+                metadata=[('some-key-bin', 'some_value')]
+            )

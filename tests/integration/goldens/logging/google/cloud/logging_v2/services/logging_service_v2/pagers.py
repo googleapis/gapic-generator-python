@@ -53,7 +53,7 @@ class ListLogEntriesPager:
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = ()):
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -66,8 +66,9 @@ class ListLogEntriesPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         """
         self._method = method
         self._request = logging.ListLogEntriesRequest(request)
@@ -119,7 +120,7 @@ class ListLogEntriesAsyncPager:
             *,
             retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = ()):
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -132,8 +133,9 @@ class ListLogEntriesAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         """
         self._method = method
         self._request = logging.ListLogEntriesRequest(request)
@@ -188,7 +190,7 @@ class ListMonitoredResourceDescriptorsPager:
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = ()):
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -201,8 +203,9 @@ class ListMonitoredResourceDescriptorsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         """
         self._method = method
         self._request = logging.ListMonitoredResourceDescriptorsRequest(request)
@@ -254,7 +257,7 @@ class ListMonitoredResourceDescriptorsAsyncPager:
             *,
             retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = ()):
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -267,8 +270,9 @@ class ListMonitoredResourceDescriptorsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         """
         self._method = method
         self._request = logging.ListMonitoredResourceDescriptorsRequest(request)
@@ -323,7 +327,7 @@ class ListLogsPager:
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = ()):
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -336,8 +340,9 @@ class ListLogsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         """
         self._method = method
         self._request = logging.ListLogsRequest(request)
@@ -389,7 +394,7 @@ class ListLogsAsyncPager:
             *,
             retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, str]] = ()):
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
         """Instantiates the pager.
 
         Args:
@@ -402,8 +407,9 @@ class ListLogsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
+                sent along with the request as metadata. If the metadata key has
+                suffix `-bin`, the value must be bytes.
         """
         self._method = method
         self._request = logging.ListLogsRequest(request)
