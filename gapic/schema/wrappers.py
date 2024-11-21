@@ -389,6 +389,28 @@ class Field:
             meta=self.meta.with_context(collisions=collisions),
         )
 
+    def build_address_allowlist_for_selective_gapic(self, *,
+                                                    address_allowlist: Set['metadata.Address'],
+                                                    resource_messages: Dict[str, 'MessageType']) -> None:
+        if self.message:
+            self.message.build_address_allowlist_for_selective_gapic(
+                address_allowlist=address_allowlist,
+                resource_messages=resource_messages,
+            )
+
+        if self.enum:
+            self.enum.build_address_allowlist_for_selective_gapic(
+                address_allowlist=address_allowlist,
+            )
+        
+        if self.resource_reference and self.resource_reference in resource_messages:
+            # The message types in resource_message are different objects, but should be
+            # defined the same as the MessageTypes we're traversing here.
+            resource_messages[self.resource_reference].build_address_allowlist_for_selective_gapic(
+                address_allowlist=address_allowlist,
+                resource_messages=resource_messages,
+            )
+
 
 @dataclasses.dataclass(frozen=True)
 class FieldHeader:
@@ -759,6 +781,29 @@ class MessageType:
             },
             meta=self.meta.with_context(collisions=collisions),
         )
+    
+    def build_address_allowlist_for_selective_gapic(self, *,
+                                                    address_allowlist: Set['metadata.Address'],
+                                                    resource_messages: Dict[str, 'MessageType']):
+        if self.ident not in address_allowlist:
+            address_allowlist.add(self.ident)
+
+            for field in self.fields.values():
+                field.build_address_allowlist_for_selective_gapic(
+                    address_allowlist=address_allowlist,
+                    resource_messages=resource_messages
+                )
+            
+            for enum in self.nested_enums.values():
+                enum.build_address_allowlist_for_selective_gapic(
+                    address_allowlist=address_allowlist,
+                )
+            
+            for message in self.nested_messages.values():
+                message.build_address_allowlist_for_selective_gapic(
+                    address_allowlist=address_allowlist,
+                    resource_messages=resource_messages,
+                )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -812,6 +857,10 @@ class EnumType:
             self,
             meta=self.meta.with_context(collisions=collisions),
         ) if collisions else self
+
+    def build_address_allowlist_for_selective_gapic(self, *,
+                                                    address_allowlist: Set['metadata.Address']) -> None:
+        address_allowlist.add(self.ident)
 
     @property
     def options_dict(self) -> Dict:
@@ -916,6 +965,19 @@ class ExtendedOperationInfo:
                 visited_messages=visited_messages,
             ),
         )
+    
+    def build_address_allowlist_for_selective_gapic(self, *,
+                                                    address_allowlist: Set['metadata.Address'],
+                                                    resource_messages: Dict[str, 'MessageType']) -> None:
+        
+        self.request_type.build_address_allowlist_for_selective_gapic(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages,
+        )
+        self.operation_type.build_address_allowlist_for_selective_gapic(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages,
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -944,6 +1006,20 @@ class OperationInfo:
                 collisions=collisions,
                 visited_messages=visited_messages,
             ),
+        )
+
+    def build_address_allowlist_for_selective_gapic(self, *,
+                                                    address_allowlist: Set['metadata.Address'],
+                                                    resource_messages: Dict[str, 'MessageType']) -> None:
+        """Build an allowlist of addresses of services/methods/messages/enums that will be included in selective GAPIC."""
+        self.response_type.build_address_allowlist_for_selective_gapic(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages,
+        )
+
+        self.metadata_type.build_address_allowlist_for_selective_gapic(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages
         )
 
 
@@ -1679,6 +1755,44 @@ class Method:
             meta=self.meta.with_context(collisions=collisions),
         )
 
+    def build_address_allowlist_for_selective_gapic(self, *,
+                                                    address_allowlist: Set['metadata.Address'],
+                                                    resource_messages: Dict[str, 'MessageType'],
+                                                    services_in_proto: Dict[str, 'Service'],
+                                                    ) -> None:
+        address_allowlist.add(self.ident)
+
+        if self.lro:
+            self.lro.build_address_allowlist_for_selective_gapic(address_allowlist=address_allowlist,
+                                                                 resource_messages=resource_messages)
+        
+        if self.extended_lro:
+            # We need to add the service/method pointed to by self.operation_service to 
+            # the allowlist, as it might not have been specified by selective_gapic_generation.
+            # We assume that the operation service lives in the same proto as this one.
+            operation_service = services_in_proto[self.operation_service]
+            address_allowlist.add(operation_service.meta.address)
+            operation_service.operation_polling_method.build_address_allowlist_for_selective_gapic(
+                address_allowlist=address_allowlist,
+                resource_messages=resource_messages,
+                services_in_proto=services_in_proto,
+            )
+
+            self.extended_lro.build_address_allowlist_for_selective_gapic(
+                address_allowlist=address_allowlist,
+                resource_messages=resource_messages,
+            )
+        
+        self.input.build_address_allowlist_for_selective_gapic(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages,
+        )
+
+        self.output.build_address_allowlist_for_selective_gapic(
+            address_allowlist=address_allowlist,
+            resource_messages=resource_messages,
+        )
+
 
 @dataclasses.dataclass(frozen=True)
 class CommonResource:
@@ -1993,4 +2107,41 @@ class Service:
                 for k, v in self.methods.items()
             },
             meta=self.meta.with_context(collisions=collisions),
+        )
+
+    def build_address_allowlist_for_selective_gapic(self, *,
+                                                    method_names: Iterable[str],
+                                                    address_allowlist: Set['metadata.Address'],
+                                                    resource_messages: Dict[str, 'MessageType'],
+                                                    services_in_proto: Dict[str, 'Service'],
+                                                    ) -> None:
+        """Builds a set of metadata addresses for objects to be included in selective GAPIC generation. """
+
+        for method in self.methods.values():
+            if method.ident.proto in method_names:
+                # Include this service if there are any types/methods in selective gapic for this service.
+                address_allowlist.add(self.meta.address)
+                method.build_address_allowlist_for_selective_gapic(
+                    address_allowlist=address_allowlist,
+                    resource_messages=resource_messages,
+                    services_in_proto=services_in_proto,
+                )
+
+    
+    def prune_messages_for_selective_gapic(self, *,
+                                           address_allowlist: Set['metadata.Address']) -> 'Service':
+        """Returns a truncated version of this Service.
+        
+        Only the methods, messages, and enums contained in the allowlist
+        of visited addresses are included in the returned object.
+        """
+        # Since the API/Proto level dataclass attributes only go down to the method
+        # level from the top level services, and not any deeper in the schema tree
+        # (all_messages and all_enums are different objects), we can stop here.
+        return dataclasses.replace(
+            self,
+            methods={
+                k: v
+                for k, v in self.methods.items() if v.ident in address_allowlist
+            }
         )
