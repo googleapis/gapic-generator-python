@@ -527,11 +527,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         # Setup logging.
         try:
-            from google.api_core.client_logging import setup_logging
-            # setup_logging(log_level=self._log_level)
-            setup_logging(namespace=self._log_system)
+            from google.api_core.client_logging import initialize_logging
+            initialize_logging()
         except ImportError:
-            # do nothing
             pass
 
         api_key_value = getattr(self._client_options, "api_key", None)
@@ -625,7 +623,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.info(" {{ service.client_name }} client is successfully constructed.", extra={"json_fields": {}})
+        _LOGGER.debug(" {{ service.client_name }} client is successfully constructed.")
 
 
     {% for method in service.methods.values() %}

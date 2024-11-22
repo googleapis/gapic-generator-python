@@ -48,6 +48,13 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 
+import logging
+try:
+    from google.api_core.client_logging import REQUEST_MESSAGE, RESPONSE_MESSAGE
+except ImportError:
+    REQUEST_MESSAGE = None
+    RESPONSE_MESSAGE = None
+
 import json  # type: ignore
 import dataclasses
 from typing import Any, Dict, List, Callable, Tuple, Optional, Sequence, Union
@@ -190,7 +197,6 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             """
 
             {{ shared_macros.rest_call_method_common(body_spec, method.name, service.name, is_async=True)|indent(8) }}
-
             {% if not method.void %}
             # Return the response
             {% if method.server_streaming %}

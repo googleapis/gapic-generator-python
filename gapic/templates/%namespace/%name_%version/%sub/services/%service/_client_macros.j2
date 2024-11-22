@@ -92,7 +92,6 @@
 
         # Fields I can't log here:
         # rest specific fields: method, url, partial headers for REST
-        _LOGGER.debug("request is initiated.", extra={"json_fields": {}})
 
         # Fields I can't log here for response:
         # response headers, status
@@ -209,7 +208,6 @@
         # client options.
         # client info.
         # any other required fields in the design document.
-        _LOGGER.debug("response is received.", extra={"json_fields": {}})
         # Done; return the response.
         return response
         {% endif %}

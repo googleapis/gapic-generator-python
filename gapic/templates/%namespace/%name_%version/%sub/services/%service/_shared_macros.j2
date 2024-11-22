@@ -212,8 +212,16 @@ def _get_http_options():
     # Jsonify the query params
     query_params = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_query_params_json(transcoded_request)
 
+    if REQUEST_MESSAGE:
+        # TODO(<add-link>): Update message to append service called.
+        # TODO(<add-link>): Add additional fields.
+        _LOGGER.debug(f"{REQUEST_MESSAGE}")
     # Send the request
     response = {{ await_prefix }}{{ async_class_prefix }}{{ service_name }}RestTransport._{{method_name}}._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request{% if body_spec %}, body{% endif %})
+    if RESPONSE_MESSAGE:
+        # TODO(<add-link>): Update message to append service called.
+        # TODO(<add-link>): Add additional fields.
+        _LOGGER.debug(f"{RESPONSE_MESSAGE} {{ service_name }}.{{ method_name }}")
 
     # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
     # subclass.

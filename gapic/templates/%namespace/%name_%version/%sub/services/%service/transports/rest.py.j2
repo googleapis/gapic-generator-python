@@ -6,6 +6,12 @@
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 import json  # type: ignore
+try:
+    from google.api_core.client_logging import REQUEST_MESSAGE, RESPONSE_MESSAGE
+except ImportError:
+    REQUEST_MESSAGE = None
+    RESPONSE_MESSAGE = None
+import logging
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -47,6 +53,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
+_LOGGER = logging.getLogger(__name__)
 
 {{ shared_macros.create_interceptor_class(api, service, method, is_async=False) }}
 

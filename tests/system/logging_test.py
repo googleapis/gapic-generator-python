@@ -22,10 +22,16 @@ def construct_echo_client():
     return echo
 
 def construct_identity_client():
-    transport_cls = IdentityClient.get_transport_class("grpc")
+    # transport_cls = IdentityClient.get_transport_class("grpc")
+    # transport = transport_cls(
+    #             credentials=ga_credentials.AnonymousCredentials(),
+    #             channel=grpc.insecure_channel("localhost:7469")
+    #         )
+    transport_cls = IdentityClient.get_transport_class("rest")
     transport = transport_cls(
                 credentials=ga_credentials.AnonymousCredentials(),
-                channel=grpc.insecure_channel("localhost:7469")
+                host="localhost:7469",
+                url_scheme="http",
             )
     
     
@@ -57,7 +63,7 @@ def identity_request(identity):
 
 
 def test_env_var_settings(log_level=""):
-    os.environ["GOOGLE_SDK_PYTHON_LOGGING_TARGET"] = log_level
+    os.environ["GOOGLE_SDK_PYTHON_LOGGING_SCOPE"] = log_level
     
     # echo request
     echo = construct_echo_client()
@@ -72,6 +78,7 @@ def test_env_var_settings(log_level=""):
 def test_base_logger_settings():
 
     base_logger = logging.getLogger("google")
+    base_logger.propagate = False
     base_logger.setLevel("DEBUG")
     console_handler = logging.StreamHandler()
     formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -146,7 +153,7 @@ def test_structured_log_settings():
 
 def test_root_logger_and_env_var():
 
-    os.environ["GOOGLE_SDK_PYTHON_LOGGING_TARGET"] = "google"
+    os.environ["GOOGLE_SDK_PYTHON_LOGGING_SCOPE"] = "google"
 
     base_logger = logging.getLogger()
     base_logger.setLevel("INFO")
@@ -170,7 +177,7 @@ def test_base_logger_and_env_var():
     # behaviour caused by attaching the streamhandler twice to the logger
     # with namespace = "google".
 
-    os.environ["GOOGLE_SDK_PYTHON_LOGGING_TARGET"] = "google"
+    os.environ["GOOGLE_SDK_PYTHON_LOGGING_SCOPE"] = "google"
 
     base_logger = logging.getLogger("google")
     base_logger.setLevel("INFO")
@@ -190,7 +197,7 @@ def test_base_logger_and_env_var():
 
 def test_module_logger_and_env_var():
 
-    os.environ["GOOGLE_SDK_PYTHON_LOGGING_TARGET"] = "google"
+    os.environ["GOOGLE_SDK_PYTHON_LOGGING_SCOPE"] = "google"
 
     module_logger = logging.getLogger("google.showcase_v1beta1.services.echo")
     module_logger.setLevel("DEBUG")
@@ -243,7 +250,7 @@ Install the changes in from python-api-core:
 # test_env_var_settings(log_level="123")
 
 # Test logger named "google" configured using code. (Expected: logs for google APIs only.)
-# test_base_logger_settings()
+test_base_logger_settings()
 
 # Test root Logger configured using code. (Expected: All logs except google API logs.)
 # test_root_logger_settings()
