@@ -66,7 +66,7 @@ class ListBucketsPager:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                 sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
         self._method = method
@@ -134,7 +134,7 @@ class ListBucketsAsyncPager:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                 sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
         self._method = method
@@ -205,7 +205,7 @@ class ListViewsPager:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                 sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
         self._method = method
@@ -273,7 +273,7 @@ class ListViewsAsyncPager:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                 sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
         self._method = method
@@ -344,7 +344,7 @@ class ListSinksPager:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                 sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
         self._method = method
@@ -412,7 +412,7 @@ class ListSinksAsyncPager:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                 sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
         self._method = method
@@ -483,7 +483,7 @@ class ListLinksPager:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                 sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
         self._method = method
@@ -551,7 +551,7 @@ class ListLinksAsyncPager:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                 sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
         self._method = method
@@ -622,7 +622,7 @@ class ListExclusionsPager:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                 sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
         self._method = method
@@ -690,7 +690,7 @@ class ListExclusionsAsyncPager:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                 sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
         self._method = method

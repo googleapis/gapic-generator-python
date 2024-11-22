@@ -460,5 +460,5 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
 
 {% macro client_method_metadata_argument_doc() %}metadata ({{ client_method_metadata_type() }}): Key/value pairs which should be 
             sent along with the request as metadata. Normally, each value must be of type `str`,
-            but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+            but for metadata keys ending with the suffix `-bin`, the corresponding values must
             be of type `bytes`.{% endmacro %}

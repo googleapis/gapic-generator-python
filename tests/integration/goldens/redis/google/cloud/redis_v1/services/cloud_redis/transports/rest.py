@@ -705,7 +705,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -782,7 +782,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -858,7 +858,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -936,7 +936,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -1013,7 +1013,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -1087,7 +1087,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -1162,7 +1162,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -1239,7 +1239,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -1316,7 +1316,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -1394,7 +1394,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -1472,7 +1472,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -1641,7 +1641,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -1716,7 +1716,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -1791,7 +1791,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
             """
 
@@ -1859,7 +1859,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
             """
 
@@ -1927,7 +1927,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -2002,7 +2002,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
@@ -2078,7 +2078,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 timeout (float): The timeout for this request.
                 metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
                     sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
                     be of type `bytes`.
 
             Returns:
