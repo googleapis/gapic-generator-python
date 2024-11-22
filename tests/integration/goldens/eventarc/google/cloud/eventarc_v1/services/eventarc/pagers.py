@@ -68,9 +68,10 @@ class ListTriggersPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = eventarc.ListTriggersRequest(request)
@@ -135,9 +136,10 @@ class ListTriggersAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = eventarc.ListTriggersRequest(request)
@@ -205,9 +207,10 @@ class ListChannelsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = eventarc.ListChannelsRequest(request)
@@ -272,9 +275,10 @@ class ListChannelsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = eventarc.ListChannelsRequest(request)
@@ -342,9 +346,10 @@ class ListProvidersPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = eventarc.ListProvidersRequest(request)
@@ -409,9 +414,10 @@ class ListProvidersAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = eventarc.ListProvidersRequest(request)
@@ -479,9 +485,10 @@ class ListChannelConnectionsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = eventarc.ListChannelConnectionsRequest(request)
@@ -546,9 +553,10 @@ class ListChannelConnectionsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = eventarc.ListChannelConnectionsRequest(request)

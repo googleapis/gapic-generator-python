@@ -703,9 +703,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -779,9 +780,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -854,9 +856,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -931,9 +934,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1007,9 +1011,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_redis.Instance:
@@ -1080,9 +1085,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_redis.InstanceAuthString:
@@ -1154,9 +1160,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1230,9 +1237,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_redis.ListInstancesResponse:
@@ -1306,9 +1314,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1383,9 +1392,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1460,9 +1470,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1628,9 +1639,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1702,9 +1714,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1776,9 +1789,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseCancelOperation._get_http_options()
@@ -1843,9 +1857,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_http_options()
@@ -1910,9 +1925,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1984,9 +2000,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2059,9 +2076,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from WaitOperation method.

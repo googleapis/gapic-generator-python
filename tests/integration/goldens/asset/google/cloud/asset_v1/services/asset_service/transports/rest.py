@@ -805,9 +805,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.AnalyzeIamPolicyResponse:
@@ -882,9 +883,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -958,9 +960,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.AnalyzeMoveResponse:
@@ -1033,9 +1036,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.AnalyzeOrgPoliciesResponse:
@@ -1109,9 +1113,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.AnalyzeOrgPolicyGovernedAssetsResponse:
@@ -1185,9 +1190,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.AnalyzeOrgPolicyGovernedContainersResponse:
@@ -1259,9 +1265,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.BatchGetAssetsHistoryResponse:
@@ -1333,9 +1340,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.BatchGetEffectiveIamPoliciesResponse:
@@ -1408,9 +1416,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.Feed:
@@ -1491,9 +1500,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.SavedQuery:
@@ -1567,9 +1577,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_http_options()
@@ -1627,9 +1638,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_http_options()
@@ -1688,9 +1700,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1763,9 +1776,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.Feed:
@@ -1843,9 +1857,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.SavedQuery:
@@ -1917,9 +1932,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.ListAssetsResponse:
@@ -1989,9 +2005,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.ListFeedsResponse:
@@ -2061,9 +2078,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.ListSavedQueriesResponse:
@@ -2134,9 +2152,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.QueryAssetsResponse:
@@ -2208,9 +2227,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.SearchAllIamPoliciesResponse:
@@ -2280,9 +2300,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.SearchAllResourcesResponse:
@@ -2353,9 +2374,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.Feed:
@@ -2436,9 +2458,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.SavedQuery:
@@ -2701,9 +2724,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                    sent along with the request as metadata. If the metadata key has
-                    suffix `-bin`, the value must be bytes.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.

@@ -315,9 +315,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.eventarc_v1.types.Trigger:
@@ -420,9 +421,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListTriggersAsyncPager:
@@ -566,9 +568,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -706,9 +709,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -839,9 +843,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -956,9 +961,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.eventarc_v1.types.Channel:
@@ -1067,9 +1073,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListChannelsAsyncPager:
@@ -1210,9 +1217,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1344,9 +1352,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1469,9 +1478,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1587,9 +1597,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.eventarc_v1.types.Provider:
@@ -1692,9 +1703,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListProvidersAsyncPager:
@@ -1809,9 +1821,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.eventarc_v1.types.ChannelConnection:
@@ -1919,9 +1932,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListChannelConnectionsAsyncPager:
@@ -2064,9 +2078,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -2189,9 +2204,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -2306,9 +2322,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.eventarc_v1.types.GoogleChannelConfig:
@@ -2427,9 +2444,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.eventarc_v1.types.GoogleChannelConfig:
@@ -2506,9 +2524,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.operations_pb2.ListOperationsResponse:
                 Response message for ``ListOperations`` method.
@@ -2557,9 +2576,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.operations_pb2.Operation:
                 An ``Operation`` object.
@@ -2613,9 +2633,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             None
         """
@@ -2663,9 +2684,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             None
         """
@@ -2711,9 +2733,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.policy_pb2.Policy:
                 Defines an Identity and Access Management (IAM) policy.
@@ -2829,9 +2852,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if
                 any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.policy_pb2.Policy:
                 Defines an Identity and Access Management (IAM) policy.
@@ -2948,9 +2972,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.iam_policy_pb2.TestIamPermissionsResponse:
                 Response message for ``TestIamPermissions`` method.
@@ -3000,9 +3025,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.location_pb2.Location:
                 Location object.
@@ -3051,9 +3077,10 @@ class EventarcAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Strings which should be
-                sent along with the request as metadata. If the metadata key has
-                suffix `-bin`, the value must be bytes.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for  metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.location_pb2.ListLocationsResponse:
                 Response message for ``ListLocations`` method.
