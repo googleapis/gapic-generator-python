@@ -13434,6 +13434,1014 @@ def test_analyze_org_policy_governed_assets_empty_call_grpc():
         assert args[0] == request_msg
 
 
+def test_list_assets_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.ListAssetsResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.list_assets(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListAssetsPager)
+
+def test_batch_get_assets_history_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.BatchGetAssetsHistoryResponse(
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.batch_get_assets_history(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
+
+def test_create_feed_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.Feed(
+        name='name_value',
+        asset_names=['asset_names_value'],
+        asset_types=['asset_types_value'],
+        content_type=asset_service.ContentType.RESOURCE,
+        relationship_types=['relationship_types_value'],
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.create_feed(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.Feed)
+
+def test_get_feed_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.Feed(
+        name='name_value',
+        asset_names=['asset_names_value'],
+        asset_types=['asset_types_value'],
+        content_type=asset_service.ContentType.RESOURCE,
+        relationship_types=['relationship_types_value'],
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.get_feed(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.Feed)
+
+def test_list_feeds_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.ListFeedsResponse(
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.list_feeds(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.ListFeedsResponse)
+
+def test_update_feed_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.Feed(
+        name='name_value',
+        asset_names=['asset_names_value'],
+        asset_types=['asset_types_value'],
+        content_type=asset_service.ContentType.RESOURCE,
+        relationship_types=['relationship_types_value'],
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.update_feed(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.Feed)
+
+def test_search_all_resources_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.SearchAllResourcesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.search_all_resources(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.SearchAllResourcesPager)
+
+def test_search_all_iam_policies_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.SearchAllIamPoliciesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.search_all_iam_policies(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.SearchAllIamPoliciesPager)
+
+def test_analyze_iam_policy_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.AnalyzeIamPolicyResponse(
+        fully_explored=True,
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.analyze_iam_policy(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
+
+def test_analyze_move_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.AnalyzeMoveResponse(
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.analyze_move(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+def test_query_assets_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.QueryAssetsResponse(
+        job_reference='job_reference_value',
+        done=True,
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.query_assets(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.QueryAssetsResponse)
+
+def test_create_saved_query_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.SavedQuery(
+        name='name_value',
+        description='description_value',
+        creator='creator_value',
+        last_updater='last_updater_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.create_saved_query(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.SavedQuery)
+
+def test_get_saved_query_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.SavedQuery(
+        name='name_value',
+        description='description_value',
+        creator='creator_value',
+        last_updater='last_updater_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.get_saved_query(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.SavedQuery)
+
+def test_list_saved_queries_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.ListSavedQueriesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.list_saved_queries(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListSavedQueriesPager)
+
+def test_update_saved_query_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.SavedQuery(
+        name='name_value',
+        description='description_value',
+        creator='creator_value',
+        last_updater='last_updater_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.update_saved_query(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.SavedQuery)
+
+def test_batch_get_effective_iam_policies_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.BatchGetEffectiveIamPoliciesResponse(
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.batch_get_effective_iam_policies(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+def test_analyze_org_policies_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.AnalyzeOrgPoliciesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.analyze_org_policies(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
+
+def test_analyze_org_policy_governed_containers_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.analyze_org_policy_governed_containers(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
+
+def test_analyze_org_policy_governed_assets_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.analyze_org_policy_governed_assets(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
+
+
+def test_list_assets_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.ListAssetsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_assets(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListAssetsPager)
+
+def test_batch_get_assets_history_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.BatchGetAssetsHistoryResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.batch_get_assets_history(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
+
+def test_create_feed_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.Feed()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.create_feed(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.Feed)
+
+def test_get_feed_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.Feed()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_feed(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.Feed)
+
+def test_list_feeds_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.ListFeedsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_feeds(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.ListFeedsResponse)
+
+def test_update_feed_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.Feed()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.update_feed(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.Feed)
+
+def test_search_all_resources_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.SearchAllResourcesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.search_all_resources(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.SearchAllResourcesPager)
+
+def test_search_all_iam_policies_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.SearchAllIamPoliciesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.search_all_iam_policies(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.SearchAllIamPoliciesPager)
+
+def test_analyze_iam_policy_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.AnalyzeIamPolicyResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.analyze_iam_policy(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
+
+def test_analyze_move_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.AnalyzeMoveResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.analyze_move(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+def test_query_assets_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.QueryAssetsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.query_assets(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.QueryAssetsResponse)
+
+def test_create_saved_query_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.SavedQuery()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.create_saved_query(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.SavedQuery)
+
+def test_get_saved_query_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.SavedQuery()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_saved_query(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.SavedQuery)
+
+def test_list_saved_queries_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.ListSavedQueriesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_saved_queries(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListSavedQueriesPager)
+
+def test_update_saved_query_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.SavedQuery()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.update_saved_query(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.SavedQuery)
+
+def test_batch_get_effective_iam_policies_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.batch_get_effective_iam_policies(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+def test_analyze_org_policies_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.analyze_org_policies(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
+
+def test_analyze_org_policy_governed_containers_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.analyze_org_policy_governed_containers(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
+
+def test_analyze_org_policy_governed_assets_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.analyze_org_policy_governed_assets(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
+
+
 def test_transport_kind_grpc_asyncio():
     transport = AssetServiceAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -14082,6 +15090,1071 @@ async def test_analyze_org_policy_governed_assets_empty_call_grpc_asyncio():
         request_msg = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
 
         assert args[0] == request_msg
+
+
+@pytest.mark.asyncio
+async def test_list_assets_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.ListAssetsResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.list_assets), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.list_assets(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListAssetsAsyncPager)
+
+@pytest.mark.asyncio
+async def test_batch_get_assets_history_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.BatchGetAssetsHistoryResponse(
+    )
+    with mock.patch.object(
+        type(client.transport.batch_get_assets_history), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.batch_get_assets_history(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
+
+@pytest.mark.asyncio
+async def test_create_feed_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.Feed(
+        name='name_value',
+        asset_names=['asset_names_value'],
+        asset_types=['asset_types_value'],
+        content_type=asset_service.ContentType.RESOURCE,
+        relationship_types=['relationship_types_value'],
+    )
+    with mock.patch.object(
+        type(client.transport.create_feed), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.create_feed(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.Feed)
+
+@pytest.mark.asyncio
+async def test_get_feed_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.Feed(
+        name='name_value',
+        asset_names=['asset_names_value'],
+        asset_types=['asset_types_value'],
+        content_type=asset_service.ContentType.RESOURCE,
+        relationship_types=['relationship_types_value'],
+    )
+    with mock.patch.object(
+        type(client.transport.get_feed), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_feed(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.Feed)
+
+@pytest.mark.asyncio
+async def test_list_feeds_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.ListFeedsResponse(
+    )
+    with mock.patch.object(
+        type(client.transport.list_feeds), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.list_feeds(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.ListFeedsResponse)
+
+@pytest.mark.asyncio
+async def test_update_feed_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.Feed(
+        name='name_value',
+        asset_names=['asset_names_value'],
+        asset_types=['asset_types_value'],
+        content_type=asset_service.ContentType.RESOURCE,
+        relationship_types=['relationship_types_value'],
+    )
+    with mock.patch.object(
+        type(client.transport.update_feed), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.update_feed(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.Feed)
+
+@pytest.mark.asyncio
+async def test_search_all_resources_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.SearchAllResourcesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.search_all_resources), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.search_all_resources(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.SearchAllResourcesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_search_all_iam_policies_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.SearchAllIamPoliciesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.search_all_iam_policies), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.search_all_iam_policies(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.SearchAllIamPoliciesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_analyze_iam_policy_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.AnalyzeIamPolicyResponse(
+        fully_explored=True,
+    )
+    with mock.patch.object(
+        type(client.transport.analyze_iam_policy), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.analyze_iam_policy(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
+
+@pytest.mark.asyncio
+async def test_analyze_move_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.AnalyzeMoveResponse(
+    )
+    with mock.patch.object(
+        type(client.transport.analyze_move), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.analyze_move(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+@pytest.mark.asyncio
+async def test_query_assets_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.QueryAssetsResponse(
+        job_reference='job_reference_value',
+        done=True,
+    )
+    with mock.patch.object(
+        type(client.transport.query_assets), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.query_assets(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.QueryAssetsResponse)
+
+@pytest.mark.asyncio
+async def test_create_saved_query_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.SavedQuery(
+        name='name_value',
+        description='description_value',
+        creator='creator_value',
+        last_updater='last_updater_value',
+    )
+    with mock.patch.object(
+        type(client.transport.create_saved_query), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.create_saved_query(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.SavedQuery)
+
+@pytest.mark.asyncio
+async def test_get_saved_query_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.SavedQuery(
+        name='name_value',
+        description='description_value',
+        creator='creator_value',
+        last_updater='last_updater_value',
+    )
+    with mock.patch.object(
+        type(client.transport.get_saved_query), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_saved_query(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.SavedQuery)
+
+@pytest.mark.asyncio
+async def test_list_saved_queries_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.ListSavedQueriesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.list_saved_queries), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.list_saved_queries(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListSavedQueriesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_update_saved_query_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.SavedQuery(
+        name='name_value',
+        description='description_value',
+        creator='creator_value',
+        last_updater='last_updater_value',
+    )
+    with mock.patch.object(
+        type(client.transport.update_saved_query), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.update_saved_query(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.SavedQuery)
+
+@pytest.mark.asyncio
+async def test_batch_get_effective_iam_policies_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.BatchGetEffectiveIamPoliciesResponse(
+    )
+    with mock.patch.object(
+        type(client.transport.batch_get_effective_iam_policies), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.batch_get_effective_iam_policies(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.AnalyzeOrgPoliciesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.analyze_org_policies(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.AnalyzeOrgPoliciesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.analyze_org_policy_governed_containers(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager)
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.analyze_org_policy_governed_assets(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager)
+
+
+@pytest.mark.asyncio
+async def test_list_assets_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.list_assets), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListAssetsResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.list_assets(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListAssetsAsyncPager)
+
+@pytest.mark.asyncio
+async def test_batch_get_assets_history_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.batch_get_assets_history), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetAssetsHistoryResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.batch_get_assets_history(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
+
+@pytest.mark.asyncio
+async def test_create_feed_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.create_feed), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.create_feed(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.Feed)
+
+@pytest.mark.asyncio
+async def test_get_feed_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_feed), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_feed(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.Feed)
+
+@pytest.mark.asyncio
+async def test_list_feeds_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.list_feeds), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListFeedsResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.list_feeds(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.ListFeedsResponse)
+
+@pytest.mark.asyncio
+async def test_update_feed_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.update_feed), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.update_feed(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.Feed)
+
+@pytest.mark.asyncio
+async def test_search_all_resources_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.search_all_resources), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllResourcesResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.search_all_resources(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.SearchAllResourcesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_search_all_iam_policies_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.search_all_iam_policies), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllIamPoliciesResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.search_all_iam_policies(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.SearchAllIamPoliciesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_analyze_iam_policy_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.analyze_iam_policy), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeIamPolicyResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.analyze_iam_policy(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
+
+@pytest.mark.asyncio
+async def test_analyze_move_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.analyze_move), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeMoveResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.analyze_move(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+@pytest.mark.asyncio
+async def test_query_assets_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.query_assets), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.QueryAssetsResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.query_assets(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.QueryAssetsResponse)
+
+@pytest.mark.asyncio
+async def test_create_saved_query_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.create_saved_query), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.create_saved_query(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.SavedQuery)
+
+@pytest.mark.asyncio
+async def test_get_saved_query_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_saved_query), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_saved_query(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.SavedQuery)
+
+@pytest.mark.asyncio
+async def test_list_saved_queries_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.list_saved_queries), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.list_saved_queries(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListSavedQueriesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_update_saved_query_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.update_saved_query), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.update_saved_query(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.SavedQuery)
+
+@pytest.mark.asyncio
+async def test_batch_get_effective_iam_policies_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.batch_get_effective_iam_policies), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetEffectiveIamPoliciesResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.batch_get_effective_iam_policies(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.analyze_org_policies), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPoliciesResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.analyze_org_policies(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.AnalyzeOrgPoliciesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_containers), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.analyze_org_policy_governed_containers(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager)
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.analyze_org_policy_governed_assets), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.analyze_org_policy_governed_assets(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager)
 
 
 def test_transport_kind_rest():
@@ -17062,6 +19135,1342 @@ def test_analyze_org_policy_governed_assets_empty_call_rest():
         assert args[0] == request_msg
 
 
+def test_list_assets_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.ListAssetsResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.ListAssetsRequest.pb(asset_service.ListAssetsRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.ListAssetsResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.list_assets(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.ListAssetsPager)
+
+def test_batch_get_assets_history_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.BatchGetAssetsHistoryResponse(
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.BatchGetAssetsHistoryRequest.pb(asset_service.BatchGetAssetsHistoryRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.BatchGetAssetsHistoryResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.batch_get_assets_history(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
+
+def test_create_feed_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.Feed(
+        name='name_value',
+        asset_names=['asset_names_value'],
+        asset_types=['asset_types_value'],
+        content_type=asset_service.ContentType.RESOURCE,
+        relationship_types=['relationship_types_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.CreateFeedRequest.pb(asset_service.CreateFeedRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "post",
+            'query_params': pb_request,
+        }
+        transcode_result['body'] = pb_request
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.Feed.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.create_feed(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.Feed)
+
+def test_get_feed_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.Feed(
+        name='name_value',
+        asset_names=['asset_names_value'],
+        asset_types=['asset_types_value'],
+        content_type=asset_service.ContentType.RESOURCE,
+        relationship_types=['relationship_types_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.GetFeedRequest.pb(asset_service.GetFeedRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.Feed.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.get_feed(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.Feed)
+
+def test_list_feeds_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.ListFeedsResponse(
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.ListFeedsRequest.pb(asset_service.ListFeedsRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.ListFeedsResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.list_feeds(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.ListFeedsResponse)
+
+def test_update_feed_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.Feed(
+        name='name_value',
+        asset_names=['asset_names_value'],
+        asset_types=['asset_types_value'],
+        content_type=asset_service.ContentType.RESOURCE,
+        relationship_types=['relationship_types_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.UpdateFeedRequest.pb(asset_service.UpdateFeedRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "patch",
+            'query_params': pb_request,
+        }
+        transcode_result['body'] = pb_request
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.Feed.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.update_feed(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.Feed)
+
+def test_search_all_resources_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.SearchAllResourcesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.SearchAllResourcesRequest.pb(asset_service.SearchAllResourcesRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.SearchAllResourcesResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.search_all_resources(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.SearchAllResourcesPager)
+
+def test_search_all_iam_policies_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.SearchAllIamPoliciesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.SearchAllIamPoliciesRequest.pb(asset_service.SearchAllIamPoliciesRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.SearchAllIamPoliciesResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.search_all_iam_policies(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.SearchAllIamPoliciesPager)
+
+def test_analyze_iam_policy_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.AnalyzeIamPolicyResponse(
+        fully_explored=True,
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.AnalyzeIamPolicyRequest.pb(asset_service.AnalyzeIamPolicyRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.AnalyzeIamPolicyResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.analyze_iam_policy(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
+
+def test_analyze_move_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.AnalyzeMoveResponse(
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.AnalyzeMoveRequest.pb(asset_service.AnalyzeMoveRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.AnalyzeMoveResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.analyze_move(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+def test_query_assets_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.QueryAssetsResponse(
+        job_reference='job_reference_value',
+        done=True,
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.QueryAssetsRequest.pb(asset_service.QueryAssetsRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "post",
+            'query_params': pb_request,
+        }
+        transcode_result['body'] = pb_request
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.QueryAssetsResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.query_assets(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.QueryAssetsResponse)
+
+def test_create_saved_query_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.SavedQuery(
+        name='name_value',
+        description='description_value',
+        creator='creator_value',
+        last_updater='last_updater_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.CreateSavedQueryRequest.pb(asset_service.CreateSavedQueryRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "post",
+            'query_params': pb_request,
+        }
+        transcode_result['body'] = pb_request
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.SavedQuery.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.create_saved_query(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.SavedQuery)
+
+def test_get_saved_query_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.SavedQuery(
+        name='name_value',
+        description='description_value',
+        creator='creator_value',
+        last_updater='last_updater_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.GetSavedQueryRequest.pb(asset_service.GetSavedQueryRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.SavedQuery.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.get_saved_query(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.SavedQuery)
+
+def test_list_saved_queries_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.ListSavedQueriesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.ListSavedQueriesRequest.pb(asset_service.ListSavedQueriesRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.ListSavedQueriesResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.list_saved_queries(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.ListSavedQueriesPager)
+
+def test_update_saved_query_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.SavedQuery(
+        name='name_value',
+        description='description_value',
+        creator='creator_value',
+        last_updater='last_updater_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.UpdateSavedQueryRequest.pb(asset_service.UpdateSavedQueryRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "patch",
+            'query_params': pb_request,
+        }
+        transcode_result['body'] = pb_request
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.SavedQuery.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.update_saved_query(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.SavedQuery)
+
+def test_batch_get_effective_iam_policies_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.BatchGetEffectiveIamPoliciesResponse(
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.BatchGetEffectiveIamPoliciesRequest.pb(asset_service.BatchGetEffectiveIamPoliciesRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.batch_get_effective_iam_policies(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+def test_analyze_org_policies_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.AnalyzeOrgPoliciesResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.AnalyzeOrgPoliciesRequest.pb(asset_service.AnalyzeOrgPoliciesRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.AnalyzeOrgPoliciesResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.analyze_org_policies(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
+
+def test_analyze_org_policy_governed_containers_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest.pb(asset_service.AnalyzeOrgPolicyGovernedContainersRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.analyze_org_policy_governed_containers(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
+
+def test_analyze_org_policy_governed_assets_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.pb(asset_service.AnalyzeOrgPolicyGovernedAssetsRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.analyze_org_policy_governed_assets(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
+
+
+def test_list_assets_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.ListAssetsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_assets(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListAssetsPager)
+
+def test_batch_get_assets_history_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.BatchGetAssetsHistoryResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.batch_get_assets_history(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
+
+def test_create_feed_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.Feed()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.create_feed(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.Feed)
+
+def test_get_feed_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.Feed()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_feed(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.Feed)
+
+def test_list_feeds_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.ListFeedsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_feeds(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.ListFeedsResponse)
+
+def test_update_feed_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.Feed()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.update_feed(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.Feed)
+
+def test_search_all_resources_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.SearchAllResourcesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.search_all_resources(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.SearchAllResourcesPager)
+
+def test_search_all_iam_policies_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.SearchAllIamPoliciesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.search_all_iam_policies(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.SearchAllIamPoliciesPager)
+
+def test_analyze_iam_policy_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.AnalyzeIamPolicyResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.analyze_iam_policy(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
+
+def test_analyze_move_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.AnalyzeMoveResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.analyze_move(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+def test_query_assets_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.QueryAssetsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.query_assets(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.QueryAssetsResponse)
+
+def test_create_saved_query_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.SavedQuery()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.create_saved_query(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.SavedQuery)
+
+def test_get_saved_query_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.SavedQuery()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_saved_query(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.SavedQuery)
+
+def test_list_saved_queries_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.ListSavedQueriesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_saved_queries(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListSavedQueriesPager)
+
+def test_update_saved_query_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.SavedQuery()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.update_saved_query(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.SavedQuery)
+
+def test_batch_get_effective_iam_policies_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.batch_get_effective_iam_policies(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+def test_analyze_org_policies_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.analyze_org_policies(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
+
+def test_analyze_org_policy_governed_containers_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.analyze_org_policy_governed_containers(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
+
+def test_analyze_org_policy_governed_assets_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.analyze_org_policy_governed_assets(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
+
+
 def test_asset_service_rest_lro_client():
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17082,6 +20491,7 @@ def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+
     )
     assert isinstance(
         client.transport,

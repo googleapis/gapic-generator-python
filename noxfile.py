@@ -324,6 +324,9 @@ def showcase_library(
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
 
+        # TODO : Remove this once a newer version of google-api-core is published
+        if session.python != "3.7":
+            session.install("google-api-core[grpc] @ git+https://github.com/googleapis/python-api-core.git@async-metadata-call", "--ignore-installed")
         yield tmp_dir
 
 
@@ -339,15 +342,16 @@ def showcase(
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("pytest", "pytest-asyncio")
         test_directory = Path("tests", "system")
-        ignore_file = env.get("IGNORE_FILE")
+        ignore_files = env.get("IGNORE_FILES")
         pytest_command = [
             "py.test",
             "--quiet",
             *(session.posargs or [str(test_directory)]),
         ]
-        if ignore_file:
-            ignore_path = test_directory / ignore_file
-            pytest_command.extend(["--ignore", str(ignore_path)])
+        if ignore_files:
+            for ignore_file in ignore_files.split(","):
+                ignore_path = test_directory / ignore_file
+                pytest_command.extend(["--ignore", str(ignore_path)])
 
         session.run(
             *pytest_command,
@@ -418,7 +422,7 @@ def showcase_alternative_templates(session):
         session,
         templates=templates,
         other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
+        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILES": "test_universe_domain.py,test_request_metadata.py"},
     )
 
 

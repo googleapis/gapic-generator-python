@@ -894,6 +894,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the create channel method over HTTP.
 
@@ -938,7 +939,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_channel(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _CreateChannelConnection(_BaseEventarcRestTransport._BaseCreateChannelConnection, EventarcRestStub):
         def __hash__(self):
@@ -972,6 +976,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the create channel connection method over HTTP.
 
@@ -1016,7 +1021,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_channel_connection(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _CreateTrigger(_BaseEventarcRestTransport._BaseCreateTrigger, EventarcRestStub):
         def __hash__(self):
@@ -1050,6 +1058,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the create trigger method over HTTP.
 
@@ -1094,7 +1103,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_trigger(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _DeleteChannel(_BaseEventarcRestTransport._BaseDeleteChannel, EventarcRestStub):
         def __hash__(self):
@@ -1127,6 +1139,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the delete channel method over HTTP.
 
@@ -1169,7 +1182,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_channel(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _DeleteChannelConnection(_BaseEventarcRestTransport._BaseDeleteChannelConnection, EventarcRestStub):
         def __hash__(self):
@@ -1202,6 +1218,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the delete channel connection method over HTTP.
 
@@ -1244,7 +1261,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_channel_connection(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _DeleteTrigger(_BaseEventarcRestTransport._BaseDeleteTrigger, EventarcRestStub):
         def __hash__(self):
@@ -1277,6 +1297,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the delete trigger method over HTTP.
 
@@ -1319,11 +1340,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_trigger(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetChannel(_BaseEventarcRestTransport._BaseGetChannel, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.GetChannel")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1352,6 +1378,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> channel.Channel:
             r"""Call the get channel method over HTTP.
 
@@ -1401,11 +1428,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_channel(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetChannelConnection(_BaseEventarcRestTransport._BaseGetChannelConnection, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.GetChannelConnection")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1434,6 +1466,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> channel_connection.ChannelConnection:
             r"""Call the get channel connection method over HTTP.
 
@@ -1482,11 +1515,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_channel_connection(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetGoogleChannelConfig(_BaseEventarcRestTransport._BaseGetGoogleChannelConfig, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.GetGoogleChannelConfig")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1515,6 +1553,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> google_channel_config.GoogleChannelConfig:
             r"""Call the get google channel config method over HTTP.
 
@@ -1564,11 +1603,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_google_channel_config(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetProvider(_BaseEventarcRestTransport._BaseGetProvider, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.GetProvider")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1597,6 +1641,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> discovery.Provider:
             r"""Call the get provider method over HTTP.
 
@@ -1640,11 +1685,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_provider(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetTrigger(_BaseEventarcRestTransport._BaseGetTrigger, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.GetTrigger")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1673,6 +1723,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> trigger.Trigger:
             r"""Call the get trigger method over HTTP.
 
@@ -1716,11 +1767,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_trigger(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ListChannelConnections(_BaseEventarcRestTransport._BaseListChannelConnections, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListChannelConnections")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1749,6 +1805,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> eventarc.ListChannelConnectionsResponse:
             r"""Call the list channel connections method over HTTP.
 
@@ -1792,11 +1849,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_channel_connections(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ListChannels(_BaseEventarcRestTransport._BaseListChannels, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListChannels")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1825,6 +1887,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> eventarc.ListChannelsResponse:
             r"""Call the list channels method over HTTP.
 
@@ -1866,11 +1929,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_channels(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ListProviders(_BaseEventarcRestTransport._BaseListProviders, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListProviders")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1899,6 +1967,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> eventarc.ListProvidersResponse:
             r"""Call the list providers method over HTTP.
 
@@ -1940,11 +2009,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_providers(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ListTriggers(_BaseEventarcRestTransport._BaseListTriggers, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListTriggers")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1973,6 +2047,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> eventarc.ListTriggersResponse:
             r"""Call the list triggers method over HTTP.
 
@@ -2014,7 +2089,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_triggers(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _UpdateChannel(_BaseEventarcRestTransport._BaseUpdateChannel, EventarcRestStub):
         def __hash__(self):
@@ -2048,6 +2126,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the update channel method over HTTP.
 
@@ -2092,11 +2171,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_channel(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _UpdateGoogleChannelConfig(_BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.UpdateGoogleChannelConfig")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -2126,6 +2210,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> gce_google_channel_config.GoogleChannelConfig:
             r"""Call the update google channel
         config method over HTTP.
@@ -2178,7 +2263,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_google_channel_config(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _UpdateTrigger(_BaseEventarcRestTransport._BaseUpdateTrigger, EventarcRestStub):
         def __hash__(self):
@@ -2212,6 +2300,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the update trigger method over HTTP.
 
@@ -2256,7 +2345,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_trigger(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     @property
     def create_channel_(self) -> Callable[

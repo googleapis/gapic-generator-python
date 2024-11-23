@@ -6846,6 +6846,191 @@ def test_reschedule_maintenance_empty_call_grpc():
         assert args[0] == request_msg
 
 
+def test_list_instances_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = cloud_redis.ListInstancesResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.list_instances(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListInstancesPager)
+
+def test_get_instance_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = cloud_redis.Instance(
+        name='name_value',
+        display_name='display_name_value',
+        location_id='location_id_value',
+        alternative_location_id='alternative_location_id_value',
+        redis_version='redis_version_value',
+        reserved_ip_range='reserved_ip_range_value',
+        secondary_ip_range='secondary_ip_range_value',
+        host='host_value',
+        port=453,
+        current_location_id='current_location_id_value',
+        state=cloud_redis.Instance.State.CREATING,
+        status_message='status_message_value',
+        tier=cloud_redis.Instance.Tier.BASIC,
+        memory_size_gb=1499,
+        authorized_network='authorized_network_value',
+        persistence_iam_identity='persistence_iam_identity_value',
+        connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+        auth_enabled=True,
+        transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+        replica_count=1384,
+        read_endpoint='read_endpoint_value',
+        read_endpoint_port=1920,
+        read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+        customer_managed_key='customer_managed_key_value',
+        suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+        maintenance_version='maintenance_version_value',
+        available_maintenance_versions=['available_maintenance_versions_value'],
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.get_instance(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, cloud_redis.Instance)
+
+def test_get_instance_auth_string_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = cloud_redis.InstanceAuthString(
+        auth_string='auth_string_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.get_instance_auth_string(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, cloud_redis.InstanceAuthString)
+
+
+def test_list_instances_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = cloud_redis.ListInstancesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_instances(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListInstancesPager)
+
+def test_get_instance_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = cloud_redis.Instance()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_instance(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, cloud_redis.Instance)
+
+def test_get_instance_auth_string_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = cloud_redis.InstanceAuthString()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_instance_auth_string(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, cloud_redis.InstanceAuthString)
+
+
 def test_transport_kind_grpc_asyncio():
     transport = CloudRedisAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -7183,6 +7368,200 @@ async def test_reschedule_maintenance_empty_call_grpc_asyncio():
         request_msg = cloud_redis.RescheduleMaintenanceRequest()
 
         assert args[0] == request_msg
+
+
+@pytest.mark.asyncio
+async def test_list_instances_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = cloud_redis.ListInstancesResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(
+        type(client.transport.list_instances), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.list_instances(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListInstancesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_instance_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = cloud_redis.Instance(
+        name='name_value',
+        display_name='display_name_value',
+        location_id='location_id_value',
+        alternative_location_id='alternative_location_id_value',
+        redis_version='redis_version_value',
+        reserved_ip_range='reserved_ip_range_value',
+        secondary_ip_range='secondary_ip_range_value',
+        host='host_value',
+        port=453,
+        current_location_id='current_location_id_value',
+        state=cloud_redis.Instance.State.CREATING,
+        status_message='status_message_value',
+        tier=cloud_redis.Instance.Tier.BASIC,
+        memory_size_gb=1499,
+        authorized_network='authorized_network_value',
+        persistence_iam_identity='persistence_iam_identity_value',
+        connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+        auth_enabled=True,
+        transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+        replica_count=1384,
+        read_endpoint='read_endpoint_value',
+        read_endpoint_port=1920,
+        read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+        customer_managed_key='customer_managed_key_value',
+        suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+        maintenance_version='maintenance_version_value',
+        available_maintenance_versions=['available_maintenance_versions_value'],
+    )
+    with mock.patch.object(
+        type(client.transport.get_instance), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_instance(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, cloud_redis.Instance)
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = cloud_redis.InstanceAuthString(
+        auth_string='auth_string_value',
+    )
+    with mock.patch.object(
+        type(client.transport.get_instance_auth_string), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_instance_auth_string(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, cloud_redis.InstanceAuthString)
+
+
+@pytest.mark.asyncio
+async def test_list_instances_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.list_instances), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.list_instances(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListInstancesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_instance_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_instance), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_instance(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, cloud_redis.Instance)
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_instance_auth_string), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_instance_auth_string(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, cloud_redis.InstanceAuthString)
 
 
 def test_transport_kind_rest():
@@ -9027,6 +9406,242 @@ def test_reschedule_maintenance_empty_call_rest():
         request_msg = cloud_redis.RescheduleMaintenanceRequest()
 
         assert args[0] == request_msg
+
+
+def test_list_instances_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = cloud_redis.ListInstancesResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = cloud_redis.ListInstancesResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.list_instances(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.ListInstancesPager)
+
+def test_get_instance_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = cloud_redis.Instance(
+        name='name_value',
+        display_name='display_name_value',
+        location_id='location_id_value',
+        alternative_location_id='alternative_location_id_value',
+        redis_version='redis_version_value',
+        reserved_ip_range='reserved_ip_range_value',
+        secondary_ip_range='secondary_ip_range_value',
+        host='host_value',
+        port=453,
+        current_location_id='current_location_id_value',
+        state=cloud_redis.Instance.State.CREATING,
+        status_message='status_message_value',
+        tier=cloud_redis.Instance.Tier.BASIC,
+        memory_size_gb=1499,
+        authorized_network='authorized_network_value',
+        persistence_iam_identity='persistence_iam_identity_value',
+        connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+        auth_enabled=True,
+        transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+        replica_count=1384,
+        read_endpoint='read_endpoint_value',
+        read_endpoint_port=1920,
+        read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+        customer_managed_key='customer_managed_key_value',
+        suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+        maintenance_version='maintenance_version_value',
+        available_maintenance_versions=['available_maintenance_versions_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = cloud_redis.Instance.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.get_instance(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, cloud_redis.Instance)
+
+def test_get_instance_auth_string_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = cloud_redis.InstanceAuthString(
+        auth_string='auth_string_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = cloud_redis.InstanceAuthString.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.get_instance_auth_string(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, cloud_redis.InstanceAuthString)
+
+
+def test_list_instances_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = cloud_redis.ListInstancesResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_instances(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListInstancesPager)
+
+def test_get_instance_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = cloud_redis.Instance()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_instance(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, cloud_redis.Instance)
+
+def test_get_instance_auth_string_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = cloud_redis.InstanceAuthString()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_instance_auth_string(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, cloud_redis.InstanceAuthString)
 
 
 def test_cloud_redis_rest_lro_client():
@@ -11025,6 +11640,263 @@ async def test_reschedule_maintenance_empty_call_rest_asyncio():
         assert args[0] == request_msg
 
 
+@pytest.mark.asyncio
+async def test_list_instances_with_metadata_callback_rest_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    response_obj = cloud_redis.ListInstancesResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = cloud_redis.ListInstancesResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        response_value.read = mock.AsyncMock(return_value=json_response_obj.encode('UTF-8'))
+        mocked_callback = mock.AsyncMock()
+        response = await client.list_instances(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.ListInstancesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_instance_with_metadata_callback_rest_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    response_obj = cloud_redis.Instance(
+        name='name_value',
+        display_name='display_name_value',
+        location_id='location_id_value',
+        alternative_location_id='alternative_location_id_value',
+        redis_version='redis_version_value',
+        reserved_ip_range='reserved_ip_range_value',
+        secondary_ip_range='secondary_ip_range_value',
+        host='host_value',
+        port=453,
+        current_location_id='current_location_id_value',
+        state=cloud_redis.Instance.State.CREATING,
+        status_message='status_message_value',
+        tier=cloud_redis.Instance.Tier.BASIC,
+        memory_size_gb=1499,
+        authorized_network='authorized_network_value',
+        persistence_iam_identity='persistence_iam_identity_value',
+        connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+        auth_enabled=True,
+        transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+        replica_count=1384,
+        read_endpoint='read_endpoint_value',
+        read_endpoint_port=1920,
+        read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+        customer_managed_key='customer_managed_key_value',
+        suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+        maintenance_version='maintenance_version_value',
+        available_maintenance_versions=['available_maintenance_versions_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = cloud_redis.Instance.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        response_value.read = mock.AsyncMock(return_value=json_response_obj.encode('UTF-8'))
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_instance(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, cloud_redis.Instance)
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_with_metadata_callback_rest_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    response_obj = cloud_redis.InstanceAuthString(
+        auth_string='auth_string_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = cloud_redis.InstanceAuthString.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        response_value.read = mock.AsyncMock(return_value=json_response_obj.encode('UTF-8'))
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_instance_auth_string(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, cloud_redis.InstanceAuthString)
+
+
+@pytest.mark.asyncio
+async def test_list_instances_with_metadata_callback_raises_warning_if_no_metadata_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.list_instances), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.list_instances(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListInstancesAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_instance_with_metadata_callback_raises_warning_if_no_metadata_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_instance), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_instance(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, cloud_redis.Instance)
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_with_metadata_callback_raises_warning_if_no_metadata_rest_asyncio():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = CloudRedisAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="rest_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_instance_auth_string), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_instance_auth_string(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, cloud_redis.InstanceAuthString)
+
+
 def test_cloud_redis_rest_asyncio_lro_client():
     if not HAS_ASYNC_REST_EXTRA:
         pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
@@ -11059,6 +11931,7 @@ def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
+
     )
     assert isinstance(
         client.transport,

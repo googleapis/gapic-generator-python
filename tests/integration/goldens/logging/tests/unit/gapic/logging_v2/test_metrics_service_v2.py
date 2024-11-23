@@ -2750,6 +2750,234 @@ def test_delete_log_metric_empty_call_grpc():
         assert args[0] == request_msg
 
 
+def test_list_log_metrics_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = logging_metrics.ListLogMetricsResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.list_log_metrics(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListLogMetricsPager)
+
+def test_get_log_metric_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = logging_metrics.LogMetric(
+        name='name_value',
+        description='description_value',
+        filter='filter_value',
+        bucket_name='bucket_name_value',
+        disabled=True,
+        value_extractor='value_extractor_value',
+        version=logging_metrics.LogMetric.ApiVersion.V1,
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.get_log_metric(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, logging_metrics.LogMetric)
+
+def test_create_log_metric_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = logging_metrics.LogMetric(
+        name='name_value',
+        description='description_value',
+        filter='filter_value',
+        bucket_name='bucket_name_value',
+        disabled=True,
+        value_extractor='value_extractor_value',
+        version=logging_metrics.LogMetric.ApiVersion.V1,
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.create_log_metric(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, logging_metrics.LogMetric)
+
+def test_update_log_metric_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = logging_metrics.LogMetric(
+        name='name_value',
+        description='description_value',
+        filter='filter_value',
+        bucket_name='bucket_name_value',
+        disabled=True,
+        value_extractor='value_extractor_value',
+        version=logging_metrics.LogMetric.ApiVersion.V1,
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.update_log_metric(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, logging_metrics.LogMetric)
+
+
+def test_list_log_metrics_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = logging_metrics.ListLogMetricsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_log_metrics(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListLogMetricsPager)
+
+def test_get_log_metric_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = logging_metrics.LogMetric()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_log_metric(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, logging_metrics.LogMetric)
+
+def test_create_log_metric_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = logging_metrics.LogMetric()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.create_log_metric(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, logging_metrics.LogMetric)
+
+def test_update_log_metric_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = MetricsServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = logging_metrics.LogMetric()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.update_log_metric(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, logging_metrics.LogMetric)
+
+
 def test_transport_kind_grpc_asyncio():
     transport = MetricsServiceV2AsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -2916,10 +3144,251 @@ async def test_delete_log_metric_empty_call_grpc_asyncio():
         assert args[0] == request_msg
 
 
+@pytest.mark.asyncio
+async def test_list_log_metrics_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = MetricsServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = logging_metrics.ListLogMetricsResponse(
+        next_page_token='next_page_token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.list_log_metrics), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.list_log_metrics(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListLogMetricsAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_log_metric_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = MetricsServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = logging_metrics.LogMetric(
+        name='name_value',
+        description='description_value',
+        filter='filter_value',
+        bucket_name='bucket_name_value',
+        disabled=True,
+        value_extractor='value_extractor_value',
+        version=logging_metrics.LogMetric.ApiVersion.V1,
+    )
+    with mock.patch.object(
+        type(client.transport.get_log_metric), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_log_metric(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, logging_metrics.LogMetric)
+
+@pytest.mark.asyncio
+async def test_create_log_metric_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = MetricsServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = logging_metrics.LogMetric(
+        name='name_value',
+        description='description_value',
+        filter='filter_value',
+        bucket_name='bucket_name_value',
+        disabled=True,
+        value_extractor='value_extractor_value',
+        version=logging_metrics.LogMetric.ApiVersion.V1,
+    )
+    with mock.patch.object(
+        type(client.transport.create_log_metric), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.create_log_metric(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, logging_metrics.LogMetric)
+
+@pytest.mark.asyncio
+async def test_update_log_metric_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = MetricsServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = logging_metrics.LogMetric(
+        name='name_value',
+        description='description_value',
+        filter='filter_value',
+        bucket_name='bucket_name_value',
+        disabled=True,
+        value_extractor='value_extractor_value',
+        version=logging_metrics.LogMetric.ApiVersion.V1,
+    )
+    with mock.patch.object(
+        type(client.transport.update_log_metric), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.update_log_metric(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, logging_metrics.LogMetric)
+
+
+@pytest.mark.asyncio
+async def test_list_log_metrics_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = MetricsServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.list_log_metrics), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.list_log_metrics(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListLogMetricsAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_log_metric_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = MetricsServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_log_metric), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_log_metric(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, logging_metrics.LogMetric)
+
+@pytest.mark.asyncio
+async def test_create_log_metric_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = MetricsServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.create_log_metric), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.create_log_metric(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, logging_metrics.LogMetric)
+
+@pytest.mark.asyncio
+async def test_update_log_metric_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = MetricsServiceV2AsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.update_log_metric), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.update_log_metric(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, logging_metrics.LogMetric)
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = MetricsServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
+
     )
     assert isinstance(
         client.transport,

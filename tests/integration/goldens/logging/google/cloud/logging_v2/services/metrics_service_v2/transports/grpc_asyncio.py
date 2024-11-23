@@ -371,6 +371,67 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
 
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        if "with_call" in inspect.signature(gapic_v1.method_async.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.list_log_metrics: self._wrap_method(
+                    self.list_log_metrics,
+                    default_retry=retries.AsyncRetry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_log_metric: self._wrap_method(
+                    self.get_log_metric,
+                    default_retry=retries.AsyncRetry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.create_log_metric: self._wrap_method(
+                    self.create_log_metric,
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.update_log_metric: self._wrap_method(
+                    self.update_log_metric,
+                    default_retry=retries.AsyncRetry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         self._wrapped_methods = {
             self.list_log_metrics: self._wrap_method(
                 self.list_log_metrics,
@@ -461,6 +522,8 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
     def _wrap_method(self, func, *args, **kwargs):
         if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
+        if "with_call" not in inspect.signature(gapic_v1.method_async.wrap_method).parameters: # pragma: NO COVER
+            kwargs.pop("with_call", None)
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):

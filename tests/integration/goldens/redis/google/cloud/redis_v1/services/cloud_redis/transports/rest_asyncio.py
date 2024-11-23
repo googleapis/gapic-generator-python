@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 
 import google.auth
 try:
@@ -591,6 +592,28 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        if "with_call" in inspect.signature(gapic_v1.method_async.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.list_instances: self._wrap_method(
+                    self.list_instances,
+                    default_timeout=600.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_instance: self._wrap_method(
+                    self.get_instance,
+                    default_timeout=600.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_instance_auth_string: self._wrap_method(
+                    self.get_instance_auth_string,
+                    default_timeout=600.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         self._wrapped_methods = {
             self.list_instances: self._wrap_method(
                 self.list_instances,
@@ -687,6 +710,8 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     def _wrap_method(self, func, *args, **kwargs):
         if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
+        if "with_call" not in inspect.signature(gapic_v1.method_async.wrap_method).parameters: # pragma: NO COVER
+            kwargs.pop("with_call", None)
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     class _CreateInstance(_BaseCloudRedisRestTransport._BaseCreateInstance, AsyncCloudRedisRestStub):
@@ -721,6 +746,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
 
@@ -771,7 +797,10 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_create_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _DeleteInstance(_BaseCloudRedisRestTransport._BaseDeleteInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
@@ -804,6 +833,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> operations_pb2.Operation:
             r"""Call the delete instance method over HTTP.
 
@@ -852,7 +882,10 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_delete_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ExportInstance(_BaseCloudRedisRestTransport._BaseExportInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
@@ -886,6 +919,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> operations_pb2.Operation:
             r"""Call the export instance method over HTTP.
 
@@ -936,7 +970,10 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_export_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _FailoverInstance(_BaseCloudRedisRestTransport._BaseFailoverInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
@@ -970,6 +1007,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> operations_pb2.Operation:
             r"""Call the failover instance method over HTTP.
 
@@ -1020,12 +1058,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_failover_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetInstance(_BaseCloudRedisRestTransport._BaseGetInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.GetInstance")
 
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
         @staticmethod
         async def _get_response(
             host,
@@ -1053,6 +1096,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> cloud_redis.Instance:
             r"""Call the get instance method over HTTP.
 
@@ -1098,12 +1142,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, AsyncCloudRedisRestStub):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.GetInstanceAuthString")
 
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
         @staticmethod
         async def _get_response(
             host,
@@ -1131,6 +1180,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> cloud_redis.InstanceAuthString:
             r"""Call the get instance auth string method over HTTP.
 
@@ -1176,7 +1226,10 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance_auth_string(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
@@ -1210,6 +1263,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> operations_pb2.Operation:
             r"""Call the import instance method over HTTP.
 
@@ -1260,12 +1314,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_import_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ListInstances(_BaseCloudRedisRestTransport._BaseListInstances, AsyncCloudRedisRestStub):
         def __hash__(self):
             return hash("AsyncCloudRedisRestTransport.ListInstances")
 
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
         @staticmethod
         async def _get_response(
             host,
@@ -1293,6 +1352,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> cloud_redis.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
@@ -1340,7 +1400,10 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_list_instances(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, AsyncCloudRedisRestStub):
         def __hash__(self):
@@ -1374,6 +1437,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> operations_pb2.Operation:
             r"""Call the reschedule maintenance method over HTTP.
 
@@ -1424,7 +1488,10 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_reschedule_maintenance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _UpdateInstance(_BaseCloudRedisRestTransport._BaseUpdateInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
@@ -1458,6 +1525,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
 
@@ -1508,7 +1576,10 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_update_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _UpgradeInstance(_BaseCloudRedisRestTransport._BaseUpgradeInstance, AsyncCloudRedisRestStub):
         def __hash__(self):
@@ -1542,6 +1613,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     retry: OptionalRetry=gapic_v1.method.DEFAULT,
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                    with_call: bool = False,
                     ) -> operations_pb2.Operation:
             r"""Call the upgrade instance method over HTTP.
 
@@ -1592,7 +1664,10 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_upgrade_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     @property
     def operations_client(self) -> AsyncOperationsRestClient:

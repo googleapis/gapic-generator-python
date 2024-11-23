@@ -618,6 +618,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListBucketsPager:
         r"""Lists log buckets.
 
@@ -676,6 +677,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListBucketsPager:
@@ -705,7 +710,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_buckets]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.list_buckets]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.list_buckets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -725,6 +742,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
@@ -746,6 +768,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogBucket:
         r"""Gets a log bucket.
 
@@ -785,6 +808,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogBucket:
@@ -800,7 +827,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_bucket]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.get_bucket]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.get_bucket]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -820,6 +859,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -895,7 +939,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_bucket_async]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.create_bucket_async]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.create_bucket_async]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1000,7 +1049,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_bucket_async]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.update_bucket_async]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.update_bucket_async]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1038,6 +1092,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogBucket:
         r"""Creates a log bucket that can be used to store log
         entries. After a bucket has been created, the bucket's
@@ -1080,6 +1135,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogBucket:
@@ -1095,7 +1154,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_bucket]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.create_bucket]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.create_bucket]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1116,6 +1187,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -1125,6 +1201,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogBucket:
         r"""Updates a log bucket.
 
@@ -1170,6 +1247,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogBucket:
@@ -1185,7 +1266,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_bucket]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.update_bucket]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.update_bucket]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1205,6 +1298,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -1265,7 +1363,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_bucket]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.delete_bucket]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.delete_bucket]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1339,7 +1442,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.undelete_bucket]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.undelete_bucket]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.undelete_bucket]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1367,6 +1475,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListViewsPager:
         r"""Lists views on a log bucket.
 
@@ -1417,6 +1526,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListViewsPager:
@@ -1446,7 +1559,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_views]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.list_views]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.list_views]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1466,6 +1591,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
@@ -1487,6 +1617,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogView:
         r"""Gets a view on a log bucket..
 
@@ -1526,6 +1657,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogView:
@@ -1541,7 +1676,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_view]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.get_view]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.get_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1562,6 +1709,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -1571,6 +1723,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogView:
         r"""Creates a view over log entries in a log bucket. A
         bucket may contain a maximum of 30 views.
@@ -1612,6 +1765,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogView:
@@ -1627,7 +1784,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_view]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.create_view]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.create_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1648,6 +1817,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -1657,6 +1831,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogView:
         r"""Updates a view on a log bucket. This method replaces the
         following fields in the existing view with values from the new
@@ -1700,6 +1875,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogView:
@@ -1715,7 +1894,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_view]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.update_view]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.update_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1735,6 +1926,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -1793,7 +1989,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_view]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.delete_view]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.delete_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1821,6 +2022,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListSinksPager:
         r"""Lists sinks.
 
@@ -1875,6 +2077,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListSinksPager:
@@ -1903,7 +2109,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_sinks]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.list_sinks]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.list_sinks]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1923,6 +2141,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
@@ -1945,6 +2168,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogSink:
         r"""Gets a sink.
 
@@ -2001,6 +2225,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogSink:
@@ -2034,7 +2262,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_sink]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.get_sink]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.get_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2055,6 +2295,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -2066,6 +2311,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogSink:
         r"""Creates a sink that exports specified log entries to a
         destination. The export of newly-ingested log entries begins
@@ -2138,6 +2384,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogSink:
@@ -2173,7 +2423,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_sink]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.create_sink]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.create_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2194,6 +2456,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -2206,6 +2473,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogSink:
         r"""Updates a sink. This method replaces the following fields in the
         existing sink with values from the new sink: ``destination``,
@@ -2302,6 +2570,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogSink:
@@ -2339,7 +2611,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_sink]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.update_sink]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.update_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2359,6 +2643,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -2445,7 +2734,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_sink]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.delete_sink]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.delete_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2582,7 +2876,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_link]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.create_link]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.create_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2712,7 +3011,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_link]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.delete_link]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.delete_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2751,6 +3055,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListLinksPager:
         r"""Lists links.
 
@@ -2803,6 +3108,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListLinksPager:
@@ -2832,7 +3141,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_links]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.list_links]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.list_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2852,6 +3173,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
@@ -2874,6 +3200,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.Link:
         r"""Gets a link.
 
@@ -2924,6 +3251,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.Link:
@@ -2950,7 +3281,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_link]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.get_link]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.get_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2971,6 +3314,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -2981,6 +3329,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListExclusionsPager:
         r"""Lists all the exclusions on the \_Default sink in a parent
         resource.
@@ -3036,6 +3385,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListExclusionsPager:
@@ -3064,7 +3417,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_exclusions]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.list_exclusions]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.list_exclusions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3084,6 +3449,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
@@ -3106,6 +3476,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogExclusion:
         r"""Gets the description of an exclusion in the \_Default sink.
 
@@ -3162,6 +3533,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogExclusion:
@@ -3193,7 +3568,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_exclusion]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.get_exclusion]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.get_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3214,6 +3601,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -3225,6 +3617,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogExclusion:
         r"""Creates a new exclusion in the \_Default sink in a specified
         parent resource. Only log entries belonging to that resource can
@@ -3298,6 +3691,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogExclusion:
@@ -3331,7 +3728,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_exclusion]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.create_exclusion]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.create_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3352,6 +3761,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -3364,6 +3778,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.LogExclusion:
         r"""Changes one or more properties of an existing exclusion in the
         \_Default sink.
@@ -3448,6 +3863,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogExclusion:
@@ -3483,7 +3902,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_exclusion]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.update_exclusion]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.update_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3503,6 +3934,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -3588,7 +4024,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_exclusion]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.delete_exclusion]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.delete_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3615,6 +4056,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.CmekSettings:
         r"""Gets the Logging CMEK settings for the given resource.
 
@@ -3668,6 +4110,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.CmekSettings:
@@ -3693,7 +4139,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_cmek_settings]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.get_cmek_settings]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.get_cmek_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3714,6 +4172,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -3723,6 +4186,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.CmekSettings:
         r"""Updates the Log Router CMEK settings for the given resource.
 
@@ -3781,6 +4245,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.CmekSettings:
@@ -3806,7 +4274,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_cmek_settings]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.update_cmek_settings]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.update_cmek_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3827,6 +4307,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -3837,6 +4322,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.Settings:
         r"""Gets the Log Router settings for the given resource.
 
@@ -3915,6 +4401,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.Settings:
@@ -3942,7 +4432,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_settings]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.get_settings]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.get_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3963,6 +4465,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -3974,6 +4481,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_config.Settings:
         r"""Updates the Log Router settings for the given resource.
 
@@ -4059,6 +4567,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.Settings:
@@ -4088,7 +4600,19 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_settings]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.update_settings]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.update_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4108,6 +4632,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -4182,7 +4711,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.copy_log_entries]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.copy_log_entries]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.copy_log_entries]
 
         # Validate the universe domain.
         self._validate_universe_domain()

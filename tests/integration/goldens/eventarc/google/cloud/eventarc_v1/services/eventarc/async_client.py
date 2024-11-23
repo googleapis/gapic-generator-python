@@ -16,6 +16,7 @@
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+import warnings
 
 from google.cloud.eventarc_v1 import gapic_version as package_version
 
@@ -272,6 +273,7 @@ class EventarcAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> trigger.Trigger:
         r"""Get a single trigger.
 
@@ -319,6 +321,10 @@ class EventarcAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.eventarc_v1.types.Trigger:
@@ -346,7 +352,18 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_trigger]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.get_trigger]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.get_trigger]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -366,6 +383,10 @@ class EventarcAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -377,6 +398,7 @@ class EventarcAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListTriggersAsyncPager:
         r"""List triggers.
 
@@ -425,6 +447,10 @@ class EventarcAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListTriggersAsyncPager:
@@ -454,7 +480,18 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.list_triggers]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_triggers]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.list_triggers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -474,6 +511,10 @@ class EventarcAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -606,7 +647,11 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.create_trigger]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.create_trigger]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.create_trigger]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -747,7 +792,11 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.update_trigger]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.update_trigger]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.update_trigger]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -879,7 +928,11 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_trigger]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.delete_trigger]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.delete_trigger]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -918,6 +971,7 @@ class EventarcAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> channel.Channel:
         r"""Get a single Channel.
 
@@ -965,6 +1019,10 @@ class EventarcAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.eventarc_v1.types.Channel:
@@ -998,7 +1056,18 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_channel]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.get_channel]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.get_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1018,6 +1087,10 @@ class EventarcAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -1029,6 +1102,7 @@ class EventarcAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListChannelsAsyncPager:
         r"""List channels.
 
@@ -1077,6 +1151,10 @@ class EventarcAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListChannelsAsyncPager:
@@ -1106,7 +1184,18 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.list_channels]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_channels]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.list_channels]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1126,6 +1215,10 @@ class EventarcAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -1258,7 +1351,11 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.create_channel_]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.create_channel_]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.create_channel_]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1391,7 +1488,11 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.update_channel]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.update_channel]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.update_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1515,7 +1616,11 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_channel]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.delete_channel]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.delete_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1554,6 +1659,7 @@ class EventarcAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> discovery.Provider:
         r"""Get a single Provider.
 
@@ -1601,6 +1707,10 @@ class EventarcAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.eventarc_v1.types.Provider:
@@ -1628,7 +1738,18 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_provider]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.get_provider]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.get_provider]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1648,6 +1769,10 @@ class EventarcAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -1659,6 +1784,7 @@ class EventarcAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListProvidersAsyncPager:
         r"""List providers.
 
@@ -1707,6 +1833,10 @@ class EventarcAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListProvidersAsyncPager:
@@ -1736,7 +1866,18 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.list_providers]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_providers]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.list_providers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1756,6 +1897,10 @@ class EventarcAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -1778,6 +1923,7 @@ class EventarcAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> channel_connection.ChannelConnection:
         r"""Get a single ChannelConnection.
 
@@ -1825,6 +1971,10 @@ class EventarcAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.eventarc_v1.types.ChannelConnection:
@@ -1857,7 +2007,18 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_channel_connection]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.get_channel_connection]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.get_channel_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1877,6 +2038,10 @@ class EventarcAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -1888,6 +2053,7 @@ class EventarcAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListChannelConnectionsAsyncPager:
         r"""List channel connections.
 
@@ -1936,6 +2102,10 @@ class EventarcAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListChannelConnectionsAsyncPager:
@@ -1966,7 +2136,18 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.list_channel_connections]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_channel_connections]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.list_channel_connections]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1986,6 +2167,10 @@ class EventarcAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -2118,7 +2303,11 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.create_channel_connection]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.create_channel_connection]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.create_channel_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2240,7 +2429,11 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_channel_connection]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.delete_channel_connection]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.delete_channel_connection]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2279,6 +2472,7 @@ class EventarcAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> google_channel_config.GoogleChannelConfig:
         r"""Get a GoogleChannelConfig
 
@@ -2326,6 +2520,10 @@ class EventarcAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.eventarc_v1.types.GoogleChannelConfig:
@@ -2359,7 +2557,18 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_google_channel_config]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.get_google_channel_config]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.get_google_channel_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2379,6 +2588,10 @@ class EventarcAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -2391,6 +2604,7 @@ class EventarcAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> gce_google_channel_config.GoogleChannelConfig:
         r"""Update a single GoogleChannelConfig
 
@@ -2448,6 +2662,10 @@ class EventarcAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.eventarc_v1.types.GoogleChannelConfig:
@@ -2483,7 +2701,18 @@ class EventarcAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.update_google_channel_config]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.update_google_channel_config]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.update_google_channel_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2503,6 +2732,10 @@ class EventarcAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response

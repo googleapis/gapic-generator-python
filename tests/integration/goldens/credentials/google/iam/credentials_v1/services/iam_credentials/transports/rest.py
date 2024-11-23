@@ -271,6 +271,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
     class _GenerateAccessToken(_BaseIAMCredentialsRestTransport._BaseGenerateAccessToken, IAMCredentialsRestStub):
         def __hash__(self):
             return hash("IAMCredentialsRestTransport.GenerateAccessToken")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -300,6 +302,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> common.GenerateAccessTokenResponse:
             r"""Call the generate access token method over HTTP.
 
@@ -342,11 +345,16 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_generate_access_token(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GenerateIdToken(_BaseIAMCredentialsRestTransport._BaseGenerateIdToken, IAMCredentialsRestStub):
         def __hash__(self):
             return hash("IAMCredentialsRestTransport.GenerateIdToken")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -376,6 +384,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> common.GenerateIdTokenResponse:
             r"""Call the generate id token method over HTTP.
 
@@ -418,11 +427,16 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_generate_id_token(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _SignBlob(_BaseIAMCredentialsRestTransport._BaseSignBlob, IAMCredentialsRestStub):
         def __hash__(self):
             return hash("IAMCredentialsRestTransport.SignBlob")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -452,6 +466,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> common.SignBlobResponse:
             r"""Call the sign blob method over HTTP.
 
@@ -494,11 +509,16 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_sign_blob(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _SignJwt(_BaseIAMCredentialsRestTransport._BaseSignJwt, IAMCredentialsRestStub):
         def __hash__(self):
             return hash("IAMCredentialsRestTransport.SignJwt")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -528,6 +548,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> common.SignJwtResponse:
             r"""Call the sign jwt method over HTTP.
 
@@ -570,7 +591,10 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_sign_jwt(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     @property
     def generate_access_token(self) -> Callable[

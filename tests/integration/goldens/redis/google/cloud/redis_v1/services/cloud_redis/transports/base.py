@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.redis_v1 import gapic_version as package_version
@@ -120,6 +121,28 @@ class CloudRedisTransport(abc.ABC):
         return self._host
 
     def _prep_wrapped_messages(self, client_info):
+        if "with_call" in inspect.signature(gapic_v1.method.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.list_instances: gapic_v1.method.wrap_method(
+                    self.list_instances,
+                    default_timeout=600.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_instance: gapic_v1.method.wrap_method(
+                    self.get_instance,
+                    default_timeout=600.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_instance_auth_string: gapic_v1.method.wrap_method(
+                    self.get_instance_auth_string,
+                    default_timeout=600.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_instances: gapic_v1.method.wrap_method(

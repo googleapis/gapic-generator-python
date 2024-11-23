@@ -1549,6 +1549,180 @@ def test_{{ method_name }}_rest_no_http_options():
 {% endwith %}{# method_name #}
 {% endmacro %}
 
+
+{% macro method_call_test_with_metadata_callback(method, service, api, transport, is_async=False) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% for method in service.methods.values() %}
+{% if not method.void and not method.lro and not method.client_streaming and not method.server_streaming and not method.extended_lro %}
+{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_method_prefix = "async " if is_async else "" %}
+{% set async_mock_prefix = "Async" if is_async else "" %}
+{% if is_async %}
+@pytest.mark.asyncio
+{% endif %}{# is_async #}
+{% if ('rest' in transport_name and method.http_options) or 'rest' not in transport_name %}
+{{ async_method_prefix }}def test_{{ method_name }}_with_metadata_callback_{{transport_name}}():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    {% if 'async' in transport_name %}
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+    {% else %}
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+    {% endif %}
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+    client = {{ get_client(service=service, is_async=is_async) }}(
+        credentials={{ get_credentials(is_async=is_async) }},
+        transport="{{ transport_name }}",
+    )
+
+    response_obj = {{ method.output.ident }}(
+        {% for field in method.output.fields.values() | rejectattr('message')%}
+        {% if not field.oneof or field.proto3_optional %}
+        {{ field.name }}={{ field.mock_value }},
+        {% endif %}
+        {% endfor %}
+    )
+{% if 'grpc' in transport_name %}
+    {% if not is_async %}
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+    {% else %}
+    with mock.patch.object(
+        type(client.transport.{{ method.transport_safe_name|snake_case }}), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+    {% endif %}
+{% else %}
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        {% if method.input.ident.is_proto_plus_type %}
+        pb_request = {{ method.input.ident }}.pb({{ method.input.ident }}())
+        {% else %}
+        pb_request = {{ method.input.ident }}()
+        {% endif %}{# if method.input.ident.is_proto_plus_type #}
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "{{ method.http_options[0].method }}",
+            'query_params': pb_request,
+        }
+        {% if method.http_options[0].body %}
+        transcode_result['body'] = pb_request
+        {% endif %}
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = {{ method.output.ident }}.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        {% if is_async %}
+        response_value.read = mock.AsyncMock(return_value=json_response_obj.encode('UTF-8'))
+        {% else %}
+        call.return_value.content = json_response_obj
+        {% endif %}
+{% endif %}
+        mocked_callback = mock.{{ async_mock_prefix }}Mock()
+        response = {{ await_prefix }}client.{{ method_name }}(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+{% if 'grpc' in transport_name %}
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+{% else %}
+        mocked_callback.assert_called_with(response_value)
+{% endif %}
+        {% if is_async %}
+        assert isinstance(response, {{ method.client_output_async.ident }})
+        {% else %}
+        assert isinstance(response, {{ method.client_output.ident }})
+        {% endif %}
+
+{% endif %}
+{% endwith %}{# method_name #}
+{% endif %}
+{% endfor %}
+{% endmacro %}
+
+
+{#
+    TODO: Make this test unconditional once the minimum supported version of
+    `google-api-core` becomes 2.24.0 or higher. 
+#}
+{% macro method_call_test_with_metadata_callback_raises_warning_old_api_core(method, service, api, transport, is_async=False) %}
+{% set transport_name = get_transport_name(transport, is_async) %}
+{% for method in service.methods.values() %}
+{% if not method.void and not method.lro and not method.client_streaming and not method.server_streaming and not method.extended_lro %}
+{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
+{% set await_prefix = get_await_prefix(is_async) %}
+{% set async_method_prefix = "async " if is_async else "" %}
+{% set async_mock_prefix = "Async" if is_async else "" %}
+{% if is_async %}
+@pytest.mark.asyncio
+{% endif %}{# is_async #}
+{{ async_method_prefix }}def test_{{ method_name }}_with_metadata_callback_raises_warning_if_no_metadata_{{transport_name}}():
+    {% if transport_name == 'rest_asyncio' %}
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    {% endif %}
+    {% if transport_name == 'grpc_asyncio' %}
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+    {% else %}
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+    {% endif %}
+
+    client = {{ get_client(service=service, is_async=is_async) }}(
+        credentials={{ get_credentials(is_async=is_async) }},
+        transport="{{ transport_name }}",
+    )
+
+    with mock.patch.object(
+    {% if not is_async %}
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = {{ method.output.ident }}()
+    {% else %}
+        type(client.transport.{{ method.transport_safe_name|snake_case }}), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall({{ method.output.ident }}())
+        call.side_effect = (mocked_grpc_callable, )
+    {% endif %}
+        mocked_callback = mock.{{ async_mock_prefix }}Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = {{ await_prefix }}client.{{ method_name }}(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            {% if is_async %}
+            assert isinstance(response, {{ method.client_output_async.ident }})
+            {% else %}
+            assert isinstance(response, {{ method.client_output.ident }})
+            {% endif %}
+
+{% endwith %}{# method_name #}
+{% endif %}
+{% endfor %}
+{% endmacro %}
+
 {% macro get_credentials(is_async=False) %}
 {{- 'async_anonymous_credentials()' if is_async else 'ga_credentials.AnonymousCredentials()' -}}
 {% endmacro %}

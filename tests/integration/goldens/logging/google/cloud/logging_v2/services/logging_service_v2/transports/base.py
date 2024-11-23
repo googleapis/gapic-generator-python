@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.logging_v2 import gapic_version as package_version
@@ -123,6 +124,95 @@ class LoggingServiceV2Transport(abc.ABC):
         return self._host
 
     def _prep_wrapped_messages(self, client_info):
+        if "with_call" in inspect.signature(gapic_v1.method.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.delete_log: gapic_v1.method.wrap_method(
+                    self.delete_log,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.write_log_entries: gapic_v1.method.wrap_method(
+                    self.write_log_entries,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_log_entries: gapic_v1.method.wrap_method(
+                    self.list_log_entries,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_monitored_resource_descriptors: gapic_v1.method.wrap_method(
+                    self.list_monitored_resource_descriptors,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_logs: gapic_v1.method.wrap_method(
+                    self.list_logs,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.delete_log: gapic_v1.method.wrap_method(

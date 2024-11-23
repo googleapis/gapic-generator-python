@@ -565,6 +565,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> common.GenerateAccessTokenResponse:
         r"""Generates an OAuth 2.0 access token for a service
         account.
@@ -657,6 +658,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.iam.credentials_v1.types.GenerateAccessTokenResponse:
@@ -687,7 +692,19 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.generate_access_token]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.generate_access_token]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.generate_access_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -708,6 +725,11 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -721,6 +743,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> common.GenerateIdTokenResponse:
         r"""Generates an OpenID Connect ID token for a service
         account.
@@ -807,6 +830,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.iam.credentials_v1.types.GenerateIdTokenResponse:
@@ -837,7 +864,19 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.generate_id_token]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.generate_id_token]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.generate_id_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -858,6 +897,11 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -870,6 +914,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> common.SignBlobResponse:
         r"""Signs a blob using a service account's system-managed
         private key.
@@ -945,6 +990,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.iam.credentials_v1.types.SignBlobResponse:
@@ -973,7 +1022,19 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.sign_blob]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.sign_blob]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.sign_blob]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -994,6 +1055,11 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -1006,6 +1072,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed
         private key.
@@ -1084,6 +1151,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.iam.credentials_v1.types.SignJwtResponse:
@@ -1112,7 +1183,19 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.sign_jwt]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.sign_jwt]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.sign_jwt]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1132,6 +1215,11 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response

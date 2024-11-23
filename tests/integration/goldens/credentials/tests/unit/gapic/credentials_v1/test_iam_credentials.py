@@ -2951,6 +2951,218 @@ def test_sign_jwt_empty_call_grpc():
         assert args[0] == request_msg
 
 
+def test_generate_access_token_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = common.GenerateAccessTokenResponse(
+        access_token='access_token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.generate_access_token(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, common.GenerateAccessTokenResponse)
+
+def test_generate_id_token_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = common.GenerateIdTokenResponse(
+        token='token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.generate_id_token(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, common.GenerateIdTokenResponse)
+
+def test_sign_blob_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = common.SignBlobResponse(
+        key_id='key_id_value',
+        signed_blob=b'signed_blob_blob',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.sign_blob(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, common.SignBlobResponse)
+
+def test_sign_jwt_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = common.SignJwtResponse(
+        key_id='key_id_value',
+        signed_jwt='signed_jwt_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.sign_jwt(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, common.SignJwtResponse)
+
+
+def test_generate_access_token_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = common.GenerateAccessTokenResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.generate_access_token(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.GenerateAccessTokenResponse)
+
+def test_generate_id_token_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = common.GenerateIdTokenResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.generate_id_token(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.GenerateIdTokenResponse)
+
+def test_sign_blob_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = common.SignBlobResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.sign_blob(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.SignBlobResponse)
+
+def test_sign_jwt_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = common.SignJwtResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.sign_jwt(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.SignJwtResponse)
+
+
 def test_transport_kind_grpc_asyncio():
     transport = IAMCredentialsAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -3074,6 +3286,230 @@ async def test_sign_jwt_empty_call_grpc_asyncio():
         request_msg = common.SignJwtRequest()
 
         assert args[0] == request_msg
+
+
+@pytest.mark.asyncio
+async def test_generate_access_token_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = common.GenerateAccessTokenResponse(
+        access_token='access_token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.generate_access_token), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.generate_access_token(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, common.GenerateAccessTokenResponse)
+
+@pytest.mark.asyncio
+async def test_generate_id_token_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = common.GenerateIdTokenResponse(
+        token='token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.generate_id_token), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.generate_id_token(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, common.GenerateIdTokenResponse)
+
+@pytest.mark.asyncio
+async def test_sign_blob_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = common.SignBlobResponse(
+        key_id='key_id_value',
+        signed_blob=b'signed_blob_blob',
+    )
+    with mock.patch.object(
+        type(client.transport.sign_blob), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.sign_blob(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, common.SignBlobResponse)
+
+@pytest.mark.asyncio
+async def test_sign_jwt_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = common.SignJwtResponse(
+        key_id='key_id_value',
+        signed_jwt='signed_jwt_value',
+    )
+    with mock.patch.object(
+        type(client.transport.sign_jwt), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.sign_jwt(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, common.SignJwtResponse)
+
+
+@pytest.mark.asyncio
+async def test_generate_access_token_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.generate_access_token), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateAccessTokenResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.generate_access_token(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.GenerateAccessTokenResponse)
+
+@pytest.mark.asyncio
+async def test_generate_id_token_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.generate_id_token), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.generate_id_token(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.GenerateIdTokenResponse)
+
+@pytest.mark.asyncio
+async def test_sign_blob_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.sign_blob), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(common.SignBlobResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.sign_blob(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.SignBlobResponse)
+
+@pytest.mark.asyncio
+async def test_sign_jwt_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.sign_jwt), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(common.SignJwtResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.sign_jwt(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.SignJwtResponse)
 
 
 def test_transport_kind_rest():
@@ -3578,10 +4014,295 @@ def test_sign_jwt_empty_call_rest():
         assert args[0] == request_msg
 
 
+def test_generate_access_token_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = common.GenerateAccessTokenResponse(
+        access_token='access_token_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = common.GenerateAccessTokenRequest.pb(common.GenerateAccessTokenRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "post",
+            'query_params': pb_request,
+        }
+        transcode_result['body'] = pb_request
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = common.GenerateAccessTokenResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.generate_access_token(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, common.GenerateAccessTokenResponse)
+
+def test_generate_id_token_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = common.GenerateIdTokenResponse(
+        token='token_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = common.GenerateIdTokenRequest.pb(common.GenerateIdTokenRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "post",
+            'query_params': pb_request,
+        }
+        transcode_result['body'] = pb_request
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = common.GenerateIdTokenResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.generate_id_token(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, common.GenerateIdTokenResponse)
+
+def test_sign_blob_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = common.SignBlobResponse(
+        key_id='key_id_value',
+        signed_blob=b'signed_blob_blob',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = common.SignBlobRequest.pb(common.SignBlobRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "post",
+            'query_params': pb_request,
+        }
+        transcode_result['body'] = pb_request
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = common.SignBlobResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.sign_blob(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, common.SignBlobResponse)
+
+def test_sign_jwt_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = common.SignJwtResponse(
+        key_id='key_id_value',
+        signed_jwt='signed_jwt_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = common.SignJwtRequest.pb(common.SignJwtRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "post",
+            'query_params': pb_request,
+        }
+        transcode_result['body'] = pb_request
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = common.SignJwtResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.sign_jwt(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, common.SignJwtResponse)
+
+
+def test_generate_access_token_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = common.GenerateAccessTokenResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.generate_access_token(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.GenerateAccessTokenResponse)
+
+def test_generate_id_token_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = common.GenerateIdTokenResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.generate_id_token(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.GenerateIdTokenResponse)
+
+def test_sign_blob_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = common.SignBlobResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.sign_blob(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.SignBlobResponse)
+
+def test_sign_jwt_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = common.SignJwtResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.sign_jwt(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, common.SignJwtResponse)
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
+
     )
     assert isinstance(
         client.transport,

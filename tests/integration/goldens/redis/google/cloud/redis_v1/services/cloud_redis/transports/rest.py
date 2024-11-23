@@ -693,6 +693,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
 
@@ -737,7 +738,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _DeleteInstance(_BaseCloudRedisRestTransport._BaseDeleteInstance, CloudRedisRestStub):
         def __hash__(self):
@@ -770,6 +774,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the delete instance method over HTTP.
 
@@ -812,7 +817,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ExportInstance(_BaseCloudRedisRestTransport._BaseExportInstance, CloudRedisRestStub):
         def __hash__(self):
@@ -846,6 +854,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the export instance method over HTTP.
 
@@ -890,7 +899,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_export_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _FailoverInstance(_BaseCloudRedisRestTransport._BaseFailoverInstance, CloudRedisRestStub):
         def __hash__(self):
@@ -924,6 +936,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the failover instance method over HTTP.
 
@@ -968,11 +981,16 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_failover_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetInstance(_BaseCloudRedisRestTransport._BaseGetInstance, CloudRedisRestStub):
         def __hash__(self):
             return hash("CloudRedisRestTransport.GetInstance")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1001,6 +1019,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> cloud_redis.Instance:
             r"""Call the get instance method over HTTP.
 
@@ -1042,11 +1061,16 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, CloudRedisRestStub):
         def __hash__(self):
             return hash("CloudRedisRestTransport.GetInstanceAuthString")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1075,6 +1099,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> cloud_redis.InstanceAuthString:
             r"""Call the get instance auth string method over HTTP.
 
@@ -1116,7 +1141,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_instance_auth_string(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, CloudRedisRestStub):
         def __hash__(self):
@@ -1150,6 +1178,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the import instance method over HTTP.
 
@@ -1194,11 +1223,16 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_import_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ListInstances(_BaseCloudRedisRestTransport._BaseListInstances, CloudRedisRestStub):
         def __hash__(self):
             return hash("CloudRedisRestTransport.ListInstances")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1227,6 +1261,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> cloud_redis.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
@@ -1270,7 +1305,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_instances(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, CloudRedisRestStub):
         def __hash__(self):
@@ -1304,6 +1342,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the reschedule maintenance method over HTTP.
 
@@ -1348,7 +1387,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_reschedule_maintenance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _UpdateInstance(_BaseCloudRedisRestTransport._BaseUpdateInstance, CloudRedisRestStub):
         def __hash__(self):
@@ -1382,6 +1424,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
 
@@ -1426,7 +1469,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _UpgradeInstance(_BaseCloudRedisRestTransport._BaseUpgradeInstance, CloudRedisRestStub):
         def __hash__(self):
@@ -1460,6 +1506,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the upgrade instance method over HTTP.
 
@@ -1504,7 +1551,10 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_upgrade_instance(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     @property
     def create_instance(self) -> Callable[

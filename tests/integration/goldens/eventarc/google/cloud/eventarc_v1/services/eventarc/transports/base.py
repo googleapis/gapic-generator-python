@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.eventarc_v1 import gapic_version as package_version
@@ -128,6 +129,70 @@ class EventarcTransport(abc.ABC):
         return self._host
 
     def _prep_wrapped_messages(self, client_info):
+        if "with_call" in inspect.signature(gapic_v1.method.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.get_trigger: gapic_v1.method.wrap_method(
+                    self.get_trigger,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_triggers: gapic_v1.method.wrap_method(
+                    self.list_triggers,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_channel: gapic_v1.method.wrap_method(
+                    self.get_channel,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_channels: gapic_v1.method.wrap_method(
+                    self.list_channels,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_provider: gapic_v1.method.wrap_method(
+                    self.get_provider,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_providers: gapic_v1.method.wrap_method(
+                    self.list_providers,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_channel_connection: gapic_v1.method.wrap_method(
+                    self.get_channel_connection,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_channel_connections: gapic_v1.method.wrap_method(
+                    self.list_channel_connections,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_google_channel_config: gapic_v1.method.wrap_method(
+                    self.get_google_channel_config,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.update_google_channel_config: gapic_v1.method.wrap_method(
+                    self.update_google_channel_config,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.get_trigger: gapic_v1.method.wrap_method(

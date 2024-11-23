@@ -611,6 +611,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListInstancesPager:
         r"""Lists all Redis instances owned by a project in either the
         specified location (region) or all locations.
@@ -670,6 +671,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.redis_v1.services.cloud_redis.pagers.ListInstancesPager:
@@ -699,7 +704,19 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_instances]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.list_instances]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.list_instances]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -719,6 +736,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
@@ -741,6 +763,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
 
@@ -789,6 +812,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.redis_v1.types.Instance:
@@ -813,7 +840,19 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_instance]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.get_instance]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.get_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -834,6 +873,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             metadata=metadata,
         )
 
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
+
         # Done; return the response.
         return response
 
@@ -844,6 +888,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> cloud_redis.InstanceAuthString:
         r"""Gets the AUTH string for a Redis instance. If AUTH is
         not enabled for the instance the response will be empty.
@@ -895,6 +940,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.redis_v1.types.InstanceAuthString:
@@ -919,7 +968,19 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_instance_auth_string]
+
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.get_instance_auth_string]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.get_instance_auth_string]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -939,6 +1000,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -1077,7 +1143,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_instance]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.create_instance]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.create_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1224,7 +1295,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_instance]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.update_instance]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.update_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1356,7 +1432,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.upgrade_instance]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.upgrade_instance]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.upgrade_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1498,7 +1579,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.import_instance]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.import_instance]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.import_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1637,7 +1723,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.export_instance]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.export_instance]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.export_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1770,7 +1861,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.failover_instance]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.failover_instance]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.failover_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1898,7 +1994,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_instance]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.delete_instance]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.delete_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2041,7 +2142,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.reschedule_maintenance]
+
+        with_call = False
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.reschedule_maintenance]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.reschedule_maintenance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

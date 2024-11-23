@@ -613,6 +613,28 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
 
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        if "with_call" in inspect.signature(gapic_v1.method_async.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.list_instances: self._wrap_method(
+                    self.list_instances,
+                    default_timeout=600.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_instance: self._wrap_method(
+                    self.get_instance,
+                    default_timeout=600.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_instance_auth_string: self._wrap_method(
+                    self.get_instance_auth_string,
+                    default_timeout=600.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         self._wrapped_methods = {
             self.list_instances: self._wrap_method(
                 self.list_instances,
@@ -709,6 +731,8 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     def _wrap_method(self, func, *args, **kwargs):
         if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
+        if "with_call" not in inspect.signature(gapic_v1.method_async.wrap_method).parameters: # pragma: NO COVER
+            kwargs.pop("with_call", None)
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):

@@ -31,6 +31,9 @@
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             {{ shared_macros.client_method_metadata_argument()|indent(8) }} = {{ shared_macros.client_method_metadata_default_value() }},
+            {% if not method.void and not method.lro and not method.client_streaming and not method.server_streaming %}
+            raw_response_callback: Optional[callable] = None,
+            {% endif %}
             {% if method.extended_lro and not full_extended_lro %}{# This is a hack to preserve backwards compatibility with the "unary" surfaces #}
             ) -> {{ method.extended_lro.operation_type.ident }}:
             {% elif not method.server_streaming %}
@@ -69,6 +72,12 @@
                 should be retried.
             timeout (float): The timeout for this request.
             {{ shared_macros.client_method_metadata_argument_doc()|indent(4) }}
+            {% if not method.void and not method.lro and not method.client_streaming and not method.server_streaming %}
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.Call, requests.models.Response]`.
+            {% endif %}
         {% if not method.void %}
 
         Returns:
@@ -141,7 +150,21 @@
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.{{ method.transport_safe_name|snake_case}}]
+        
+        with_call = False
+        {% if not method.void and not method.lro and not method.client_streaming and not method.server_streaming %}
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        {% endif %}
+        if with_call: # pragma: NO COVER
+            rpc = self._transport._wrapped_methods_with_call[self._transport.{{ method.transport_safe_name|snake_case}}]
+        else:
+            rpc = self._transport._wrapped_methods[self._transport.{{ method.transport_safe_name|snake_case}}]
 
 {{ shared_macros.create_metadata(method) }}
 {{ shared_macros.add_api_version_header_to_metadata(service.version) }}
@@ -161,6 +184,14 @@
             timeout=timeout,
             metadata=metadata,
         )
+
+        {% if not method.void and not method.lro and not method.client_streaming and not method.server_streaming %}
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                raw_response_callback(response[1])            
+            response = response[0]
+        {% endif %}
+
         {% if method.lro %}
 
         # Wrap the response in an operation future.

@@ -16,6 +16,7 @@
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+import warnings
 
 from google.cloud.asset_v1 import gapic_version as package_version
 
@@ -332,7 +333,11 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.export_assets]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.export_assets]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.export_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -371,6 +376,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListAssetsAsyncPager:
         r"""Lists assets with time and resource types and returns
         paged results in response.
@@ -424,6 +430,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.ListAssetsAsyncPager:
@@ -454,7 +464,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.list_assets]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_assets]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.list_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -474,6 +495,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -495,6 +520,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.BatchGetAssetsHistoryResponse:
         r"""Batch gets the update history of assets that overlap a time
         window. For IAM_POLICY content, this API outputs history when
@@ -540,6 +566,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.BatchGetAssetsHistoryResponse:
@@ -553,7 +583,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_assets_history]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.batch_get_assets_history]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_assets_history]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -573,6 +614,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -584,6 +629,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.Feed:
         r"""Creates a feed in a parent
         project/folder/organization to listen to its asset
@@ -644,6 +690,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.Feed:
@@ -677,7 +727,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.create_feed]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.create_feed]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.create_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -697,6 +758,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -708,6 +773,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
@@ -756,6 +822,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.Feed:
@@ -789,7 +859,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_feed]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.get_feed]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.get_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -809,6 +890,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -820,6 +905,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.ListFeedsResponse:
         r"""Lists all asset feeds in a parent
         project/folder/organization.
@@ -871,6 +957,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.ListFeedsResponse:
@@ -896,7 +986,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.list_feeds]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_feeds]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.list_feeds]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -916,6 +1017,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -927,6 +1032,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
@@ -979,6 +1085,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.Feed:
@@ -1012,7 +1122,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.update_feed]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.update_feed]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.update_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1032,6 +1153,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -1109,7 +1234,11 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_feed]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.delete_feed]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.delete_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1139,6 +1268,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.SearchAllResourcesAsyncPager:
         r"""Searches all Google Cloud resources within the specified scope,
         such as a project, folder, or organization. The caller must be
@@ -1293,6 +1423,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.SearchAllResourcesAsyncPager:
@@ -1327,7 +1461,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.search_all_resources]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.search_all_resources]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.search_all_resources]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1347,6 +1492,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -1370,6 +1519,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.SearchAllIamPoliciesAsyncPager:
         r"""Searches all IAM policies within the specified scope, such as a
         project, folder, or organization. The caller must be granted the
@@ -1488,6 +1638,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.SearchAllIamPoliciesAsyncPager:
@@ -1520,7 +1674,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.search_all_iam_policies]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.search_all_iam_policies]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.search_all_iam_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1540,6 +1705,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -1561,6 +1730,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.AnalyzeIamPolicyResponse:
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
@@ -1605,6 +1775,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.AnalyzeIamPolicyResponse:
@@ -1620,7 +1794,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_iam_policy]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_iam_policy]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1640,6 +1825,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -1729,7 +1918,11 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_iam_policy_longrunning]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_iam_policy_longrunning]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_iam_policy_longrunning]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1767,6 +1960,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.AnalyzeMoveResponse:
         r"""Analyze moving a resource to a specified destination
         without kicking off the actual move. The analysis is
@@ -1814,6 +2008,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.AnalyzeMoveResponse:
@@ -1829,7 +2027,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_move]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_move]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_move]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1849,6 +2058,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -1859,6 +2072,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.QueryAssetsResponse:
         r"""Issue a job that queries assets using a SQL statement compatible
         with `BigQuery Standard
@@ -1914,6 +2128,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.QueryAssetsResponse:
@@ -1927,7 +2145,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.query_assets]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.query_assets]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.query_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1947,6 +2176,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -1960,6 +2193,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.SavedQuery:
         r"""Creates a saved query in a parent
         project/folder/organization.
@@ -2035,6 +2269,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.SavedQuery:
@@ -2066,7 +2304,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.create_saved_query]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.create_saved_query]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.create_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2086,6 +2335,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -2097,6 +2350,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.SavedQuery:
         r"""Gets details about a saved query.
 
@@ -2147,6 +2401,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.SavedQuery:
@@ -2174,7 +2432,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_saved_query]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.get_saved_query]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.get_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2194,6 +2463,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -2205,6 +2478,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListSavedQueriesAsyncPager:
         r"""Lists all saved queries in a parent
         project/folder/organization.
@@ -2258,6 +2532,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.ListSavedQueriesAsyncPager:
@@ -2288,7 +2566,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.list_saved_queries]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_saved_queries]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.list_saved_queries]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2308,6 +2597,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -2331,6 +2624,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.SavedQuery:
         r"""Updates a saved query.
 
@@ -2389,6 +2683,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.SavedQuery:
@@ -2418,7 +2716,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.update_saved_query]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.update_saved_query]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.update_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2438,6 +2747,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -2517,7 +2830,11 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_saved_query]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.delete_saved_query]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.delete_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2544,6 +2861,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
         r"""Gets effective IAM policies for a batch of resources.
 
@@ -2585,6 +2903,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse:
@@ -2600,7 +2922,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_effective_iam_policies]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.batch_get_effective_iam_policies]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_effective_iam_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2620,6 +2953,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -2633,6 +2970,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.AnalyzeOrgPoliciesAsyncPager:
         r"""Analyzes organization policies under a scope.
 
@@ -2709,6 +3047,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.AnalyzeOrgPoliciesAsyncPager:
@@ -2743,7 +3085,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policies]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_org_policies]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2763,6 +3116,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -2787,6 +3144,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager:
         r"""Analyzes organization policies governed containers
         (projects, folders or organization) under a scope.
@@ -2863,6 +3221,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager:
@@ -2897,7 +3259,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policy_governed_containers]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_org_policy_governed_containers]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policy_governed_containers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2917,6 +3290,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -2941,6 +3318,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager:
         r"""Analyzes organization policies governed assets (Google Cloud
         resources or policies) under a scope. This RPC supports custom
@@ -3046,6 +3424,10 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager:
@@ -3080,7 +3462,18 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policy_governed_assets]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_org_policy_governed_assets]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policy_governed_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3100,6 +3493,10 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.

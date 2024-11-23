@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.logging_v2 import gapic_version as package_version
@@ -123,6 +124,84 @@ class MetricsServiceV2Transport(abc.ABC):
         return self._host
 
     def _prep_wrapped_messages(self, client_info):
+        if "with_call" in inspect.signature(gapic_v1.method.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.list_log_metrics: gapic_v1.method.wrap_method(
+                    self.list_log_metrics,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_log_metric: gapic_v1.method.wrap_method(
+                    self.get_log_metric,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.create_log_metric: gapic_v1.method.wrap_method(
+                    self.create_log_metric,
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.update_log_metric: gapic_v1.method.wrap_method(
+                    self.update_log_metric,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.delete_log_metric: gapic_v1.method.wrap_method(
+                    self.delete_log_metric,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_log_metrics: gapic_v1.method.wrap_method(

@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.asset_v1 import gapic_version as package_version
@@ -120,6 +121,205 @@ class AssetServiceTransport(abc.ABC):
         return self._host
 
     def _prep_wrapped_messages(self, client_info):
+        if "with_call" in inspect.signature(gapic_v1.method.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.list_assets: gapic_v1.method.wrap_method(
+                    self.list_assets,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.batch_get_assets_history: gapic_v1.method.wrap_method(
+                    self.batch_get_assets_history,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.create_feed: gapic_v1.method.wrap_method(
+                    self.create_feed,
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_feed: gapic_v1.method.wrap_method(
+                    self.get_feed,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_feeds: gapic_v1.method.wrap_method(
+                    self.list_feeds,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.update_feed: gapic_v1.method.wrap_method(
+                    self.update_feed,
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.delete_feed: gapic_v1.method.wrap_method(
+                    self.delete_feed,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.search_all_resources: gapic_v1.method.wrap_method(
+                    self.search_all_resources,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=15.0,
+                    ),
+                    default_timeout=15.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.search_all_iam_policies: gapic_v1.method.wrap_method(
+                    self.search_all_iam_policies,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=15.0,
+                    ),
+                    default_timeout=15.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.analyze_iam_policy: gapic_v1.method.wrap_method(
+                    self.analyze_iam_policy,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=300.0,
+                    ),
+                    default_timeout=300.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.analyze_move: gapic_v1.method.wrap_method(
+                    self.analyze_move,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.query_assets: gapic_v1.method.wrap_method(
+                    self.query_assets,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.create_saved_query: gapic_v1.method.wrap_method(
+                    self.create_saved_query,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_saved_query: gapic_v1.method.wrap_method(
+                    self.get_saved_query,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_saved_queries: gapic_v1.method.wrap_method(
+                    self.list_saved_queries,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.update_saved_query: gapic_v1.method.wrap_method(
+                    self.update_saved_query,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.delete_saved_query: gapic_v1.method.wrap_method(
+                    self.delete_saved_query,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.batch_get_effective_iam_policies: gapic_v1.method.wrap_method(
+                    self.batch_get_effective_iam_policies,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.analyze_org_policies: gapic_v1.method.wrap_method(
+                    self.analyze_org_policies,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.analyze_org_policy_governed_containers: gapic_v1.method.wrap_method(
+                    self.analyze_org_policy_governed_containers,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.analyze_org_policy_governed_assets: gapic_v1.method.wrap_method(
+                    self.analyze_org_policy_governed_assets,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.export_assets: gapic_v1.method.wrap_method(

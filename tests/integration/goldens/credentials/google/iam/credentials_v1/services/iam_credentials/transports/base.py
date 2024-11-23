@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import abc
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.iam.credentials_v1 import gapic_version as package_version
@@ -117,6 +118,74 @@ class IAMCredentialsTransport(abc.ABC):
         return self._host
 
     def _prep_wrapped_messages(self, client_info):
+        if "with_call" in inspect.signature(gapic_v1.method.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.generate_access_token: gapic_v1.method.wrap_method(
+                    self.generate_access_token,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.generate_id_token: gapic_v1.method.wrap_method(
+                    self.generate_id_token,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.sign_blob: gapic_v1.method.wrap_method(
+                    self.sign_blob,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.sign_jwt: gapic_v1.method.wrap_method(
+                    self.sign_jwt,
+                    default_retry=retries.Retry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.generate_access_token: gapic_v1.method.wrap_method(

@@ -11200,6 +11200,547 @@ def test_update_google_channel_config_empty_call_grpc():
         assert args[0] == request_msg
 
 
+def test_get_trigger_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = trigger.Trigger(
+        name='name_value',
+        uid='uid_value',
+        service_account='service_account_value',
+        channel='channel_value',
+        etag='etag_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.get_trigger(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, trigger.Trigger)
+
+def test_list_triggers_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = eventarc.ListTriggersResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.list_triggers(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListTriggersPager)
+
+def test_get_channel_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = channel.Channel(
+        name='name_value',
+        uid='uid_value',
+        provider='provider_value',
+        state=channel.Channel.State.PENDING,
+        activation_token='activation_token_value',
+        crypto_key_name='crypto_key_name_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.get_channel(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, channel.Channel)
+
+def test_list_channels_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = eventarc.ListChannelsResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.list_channels(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListChannelsPager)
+
+def test_get_provider_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = discovery.Provider(
+        name='name_value',
+        display_name='display_name_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.get_provider(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, discovery.Provider)
+
+def test_list_providers_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = eventarc.ListProvidersResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.list_providers(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListProvidersPager)
+
+def test_get_channel_connection_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = channel_connection.ChannelConnection(
+        name='name_value',
+        uid='uid_value',
+        channel='channel_value',
+        activation_token='activation_token_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.get_channel_connection(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, channel_connection.ChannelConnection)
+
+def test_list_channel_connections_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = eventarc.ListChannelConnectionsResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.list_channel_connections(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListChannelConnectionsPager)
+
+def test_get_google_channel_config_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = google_channel_config.GoogleChannelConfig(
+        name='name_value',
+        crypto_key_name='crypto_key_name_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.get_google_channel_config(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, google_channel_config.GoogleChannelConfig)
+
+def test_update_google_channel_config_with_metadata_callback_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    response_obj = gce_google_channel_config.GoogleChannelConfig(
+        name='name_value',
+        crypto_key_name='crypto_key_name_value',
+    )
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        mocked_grpc_callable = mock.Mock()
+        call.return_value = (response_obj, mocked_grpc_callable)
+        mocked_callback = mock.Mock()
+        response = client.update_google_channel_config(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
+
+
+def test_get_trigger_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = trigger.Trigger()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_trigger(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, trigger.Trigger)
+
+def test_list_triggers_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = eventarc.ListTriggersResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_triggers(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListTriggersPager)
+
+def test_get_channel_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = channel.Channel()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_channel(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, channel.Channel)
+
+def test_list_channels_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = eventarc.ListChannelsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_channels(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListChannelsPager)
+
+def test_get_provider_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = discovery.Provider()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_provider(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, discovery.Provider)
+
+def test_list_providers_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = eventarc.ListProvidersResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_providers(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListProvidersPager)
+
+def test_get_channel_connection_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = channel_connection.ChannelConnection()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_channel_connection(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, channel_connection.ChannelConnection)
+
+def test_list_channel_connections_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = eventarc.ListChannelConnectionsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_channel_connections(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListChannelConnectionsPager)
+
+def test_get_google_channel_config_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = google_channel_config.GoogleChannelConfig()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_google_channel_config(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, google_channel_config.GoogleChannelConfig)
+
+def test_update_google_channel_config_with_metadata_callback_raises_warning_if_no_metadata_grpc():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = gce_google_channel_config.GoogleChannelConfig()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.update_google_channel_config(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
+
+
 def test_transport_kind_grpc_asyncio():
     transport = EventarcAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -11718,6 +12259,577 @@ async def test_update_google_channel_config_empty_call_grpc_asyncio():
         request_msg = eventarc.UpdateGoogleChannelConfigRequest()
 
         assert args[0] == request_msg
+
+
+@pytest.mark.asyncio
+async def test_get_trigger_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = trigger.Trigger(
+        name='name_value',
+        uid='uid_value',
+        service_account='service_account_value',
+        channel='channel_value',
+        etag='etag_value',
+    )
+    with mock.patch.object(
+        type(client.transport.get_trigger), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_trigger(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, trigger.Trigger)
+
+@pytest.mark.asyncio
+async def test_list_triggers_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = eventarc.ListTriggersResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(
+        type(client.transport.list_triggers), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.list_triggers(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListTriggersAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_channel_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = channel.Channel(
+        name='name_value',
+        uid='uid_value',
+        provider='provider_value',
+        state=channel.Channel.State.PENDING,
+        activation_token='activation_token_value',
+        crypto_key_name='crypto_key_name_value',
+    )
+    with mock.patch.object(
+        type(client.transport.get_channel), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_channel(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, channel.Channel)
+
+@pytest.mark.asyncio
+async def test_list_channels_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = eventarc.ListChannelsResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(
+        type(client.transport.list_channels), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.list_channels(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListChannelsAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_provider_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = discovery.Provider(
+        name='name_value',
+        display_name='display_name_value',
+    )
+    with mock.patch.object(
+        type(client.transport.get_provider), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_provider(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, discovery.Provider)
+
+@pytest.mark.asyncio
+async def test_list_providers_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = eventarc.ListProvidersResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(
+        type(client.transport.list_providers), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.list_providers(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListProvidersAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_channel_connection_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = channel_connection.ChannelConnection(
+        name='name_value',
+        uid='uid_value',
+        channel='channel_value',
+        activation_token='activation_token_value',
+    )
+    with mock.patch.object(
+        type(client.transport.get_channel_connection), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_channel_connection(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, channel_connection.ChannelConnection)
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = eventarc.ListChannelConnectionsResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.list_channel_connections(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, pagers.ListChannelConnectionsAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_google_channel_config_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = google_channel_config.GoogleChannelConfig(
+        name='name_value',
+        crypto_key_name='crypto_key_name_value',
+    )
+    with mock.patch.object(
+        type(client.transport.get_google_channel_config), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.get_google_channel_config(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, google_channel_config.GoogleChannelConfig)
+
+@pytest.mark.asyncio
+async def test_update_google_channel_config_with_metadata_callback_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 24):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    response_obj = gce_google_channel_config.GoogleChannelConfig(
+        name='name_value',
+        crypto_key_name='crypto_key_name_value',
+    )
+    with mock.patch.object(
+        type(client.transport.update_google_channel_config), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
+        mocked_callback = mock.AsyncMock()
+        response = await client.update_google_channel_config(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
+
+
+@pytest.mark.asyncio
+async def test_get_trigger_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_trigger), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(trigger.Trigger())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_trigger(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, trigger.Trigger)
+
+@pytest.mark.asyncio
+async def test_list_triggers_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.list_triggers), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListTriggersResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.list_triggers(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListTriggersAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_channel_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_channel), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(channel.Channel())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_channel(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, channel.Channel)
+
+@pytest.mark.asyncio
+async def test_list_channels_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.list_channels), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelsResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.list_channels(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListChannelsAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_provider_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_provider), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(discovery.Provider())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_provider(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, discovery.Provider)
+
+@pytest.mark.asyncio
+async def test_list_providers_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.list_providers), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListProvidersResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.list_providers(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListProvidersAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_channel_connection_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_channel_connection), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(channel_connection.ChannelConnection())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_channel_connection(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, channel_connection.ChannelConnection)
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelConnectionsResponse())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.list_channel_connections(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListChannelConnectionsAsyncPager)
+
+@pytest.mark.asyncio
+async def test_get_google_channel_config_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.get_google_channel_config), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(google_channel_config.GoogleChannelConfig())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.get_google_channel_config(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, google_channel_config.GoogleChannelConfig)
+
+@pytest.mark.asyncio
+async def test_update_google_channel_config_with_metadata_callback_raises_warning_if_no_metadata_grpc_asyncio():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 24):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    with mock.patch.object(
+        type(client.transport.update_google_channel_config), '__call__') as call:
+        mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(gce_google_channel_config.GoogleChannelConfig())
+        call.side_effect = (mocked_grpc_callable, )
+        mocked_callback = mock.AsyncMock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = await client.update_google_channel_config(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
 
 
 def test_transport_kind_rest():
@@ -14754,6 +15866,718 @@ def test_update_google_channel_config_empty_call_rest():
         assert args[0] == request_msg
 
 
+def test_get_trigger_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = trigger.Trigger(
+        name='name_value',
+        uid='uid_value',
+        service_account='service_account_value',
+        channel='channel_value',
+        etag='etag_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = eventarc.GetTriggerRequest.pb(eventarc.GetTriggerRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = trigger.Trigger.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.get_trigger(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, trigger.Trigger)
+
+def test_list_triggers_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = eventarc.ListTriggersResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = eventarc.ListTriggersRequest.pb(eventarc.ListTriggersRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = eventarc.ListTriggersResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.list_triggers(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.ListTriggersPager)
+
+def test_get_channel_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = channel.Channel(
+        name='name_value',
+        uid='uid_value',
+        provider='provider_value',
+        state=channel.Channel.State.PENDING,
+        activation_token='activation_token_value',
+        crypto_key_name='crypto_key_name_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = eventarc.GetChannelRequest.pb(eventarc.GetChannelRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = channel.Channel.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.get_channel(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, channel.Channel)
+
+def test_list_channels_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = eventarc.ListChannelsResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = eventarc.ListChannelsRequest.pb(eventarc.ListChannelsRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = eventarc.ListChannelsResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.list_channels(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.ListChannelsPager)
+
+def test_get_provider_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = discovery.Provider(
+        name='name_value',
+        display_name='display_name_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = eventarc.GetProviderRequest.pb(eventarc.GetProviderRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = discovery.Provider.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.get_provider(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, discovery.Provider)
+
+def test_list_providers_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = eventarc.ListProvidersResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = eventarc.ListProvidersRequest.pb(eventarc.ListProvidersRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = eventarc.ListProvidersResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.list_providers(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.ListProvidersPager)
+
+def test_get_channel_connection_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = channel_connection.ChannelConnection(
+        name='name_value',
+        uid='uid_value',
+        channel='channel_value',
+        activation_token='activation_token_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = eventarc.GetChannelConnectionRequest.pb(eventarc.GetChannelConnectionRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = channel_connection.ChannelConnection.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.get_channel_connection(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, channel_connection.ChannelConnection)
+
+def test_list_channel_connections_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = eventarc.ListChannelConnectionsResponse(
+        next_page_token='next_page_token_value',
+        unreachable=['unreachable_value'],
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = eventarc.ListChannelConnectionsRequest.pb(eventarc.ListChannelConnectionsRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = eventarc.ListChannelConnectionsResponse.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.list_channel_connections(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, pagers.ListChannelConnectionsPager)
+
+def test_get_google_channel_config_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = google_channel_config.GoogleChannelConfig(
+        name='name_value',
+        crypto_key_name='crypto_key_name_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = eventarc.GetGoogleChannelConfigRequest.pb(eventarc.GetGoogleChannelConfigRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "get",
+            'query_params': pb_request,
+        }
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = google_channel_config.GoogleChannelConfig.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.get_google_channel_config(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, google_channel_config.GoogleChannelConfig)
+
+def test_update_google_channel_config_with_metadata_callback_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major < 2 or (api_core_major == 2 and api_core_minor < 14):
+        pytest.skip("Skip this test if we're using an older version of `google-api-core` that doesn't support the metadata callback feature")
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    response_obj = gce_google_channel_config.GoogleChannelConfig(
+        name='name_value',
+        crypto_key_name='crypto_key_name_value',
+    )
+    with mock.patch.object(path_template, "transcode") as transcode, \
+        mock.patch.object(type(client.transport._session), "request") as call:
+
+        pb_request = eventarc.UpdateGoogleChannelConfigRequest.pb(eventarc.UpdateGoogleChannelConfigRequest())
+        transcode_result = {
+            'uri': 'v1/sample_method',
+            'method': "patch",
+            'query_params': pb_request,
+        }
+        transcode_result['body'] = pb_request
+
+        transcode.return_value = transcode_result
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        call.return_value = response_value
+
+        # Convert return value to protobuf type
+        response_obj_pb = gce_google_channel_config.GoogleChannelConfig.pb(response_obj)
+        json_response_obj = json_format.MessageToJson(response_obj_pb)
+        call.return_value.content = json_response_obj
+        mocked_callback = mock.Mock()
+        response = client.update_google_channel_config(
+            raw_response_callback=mocked_callback,
+            metadata=(("something", "something_value"),),
+        )
+        mocked_callback.assert_called_with(response_value)
+        assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
+
+
+def test_get_trigger_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = trigger.Trigger()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_trigger(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, trigger.Trigger)
+
+def test_list_triggers_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = eventarc.ListTriggersResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_triggers(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListTriggersPager)
+
+def test_get_channel_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = channel.Channel()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_channel(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, channel.Channel)
+
+def test_list_channels_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = eventarc.ListChannelsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_channels(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListChannelsPager)
+
+def test_get_provider_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = discovery.Provider()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_provider(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, discovery.Provider)
+
+def test_list_providers_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = eventarc.ListProvidersResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_providers(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListProvidersPager)
+
+def test_get_channel_connection_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = channel_connection.ChannelConnection()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_channel_connection(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, channel_connection.ChannelConnection)
+
+def test_list_channel_connections_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = eventarc.ListChannelConnectionsResponse()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.list_channel_connections(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, pagers.ListChannelConnectionsPager)
+
+def test_get_google_channel_config_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = google_channel_config.GoogleChannelConfig()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.get_google_channel_config(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, google_channel_config.GoogleChannelConfig)
+
+def test_update_google_channel_config_with_metadata_callback_raises_warning_if_no_metadata_rest():
+    api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 14):
+        pytest.skip("Skip this test if we're already on version of `google-api-core` that supports the metadata callback feature")
+
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    with mock.patch.object(
+        google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
+        call.return_value = gce_google_channel_config.GoogleChannelConfig()
+        mocked_callback = mock.Mock()
+        with pytest.warns(
+            RuntimeWarning,
+            match="Unable to retrieve response metadata.",
+        ) as warned:
+            response = client.update_google_channel_config(
+                raw_response_callback=mocked_callback,
+                metadata=(("something", "something_value"),),
+            )
+            assert issubclass(warned[0].category, RuntimeWarning)
+            warning_msg = str(warned[0].message)
+            assert "Unable to retrieve response metadata." in warning_msg
+
+            assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
+
+
 def test_eventarc_rest_lro_client():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14774,6 +16598,7 @@ def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
+
     )
     assert isinstance(
         client.transport,

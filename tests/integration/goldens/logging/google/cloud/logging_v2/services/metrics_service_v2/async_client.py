@@ -16,6 +16,7 @@
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+import warnings
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
@@ -235,6 +236,7 @@ class MetricsServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> pagers.ListLogMetricsAsyncPager:
         r"""Lists logs-based metrics.
 
@@ -286,6 +288,10 @@ class MetricsServiceV2AsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.services.metrics_service_v2.pagers.ListLogMetricsAsyncPager:
@@ -316,7 +322,18 @@ class MetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.list_log_metrics]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_log_metrics]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.list_log_metrics]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -336,6 +353,10 @@ class MetricsServiceV2AsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -358,6 +379,7 @@ class MetricsServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_metrics.LogMetric:
         r"""Gets a logs-based metric.
 
@@ -407,6 +429,10 @@ class MetricsServiceV2AsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogMetric:
@@ -444,7 +470,18 @@ class MetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.get_log_metric]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.get_log_metric]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.get_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -464,6 +501,10 @@ class MetricsServiceV2AsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -476,6 +517,7 @@ class MetricsServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_metrics.LogMetric:
         r"""Creates a logs-based metric.
 
@@ -541,6 +583,10 @@ class MetricsServiceV2AsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogMetric:
@@ -580,7 +626,18 @@ class MetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.create_log_metric]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.create_log_metric]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.create_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -600,6 +657,10 @@ class MetricsServiceV2AsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -612,6 +673,7 @@ class MetricsServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            raw_response_callback: Optional[callable] = None,
             ) -> logging_metrics.LogMetric:
         r"""Creates or updates a logs-based metric.
 
@@ -676,6 +738,10 @@ class MetricsServiceV2AsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
+            raw_response_callback (Optional[callable]): Adds a callback that
+                will be called if the request succeeds. The callback will have
+                a `raw_response` argument which is of type
+                `Union[grpc.aio.Call, requests.models.Response]`.
 
         Returns:
             google.cloud.logging_v2.types.LogMetric:
@@ -715,7 +781,18 @@ class MetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.update_log_metric]
+        with_call = False
+        if raw_response_callback: # pragma: NO COVER
+            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
+                with_call = True
+            else:
+                raw_response_callback = None
+                warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
+                    RuntimeWarning)
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.update_log_metric]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.update_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -735,6 +812,10 @@ class MetricsServiceV2AsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+        if isinstance(response, Tuple): # pragma: NO COVER
+            if raw_response_callback:
+                await raw_response_callback(response[1])
+            response = response[0]
 
         # Done; return the response.
         return response
@@ -813,7 +894,11 @@ class MetricsServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_log_metric]
+        with_call = False
+        if with_call:  # pragma: NO COVER
+            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.delete_log_metric]
+        else:
+            rpc = self._client._transport._wrapped_methods[self._client._transport.delete_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

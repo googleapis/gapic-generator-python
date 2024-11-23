@@ -193,6 +193,10 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
     class _{{method.name}}(_Base{{ service.name }}RestTransport._Base{{method.name}}, {{service.name}}RestStub):
         def __hash__(self):
             return hash("{{service.name}}RestTransport.{{method.name}}")
+        {% if not method.lro and not method.client_streaming and not method.server_streaming %}
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
+        {% endif %}
         {% if method.http_options and not method.client_streaming %}
 
         {% set body_spec = method.http_options[0].body %}
@@ -204,6 +208,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 {{ shared_macros.client_method_metadata_argument()|indent(8) }}={{ shared_macros.client_method_metadata_default_value() }},
+                with_call: bool = False,
                 ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseIterator{% endif %}{% endif %}:
     {% if method.http_options and not method.client_streaming %}
             r"""Call the {{- ' ' -}}
@@ -247,7 +252,10 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             {% endif %}{# method.lro #}
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
             {% endif %}{# method.void #}
     {% else %}{# method.http_options and not method.client_streaming #}

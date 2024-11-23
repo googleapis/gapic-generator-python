@@ -740,6 +740,70 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
 
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        if "with_call" in inspect.signature(gapic_v1.method_async.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.get_trigger: self._wrap_method(
+                    self.get_trigger,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_triggers: self._wrap_method(
+                    self.list_triggers,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_channel: self._wrap_method(
+                    self.get_channel,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_channels: self._wrap_method(
+                    self.list_channels,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_provider: self._wrap_method(
+                    self.get_provider,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_providers: self._wrap_method(
+                    self.list_providers,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_channel_connection: self._wrap_method(
+                    self.get_channel_connection,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_channel_connections: self._wrap_method(
+                    self.list_channel_connections,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.get_google_channel_config: self._wrap_method(
+                    self.get_google_channel_config,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.update_google_channel_config: self._wrap_method(
+                    self.update_google_channel_config,
+                    default_timeout=None,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         self._wrapped_methods = {
             self.get_trigger: self._wrap_method(
                 self.get_trigger,
@@ -881,6 +945,8 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
     def _wrap_method(self, func, *args, **kwargs):
         if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
+        if "with_call" not in inspect.signature(gapic_v1.method_async.wrap_method).parameters: # pragma: NO COVER
+            kwargs.pop("with_call", None)
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):

@@ -416,6 +416,78 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
 
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        if "with_call" in inspect.signature(gapic_v1.method_async.wrap_method).parameters: # pragma: NO COVER
+            self._wrapped_methods_with_call = {
+                self.write_log_entries: self._wrap_method(
+                    self.write_log_entries,
+                    default_retry=retries.AsyncRetry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_log_entries: self._wrap_method(
+                    self.list_log_entries,
+                    default_retry=retries.AsyncRetry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_monitored_resource_descriptors: self._wrap_method(
+                    self.list_monitored_resource_descriptors,
+                    default_retry=retries.AsyncRetry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+                self.list_logs: self._wrap_method(
+                    self.list_logs,
+                    default_retry=retries.AsyncRetry(
+                        initial=0.1,
+                        maximum=60.0,
+                        multiplier=1.3,
+                        predicate=retries.if_exception_type(
+                            core_exceptions.DeadlineExceeded,
+                            core_exceptions.InternalServerError,
+                            core_exceptions.ServiceUnavailable,
+                        ),
+                        deadline=60.0,
+                    ),
+                    default_timeout=60.0,
+                    client_info=client_info,
+                    with_call=True,
+                ),
+            }
+
         self._wrapped_methods = {
             self.delete_log: self._wrap_method(
                 self.delete_log,
@@ -533,6 +605,8 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
     def _wrap_method(self, func, *args, **kwargs):
         if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
+        if "with_call" not in inspect.signature(gapic_v1.method_async.wrap_method).parameters: # pragma: NO COVER
+            kwargs.pop("with_call", None)
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):

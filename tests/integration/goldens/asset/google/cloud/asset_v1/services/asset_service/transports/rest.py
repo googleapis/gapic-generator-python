@@ -767,6 +767,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
     class _AnalyzeIamPolicy(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeIamPolicy")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -795,6 +797,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.AnalyzeIamPolicyResponse:
             r"""Call the analyze iam policy method over HTTP.
 
@@ -838,7 +841,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_iam_policy(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _AnalyzeIamPolicyLongrunning(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning, AssetServiceRestStub):
         def __hash__(self):
@@ -872,6 +878,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the analyze iam policy
         longrunning method over HTTP.
@@ -917,11 +924,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_iam_policy_longrunning(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _AnalyzeMove(_BaseAssetServiceRestTransport._BaseAnalyzeMove, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeMove")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -950,6 +962,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.AnalyzeMoveResponse:
             r"""Call the analyze move method over HTTP.
 
@@ -993,11 +1006,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_move(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _AnalyzeOrgPolicies(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeOrgPolicies")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1026,6 +1044,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.AnalyzeOrgPoliciesResponse:
             r"""Call the analyze org policies method over HTTP.
 
@@ -1069,11 +1088,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_org_policies(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _AnalyzeOrgPolicyGovernedAssets(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeOrgPolicyGovernedAssets")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1102,6 +1126,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.AnalyzeOrgPolicyGovernedAssetsResponse:
             r"""Call the analyze org policy
         governed assets method over HTTP.
@@ -1146,11 +1171,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _AnalyzeOrgPolicyGovernedContainers(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.AnalyzeOrgPolicyGovernedContainers")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1179,6 +1209,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.AnalyzeOrgPolicyGovernedContainersResponse:
             r"""Call the analyze org policy
         governed containers method over HTTP.
@@ -1223,11 +1254,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _BatchGetAssetsHistory(_BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.BatchGetAssetsHistory")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1256,6 +1292,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.BatchGetAssetsHistoryResponse:
             r"""Call the batch get assets history method over HTTP.
 
@@ -1296,11 +1333,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_batch_get_assets_history(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _BatchGetEffectiveIamPolicies(_BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.BatchGetEffectiveIamPolicies")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1329,6 +1371,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
             r"""Call the batch get effective iam
         policies method over HTTP.
@@ -1373,11 +1416,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _CreateFeed(_BaseAssetServiceRestTransport._BaseCreateFeed, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.CreateFeed")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1407,6 +1455,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.Feed:
             r"""Call the create feed method over HTTP.
 
@@ -1457,11 +1506,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_feed(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _CreateSavedQuery(_BaseAssetServiceRestTransport._BaseCreateSavedQuery, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.CreateSavedQuery")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1491,6 +1545,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.SavedQuery:
             r"""Call the create saved query method over HTTP.
 
@@ -1535,11 +1590,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_saved_query(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _DeleteFeed(_BaseAssetServiceRestTransport._BaseDeleteFeed, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.DeleteFeed")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1568,6 +1628,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ):
             r"""Call the delete feed method over HTTP.
 
@@ -1601,6 +1662,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
     class _DeleteSavedQuery(_BaseAssetServiceRestTransport._BaseDeleteSavedQuery, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.DeleteSavedQuery")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1629,6 +1692,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ):
             r"""Call the delete saved query method over HTTP.
 
@@ -1691,6 +1755,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> operations_pb2.Operation:
             r"""Call the export assets method over HTTP.
 
@@ -1734,11 +1799,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_export_assets(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetFeed(_BaseAssetServiceRestTransport._BaseGetFeed, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.GetFeed")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1767,6 +1837,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.Feed:
             r"""Call the get feed method over HTTP.
 
@@ -1815,11 +1886,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_feed(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _GetSavedQuery(_BaseAssetServiceRestTransport._BaseGetSavedQuery, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.GetSavedQuery")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1848,6 +1924,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.SavedQuery:
             r"""Call the get saved query method over HTTP.
 
@@ -1890,11 +1967,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_saved_query(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ListAssets(_BaseAssetServiceRestTransport._BaseListAssets, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.ListAssets")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1923,6 +2005,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.ListAssetsResponse:
             r"""Call the list assets method over HTTP.
 
@@ -1963,11 +2046,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_assets(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ListFeeds(_BaseAssetServiceRestTransport._BaseListFeeds, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.ListFeeds")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -1996,6 +2084,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.ListFeedsResponse:
             r"""Call the list feeds method over HTTP.
 
@@ -2036,11 +2125,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_feeds(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _ListSavedQueries(_BaseAssetServiceRestTransport._BaseListSavedQueries, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.ListSavedQueries")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -2069,6 +2163,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.ListSavedQueriesResponse:
             r"""Call the list saved queries method over HTTP.
 
@@ -2109,11 +2204,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_saved_queries(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _QueryAssets(_BaseAssetServiceRestTransport._BaseQueryAssets, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.QueryAssets")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -2143,6 +2243,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.QueryAssetsResponse:
             r"""Call the query assets method over HTTP.
 
@@ -2185,11 +2286,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_query_assets(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _SearchAllIamPolicies(_BaseAssetServiceRestTransport._BaseSearchAllIamPolicies, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.SearchAllIamPolicies")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -2218,6 +2324,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.SearchAllIamPoliciesResponse:
             r"""Call the search all iam policies method over HTTP.
 
@@ -2258,11 +2365,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_search_all_iam_policies(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _SearchAllResources(_BaseAssetServiceRestTransport._BaseSearchAllResources, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.SearchAllResources")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -2291,6 +2403,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.SearchAllResourcesResponse:
             r"""Call the search all resources method over HTTP.
 
@@ -2331,11 +2444,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_search_all_resources(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _UpdateFeed(_BaseAssetServiceRestTransport._BaseUpdateFeed, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.UpdateFeed")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -2365,6 +2483,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.Feed:
             r"""Call the update feed method over HTTP.
 
@@ -2415,11 +2534,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_feed(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     class _UpdateSavedQuery(_BaseAssetServiceRestTransport._BaseUpdateSavedQuery, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.UpdateSavedQuery")
+        def with_call(self, request=None, retry=None, timeout=None, metadata=None):
+            return self.__call__(request=request, retry=retry, timeout=timeout, metadata=metadata, with_call=True) # pragma: NO COVER
 
         @staticmethod
         def _get_response(
@@ -2449,6 +2573,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                with_call: bool = False,
                 ) -> asset_service.SavedQuery:
             r"""Call the update saved query method over HTTP.
 
@@ -2493,7 +2618,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_saved_query(resp)
-            return resp
+            if with_call: # pragma: NO COVER
+                return (resp, response)
+            else:
+                return resp
 
     @property
     def analyze_iam_policy(self) -> Callable[
