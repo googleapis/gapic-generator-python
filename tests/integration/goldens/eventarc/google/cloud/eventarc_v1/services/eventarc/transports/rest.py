@@ -46,6 +46,7 @@ from google.longrunning import operations_pb2  # type: ignore
 
 
 from .rest_base import _BaseEventarcRestTransport
+from .base import BaseCallMetadata
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
@@ -895,7 +896,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> operations_pb2.Operation:
+                ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the create channel method over HTTP.
 
             Args:
@@ -940,7 +941,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_channel(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -977,7 +980,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> operations_pb2.Operation:
+                ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the create channel connection method over HTTP.
 
             Args:
@@ -1022,7 +1025,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_channel_connection(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1059,7 +1064,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> operations_pb2.Operation:
+                ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the create trigger method over HTTP.
 
             Args:
@@ -1104,7 +1109,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_trigger(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1140,7 +1147,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> operations_pb2.Operation:
+                ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the delete channel method over HTTP.
 
             Args:
@@ -1183,7 +1190,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_channel(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1219,7 +1228,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> operations_pb2.Operation:
+                ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the delete channel connection method over HTTP.
 
             Args:
@@ -1262,7 +1271,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_channel_connection(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1298,7 +1309,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> operations_pb2.Operation:
+                ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the delete trigger method over HTTP.
 
             Args:
@@ -1341,7 +1352,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_trigger(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1379,7 +1392,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> channel.Channel:
+                ) -> Union[channel.Channel, Tuple[channel.Channel, BaseCallMetadata]]:
             r"""Call the get channel method over HTTP.
 
             Args:
@@ -1429,7 +1442,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_channel(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1467,7 +1482,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> channel_connection.ChannelConnection:
+                ) -> Union[channel_connection.ChannelConnection, Tuple[channel_connection.ChannelConnection, BaseCallMetadata]]:
             r"""Call the get channel connection method over HTTP.
 
             Args:
@@ -1516,7 +1531,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_channel_connection(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1554,7 +1571,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> google_channel_config.GoogleChannelConfig:
+                ) -> Union[google_channel_config.GoogleChannelConfig, Tuple[google_channel_config.GoogleChannelConfig, BaseCallMetadata]]:
             r"""Call the get google channel config method over HTTP.
 
             Args:
@@ -1604,7 +1621,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_google_channel_config(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1642,7 +1661,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> discovery.Provider:
+                ) -> Union[discovery.Provider, Tuple[discovery.Provider, BaseCallMetadata]]:
             r"""Call the get provider method over HTTP.
 
             Args:
@@ -1686,7 +1705,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_provider(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1724,7 +1745,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> trigger.Trigger:
+                ) -> Union[trigger.Trigger, Tuple[trigger.Trigger, BaseCallMetadata]]:
             r"""Call the get trigger method over HTTP.
 
             Args:
@@ -1768,7 +1789,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_trigger(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1806,7 +1829,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> eventarc.ListChannelConnectionsResponse:
+                ) -> Union[eventarc.ListChannelConnectionsResponse, Tuple[eventarc.ListChannelConnectionsResponse, BaseCallMetadata]]:
             r"""Call the list channel connections method over HTTP.
 
             Args:
@@ -1850,7 +1873,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_channel_connections(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1888,7 +1913,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> eventarc.ListChannelsResponse:
+                ) -> Union[eventarc.ListChannelsResponse, Tuple[eventarc.ListChannelsResponse, BaseCallMetadata]]:
             r"""Call the list channels method over HTTP.
 
             Args:
@@ -1930,7 +1955,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_channels(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1968,7 +1995,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> eventarc.ListProvidersResponse:
+                ) -> Union[eventarc.ListProvidersResponse, Tuple[eventarc.ListProvidersResponse, BaseCallMetadata]]:
             r"""Call the list providers method over HTTP.
 
             Args:
@@ -2010,7 +2037,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_providers(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2048,7 +2077,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> eventarc.ListTriggersResponse:
+                ) -> Union[eventarc.ListTriggersResponse, Tuple[eventarc.ListTriggersResponse, BaseCallMetadata]]:
             r"""Call the list triggers method over HTTP.
 
             Args:
@@ -2090,7 +2119,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_triggers(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2127,7 +2158,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> operations_pb2.Operation:
+                ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the update channel method over HTTP.
 
             Args:
@@ -2172,7 +2203,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_channel(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2211,7 +2244,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> gce_google_channel_config.GoogleChannelConfig:
+                ) -> Union[gce_google_channel_config.GoogleChannelConfig, Tuple[gce_google_channel_config.GoogleChannelConfig, BaseCallMetadata]]:
             r"""Call the update google channel
         config method over HTTP.
 
@@ -2264,7 +2297,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_google_channel_config(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2301,7 +2336,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> operations_pb2.Operation:
+                ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the update trigger method over HTTP.
 
             Args:
@@ -2346,7 +2381,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_trigger(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 

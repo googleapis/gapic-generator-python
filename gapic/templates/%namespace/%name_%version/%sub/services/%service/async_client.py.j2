@@ -46,9 +46,21 @@ from google.cloud.location import locations_pb2 # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
+from .transports.base import BaseCallMetadata
 from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 from .client import {{ service.client_name }}
+
+
+
+class {{ service.async_client_name }}CallMetadata(BaseCallMetadata):
+    def __init__(
+            self,
+            request_metadata: Sequence[Tuple[str, Union[str, bytes]]] = [],
+            response_metadata: Sequence[Tuple[str, Union[str, bytes]]] = []
+        ):
+
+        super().__init__(request_metadata=request_metadata, response_metadata=response_metadata) # pragma: NO COVER
 
 
 {# TODO(yon-mg): handle rest transport async client interaction #}
@@ -259,7 +271,7 @@ class {{ service.async_client_name }}:
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             {{ shared_macros.client_method_metadata_argument()|indent(8) }} = {{ shared_macros.client_method_metadata_default_value() }},
             {% if not method.void and not method.lro and not method.client_streaming and not method.server_streaming %}
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             {% endif %}
             {% if not method.server_streaming %}
             ) -> {{ method.client_output_async.ident }}:
@@ -298,7 +310,7 @@ class {{ service.async_client_name }}:
             timeout (float): The timeout for this request.
             {{ shared_macros.client_method_metadata_argument_doc()|indent(4) }}
             {% if not method.void and not method.lro and not method.client_streaming and not method.server_streaming %}
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -368,20 +380,21 @@ class {{ service.async_client_name }}:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         {% if not method.void and not method.lro and not method.client_streaming and not method.server_streaming %}
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
         {% endif %}
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.{{ method.transport_safe_name|snake_case }}]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.{{ method.transport_safe_name|snake_case }}]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.{{ method.transport_safe_name|snake_case }}]
 
 {{ shared_macros.create_metadata(method) }}
 {{ shared_macros.add_api_version_header_to_metadata(service.version) }}
@@ -403,10 +416,16 @@ class {{ service.async_client_name }}:
             metadata=metadata,
         )
         {% if not method.void and not method.lro and not method.server_streaming and not method.client_streaming %}
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = {{ service.async_client_name }}CallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
         {% endif %}
         {% if method.lro %}
 

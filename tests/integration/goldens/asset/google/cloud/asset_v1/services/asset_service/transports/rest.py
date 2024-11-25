@@ -38,6 +38,7 @@ from google.longrunning import operations_pb2  # type: ignore
 
 
 from .rest_base import _BaseAssetServiceRestTransport
+from .base import BaseCallMetadata
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
@@ -798,7 +799,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.AnalyzeIamPolicyResponse:
+                ) -> Union[asset_service.AnalyzeIamPolicyResponse, Tuple[asset_service.AnalyzeIamPolicyResponse, BaseCallMetadata]]:
             r"""Call the analyze iam policy method over HTTP.
 
             Args:
@@ -842,7 +843,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_iam_policy(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -879,7 +882,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> operations_pb2.Operation:
+                ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the analyze iam policy
         longrunning method over HTTP.
 
@@ -925,7 +928,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_iam_policy_longrunning(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -963,7 +968,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.AnalyzeMoveResponse:
+                ) -> Union[asset_service.AnalyzeMoveResponse, Tuple[asset_service.AnalyzeMoveResponse, BaseCallMetadata]]:
             r"""Call the analyze move method over HTTP.
 
             Args:
@@ -1007,7 +1012,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_move(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1045,7 +1052,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.AnalyzeOrgPoliciesResponse:
+                ) -> Union[asset_service.AnalyzeOrgPoliciesResponse, Tuple[asset_service.AnalyzeOrgPoliciesResponse, BaseCallMetadata]]:
             r"""Call the analyze org policies method over HTTP.
 
             Args:
@@ -1089,7 +1096,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_org_policies(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1127,7 +1136,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.AnalyzeOrgPolicyGovernedAssetsResponse:
+                ) -> Union[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse, Tuple[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse, BaseCallMetadata]]:
             r"""Call the analyze org policy
         governed assets method over HTTP.
 
@@ -1172,7 +1181,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1210,7 +1221,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.AnalyzeOrgPolicyGovernedContainersResponse:
+                ) -> Union[asset_service.AnalyzeOrgPolicyGovernedContainersResponse, Tuple[asset_service.AnalyzeOrgPolicyGovernedContainersResponse, BaseCallMetadata]]:
             r"""Call the analyze org policy
         governed containers method over HTTP.
 
@@ -1255,7 +1266,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1293,7 +1306,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.BatchGetAssetsHistoryResponse:
+                ) -> Union[asset_service.BatchGetAssetsHistoryResponse, Tuple[asset_service.BatchGetAssetsHistoryResponse, BaseCallMetadata]]:
             r"""Call the batch get assets history method over HTTP.
 
             Args:
@@ -1334,7 +1347,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_batch_get_assets_history(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1372,7 +1387,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
+                ) -> Union[asset_service.BatchGetEffectiveIamPoliciesResponse, Tuple[asset_service.BatchGetEffectiveIamPoliciesResponse, BaseCallMetadata]]:
             r"""Call the batch get effective iam
         policies method over HTTP.
 
@@ -1417,7 +1432,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1456,7 +1473,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.Feed:
+                ) -> Union[asset_service.Feed, Tuple[asset_service.Feed, BaseCallMetadata]]:
             r"""Call the create feed method over HTTP.
 
             Args:
@@ -1507,7 +1524,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_feed(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1546,7 +1565,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.SavedQuery:
+                ) -> Union[asset_service.SavedQuery, Tuple[asset_service.SavedQuery, BaseCallMetadata]]:
             r"""Call the create saved query method over HTTP.
 
             Args:
@@ -1591,7 +1610,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_saved_query(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1756,7 +1777,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> operations_pb2.Operation:
+                ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the export assets method over HTTP.
 
             Args:
@@ -1800,7 +1821,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_export_assets(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1838,7 +1861,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.Feed:
+                ) -> Union[asset_service.Feed, Tuple[asset_service.Feed, BaseCallMetadata]]:
             r"""Call the get feed method over HTTP.
 
             Args:
@@ -1887,7 +1910,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_feed(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1925,7 +1950,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.SavedQuery:
+                ) -> Union[asset_service.SavedQuery, Tuple[asset_service.SavedQuery, BaseCallMetadata]]:
             r"""Call the get saved query method over HTTP.
 
             Args:
@@ -1968,7 +1993,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_saved_query(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2006,7 +2033,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.ListAssetsResponse:
+                ) -> Union[asset_service.ListAssetsResponse, Tuple[asset_service.ListAssetsResponse, BaseCallMetadata]]:
             r"""Call the list assets method over HTTP.
 
             Args:
@@ -2047,7 +2074,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_assets(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2085,7 +2114,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.ListFeedsResponse:
+                ) -> Union[asset_service.ListFeedsResponse, Tuple[asset_service.ListFeedsResponse, BaseCallMetadata]]:
             r"""Call the list feeds method over HTTP.
 
             Args:
@@ -2126,7 +2155,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_feeds(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2164,7 +2195,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.ListSavedQueriesResponse:
+                ) -> Union[asset_service.ListSavedQueriesResponse, Tuple[asset_service.ListSavedQueriesResponse, BaseCallMetadata]]:
             r"""Call the list saved queries method over HTTP.
 
             Args:
@@ -2205,7 +2236,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_saved_queries(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2244,7 +2277,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.QueryAssetsResponse:
+                ) -> Union[asset_service.QueryAssetsResponse, Tuple[asset_service.QueryAssetsResponse, BaseCallMetadata]]:
             r"""Call the query assets method over HTTP.
 
             Args:
@@ -2287,7 +2320,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_query_assets(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2325,7 +2360,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.SearchAllIamPoliciesResponse:
+                ) -> Union[asset_service.SearchAllIamPoliciesResponse, Tuple[asset_service.SearchAllIamPoliciesResponse, BaseCallMetadata]]:
             r"""Call the search all iam policies method over HTTP.
 
             Args:
@@ -2366,7 +2401,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_search_all_iam_policies(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2404,7 +2441,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.SearchAllResourcesResponse:
+                ) -> Union[asset_service.SearchAllResourcesResponse, Tuple[asset_service.SearchAllResourcesResponse, BaseCallMetadata]]:
             r"""Call the search all resources method over HTTP.
 
             Args:
@@ -2445,7 +2482,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_search_all_resources(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2484,7 +2523,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.Feed:
+                ) -> Union[asset_service.Feed, Tuple[asset_service.Feed, BaseCallMetadata]]:
             r"""Call the update feed method over HTTP.
 
             Args:
@@ -2535,7 +2574,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_feed(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -2574,7 +2615,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> asset_service.SavedQuery:
+                ) -> Union[asset_service.SavedQuery, Tuple[asset_service.SavedQuery, BaseCallMetadata]]:
             r"""Call the update saved query method over HTTP.
 
             Args:
@@ -2619,7 +2660,9 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_saved_query(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 

@@ -1591,11 +1591,13 @@ def test_{{ method_name }}_rest_no_http_options():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
     {% else %}
     with mock.patch.object(
         type(client.transport.{{ method.transport_safe_name|snake_case }}), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
     {% endif %}
 {% else %}
@@ -1621,6 +1623,7 @@ def test_{{ method_name }}_rest_no_http_options():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -1637,11 +1640,7 @@ def test_{{ method_name }}_rest_no_http_options():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-{% if 'grpc' in transport_name %}
-        mocked_callback.assert_called_with(mocked_grpc_callable)
-{% else %}
-        mocked_callback.assert_called_with(response_value)
-{% endif %}
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         {% if is_async %}
         assert isinstance(response, {{ method.client_output_async.ident }})
         {% else %}

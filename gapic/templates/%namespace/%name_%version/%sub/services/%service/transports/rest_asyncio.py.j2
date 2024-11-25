@@ -57,6 +57,7 @@ from typing import Any, Dict, List, Callable, Tuple, Optional, Sequence, Union
 
 from .rest_base import _Base{{ service.name }}RestTransport
 
+from .base import BaseCallMetadata
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
@@ -71,6 +72,21 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 {{ shared_macros.create_interceptor_class(api, service, method, is_async=True) }}
+
+class AsyncCallMetadata(BaseCallMetadata):
+    def __init__(
+        self,
+        request_metadata : Sequence[Tuple[str, Union[str, bytes]]] = [],
+        response_metadata : Sequence[Tuple[str, Union[str, bytes]]] = [],
+    ): # pragma: NO COVER
+        self.request_metadata = request_metadata
+        self.response_metadata = response_metadata
+
+        super().__init__(request_metadata=request_metadata, response_metadata=response_metadata)
+
+    async def trailing_metadata(self):
+        return self.response_metadata # pragma: NO COVER
+
 
 @dataclasses.dataclass
 class Async{{service.name}}RestStub:
@@ -170,7 +186,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                     {{ shared_macros.client_method_metadata_argument()|indent(12) }}={{ shared_macros.client_method_metadata_default_value() }},
                     with_call: bool = False,
                     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Update return type for client streaming method. #}
-                    ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming_async.AsyncResponseIterator{% endif %}{% endif %}:
+                    ){% if not method.void %} -> {% if not method.server_streaming %}Union[{{method.output.ident}}, Tuple[{{method.output.ident}}, BaseCallMetadata]]{% else %}rest_streaming_async.AsyncResponseIterator{% endif %}{% endif %}:
         {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2169): Implement client streaming method. #}
          {% if method.http_options and not method.client_streaming %}
             r"""Call the {{- ' ' -}}
@@ -213,7 +229,9 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% endif %}{# if method.server_streaming #}
             resp = await self._interceptor.post_{{ method.name|snake_case }}(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 

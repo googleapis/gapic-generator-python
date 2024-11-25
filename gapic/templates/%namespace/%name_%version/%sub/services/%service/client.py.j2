@@ -62,6 +62,7 @@ from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc import {{ service.grpc_transport_name }}
 from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 {% endif %}
+from .transports.base import BaseCallMetadata
 {% if 'rest' in opts.transport %}
 from .transports.rest import {{ service.name }}RestTransport
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
@@ -76,6 +77,16 @@ except ImportError as e: # pragma: NO COVER
 
 {% endif %}{# if rest_async_io_enabled #}
 {% endif %}
+
+
+class {{ service.client_name }}CallMetadata(BaseCallMetadata):
+    def __init__(
+            self,
+            request_metadata : Sequence[Tuple[str, Union[str, bytes]]] = [],
+            response_metadata : Sequence[Tuple[str, Union[str, bytes]]] = [],
+        ):
+
+        super().__init__(request_metadata=request_metadata, response_metadata=response_metadata) # pragma: NO COVER
 
 
 class {{ service.client_name }}Meta(type):

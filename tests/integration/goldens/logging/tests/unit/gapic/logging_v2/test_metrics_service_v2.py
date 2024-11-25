@@ -2765,13 +2765,14 @@ def test_list_log_metrics_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.list_log_metrics(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListLogMetricsPager)
 
 def test_get_log_metric_with_metadata_callback_grpc():
@@ -2795,13 +2796,14 @@ def test_get_log_metric_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.get_log_metric(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, logging_metrics.LogMetric)
 
 def test_create_log_metric_with_metadata_callback_grpc():
@@ -2825,13 +2827,14 @@ def test_create_log_metric_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.create_log_metric(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, logging_metrics.LogMetric)
 
 def test_update_log_metric_with_metadata_callback_grpc():
@@ -2855,13 +2858,14 @@ def test_update_log_metric_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.update_log_metric(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, logging_metrics.LogMetric)
 
 
@@ -3160,13 +3164,14 @@ async def test_list_log_metrics_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.list_log_metrics), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.list_log_metrics(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListLogMetricsAsyncPager)
 
 @pytest.mark.asyncio
@@ -3191,13 +3196,14 @@ async def test_get_log_metric_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.get_log_metric), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.get_log_metric(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, logging_metrics.LogMetric)
 
 @pytest.mark.asyncio
@@ -3222,13 +3228,14 @@ async def test_create_log_metric_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.create_log_metric), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.create_log_metric(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, logging_metrics.LogMetric)
 
 @pytest.mark.asyncio
@@ -3253,13 +3260,14 @@ async def test_update_log_metric_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.update_log_metric), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.update_log_metric(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, logging_metrics.LogMetric)
 
 

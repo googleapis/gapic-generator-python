@@ -11219,13 +11219,14 @@ def test_get_trigger_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.get_trigger(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, trigger.Trigger)
 
 def test_list_triggers_with_metadata_callback_grpc():
@@ -11244,13 +11245,14 @@ def test_list_triggers_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.list_triggers(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListTriggersPager)
 
 def test_get_channel_with_metadata_callback_grpc():
@@ -11273,13 +11275,14 @@ def test_get_channel_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.get_channel(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, channel.Channel)
 
 def test_list_channels_with_metadata_callback_grpc():
@@ -11298,13 +11301,14 @@ def test_list_channels_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.list_channels(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListChannelsPager)
 
 def test_get_provider_with_metadata_callback_grpc():
@@ -11323,13 +11327,14 @@ def test_get_provider_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.get_provider(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, discovery.Provider)
 
 def test_list_providers_with_metadata_callback_grpc():
@@ -11348,13 +11353,14 @@ def test_list_providers_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.list_providers(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListProvidersPager)
 
 def test_get_channel_connection_with_metadata_callback_grpc():
@@ -11375,13 +11381,14 @@ def test_get_channel_connection_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.get_channel_connection(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, channel_connection.ChannelConnection)
 
 def test_list_channel_connections_with_metadata_callback_grpc():
@@ -11400,13 +11407,14 @@ def test_list_channel_connections_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.list_channel_connections(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListChannelConnectionsPager)
 
 def test_get_google_channel_config_with_metadata_callback_grpc():
@@ -11425,13 +11433,14 @@ def test_get_google_channel_config_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.get_google_channel_config(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, google_channel_config.GoogleChannelConfig)
 
 def test_update_google_channel_config_with_metadata_callback_grpc():
@@ -11450,13 +11459,14 @@ def test_update_google_channel_config_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.update_google_channel_config(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
 
 
@@ -12281,13 +12291,14 @@ async def test_get_trigger_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.get_trigger), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.get_trigger(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, trigger.Trigger)
 
 @pytest.mark.asyncio
@@ -12307,13 +12318,14 @@ async def test_list_triggers_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.list_triggers), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.list_triggers(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListTriggersAsyncPager)
 
 @pytest.mark.asyncio
@@ -12337,13 +12349,14 @@ async def test_get_channel_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.get_channel), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.get_channel(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, channel.Channel)
 
 @pytest.mark.asyncio
@@ -12363,13 +12376,14 @@ async def test_list_channels_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.list_channels), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.list_channels(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListChannelsAsyncPager)
 
 @pytest.mark.asyncio
@@ -12389,13 +12403,14 @@ async def test_get_provider_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.get_provider), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.get_provider(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, discovery.Provider)
 
 @pytest.mark.asyncio
@@ -12415,13 +12430,14 @@ async def test_list_providers_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.list_providers), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.list_providers(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListProvidersAsyncPager)
 
 @pytest.mark.asyncio
@@ -12443,13 +12459,14 @@ async def test_get_channel_connection_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.get_channel_connection), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.get_channel_connection(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, channel_connection.ChannelConnection)
 
 @pytest.mark.asyncio
@@ -12469,13 +12486,14 @@ async def test_list_channel_connections_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.list_channel_connections), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.list_channel_connections(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListChannelConnectionsAsyncPager)
 
 @pytest.mark.asyncio
@@ -12495,13 +12513,14 @@ async def test_get_google_channel_config_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.get_google_channel_config), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.get_google_channel_config(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, google_channel_config.GoogleChannelConfig)
 
 @pytest.mark.asyncio
@@ -12521,13 +12540,14 @@ async def test_update_google_channel_config_with_metadata_callback_grpc_asyncio(
     with mock.patch.object(
         type(client.transport.update_google_channel_config), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.update_google_channel_config(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
 
 
@@ -15897,6 +15917,7 @@ def test_get_trigger_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -15908,7 +15929,7 @@ def test_get_trigger_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, trigger.Trigger)
 
 def test_list_triggers_with_metadata_callback_rest():
@@ -15939,6 +15960,7 @@ def test_list_triggers_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -15950,7 +15972,7 @@ def test_list_triggers_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListTriggersPager)
 
 def test_get_channel_with_metadata_callback_rest():
@@ -15985,6 +16007,7 @@ def test_get_channel_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -15996,7 +16019,7 @@ def test_get_channel_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, channel.Channel)
 
 def test_list_channels_with_metadata_callback_rest():
@@ -16027,6 +16050,7 @@ def test_list_channels_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -16038,7 +16062,7 @@ def test_list_channels_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListChannelsPager)
 
 def test_get_provider_with_metadata_callback_rest():
@@ -16069,6 +16093,7 @@ def test_get_provider_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -16080,7 +16105,7 @@ def test_get_provider_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, discovery.Provider)
 
 def test_list_providers_with_metadata_callback_rest():
@@ -16111,6 +16136,7 @@ def test_list_providers_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -16122,7 +16148,7 @@ def test_list_providers_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListProvidersPager)
 
 def test_get_channel_connection_with_metadata_callback_rest():
@@ -16155,6 +16181,7 @@ def test_get_channel_connection_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -16166,7 +16193,7 @@ def test_get_channel_connection_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, channel_connection.ChannelConnection)
 
 def test_list_channel_connections_with_metadata_callback_rest():
@@ -16197,6 +16224,7 @@ def test_list_channel_connections_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -16208,7 +16236,7 @@ def test_list_channel_connections_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, pagers.ListChannelConnectionsPager)
 
 def test_get_google_channel_config_with_metadata_callback_rest():
@@ -16239,6 +16267,7 @@ def test_get_google_channel_config_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -16250,7 +16279,7 @@ def test_get_google_channel_config_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, google_channel_config.GoogleChannelConfig)
 
 def test_update_google_channel_config_with_metadata_callback_rest():
@@ -16282,6 +16311,7 @@ def test_update_google_channel_config_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -16293,7 +16323,7 @@ def test_update_google_channel_config_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
 
 

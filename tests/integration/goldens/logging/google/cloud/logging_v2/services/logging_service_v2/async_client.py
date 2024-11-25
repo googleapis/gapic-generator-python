@@ -38,9 +38,20 @@ from google.cloud.logging_v2.services.logging_service_v2 import pagers
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
 from google.longrunning import operations_pb2 # type: ignore
+from .transports.base import BaseCallMetadata
 from .transports.base import LoggingServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import LoggingServiceV2GrpcAsyncIOTransport
 from .client import LoggingServiceV2Client
+
+
+class LoggingServiceV2AsyncClientCallMetadata(BaseCallMetadata):
+    def __init__(
+            self,
+            request_metadata: Sequence[Tuple[str, Union[str, bytes]]] = [],
+            response_metadata: Sequence[Tuple[str, Union[str, bytes]]] = []
+        ):
+
+        super().__init__(request_metadata=request_metadata, response_metadata=response_metadata) # pragma: NO COVER
 
 
 class LoggingServiceV2AsyncClient:
@@ -314,11 +325,12 @@ class LoggingServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.delete_log]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.delete_log]
+        wrapped_methods = None
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.delete_log]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -349,7 +361,7 @@ class LoggingServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> logging.WriteLogEntriesResponse:
         r"""Writes log entries to Logging. This API method is the
         only way to send log entries to Logging. This method is
@@ -484,7 +496,7 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -520,18 +532,19 @@ class LoggingServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.write_log_entries]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.write_log_entries]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.write_log_entries]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -543,10 +556,16 @@ class LoggingServiceV2AsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = LoggingServiceV2AsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -560,7 +579,7 @@ class LoggingServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> pagers.ListLogEntriesAsyncPager:
         r"""Lists log entries. Use this method to retrieve log entries that
         originated from a project/folder/organization/billing account.
@@ -651,7 +670,7 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -688,18 +707,19 @@ class LoggingServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_log_entries]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.list_log_entries]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.list_log_entries]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -711,10 +731,16 @@ class LoggingServiceV2AsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = LoggingServiceV2AsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -736,7 +762,7 @@ class LoggingServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> pagers.ListMonitoredResourceDescriptorsAsyncPager:
         r"""Lists the descriptors for monitored resource types
         used by Logging.
@@ -778,7 +804,7 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -800,18 +826,19 @@ class LoggingServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_monitored_resource_descriptors]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.list_monitored_resource_descriptors]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.list_monitored_resource_descriptors]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -823,10 +850,16 @@ class LoggingServiceV2AsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = LoggingServiceV2AsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -849,7 +882,7 @@ class LoggingServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> pagers.ListLogsAsyncPager:
         r"""Lists the logs in projects, organizations, folders,
         or billing accounts. Only logs that have entries are
@@ -903,7 +936,7 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -937,18 +970,19 @@ class LoggingServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_logs]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.list_logs]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.list_logs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -968,10 +1002,16 @@ class LoggingServiceV2AsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = LoggingServiceV2AsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -1053,11 +1093,12 @@ class LoggingServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.tail_log_entries]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.tail_log_entries]
+        wrapped_methods = None
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.tail_log_entries]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

@@ -35,6 +35,7 @@ from google.iam.credentials_v1.types import common
 
 
 from .rest_base import _BaseIAMCredentialsRestTransport
+from .base import BaseCallMetadata
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
@@ -303,7 +304,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> common.GenerateAccessTokenResponse:
+                ) -> Union[common.GenerateAccessTokenResponse, Tuple[common.GenerateAccessTokenResponse, BaseCallMetadata]]:
             r"""Call the generate access token method over HTTP.
 
             Args:
@@ -346,7 +347,9 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_generate_access_token(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -385,7 +388,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> common.GenerateIdTokenResponse:
+                ) -> Union[common.GenerateIdTokenResponse, Tuple[common.GenerateIdTokenResponse, BaseCallMetadata]]:
             r"""Call the generate id token method over HTTP.
 
             Args:
@@ -428,7 +431,9 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_generate_id_token(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -467,7 +472,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> common.SignBlobResponse:
+                ) -> Union[common.SignBlobResponse, Tuple[common.SignBlobResponse, BaseCallMetadata]]:
             r"""Call the sign blob method over HTTP.
 
             Args:
@@ -510,7 +515,9 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_sign_blob(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -549,7 +556,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 timeout: Optional[float]=None,
                 metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 with_call: bool = False,
-                ) -> common.SignJwtResponse:
+                ) -> Union[common.SignJwtResponse, Tuple[common.SignJwtResponse, BaseCallMetadata]]:
             r"""Call the sign jwt method over HTTP.
 
             Args:
@@ -592,7 +599,9 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_sign_jwt(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = BaseCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 

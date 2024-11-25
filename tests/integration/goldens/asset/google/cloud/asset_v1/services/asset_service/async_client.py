@@ -43,9 +43,20 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
+from .transports.base import BaseCallMetadata
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
 from .client import AssetServiceClient
+
+
+class AssetServiceAsyncClientCallMetadata(BaseCallMetadata):
+    def __init__(
+            self,
+            request_metadata: Sequence[Tuple[str, Union[str, bytes]]] = [],
+            response_metadata: Sequence[Tuple[str, Union[str, bytes]]] = []
+        ):
+
+        super().__init__(request_metadata=request_metadata, response_metadata=response_metadata) # pragma: NO COVER
 
 
 class AssetServiceAsyncClient:
@@ -333,11 +344,12 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.export_assets]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.export_assets]
+        wrapped_methods = None
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.export_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -376,7 +388,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> pagers.ListAssetsAsyncPager:
         r"""Lists assets with time and resource types and returns
         paged results in response.
@@ -430,7 +442,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -464,18 +476,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_assets]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.list_assets]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.list_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -495,10 +508,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -520,7 +539,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.BatchGetAssetsHistoryResponse:
         r"""Batch gets the update history of assets that overlap a time
         window. For IAM_POLICY content, this API outputs history when
@@ -566,7 +585,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -583,18 +602,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.batch_get_assets_history]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_assets_history]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.batch_get_assets_history]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -614,10 +634,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -629,7 +655,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.Feed:
         r"""Creates a feed in a parent
         project/folder/organization to listen to its asset
@@ -690,7 +716,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -727,18 +753,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.create_feed]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.create_feed]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.create_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -758,10 +785,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -773,7 +806,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
@@ -822,7 +855,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -859,18 +892,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.get_feed]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.get_feed]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.get_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -890,10 +924,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -905,7 +945,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.ListFeedsResponse:
         r"""Lists all asset feeds in a parent
         project/folder/organization.
@@ -957,7 +997,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -986,18 +1026,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_feeds]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.list_feeds]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.list_feeds]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1017,10 +1058,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -1032,7 +1079,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
@@ -1085,7 +1132,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -1122,18 +1169,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.update_feed]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.update_feed]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.update_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1153,10 +1201,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -1234,11 +1288,12 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.delete_feed]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.delete_feed]
+        wrapped_methods = None
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.delete_feed]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1268,7 +1323,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> pagers.SearchAllResourcesAsyncPager:
         r"""Searches all Google Cloud resources within the specified scope,
         such as a project, folder, or organization. The caller must be
@@ -1423,7 +1478,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -1461,18 +1516,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.search_all_resources]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.search_all_resources]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.search_all_resources]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1492,10 +1548,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -1519,7 +1581,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> pagers.SearchAllIamPoliciesAsyncPager:
         r"""Searches all IAM policies within the specified scope, such as a
         project, folder, or organization. The caller must be granted the
@@ -1638,7 +1700,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -1674,18 +1736,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.search_all_iam_policies]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.search_all_iam_policies]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.search_all_iam_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1705,10 +1768,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -1730,7 +1799,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.AnalyzeIamPolicyResponse:
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
@@ -1775,7 +1844,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -1794,18 +1863,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_iam_policy]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_iam_policy]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.analyze_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1825,10 +1895,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -1918,11 +1994,12 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_iam_policy_longrunning]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_iam_policy_longrunning]
+        wrapped_methods = None
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.analyze_iam_policy_longrunning]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1960,7 +2037,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.AnalyzeMoveResponse:
         r"""Analyze moving a resource to a specified destination
         without kicking off the actual move. The analysis is
@@ -2008,7 +2085,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -2027,18 +2104,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_move]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_move]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.analyze_move]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2058,10 +2136,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -2072,7 +2156,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.QueryAssetsResponse:
         r"""Issue a job that queries assets using a SQL statement compatible
         with `BigQuery Standard
@@ -2128,7 +2212,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -2145,18 +2229,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.query_assets]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.query_assets]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.query_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2176,10 +2261,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -2193,7 +2284,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.SavedQuery:
         r"""Creates a saved query in a parent
         project/folder/organization.
@@ -2269,7 +2360,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -2304,18 +2395,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.create_saved_query]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.create_saved_query]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.create_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2335,10 +2427,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -2350,7 +2448,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.SavedQuery:
         r"""Gets details about a saved query.
 
@@ -2401,7 +2499,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -2432,18 +2530,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.get_saved_query]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.get_saved_query]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.get_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2463,10 +2562,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -2478,7 +2583,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> pagers.ListSavedQueriesAsyncPager:
         r"""Lists all saved queries in a parent
         project/folder/organization.
@@ -2532,7 +2637,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -2566,18 +2671,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.list_saved_queries]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.list_saved_queries]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.list_saved_queries]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2597,10 +2703,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -2624,7 +2736,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.SavedQuery:
         r"""Updates a saved query.
 
@@ -2683,7 +2795,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -2716,18 +2828,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.update_saved_query]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.update_saved_query]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.update_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2747,10 +2860,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -2830,11 +2949,12 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.delete_saved_query]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.delete_saved_query]
+        wrapped_methods = None
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.delete_saved_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2861,7 +2981,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
         r"""Gets effective IAM policies for a batch of resources.
 
@@ -2903,7 +3023,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -2922,18 +3042,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.batch_get_effective_iam_policies]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.batch_get_effective_iam_policies]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.batch_get_effective_iam_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2953,10 +3074,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -2970,7 +3097,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> pagers.AnalyzeOrgPoliciesAsyncPager:
         r"""Analyzes organization policies under a scope.
 
@@ -3047,7 +3174,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -3085,18 +3212,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_org_policies]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policies]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.analyze_org_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3116,10 +3244,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -3144,7 +3278,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager:
         r"""Analyzes organization policies governed containers
         (projects, folders or organization) under a scope.
@@ -3221,7 +3355,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -3259,18 +3393,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_org_policy_governed_containers]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policy_governed_containers]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.analyze_org_policy_governed_containers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3290,10 +3425,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -3318,7 +3459,7 @@ class AssetServiceAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager:
         r"""Analyzes organization policies governed assets (Google Cloud
         resources or policies) under a scope. This RPC supports custom
@@ -3424,7 +3565,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -3462,18 +3603,19 @@ class AssetServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.analyze_org_policy_governed_assets]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_org_policy_governed_assets]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.analyze_org_policy_governed_assets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3493,10 +3635,16 @@ class AssetServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = AssetServiceAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.

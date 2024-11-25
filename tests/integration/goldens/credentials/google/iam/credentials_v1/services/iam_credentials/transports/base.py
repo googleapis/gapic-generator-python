@@ -15,7 +15,7 @@
 #
 import abc
 import inspect
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.iam.credentials_v1 import gapic_version as package_version
 
@@ -31,6 +31,18 @@ from google.iam.credentials_v1.types import common
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
+
+class BaseCallMetadata():
+    def __init__(
+        self,
+        request_metadata : Sequence[Tuple[str, Union[str, bytes]]] = [],
+        response_metadata : Sequence[Tuple[str, Union[str, bytes]]] = [],
+    ): # pragma: NO COVER
+        self.request_metadata = request_metadata
+        self.response_metadata = response_metadata
+
+    def trailing_metadata(self):
+        return self.response_metadata # pragma: NO COVER
 
 class IAMCredentialsTransport(abc.ABC):
     """Abstract transport class for IAMCredentials."""

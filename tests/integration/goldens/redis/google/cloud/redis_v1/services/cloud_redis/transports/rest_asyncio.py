@@ -50,6 +50,7 @@ from google.longrunning import operations_pb2  # type: ignore
 
 from .rest_base import _BaseCloudRedisRestTransport
 
+from .base import BaseCallMetadata
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
@@ -507,6 +508,21 @@ class AsyncCloudRedisRestInterceptor:
         return response
 
 
+class AsyncCallMetadata(BaseCallMetadata):
+    def __init__(
+        self,
+        request_metadata : Sequence[Tuple[str, Union[str, bytes]]] = [],
+        response_metadata : Sequence[Tuple[str, Union[str, bytes]]] = [],
+    ): # pragma: NO COVER
+        self.request_metadata = request_metadata
+        self.response_metadata = response_metadata
+
+        super().__init__(request_metadata=request_metadata, response_metadata=response_metadata)
+
+    async def trailing_metadata(self):
+        return self.response_metadata # pragma: NO COVER
+
+
 @dataclasses.dataclass
 class AsyncCloudRedisRestStub:
     _session: AsyncAuthorizedSession
@@ -747,7 +763,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> operations_pb2.Operation:
+                    ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the create instance method over HTTP.
 
             Args:
@@ -798,7 +814,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_create_instance(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -834,7 +852,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> operations_pb2.Operation:
+                    ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the delete instance method over HTTP.
 
             Args:
@@ -883,7 +901,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_delete_instance(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -920,7 +940,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> operations_pb2.Operation:
+                    ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the export instance method over HTTP.
 
             Args:
@@ -971,7 +991,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_export_instance(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1008,7 +1030,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> operations_pb2.Operation:
+                    ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the failover instance method over HTTP.
 
             Args:
@@ -1059,7 +1081,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_failover_instance(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1097,7 +1121,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> cloud_redis.Instance:
+                    ) -> Union[cloud_redis.Instance, Tuple[cloud_redis.Instance, BaseCallMetadata]]:
             r"""Call the get instance method over HTTP.
 
             Args:
@@ -1143,7 +1167,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1181,7 +1207,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> cloud_redis.InstanceAuthString:
+                    ) -> Union[cloud_redis.InstanceAuthString, Tuple[cloud_redis.InstanceAuthString, BaseCallMetadata]]:
             r"""Call the get instance auth string method over HTTP.
 
             Args:
@@ -1227,7 +1253,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance_auth_string(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1264,7 +1292,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> operations_pb2.Operation:
+                    ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the import instance method over HTTP.
 
             Args:
@@ -1315,7 +1343,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_import_instance(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1353,7 +1383,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> cloud_redis.ListInstancesResponse:
+                    ) -> Union[cloud_redis.ListInstancesResponse, Tuple[cloud_redis.ListInstancesResponse, BaseCallMetadata]]:
             r"""Call the list instances method over HTTP.
 
             Args:
@@ -1401,7 +1431,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_list_instances(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1438,7 +1470,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> operations_pb2.Operation:
+                    ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the reschedule maintenance method over HTTP.
 
             Args:
@@ -1489,7 +1521,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_reschedule_maintenance(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1526,7 +1560,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> operations_pb2.Operation:
+                    ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the update instance method over HTTP.
 
             Args:
@@ -1577,7 +1611,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_update_instance(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 
@@ -1614,7 +1650,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     timeout: Optional[float]=None,
                     metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                     with_call: bool = False,
-                    ) -> operations_pb2.Operation:
+                    ) -> Union[operations_pb2.Operation, Tuple[operations_pb2.Operation, BaseCallMetadata]]:
             r"""Call the upgrade instance method over HTTP.
 
             Args:
@@ -1665,7 +1701,9 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_upgrade_instance(resp)
             if with_call: # pragma: NO COVER
-                return (resp, response)
+                call_metadata = AsyncCallMetadata()
+                call_metadata.response_metadata = [(k, v) for k, v in response.headers.items()]
+                return (resp, call_metadata)
             else:
                 return resp
 

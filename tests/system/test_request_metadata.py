@@ -55,13 +55,10 @@ def test_metadata(echo):
         )
 
     class MetadataCallback:
-        trailing_metadata = None
+        response_metadata = None
 
         def get_raw_response_callback(self, response):
-            if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
-                self.trailing_metadata = response.trailing_metadata()
-            else:
-                self.headers = response.headers
+            self.response_metadata = response.response_metadata
 
     metadata_callback = MetadataCallback()
 
@@ -75,15 +72,11 @@ def test_metadata(echo):
 
     assert response.content == "The hail in Wales falls mainly on the snails."
     if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
-        response_metadata = [
-            (metadata.key, metadata.value)
-            for metadata in metadata_callback.trailing_metadata
-        ]
-        assert ("something", "something_value") in response_metadata
+        key = "something"
     else:
+        key = "X-Showcase-Request-Something"
 
-        assert "X-Showcase-Request-Something" in metadata_callback.headers
-        assert metadata_callback.headers["X-Showcase-Request-Something"] == "something_value"
+    assert (key, "something_value") in metadata_callback.response_metadata
 
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
@@ -98,13 +91,10 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             )
 
         class MetadataCallback:
-            trailing_metadata = None
+            response_metadata = None
 
-            async def get_raw_response_callback(self, response):
-                if isinstance(async_echo.transport, type(async_echo).get_transport_class("grpc_asyncio")):
-                    self.trailing_metadata = await response.trailing_metadata()
-                else:
-                    self.headers = response.headers
+            def get_raw_response_callback(self, response):
+                self.response_metadata = response.response_metadata
 
         metadata_callback = MetadataCallback()
 
@@ -118,13 +108,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
         assert response.content == "The hail in Wales falls mainly on the snails."
         if isinstance(async_echo.transport, type(async_echo).get_transport_class("grpc_asyncio")):
-            response_metadata = [
-                (metadata.key, metadata.value)
-                if hasattr(metadata, 'key')
-                else metadata
-                for metadata in metadata_callback.trailing_metadata
-            ]
-            assert ("something", "something_value") in response_metadata
+            key = "something"
         else:
-            assert "X-Showcase-Request-Something" in metadata_callback.headers
-            assert metadata_callback.headers["X-Showcase-Request-Something"] == "something_value"
+            key = "X-Showcase-Request-Something"
+            assert (key, "something_value") in metadata_callback.response_metadata
+        assert response.content == "The hail in Wales falls mainly on the snails."

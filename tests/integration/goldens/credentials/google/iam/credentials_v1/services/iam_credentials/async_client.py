@@ -36,9 +36,20 @@ except AttributeError:  # pragma: NO COVER
 from google.iam.credentials_v1.types import common
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from .transports.base import BaseCallMetadata
 from .transports.base import IAMCredentialsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import IAMCredentialsGrpcAsyncIOTransport
 from .client import IAMCredentialsClient
+
+
+class IAMCredentialsAsyncClientCallMetadata(BaseCallMetadata):
+    def __init__(
+            self,
+            request_metadata: Sequence[Tuple[str, Union[str, bytes]]] = [],
+            response_metadata: Sequence[Tuple[str, Union[str, bytes]]] = []
+        ):
+
+        super().__init__(request_metadata=request_metadata, response_metadata=response_metadata) # pragma: NO COVER
 
 
 class IAMCredentialsAsyncClient:
@@ -249,7 +260,7 @@ class IAMCredentialsAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> common.GenerateAccessTokenResponse:
         r"""Generates an OAuth 2.0 access token for a service
         account.
@@ -342,7 +353,7 @@ class IAMCredentialsAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -377,18 +388,19 @@ class IAMCredentialsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.generate_access_token]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.generate_access_token]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.generate_access_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -408,10 +420,16 @@ class IAMCredentialsAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = IAMCredentialsAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -426,7 +444,7 @@ class IAMCredentialsAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> common.GenerateIdTokenResponse:
         r"""Generates an OpenID Connect ID token for a service
         account.
@@ -513,7 +531,7 @@ class IAMCredentialsAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -548,18 +566,19 @@ class IAMCredentialsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.generate_id_token]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.generate_id_token]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.generate_id_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -579,10 +598,16 @@ class IAMCredentialsAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = IAMCredentialsAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -596,7 +621,7 @@ class IAMCredentialsAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> common.SignBlobResponse:
         r"""Signs a blob using a service account's system-managed
         private key.
@@ -672,7 +697,7 @@ class IAMCredentialsAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -705,18 +730,19 @@ class IAMCredentialsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.sign_blob]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.sign_blob]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.sign_blob]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -736,10 +762,16 @@ class IAMCredentialsAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = IAMCredentialsAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response
@@ -753,7 +785,7 @@ class IAMCredentialsAsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            raw_response_callback: Optional[callable] = None,
+            raw_response_callback: Optional[Callable] = None,
             ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed
         private key.
@@ -832,7 +864,7 @@ class IAMCredentialsAsyncClient:
                 sent along with the request as metadata. Normally, each value must be of type `str`,
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
-            raw_response_callback (Optional[callable]): Adds a callback that
+            raw_response_callback (Optional[Callable]): Adds a callback that
                 will be called if the request succeeds. The callback will have
                 a `raw_response` argument which is of type
                 `Union[grpc.aio.Call, requests.models.Response]`.
@@ -865,18 +897,19 @@ class IAMCredentialsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        with_call = False
+        wrapped_methods = None
+
         if raw_response_callback: # pragma: NO COVER
-            if hasattr(self._client._transport, "_wrapped_methods_with_call"):
-                with_call = True
-            else:
+            wrapped_methods = getattr(self._client._transport, "_wrapped_methods_with_call", None)
+            if not wrapped_methods:
                 raw_response_callback = None
                 warnings.warn("Unable to retrieve response metadata. This feature requires `google-api-core` version 2.x.x",
                     RuntimeWarning)
-        if with_call:  # pragma: NO COVER
-            rpc = self._client._transport._wrapped_methods_with_call[self._client._transport.sign_jwt]
-        else:
-            rpc = self._client._transport._wrapped_methods[self._client._transport.sign_jwt]
+
+        if not wrapped_methods: # pragma: NO COVER
+            wrapped_methods = self._client._transport._wrapped_methods
+
+        rpc = wrapped_methods[self._client._transport.sign_jwt]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -896,10 +929,16 @@ class IAMCredentialsAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
-        if isinstance(response, Tuple): # pragma: NO COVER
+        if isinstance(response, tuple): # pragma: NO COVER
+            response, transport_call_metadata = response
             if raw_response_callback:
-                await raw_response_callback(response[1])
-            response = response[0]
+                response_metadata = await transport_call_metadata.trailing_metadata()
+                # Convert grpc.aio._metadata.Metadata to Sequence[Tuple[str, Union[str, bytes]]]
+                response_metadata = [
+                     (k, v) for k, v in response_metadata
+                ]
+                call_metadata = IAMCredentialsAsyncClientCallMetadata(response_metadata = response_metadata)
+                raw_response_callback(call_metadata)
 
         # Done; return the response.
         return response

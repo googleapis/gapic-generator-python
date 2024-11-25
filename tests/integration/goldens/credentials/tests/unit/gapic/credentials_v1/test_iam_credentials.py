@@ -2966,13 +2966,14 @@ def test_generate_access_token_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.generate_access_token(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.GenerateAccessTokenResponse)
 
 def test_generate_id_token_with_metadata_callback_grpc():
@@ -2990,13 +2991,14 @@ def test_generate_id_token_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.generate_id_token(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.GenerateIdTokenResponse)
 
 def test_sign_blob_with_metadata_callback_grpc():
@@ -3015,13 +3017,14 @@ def test_sign_blob_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.sign_blob(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.SignBlobResponse)
 
 def test_sign_jwt_with_metadata_callback_grpc():
@@ -3040,13 +3043,14 @@ def test_sign_jwt_with_metadata_callback_grpc():
     with mock.patch.object(
         google.api_core.gapic_v1.method._GapicCallable, "__call__") as call:
         mocked_grpc_callable = mock.Mock()
+        mocked_grpc_callable.trailing_metadata=mock.Mock(return_value=[("some_key", "some_value")])
         call.return_value = (response_obj, mocked_grpc_callable)
         mocked_callback = mock.Mock()
         response = client.sign_jwt(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.SignJwtResponse)
 
 
@@ -3304,13 +3308,14 @@ async def test_generate_access_token_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.generate_access_token), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.generate_access_token(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.GenerateAccessTokenResponse)
 
 @pytest.mark.asyncio
@@ -3329,13 +3334,14 @@ async def test_generate_id_token_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.generate_id_token), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.generate_id_token(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.GenerateIdTokenResponse)
 
 @pytest.mark.asyncio
@@ -3355,13 +3361,14 @@ async def test_sign_blob_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.sign_blob), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.sign_blob(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.SignBlobResponse)
 
 @pytest.mark.asyncio
@@ -3381,13 +3388,14 @@ async def test_sign_jwt_with_metadata_callback_grpc_asyncio():
     with mock.patch.object(
         type(client.transport.sign_jwt), '__call__') as call:
         mocked_grpc_callable = grpc_helpers_async.FakeUnaryUnaryCall(response_obj)
+        mocked_grpc_callable.trailing_metadata=mock.AsyncMock(return_value=[("some_key", "some_value")])
         call.side_effect = (mocked_grpc_callable, mocked_grpc_callable)
         mocked_callback = mock.AsyncMock()
         response = await client.sign_jwt(
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(mocked_grpc_callable)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.SignJwtResponse)
 
 
@@ -4042,6 +4050,7 @@ def test_generate_access_token_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -4053,7 +4062,7 @@ def test_generate_access_token_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.GenerateAccessTokenResponse)
 
 def test_generate_id_token_with_metadata_callback_rest():
@@ -4084,6 +4093,7 @@ def test_generate_id_token_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -4095,7 +4105,7 @@ def test_generate_id_token_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.GenerateIdTokenResponse)
 
 def test_sign_blob_with_metadata_callback_rest():
@@ -4127,6 +4137,7 @@ def test_sign_blob_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -4138,7 +4149,7 @@ def test_sign_blob_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.SignBlobResponse)
 
 def test_sign_jwt_with_metadata_callback_rest():
@@ -4170,6 +4181,7 @@ def test_sign_jwt_with_metadata_callback_rest():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {"some_key": "some_value"}
         call.return_value = response_value
 
         # Convert return value to protobuf type
@@ -4181,7 +4193,7 @@ def test_sign_jwt_with_metadata_callback_rest():
             raw_response_callback=mocked_callback,
             metadata=(("something", "something_value"),),
         )
-        mocked_callback.assert_called_with(response_value)
+        assert mocked_callback.call_args[0][0].response_metadata == [("some_key", "some_value")]
         assert isinstance(response, common.SignJwtResponse)
 
 
