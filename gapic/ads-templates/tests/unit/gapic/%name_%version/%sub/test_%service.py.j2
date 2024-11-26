@@ -1231,6 +1231,7 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         {% if method.void %}
         json_return_value = ''
         {% elif method.lro %}
@@ -1402,6 +1403,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             {% if method.void %}
             json_return_value = ''
             {% elif method.lro %}
@@ -1496,6 +1498,7 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
 
         req.return_value = Response()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         req.return_value.request = PreparedRequest()
         {% if not method.void %}
         req.return_value._content = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
@@ -1573,6 +1576,7 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         {% if method.void %}
         json_return_value = ''
         {% elif method.lro %}

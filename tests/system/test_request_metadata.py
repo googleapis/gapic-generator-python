@@ -50,12 +50,12 @@ def test_metadata_rest_unary(intercepted_echo_rest):
         request = showcase.EchoRequest(
             content="The hail in Wales falls mainly on the snails."
         ),
-        metadata=(("something", "something_value"),),
+        metadata=(("something1", "something_value1"),),
     )
 
     assert response.content == "The hail in Wales falls mainly on the snails."
-    assert ("something", "something_value") in intercepted_echo_rest.transport._interceptor.request_metadata
-    assert ("X-Showcase-Request-Something", "something_value") in intercepted_echo_rest.transport._interceptor.response_metadata
+    assert ("something1", "something_value1") in intercepted_echo_rest.transport._interceptor.request_metadata
+    assert ("X-Showcase-Request-Something1", "something_value1") in intercepted_echo_rest.transport._interceptor.response_metadata
 
 
 def test_metadata_grpc_unary(intercepted_echo_grpc):
@@ -63,42 +63,42 @@ def test_metadata_grpc_unary(intercepted_echo_grpc):
         request = showcase.EchoRequest(
             content="The hail in Wales falls mainly on the snails."
         ),
-        metadata=(("something", "something_value"),),
+        metadata=(("something2", "something_value2"),),
     )
 
     assert response.content == "The hail in Wales falls mainly on the snails."
 
-    assert ("something", "something_value") in intercepted_echo_grpc._transport.grpc_channel._interceptor._request_metadata
-    assert ("something", "something_value") in intercepted_echo_grpc._transport.grpc_channel._interceptor._response_metadata
+    assert ("something2", "something_value2") in intercepted_echo_grpc._transport.grpc_channel._interceptor._request_metadata
+    assert ("something2", "something_value2") in intercepted_echo_grpc._transport.grpc_channel._interceptor._response_metadata
 
 def test_metadata_rest_streams(intercepted_echo_rest):
     content = 'The hail in Wales falls mainly on the snails.'
     responses = intercepted_echo_rest.expand({
         'content': content,
-    }, metadata=(("something2", "something_value2"),),)
+    }, metadata=(("something3", "something_value3"),),)
     for ground_truth, response in zip(content.split(' '), responses):
         assert response.content == ground_truth
     assert ground_truth == 'snails.'
 
     print(responses)
-    #assert responses.content == "The hail in Wales falls mainly on the snails."
-    assert ("something2", "something_value2") in intercepted_echo_rest.transport._interceptor.request_metadata
-    assert ("X-Showcase-Request-Something2", "something_value2") in intercepted_echo_rest.transport._interceptor.response_metadata
+    assert ("something3", "something_value3") in intercepted_echo_rest.transport._interceptor.request_metadata
+    assert ("X-Showcase-Request-Something3", "something_value3") in intercepted_echo_rest.transport._interceptor.response_metadata
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
-    @pytest.mark.asyncio
-    async def test_metadata_rest_unary_async(intercepted_echo_rest_async):
-        pytest.skip("TODO: Determine if this is ready for use")
-        response = await intercepted_echo_rest_async.echo(
-            request = showcase.EchoRequest(
-                content="The hail in Wales falls mainly on the snails."
-            ),
-            metadata=(("something", "something_value"),),
-        )
+    # TODO: Determine if REST Async is supported
+    # @pytest.mark.asyncio
+    # async def test_metadata_rest_unary_async(intercepted_echo_rest_async):
+    #     pytest.skip("TODO: Determine if this is ready for use")
+    #     response = await intercepted_echo_rest_async.echo(
+    #         request = showcase.EchoRequest(
+    #             content="The hail in Wales falls mainly on the snails."
+    #         ),
+    #         metadata=(("something4", "something_value4"),),
+    #     )
 
-        assert response.content == "The hail in Wales falls mainly on the snails."
-        assert ("something", "something_value") in intercepted_echo_rest_async.transport._interceptor.request_metadata
-        assert ("X-Showcase-Request-Something", "something_value") in intercepted_echo_rest_async.transport._interceptor.response_metadata
+    #     assert response.content == "The hail in Wales falls mainly on the snails."
+    #     assert ("something4", "something_value4") in intercepted_echo_rest_async.transport._interceptor.request_metadata
+    #     assert ("X-Showcase-Request-Something4", "something_value4") in intercepted_echo_rest_async.transport._interceptor.response_metadata
 
     @pytest.mark.asyncio
     async def test_metadata_grpc_unary_async(intercepted_echo_grpc_async):
@@ -106,10 +106,10 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             request = showcase.EchoRequest(
                 content="The hail in Wales falls mainly on the snails."
             ),
-            metadata=(("something", "something_value"),),
+            metadata=(("something5", "something_value5"),),
         )
 
         assert response.content == "The hail in Wales falls mainly on the snails."
         
-        assert ("something", "something_value") in intercepted_echo_grpc_async.transport.grpc_channel._unary_unary_interceptors[0]._request_metadata
-        assert ("something", "something_value") in intercepted_echo_grpc_async.transport.grpc_channel._unary_unary_interceptors[0]._response_metadata
+        assert ("something5", "something_value5") in intercepted_echo_grpc_async.transport.grpc_channel._unary_unary_interceptors[0]._request_metadata
+        assert ("something5", "something_value5") in intercepted_echo_grpc_async.transport.grpc_channel._unary_unary_interceptors[0]._response_metadata

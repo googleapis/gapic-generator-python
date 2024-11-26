@@ -345,7 +345,10 @@ def intercepted_echo_grpc(use_mtls):
     return EchoClient(transport=transport)
 
 from typing import Sequence, Tuple
-from google.showcase_v1beta1.services.echo.transports import EchoRestInterceptor
+try:
+    from google.showcase_v1beta1.services.echo.transports import EchoRestInterceptor
+except:
+    from google.showcase.v1beta1.services.echo.transports import EchoRestInterceptor
 @pytest.fixture
 def intercepted_echo_rest():
     transport_name="rest"
@@ -400,7 +403,6 @@ def intercepted_echo_grpc_async():
     return EchoAsyncClient(transport=transport)
 
 
-from google.showcase_v1beta1.services.echo.transports import AsyncEchoRestInterceptor
 import google.auth.aio.credentials
 @pytest.fixture
 def intercepted_echo_rest_async():
