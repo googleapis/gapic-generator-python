@@ -361,6 +361,19 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
         """
         return response
 
+    {% if not method.server_streaming %}
+    {{ async_prefix }}def post_{{ method.name|snake_case }}_with_metadata(self, response: {{method.output.ident}}, {{ client_method_metadata_argument() }}) -> Tuple[{{method.output.ident}}, {{ client_method_metadata_type() }}]:
+    {% else %}
+    {{ async_prefix }}def post_{{ method.name|snake_case }}_with_metadata(self, response: rest_streaming{{ async_suffix }}.{{ async_method_name_prefix }}ResponseIterator, {{ client_method_metadata_argument() }}) -> Tuple[rest_streaming{{ async_suffix }}.{{ async_method_name_prefix }}ResponseIterator, {{ client_method_metadata_type() }}]:
+    {% endif %}
+        """Post-rpc interceptor for {{ method.name|snake_case }}
+
+        Override in a subclass to either manipulate or read, either the response
+        or metadata after it is returned by the {{ service.name }} server but before
+        it is returned to user code.
+        """
+        return response, metadata
+
     {% endif %}
     {% endfor %}
 

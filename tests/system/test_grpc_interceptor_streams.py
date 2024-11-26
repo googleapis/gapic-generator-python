@@ -21,9 +21,9 @@ from google import showcase
 intercepted_metadata = (('showcase-trailer', 'intercepted'),)
 
 
-def test_unary_stream(intercepted_echo):
+def test_unary_stream(intercepted_echo_grpc):
     content = 'The hail in Wales falls mainly on the snails.'
-    responses = intercepted_echo.expand({
+    responses = intercepted_echo_grpc.expand({
         'content': content,
     })
 
@@ -38,11 +38,11 @@ def test_unary_stream(intercepted_echo):
     assert intercepted_metadata[0] in response_metadata
 
 
-def test_stream_stream(intercepted_echo):
+def test_stream_stream(intercepted_echo_grpc):
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
     requests.append(showcase.EchoRequest(content="world!"))
-    responses = intercepted_echo.chat(iter(requests))
+    responses = intercepted_echo_grpc.chat(iter(requests))
 
     contents = [response.content for response in responses]
     assert contents == ['hello', 'world!']

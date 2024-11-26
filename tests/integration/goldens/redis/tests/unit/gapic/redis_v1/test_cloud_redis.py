@@ -4682,6 +4682,7 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = cloud_redis.ListInstancesResponse.pb(return_value)
@@ -4728,6 +4729,7 @@ def test_list_instances_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = cloud_redis.ListInstancesResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -4908,6 +4910,7 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = cloud_redis.Instance.pb(return_value)
@@ -4954,6 +4957,7 @@ def test_get_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = cloud_redis.Instance.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -5072,6 +5076,7 @@ def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = cloud_redis.InstanceAuthString.pb(return_value)
@@ -5118,6 +5123,7 @@ def test_get_instance_auth_string_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = cloud_redis.InstanceAuthString.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -5250,6 +5256,7 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -5299,6 +5306,7 @@ def test_create_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -5419,6 +5427,7 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -5463,6 +5472,7 @@ def test_update_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -5589,6 +5599,7 @@ def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeI
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -5633,6 +5644,7 @@ def test_upgrade_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -5755,6 +5767,7 @@ def test_import_instance_rest_required_fields(request_type=cloud_redis.ImportIns
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -5799,6 +5812,7 @@ def test_import_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -5921,6 +5935,7 @@ def test_export_instance_rest_required_fields(request_type=cloud_redis.ExportIns
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -5965,6 +5980,7 @@ def test_export_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -6087,6 +6103,7 @@ def test_failover_instance_rest_required_fields(request_type=cloud_redis.Failove
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -6131,6 +6148,7 @@ def test_failover_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -6252,6 +6270,7 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -6295,6 +6314,7 @@ def test_delete_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -6416,6 +6436,7 @@ def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.Re
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -6461,6 +6482,7 @@ def test_reschedule_maintenance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -7238,6 +7260,7 @@ def test_list_instances_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = cloud_redis.ListInstancesResponse.pb(return_value)
@@ -7276,6 +7299,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = cloud_redis.ListInstancesResponse.to_json(cloud_redis.ListInstancesResponse())
         req.return_value.content = return_value
 
@@ -7364,6 +7388,7 @@ def test_get_instance_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = cloud_redis.Instance.pb(return_value)
@@ -7427,6 +7452,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = cloud_redis.Instance.to_json(cloud_redis.Instance())
         req.return_value.content = return_value
 
@@ -7489,6 +7515,7 @@ def test_get_instance_auth_string_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = cloud_redis.InstanceAuthString.pb(return_value)
@@ -7526,6 +7553,7 @@ def test_get_instance_auth_string_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
         req.return_value.content = return_value
 
@@ -7650,6 +7678,7 @@ def test_create_instance_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -7684,6 +7713,7 @@ def test_create_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7808,6 +7838,7 @@ def test_update_instance_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -7842,6 +7873,7 @@ def test_update_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7902,6 +7934,7 @@ def test_upgrade_instance_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -7936,6 +7969,7 @@ def test_upgrade_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7996,6 +8030,7 @@ def test_import_instance_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8030,6 +8065,7 @@ def test_import_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8090,6 +8126,7 @@ def test_export_instance_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8124,6 +8161,7 @@ def test_export_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8184,6 +8222,7 @@ def test_failover_instance_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8218,6 +8257,7 @@ def test_failover_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8278,6 +8318,7 @@ def test_delete_instance_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8312,6 +8353,7 @@ def test_delete_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8372,6 +8414,7 @@ def test_reschedule_maintenance_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8406,6 +8449,7 @@ def test_reschedule_maintenance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8463,6 +8507,7 @@ def test_get_location_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -8514,6 +8559,7 @@ def test_list_locations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -8565,6 +8611,7 @@ def test_cancel_operation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = '{}'
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -8616,6 +8663,7 @@ def test_delete_operation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = '{}'
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -8667,6 +8715,7 @@ def test_get_operation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -8718,6 +8767,7 @@ def test_list_operations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -8769,6 +8819,7 @@ def test_wait_operation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -9105,6 +9156,7 @@ async def test_list_instances_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = cloud_redis.ListInstancesResponse.pb(return_value)
@@ -9146,6 +9198,7 @@ async def test_list_instances_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = cloud_redis.ListInstancesResponse.to_json(cloud_redis.ListInstancesResponse())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9238,6 +9291,7 @@ async def test_get_instance_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = cloud_redis.Instance.pb(return_value)
@@ -9304,6 +9358,7 @@ async def test_get_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = cloud_redis.Instance.to_json(cloud_redis.Instance())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9370,6 +9425,7 @@ async def test_get_instance_auth_string_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = cloud_redis.InstanceAuthString.pb(return_value)
@@ -9410,6 +9466,7 @@ async def test_get_instance_auth_string_rest_asyncio_interceptors(null_intercept
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9538,6 +9595,7 @@ async def test_create_instance_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
@@ -9575,6 +9633,7 @@ async def test_create_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9703,6 +9762,7 @@ async def test_update_instance_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
@@ -9740,6 +9800,7 @@ async def test_update_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9804,6 +9865,7 @@ async def test_upgrade_instance_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
@@ -9841,6 +9903,7 @@ async def test_upgrade_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9905,6 +9968,7 @@ async def test_import_instance_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
@@ -9942,6 +10006,7 @@ async def test_import_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -10006,6 +10071,7 @@ async def test_export_instance_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
@@ -10043,6 +10109,7 @@ async def test_export_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -10107,6 +10174,7 @@ async def test_failover_instance_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
@@ -10144,6 +10212,7 @@ async def test_failover_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -10208,6 +10277,7 @@ async def test_delete_instance_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
@@ -10245,6 +10315,7 @@ async def test_delete_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -10309,6 +10380,7 @@ async def test_reschedule_maintenance_rest_asyncio_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
@@ -10346,6 +10418,7 @@ async def test_reschedule_maintenance_rest_asyncio_interceptors(null_interceptor
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -10406,6 +10479,7 @@ async def test_get_location_rest_asyncio(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
@@ -10460,6 +10534,7 @@ async def test_list_locations_rest_asyncio(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
@@ -10514,6 +10589,7 @@ async def test_cancel_operation_rest_asyncio(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = '{}'
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
@@ -10568,6 +10644,7 @@ async def test_delete_operation_rest_asyncio(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = '{}'
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
@@ -10622,6 +10699,7 @@ async def test_get_operation_rest_asyncio(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
@@ -10676,6 +10754,7 @@ async def test_list_operations_rest_asyncio(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
@@ -10730,6 +10809,7 @@ async def test_wait_operation_rest_asyncio(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 

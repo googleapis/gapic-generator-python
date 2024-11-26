@@ -119,6 +119,15 @@ class IAMCredentialsRestInterceptor:
         """
         return response
 
+    def post_generate_access_token_with_metadata(self, response: common.GenerateAccessTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateAccessTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for generate_access_token
+
+        Override in a subclass to either manipulate or read, either the response
+        or metadata after it is returned by the IAMCredentials server but before
+        it is returned to user code.
+        """
+        return response, metadata
+
     def pre_generate_id_token(self, request: common.GenerateIdTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateIdTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_id_token
 
@@ -135,6 +144,15 @@ class IAMCredentialsRestInterceptor:
         it is returned to user code.
         """
         return response
+
+    def post_generate_id_token_with_metadata(self, response: common.GenerateIdTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateIdTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for generate_id_token
+
+        Override in a subclass to either manipulate or read, either the response
+        or metadata after it is returned by the IAMCredentials server but before
+        it is returned to user code.
+        """
+        return response, metadata
 
     def pre_sign_blob(self, request: common.SignBlobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignBlobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for sign_blob
@@ -153,6 +171,15 @@ class IAMCredentialsRestInterceptor:
         """
         return response
 
+    def post_sign_blob_with_metadata(self, response: common.SignBlobResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignBlobResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for sign_blob
+
+        Override in a subclass to either manipulate or read, either the response
+        or metadata after it is returned by the IAMCredentials server but before
+        it is returned to user code.
+        """
+        return response, metadata
+
     def pre_sign_jwt(self, request: common.SignJwtRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignJwtRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for sign_jwt
 
@@ -169,6 +196,15 @@ class IAMCredentialsRestInterceptor:
         it is returned to user code.
         """
         return response
+
+    def post_sign_jwt_with_metadata(self, response: common.SignJwtResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignJwtResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for sign_jwt
+
+        Override in a subclass to either manipulate or read, either the response
+        or metadata after it is returned by the IAMCredentials server but before
+        it is returned to user code.
+        """
+        return response, metadata
 
 
 @dataclasses.dataclass
@@ -342,6 +378,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_generate_access_token(resp)
+            response_metadata = [(k, v) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_access_token_with_metadata(resp, response_metadata)
             return resp
 
     class _GenerateIdToken(_BaseIAMCredentialsRestTransport._BaseGenerateIdToken, IAMCredentialsRestStub):
@@ -418,6 +456,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_generate_id_token(resp)
+            response_metadata = [(k, v) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_generate_id_token_with_metadata(resp, response_metadata)
             return resp
 
     class _SignBlob(_BaseIAMCredentialsRestTransport._BaseSignBlob, IAMCredentialsRestStub):
@@ -494,6 +534,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_sign_blob(resp)
+            response_metadata = [(k, v) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_sign_blob_with_metadata(resp, response_metadata)
             return resp
 
     class _SignJwt(_BaseIAMCredentialsRestTransport._BaseSignJwt, IAMCredentialsRestStub):
@@ -570,6 +612,8 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_sign_jwt(resp)
+            response_metadata = [(k, v) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_sign_jwt_with_metadata(resp, response_metadata)
             return resp
 
     @property

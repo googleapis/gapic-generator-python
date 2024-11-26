@@ -8962,6 +8962,7 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -9072,6 +9073,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.ListAssetsResponse.pb(return_value)
@@ -9118,6 +9120,7 @@ def test_list_assets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.ListAssetsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -9300,6 +9303,7 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
@@ -9416,6 +9420,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.Feed.pb(return_value)
@@ -9462,6 +9467,7 @@ def test_create_feed_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.Feed.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -9580,6 +9586,7 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.Feed.pb(return_value)
@@ -9626,6 +9633,7 @@ def test_get_feed_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.Feed.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -9744,6 +9752,7 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.ListFeedsResponse.pb(return_value)
@@ -9790,6 +9799,7 @@ def test_list_feeds_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.ListFeedsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -9904,6 +9914,7 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.Feed.pb(return_value)
@@ -9950,6 +9961,7 @@ def test_update_feed_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.Feed.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -10068,6 +10080,7 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = ''
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -10111,6 +10124,7 @@ def test_delete_feed_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = ''
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -10229,6 +10243,7 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
@@ -10277,6 +10292,7 @@ def test_search_all_resources_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -10461,6 +10477,7 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
@@ -10508,6 +10525,7 @@ def test_search_all_iam_policies_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -10686,6 +10704,7 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
@@ -10797,6 +10816,7 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -10914,6 +10934,7 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
@@ -11030,6 +11051,7 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.QueryAssetsResponse.pb(return_value)
@@ -11151,6 +11173,7 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.SavedQuery.pb(return_value)
@@ -11203,6 +11226,7 @@ def test_create_saved_query_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.SavedQuery.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -11323,6 +11347,7 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.SavedQuery.pb(return_value)
@@ -11369,6 +11394,7 @@ def test_get_saved_query_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.SavedQuery.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -11489,6 +11515,7 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
@@ -11535,6 +11562,7 @@ def test_list_saved_queries_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -11713,6 +11741,7 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.SavedQuery.pb(return_value)
@@ -11760,6 +11789,7 @@ def test_update_saved_query_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.SavedQuery.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -11879,6 +11909,7 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = ''
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -11922,6 +11953,7 @@ def test_delete_saved_query_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = ''
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -12047,6 +12079,7 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
@@ -12171,6 +12204,7 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
@@ -12223,6 +12257,7 @@ def test_analyze_org_policies_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -12414,6 +12449,7 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
@@ -12466,6 +12502,7 @@ def test_analyze_org_policy_governed_containers_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -12657,6 +12694,7 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
@@ -12709,6 +12747,7 @@ def test_analyze_org_policy_governed_assets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -14134,6 +14173,7 @@ def test_export_assets_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -14168,6 +14208,7 @@ def test_export_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -14230,6 +14271,7 @@ def test_list_assets_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.ListAssetsResponse.pb(return_value)
@@ -14267,6 +14309,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.ListAssetsResponse.to_json(asset_service.ListAssetsResponse())
         req.return_value.content = return_value
 
@@ -14328,6 +14371,7 @@ def test_batch_get_assets_history_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.BatchGetAssetsHistoryResponse.pb(return_value)
@@ -14364,6 +14408,7 @@ def test_batch_get_assets_history_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.BatchGetAssetsHistoryResponse.to_json(asset_service.BatchGetAssetsHistoryResponse())
         req.return_value.content = return_value
 
@@ -14430,6 +14475,7 @@ def test_create_feed_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.Feed.pb(return_value)
@@ -14471,6 +14517,7 @@ def test_create_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -14537,6 +14584,7 @@ def test_get_feed_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.Feed.pb(return_value)
@@ -14578,6 +14626,7 @@ def test_get_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -14639,6 +14688,7 @@ def test_list_feeds_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.ListFeedsResponse.pb(return_value)
@@ -14675,6 +14725,7 @@ def test_list_feeds_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.ListFeedsResponse.to_json(asset_service.ListFeedsResponse())
         req.return_value.content = return_value
 
@@ -14741,6 +14792,7 @@ def test_update_feed_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.Feed.pb(return_value)
@@ -14782,6 +14834,7 @@ def test_update_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -14842,6 +14895,7 @@ def test_delete_feed_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = ''
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -14873,6 +14927,7 @@ def test_delete_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
 
         request = asset_service.DeleteFeedRequest()
         metadata =[
@@ -14931,6 +14986,7 @@ def test_search_all_resources_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.SearchAllResourcesResponse.pb(return_value)
@@ -14968,6 +15024,7 @@ def test_search_all_resources_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.SearchAllResourcesResponse.to_json(asset_service.SearchAllResourcesResponse())
         req.return_value.content = return_value
 
@@ -15030,6 +15087,7 @@ def test_search_all_iam_policies_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.SearchAllIamPoliciesResponse.pb(return_value)
@@ -15067,6 +15125,7 @@ def test_search_all_iam_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.SearchAllIamPoliciesResponse.to_json(asset_service.SearchAllIamPoliciesResponse())
         req.return_value.content = return_value
 
@@ -15129,6 +15188,7 @@ def test_analyze_iam_policy_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.AnalyzeIamPolicyResponse.pb(return_value)
@@ -15166,6 +15226,7 @@ def test_analyze_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.AnalyzeIamPolicyResponse.to_json(asset_service.AnalyzeIamPolicyResponse())
         req.return_value.content = return_value
 
@@ -15226,6 +15287,7 @@ def test_analyze_iam_policy_longrunning_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -15260,6 +15322,7 @@ def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15321,6 +15384,7 @@ def test_analyze_move_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
@@ -15357,6 +15421,7 @@ def test_analyze_move_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.AnalyzeMoveResponse.to_json(asset_service.AnalyzeMoveResponse())
         req.return_value.content = return_value
 
@@ -15420,6 +15485,7 @@ def test_query_assets_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.QueryAssetsResponse.pb(return_value)
@@ -15458,6 +15524,7 @@ def test_query_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.QueryAssetsResponse.to_json(asset_service.QueryAssetsResponse())
         req.return_value.content = return_value
 
@@ -15587,6 +15654,7 @@ def test_create_saved_query_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.SavedQuery.pb(return_value)
@@ -15627,6 +15695,7 @@ def test_create_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
         req.return_value.content = return_value
 
@@ -15692,6 +15761,7 @@ def test_get_saved_query_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.SavedQuery.pb(return_value)
@@ -15732,6 +15802,7 @@ def test_get_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
         req.return_value.content = return_value
 
@@ -15794,6 +15865,7 @@ def test_list_saved_queries_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
@@ -15831,6 +15903,7 @@ def test_list_saved_queries_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.ListSavedQueriesResponse.to_json(asset_service.ListSavedQueriesResponse())
         req.return_value.content = return_value
 
@@ -15960,6 +16033,7 @@ def test_update_saved_query_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.SavedQuery.pb(return_value)
@@ -16000,6 +16074,7 @@ def test_update_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
         req.return_value.content = return_value
 
@@ -16060,6 +16135,7 @@ def test_delete_saved_query_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = ''
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -16091,6 +16167,7 @@ def test_delete_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
 
         request = asset_service.DeleteSavedQueryRequest()
         metadata =[
@@ -16148,6 +16225,7 @@ def test_batch_get_effective_iam_policies_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
@@ -16184,6 +16262,7 @@ def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(asset_service.BatchGetEffectiveIamPoliciesResponse())
         req.return_value.content = return_value
 
@@ -16246,6 +16325,7 @@ def test_analyze_org_policies_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
@@ -16283,6 +16363,7 @@ def test_analyze_org_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.AnalyzeOrgPoliciesResponse.to_json(asset_service.AnalyzeOrgPoliciesResponse())
         req.return_value.content = return_value
 
@@ -16345,6 +16426,7 @@ def test_analyze_org_policy_governed_containers_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
@@ -16382,6 +16464,7 @@ def test_analyze_org_policy_governed_containers_rest_interceptors(null_intercept
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
         req.return_value.content = return_value
 
@@ -16444,6 +16527,7 @@ def test_analyze_org_policy_governed_assets_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
@@ -16481,6 +16565,7 @@ def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
         req.return_value.content = return_value
 
@@ -16538,6 +16623,7 @@ def test_get_operation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 

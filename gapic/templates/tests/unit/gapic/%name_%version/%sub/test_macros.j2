@@ -1153,6 +1153,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             {% if method.void %}
             json_return_value = ''
             {% elif method.lro %}
@@ -1247,6 +1248,7 @@ def test_{{ method_name }}_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         {% if method.void %}
         json_return_value = ''
         {% elif method.lro %}
@@ -2004,6 +2006,7 @@ def test_initialize_client_w_{{transport_name}}():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         {% if method.void %}
         json_return_value = ''
         {% else %}{# method.void #}
@@ -2127,6 +2130,7 @@ def test_initialize_client_w_{{transport_name}}():
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         {% if sig.response_type == "None" %}
         json_return_value = '{}'
         {% else %}
@@ -2232,6 +2236,7 @@ def test_initialize_client_w_{{transport_name}}():
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         {% if not method.void %}
         return_value = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json({{ method.output.ident }}()){% else %}json_format.MessageToJson({{ method.output.ident }}()){% endif %}
 

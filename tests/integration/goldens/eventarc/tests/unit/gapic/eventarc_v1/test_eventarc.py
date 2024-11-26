@@ -7442,6 +7442,7 @@ def test_get_trigger_rest_required_fields(request_type=eventarc.GetTriggerReques
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = trigger.Trigger.pb(return_value)
@@ -7488,6 +7489,7 @@ def test_get_trigger_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = trigger.Trigger.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -7608,6 +7610,7 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = eventarc.ListTriggersResponse.pb(return_value)
@@ -7654,6 +7657,7 @@ def test_list_triggers_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = eventarc.ListTriggersResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -7855,6 +7859,7 @@ def test_create_trigger_rest_required_fields(request_type=eventarc.CreateTrigger
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -7908,6 +7913,7 @@ def test_create_trigger_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8036,6 +8042,7 @@ def test_update_trigger_rest_required_fields(request_type=eventarc.UpdateTrigger
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -8085,6 +8092,7 @@ def test_update_trigger_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8216,6 +8224,7 @@ def test_delete_trigger_rest_required_fields(request_type=eventarc.DeleteTrigger
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -8264,6 +8273,7 @@ def test_delete_trigger_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8381,6 +8391,7 @@ def test_get_channel_rest_required_fields(request_type=eventarc.GetChannelReques
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = channel.Channel.pb(return_value)
@@ -8427,6 +8438,7 @@ def test_get_channel_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = channel.Channel.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -8547,6 +8559,7 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = eventarc.ListChannelsResponse.pb(return_value)
@@ -8593,6 +8606,7 @@ def test_list_channels_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = eventarc.ListChannelsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -8794,6 +8808,7 @@ def test_create_channel_rest_required_fields(request_type=eventarc.CreateChannel
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -8847,6 +8862,7 @@ def test_create_channel_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -8975,6 +8991,7 @@ def test_update_channel_rest_required_fields(request_type=eventarc.UpdateChannel
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -9023,6 +9040,7 @@ def test_update_channel_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -9153,6 +9171,7 @@ def test_delete_channel_rest_required_fields(request_type=eventarc.DeleteChannel
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -9200,6 +9219,7 @@ def test_delete_channel_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -9316,6 +9336,7 @@ def test_get_provider_rest_required_fields(request_type=eventarc.GetProviderRequ
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = discovery.Provider.pb(return_value)
@@ -9362,6 +9383,7 @@ def test_get_provider_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = discovery.Provider.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -9482,6 +9504,7 @@ def test_list_providers_rest_required_fields(request_type=eventarc.ListProviders
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = eventarc.ListProvidersResponse.pb(return_value)
@@ -9528,6 +9551,7 @@ def test_list_providers_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = eventarc.ListProvidersResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -9708,6 +9732,7 @@ def test_get_channel_connection_rest_required_fields(request_type=eventarc.GetCh
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = channel_connection.ChannelConnection.pb(return_value)
@@ -9754,6 +9779,7 @@ def test_get_channel_connection_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = channel_connection.ChannelConnection.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -9874,6 +9900,7 @@ def test_list_channel_connections_rest_required_fields(request_type=eventarc.Lis
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
@@ -9920,6 +9947,7 @@ def test_list_channel_connections_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -10114,6 +10142,7 @@ def test_create_channel_connection_rest_required_fields(request_type=eventarc.Cr
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -10163,6 +10192,7 @@ def test_create_channel_connection_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -10285,6 +10315,7 @@ def test_delete_channel_connection_rest_required_fields(request_type=eventarc.De
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode('UTF-8')
@@ -10328,6 +10359,7 @@ def test_delete_channel_connection_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -10444,6 +10476,7 @@ def test_get_google_channel_config_rest_required_fields(request_type=eventarc.Ge
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
@@ -10490,6 +10523,7 @@ def test_get_google_channel_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -10606,6 +10640,7 @@ def test_update_google_channel_config_rest_required_fields(request_type=eventarc
 
             response_value = Response()
             response_value.status_code = 200
+            response_value.headers = {'key': 'value'}
 
             # Convert return value to protobuf type
             return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
@@ -10653,6 +10688,7 @@ def test_update_google_channel_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         # Convert return value to protobuf type
         return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
@@ -11776,6 +11812,7 @@ def test_get_trigger_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = trigger.Trigger.pb(return_value)
@@ -11817,6 +11854,7 @@ def test_get_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = trigger.Trigger.to_json(trigger.Trigger())
         req.return_value.content = return_value
 
@@ -11880,6 +11918,7 @@ def test_list_triggers_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = eventarc.ListTriggersResponse.pb(return_value)
@@ -11918,6 +11957,7 @@ def test_list_triggers_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = eventarc.ListTriggersResponse.to_json(eventarc.ListTriggersResponse())
         req.return_value.content = return_value
 
@@ -12042,6 +12082,7 @@ def test_create_trigger_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -12076,6 +12117,7 @@ def test_create_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12200,6 +12242,7 @@ def test_update_trigger_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -12234,6 +12277,7 @@ def test_update_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12294,6 +12338,7 @@ def test_delete_trigger_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -12328,6 +12373,7 @@ def test_delete_trigger_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12396,6 +12442,7 @@ def test_get_channel_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = channel.Channel.pb(return_value)
@@ -12438,6 +12485,7 @@ def test_get_channel_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = channel.Channel.to_json(channel.Channel())
         req.return_value.content = return_value
 
@@ -12501,6 +12549,7 @@ def test_list_channels_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = eventarc.ListChannelsResponse.pb(return_value)
@@ -12539,6 +12588,7 @@ def test_list_channels_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = eventarc.ListChannelsResponse.to_json(eventarc.ListChannelsResponse())
         req.return_value.content = return_value
 
@@ -12663,6 +12713,7 @@ def test_create_channel_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -12697,6 +12748,7 @@ def test_create_channel_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12821,6 +12873,7 @@ def test_update_channel_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -12855,6 +12908,7 @@ def test_update_channel_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -12915,6 +12969,7 @@ def test_delete_channel_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -12949,6 +13004,7 @@ def test_delete_channel_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13012,6 +13068,7 @@ def test_get_provider_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = discovery.Provider.pb(return_value)
@@ -13050,6 +13107,7 @@ def test_get_provider_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = discovery.Provider.to_json(discovery.Provider())
         req.return_value.content = return_value
 
@@ -13113,6 +13171,7 @@ def test_list_providers_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = eventarc.ListProvidersResponse.pb(return_value)
@@ -13151,6 +13210,7 @@ def test_list_providers_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = eventarc.ListProvidersResponse.to_json(eventarc.ListProvidersResponse())
         req.return_value.content = return_value
 
@@ -13216,6 +13276,7 @@ def test_get_channel_connection_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = channel_connection.ChannelConnection.pb(return_value)
@@ -13256,6 +13317,7 @@ def test_get_channel_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = channel_connection.ChannelConnection.to_json(channel_connection.ChannelConnection())
         req.return_value.content = return_value
 
@@ -13319,6 +13381,7 @@ def test_list_channel_connections_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = eventarc.ListChannelConnectionsResponse.pb(return_value)
@@ -13357,6 +13420,7 @@ def test_list_channel_connections_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = eventarc.ListChannelConnectionsResponse.to_json(eventarc.ListChannelConnectionsResponse())
         req.return_value.content = return_value
 
@@ -13481,6 +13545,7 @@ def test_create_channel_connection_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -13515,6 +13580,7 @@ def test_create_channel_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13575,6 +13641,7 @@ def test_delete_channel_connection_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -13609,6 +13676,7 @@ def test_delete_channel_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -13672,6 +13740,7 @@ def test_get_google_channel_config_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = google_channel_config.GoogleChannelConfig.pb(return_value)
@@ -13710,6 +13779,7 @@ def test_get_google_channel_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = google_channel_config.GoogleChannelConfig.to_json(google_channel_config.GoogleChannelConfig())
         req.return_value.content = return_value
 
@@ -13837,6 +13907,7 @@ def test_update_google_channel_config_rest_call_success(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
 
         # Convert return value to protobuf type
         return_value = gce_google_channel_config.GoogleChannelConfig.pb(return_value)
@@ -13875,6 +13946,7 @@ def test_update_google_channel_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {'key': 'value'}
         return_value = gce_google_channel_config.GoogleChannelConfig.to_json(gce_google_channel_config.GoogleChannelConfig())
         req.return_value.content = return_value
 
@@ -13932,6 +14004,7 @@ def test_get_location_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -13983,6 +14056,7 @@ def test_list_locations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -14034,6 +14108,7 @@ def test_get_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -14085,6 +14160,7 @@ def test_set_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -14136,6 +14212,7 @@ def test_test_iam_permissions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -14187,6 +14264,7 @@ def test_cancel_operation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = '{}'
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -14238,6 +14316,7 @@ def test_delete_operation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = '{}'
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -14289,6 +14368,7 @@ def test_get_operation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
@@ -14340,6 +14420,7 @@ def test_list_operations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         response_value.status_code = 200
+        response_value.headers = {'key': 'value'}
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
 
