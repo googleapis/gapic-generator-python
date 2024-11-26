@@ -385,8 +385,6 @@ def intercepted_echo_rest():
     )
     return EchoClient(transport=transport)
 
-import google.auth.aio.credentials
-
 @pytest.fixture
 def intercepted_echo_grpc_async():
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
@@ -397,45 +395,45 @@ def intercepted_echo_grpc_async():
     channel =  grpc.aio.insecure_channel(host, interceptors = [interceptor])
     #intercept_channel = grpc.aio.intercept_channel(channel, interceptor)
     transport = EchoAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=google.auth.aio.credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         channel=channel,
     )
     return EchoAsyncClient(transport=transport)
 
 
-import google.auth.aio.credentials
-@pytest.fixture
-def intercepted_echo_rest_async():
-    transport_name="rest_asyncio"
-    transport_cls = EchoAsyncClient.get_transport_class(transport_name)
+# TODO Determine if this is ready for testing
+# @pytest.fixture
+# def intercepted_echo_rest_async():
+#     transport_name="rest_asyncio"
+#     transport_cls = EchoAsyncClient.get_transport_class(transport_name)
 
-    class MyCustomEchoInterceptor(AsyncEchoRestInterceptor):
-        request_metadata: Sequence[Tuple[str, str]] = []
-        response_metadata: Sequence[Tuple[str, str]] = []
+#     class MyCustomEchoInterceptor(AsyncEchoRestInterceptor):
+#         request_metadata: Sequence[Tuple[str, str]] = []
+#         response_metadata: Sequence[Tuple[str, str]] = []
 
-        async def pre_echo(self, request, metadata):
-            self.request_metadata = metadata
-            return request, metadata
+#         async def pre_echo(self, request, metadata):
+#             self.request_metadata = metadata
+#             return request, metadata
 
-        async def post_echo_with_metadata(self, request, metadata):
-            self.response_metadata = metadata
-            return request, metadata
+#         async def post_echo_with_metadata(self, request, metadata):
+#             self.response_metadata = metadata
+#             return request, metadata
 
-        async def pre_expand(self, request, metadata):
-            self.request_metadata = metadata
-            return request, metadata
+#         async def pre_expand(self, request, metadata):
+#             self.request_metadata = metadata
+#             return request, metadata
 
-        async def post_expand_with_metadata(self, request, metadata):
-            self.response_metadata = metadata
-            return request, metadata
+#         async def post_expand_with_metadata(self, request, metadata):
+#             self.response_metadata = metadata
+#             return request, metadata
 
-    interceptor=MyCustomEchoInterceptor()
+#     interceptor=MyCustomEchoInterceptor()
 
-    # The custom host explicitly bypasses https.
-    transport = transport_cls(
-        credentials=google.auth.aio.credentials.Credentials(),
-        host="localhost:7469",
-        url_scheme="http",
-        interceptor=interceptor
-    )
-    return EchoAsyncClient(transport=transport)
+#     # The custom host explicitly bypasses https.
+#     transport = transport_cls(
+#         credentials=ga_credentials.AnonymousCredentials()
+#         host="localhost:7469",
+#         url_scheme="http",
+#         interceptor=interceptor
+#     )
+#     return EchoAsyncClient(transport=transport)
