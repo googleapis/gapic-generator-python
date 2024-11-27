@@ -4,6 +4,7 @@
 {% import "%namespace/%name_%version/%sub/services/%service/_client_macros.j2" as macros %}
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
+import logging
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
@@ -52,6 +53,13 @@ from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 from .client import {{ service.client_name }}
 
+try:
+    from google.api_core import client_logging
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 {# TODO(yon-mg): handle rest transport async client interaction #}
 class {{ service.async_client_name }}:
@@ -242,6 +250,9 @@ class {{ service.async_client_name }}:
             client_info=client_info,
 
         )
+
+        if CLIENT_LOGGING_SUPPORTED:
+            _LOGGER.debug(" {{ service.async_client_name }} client is successfully constructed.")
 
     {% for method in service.methods.values() %}
       {% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
