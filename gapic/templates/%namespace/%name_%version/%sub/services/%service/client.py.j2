@@ -521,7 +521,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         if CLIENT_LOGGING_SUPPORTED:
             # Setup logging.
-            initialize_logging()
+            client_logging.initialize_logging()
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
