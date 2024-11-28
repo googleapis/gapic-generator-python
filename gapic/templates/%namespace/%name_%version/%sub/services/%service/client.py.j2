@@ -610,8 +610,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 api_audience=self._client_options.api_audience,
             )
         
-        if CLIENT_LOGGING_SUPPORTED:
-            _LOGGER.debug(" {{ service.client_name }} client is successfully constructed.")
+        if "async" not in str(self._transport):
+            if CLIENT_LOGGING_SUPPORTED:
+                _LOGGER.debug(" {{ service.client_name }} client is successfully constructed.")
 
 
     {% for method in service.methods.values() %}
