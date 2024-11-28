@@ -250,9 +250,8 @@ class {{ service.async_client_name }}:
             client_info=client_info,
 
         )
-
         if CLIENT_LOGGING_SUPPORTED:
-            _LOGGER.debug(" {{ service.async_client_name }} client is successfully constructed.")
+            _LOGGER.debug("Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.async_client_name }}`.")
 
     {% for method in service.methods.values() %}
       {% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
