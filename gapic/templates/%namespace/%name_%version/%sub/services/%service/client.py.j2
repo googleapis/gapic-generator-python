@@ -612,7 +612,13 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED:
-                _LOGGER.debug("Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}`.")
+                # TODO: Make this performant when logging is not enabled
+                _LOGGER.debug(
+                    "Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}`.",
+                    extra = {
+                        'serviceName':'{{ service.meta.address.proto }}'
+                    },
+                )
 
 
     {% for method in service.methods.values() %}

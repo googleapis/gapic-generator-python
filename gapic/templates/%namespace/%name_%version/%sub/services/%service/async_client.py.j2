@@ -251,7 +251,13 @@ class {{ service.async_client_name }}:
 
         )
         if CLIENT_LOGGING_SUPPORTED:
-            _LOGGER.debug("Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.async_client_name }}`.")
+            # TODO: Make this performant when logging is not enabled
+            _LOGGER.debug(
+                "Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.async_client_name }}`.",
+                extra = {
+                    'serviceName':'{{ service.meta.address.proto }}'
+                }
+            )
 
     {% for method in service.methods.values() %}
       {% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
