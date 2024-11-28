@@ -581,8 +581,6 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                     host=self._api_endpoint,
                     client_info=client_info,
                 )
-                if CLIENT_LOGGING_SUPPORTED:
-                    _LOGGER.debug(" {{ service.client_name }} client is successfully constructed.")
                 return
 
             {% endif %}
