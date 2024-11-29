@@ -613,10 +613,18 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED:
                 # TODO: Make this performant when logging is not enabled
+
+                # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
+                if hasattr(self.transport._credentials, "get_cred_info"):
+                    credential_info = self.transport._credentials.get_cred_info()
+
                 _LOGGER.debug(
                     "Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}`.",
                     extra = {
-                        'serviceName':'{{ service.meta.address.proto }}'
+                        "serviceName": "{{ service.meta.address.proto }}",
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
+                        "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                        "credentialInfo": credential_info,
                     },
                 )
 
