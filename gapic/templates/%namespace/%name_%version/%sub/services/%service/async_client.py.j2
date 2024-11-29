@@ -450,10 +450,10 @@ class {{ service.async_client_name }}:
             _LOGGER.debug(
                 "Received response for {{ service.meta.address.proto_package_versioned }}.{{ service.async_client_name }}.{{ method.transport_safe_name|snake_case }}",
                 extra = {
-                    "serviceName": {{ service.meta.address.proto }},
+                    "serviceName": "{{ service.meta.address.proto }}",
                     "rpcName": "{{ method.name }}",
                     "retryAttempt": 1,
-                    "response": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(request){% else %}json_format.MessageToJson(request){% endif %},
+                    "response": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(response){% else %}json_format.MessageToJson(response){% endif %},
                     # "metadata": str(dict(metadata)), # TODO Determine whether this should be moved to the transport layer to capture response metadata
                 },
             )
