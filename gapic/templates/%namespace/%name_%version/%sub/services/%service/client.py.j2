@@ -614,6 +614,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             if CLIENT_LOGGING_SUPPORTED:
                 # TODO: Make this performant when logging is not enabled
 
+                credential_info = None
                 # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
                 if hasattr(self.transport._credentials, "get_cred_info"):
                     credential_info = self.transport._credentials.get_cred_info()
