@@ -197,7 +197,8 @@ def _get_http_options():
         method_name (str): The method name.
         service_name (str): The service name.
         is_async (bool): Used to determine the code path i.e. whether for sync or async call. #}
-{% macro rest_call_method_common(body_spec, method_name, service_name, is_async=False) %}
+{% macro rest_call_method_common(body_spec, method_name, service, is_async=False) %}
+{% set service_name = service.name %}
 {% set await_prefix = "await " if is_async else "" %}
 {% set async_class_prefix = "Async" if is_async else "" %}
 
@@ -212,6 +213,17 @@ def _get_http_options():
     # Jsonify the query params
     query_params = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_query_params_json(transcoded_request)
 
+    if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+        _LOGGER.debug(
+            f"Sending request via {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method_name }}",
+            extra = {
+                "serviceName": "{{ service.meta.address.proto }}",
+                "rpcName": "{{ method_name }}",
+                "retryAttempt": 1,
+                "request": type(request).to_json(request),
+                "metadata": str(dict(metadata)),
+            },
+        )
     # Send the request
     response = {{ await_prefix }}{{ async_class_prefix }}{{ service_name }}RestTransport._{{method_name}}._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request{% if body_spec %}, body{% endif %})
 
@@ -434,7 +446,7 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
             {{ sig.response_type }}: Response from {{ name }} method.
         {% endif %}
         """
-        {{ rest_call_method_common(body_spec, name, service.name, is_async)|indent(4) }}
+        {{ rest_call_method_common(body_spec, name, service, is_async)|indent(4) }}
         
         {% if sig.response_type == "None" %}
         return {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(None)

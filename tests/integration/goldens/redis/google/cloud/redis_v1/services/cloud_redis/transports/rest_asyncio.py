@@ -62,6 +62,15 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"google-auth@{google.auth.__version__}",
 )
 
+import logging
+try:
+    from google.api_core import client_logging
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
+
 
 class AsyncCloudRedisRestInterceptor:
     """Asynchronous Interceptor for CloudRedis.
@@ -753,6 +762,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.CreateInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "CreateInstance",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._CreateInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
@@ -771,6 +791,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_create_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.create_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "CreateInstance",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _DeleteInstance(_BaseCloudRedisRestTransport._BaseDeleteInstance, AsyncCloudRedisRestStub):
@@ -834,6 +865,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.DeleteInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "DeleteInstance",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._DeleteInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
@@ -852,6 +894,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_delete_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.delete_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "DeleteInstance",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _ExportInstance(_BaseCloudRedisRestTransport._BaseExportInstance, AsyncCloudRedisRestStub):
@@ -918,6 +971,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseExportInstance._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.ExportInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ExportInstance",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._ExportInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
@@ -936,6 +1000,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_export_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.export_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ExportInstance",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _FailoverInstance(_BaseCloudRedisRestTransport._BaseFailoverInstance, AsyncCloudRedisRestStub):
@@ -1002,6 +1077,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.FailoverInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "FailoverInstance",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._FailoverInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
@@ -1020,6 +1106,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_failover_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.failover_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "FailoverInstance",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _GetInstance(_BaseCloudRedisRestTransport._BaseGetInstance, AsyncCloudRedisRestStub):
@@ -1080,6 +1177,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.GetInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetInstance",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._GetInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
@@ -1098,6 +1206,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.get_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetInstance",
+                        "retryAttempt": 1,
+                        "response": cloud_redis.Instance.to_json(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, AsyncCloudRedisRestStub):
@@ -1158,6 +1277,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.GetInstanceAuthString",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetInstanceAuthString",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._GetInstanceAuthString._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
@@ -1176,6 +1306,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_get_instance_auth_string(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.get_instance_auth_string",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetInstanceAuthString",
+                        "retryAttempt": 1,
+                        "response": cloud_redis.InstanceAuthString.to_json(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, AsyncCloudRedisRestStub):
@@ -1242,6 +1383,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseImportInstance._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.ImportInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ImportInstance",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._ImportInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
@@ -1260,6 +1412,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_import_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.import_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ImportInstance",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _ListInstances(_BaseCloudRedisRestTransport._BaseListInstances, AsyncCloudRedisRestStub):
@@ -1322,6 +1485,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.ListInstances",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ListInstances",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._ListInstances._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
@@ -1340,6 +1514,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_list_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.list_instances",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ListInstances",
+                        "retryAttempt": 1,
+                        "response": cloud_redis.ListInstancesResponse.to_json(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, AsyncCloudRedisRestStub):
@@ -1406,6 +1591,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.RescheduleMaintenance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "RescheduleMaintenance",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._RescheduleMaintenance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
@@ -1424,6 +1620,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_reschedule_maintenance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.reschedule_maintenance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "RescheduleMaintenance",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _UpdateInstance(_BaseCloudRedisRestTransport._BaseUpdateInstance, AsyncCloudRedisRestStub):
@@ -1490,6 +1697,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.UpdateInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "UpdateInstance",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._UpdateInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
@@ -1508,6 +1726,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_update_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.update_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "UpdateInstance",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _UpgradeInstance(_BaseCloudRedisRestTransport._BaseUpgradeInstance, AsyncCloudRedisRestStub):
@@ -1574,6 +1803,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.UpgradeInstance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "UpgradeInstance",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._UpgradeInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
@@ -1592,6 +1832,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             content = await response.read()
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             resp = await self._interceptor.post_upgrade_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for google.cloud.redis_v1.CloudRedisClient.upgrade_instance",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "UpgradeInstance",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     @property
@@ -1777,6 +2028,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.GetLocation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetLocation",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
@@ -1856,6 +2118,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.ListLocations",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ListLocations",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
@@ -1932,6 +2205,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.CancelOperation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "CancelOperation",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
@@ -2004,6 +2288,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.DeleteOperation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "DeleteOperation",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
@@ -2079,6 +2374,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.GetOperation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "GetOperation",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
@@ -2158,6 +2464,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.ListOperations",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "ListOperations",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
@@ -2240,6 +2557,17 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseWaitOperation._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    f"Sending request via google.cloud.redis_v1.CloudRedisClient.WaitOperation",
+                    extra = {
+                        "serviceName": "google.cloud.redis.v1.CloudRedis",
+                        "rpcName": "WaitOperation",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
             # Send the request
             response = await AsyncCloudRedisRestTransport._WaitOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 

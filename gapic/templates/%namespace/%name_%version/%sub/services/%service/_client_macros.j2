@@ -150,19 +150,6 @@
         # Validate the universe domain.
         self._validate_universe_domain()
 
-        if CLIENT_LOGGING_SUPPORTED:
-            # TODO: Make this performant when logging is not enabled
-            _LOGGER.debug(
-                "Sending request via {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method.transport_safe_name|snake_case }}",
-                extra = {
-                    "serviceName": "{{ service.meta.address.proto }}",
-                    "rpcName": "{{ method.name }}",
-                    "retryAttempt": 1,
-                    "request": {% if method.output.ident.is_proto_plus_type %}{{ method.input.ident }}.to_json(request){% else %}json_format.MessageToJson(request){% endif %},
-                    "metadata": str(dict(metadata)),
-                },
-            )
-
         # Send the request.
         {%+ if not method.void %}response = {% endif %}rpc(
             {% if not method.client_streaming %}
@@ -174,19 +161,6 @@
             timeout=timeout,
             metadata=metadata,
         )
-
-        if CLIENT_LOGGING_SUPPORTED:
-            # TODO: Make this performant when logging is not enabled
-            _LOGGER.debug(
-                "Received response for {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method.transport_safe_name|snake_case }}",
-                extra = {
-                    "serviceName": "{{ service.meta.address.proto }}",
-                    "rpcName": "{{ method.name }}",
-                    "retryAttempt": 1,
-                    "response": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(response){% else %}json_format.MessageToJson(response){% endif %},
-                    # "metadata": str(dict(metadata)), # TODO Determine whether this should be moved to the transport layer to capture response metadata
-                },
-            )
 
         {% if method.lro %}
 
