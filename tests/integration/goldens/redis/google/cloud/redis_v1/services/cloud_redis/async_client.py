@@ -263,11 +263,12 @@ class CloudRedisAsyncClient:
 
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
-            # TODO: Make this performant when logging is not enabled
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
 
+            credential_info = None
             # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
-            credential_info = getattr(self.transport._credentials, "get_cred_info", None)
+            if hasattr(self.transport._credentials, "get_cred_info"):
+                credential_info = self.transport._credentials.get_cred_info()
             if callable(credential_info):
                 credential_info = credential_info()
 

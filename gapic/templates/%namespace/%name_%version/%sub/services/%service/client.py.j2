@@ -613,6 +613,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
 
+                credential_info = None
                 # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
                 credential_info = getattr(self.transport._credentials, "get_cred_info", None)
                 if callable(credential_info):

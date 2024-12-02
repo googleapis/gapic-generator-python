@@ -623,7 +623,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
                 credential_info = getattr(self.transport._credentials, "get_cred_info", None)
                 if callable(credential_info):
-                    credential_info = credential_info()
+                    credential_info = credential_info()>>>>>>> initialize-logging
 
                 _LOGGER.debug(
                     "Created client `google.cloud.redis_v1.CloudRedisClient`.",

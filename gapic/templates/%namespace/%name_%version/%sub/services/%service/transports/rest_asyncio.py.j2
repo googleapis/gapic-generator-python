@@ -69,6 +69,15 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"google-auth@{google.auth.__version__}",
 )
 
+import logging
+try:
+    from google.api_core import client_logging
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
+
 {{ shared_macros.create_interceptor_class(api, service, method, is_async=True) }}
 
 @dataclasses.dataclass
@@ -188,7 +197,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% endif %}
             """
 
-            {{ shared_macros.rest_call_method_common(body_spec, method.name, service.name, is_async=True)|indent(8) }}
+            {{ shared_macros.rest_call_method_common(body_spec, method.name, service, is_async=True)|indent(8) }}
 
             {% if not method.void %}
             # Return the response
@@ -206,6 +215,17 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             json_format.Parse(content, pb_resp, ignore_unknown_fields=True)
             {% endif %}{# if method.server_streaming #}
             resp = await self._interceptor.post_{{ method.name|snake_case }}(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                _LOGGER.debug(
+                    "Received response for {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method.transport_safe_name|snake_case }}",
+                    extra = {
+                        "serviceName": "{{ service.meta.address.proto }}",
+                        "rpcName": "{{ method.name }}",
+                        "retryAttempt": 1,
+                        "response": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(response){% else %}json_format.MessageToJson(response){% endif %},
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
             {% endif %}{# method.void #}
