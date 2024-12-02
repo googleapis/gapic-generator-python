@@ -40,7 +40,7 @@ except AttributeError:  # pragma: NO COVER
 try:
     from google.api_core import client_logging
     CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
@@ -620,7 +620,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
-        if CLIENT_LOGGING_SUPPORTED:
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
             # Setup logging.
             client_logging.initialize_logging()
 
@@ -677,7 +677,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 # TODO: Make this performant when logging is not enabled
 
                 credential_info = None

@@ -59,7 +59,7 @@ from .client import EventarcClient
 try:
     from google.api_core import client_logging
     CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
@@ -273,7 +273,7 @@ class EventarcAsyncClient:
 
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
             # TODO: Make this performant when logging is not enabled
 
             credential_info = None
