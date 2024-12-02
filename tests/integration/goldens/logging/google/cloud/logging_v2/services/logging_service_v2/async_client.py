@@ -43,7 +43,7 @@ from .transports.grpc_asyncio import LoggingServiceV2GrpcAsyncIOTransport
 from .client import LoggingServiceV2Client
 
 try:  # pragma: NO COVER
-    from google.api_core import client_logging
+    from google.api_core import client_logging  # type: ignore
     CLIENT_LOGGING_SUPPORTED = True
 except ImportError:
     CLIENT_LOGGING_SUPPORTED = False

@@ -41,7 +41,7 @@ from .transports.grpc_asyncio import IAMCredentialsGrpcAsyncIOTransport
 from .client import IAMCredentialsClient
 
 try:  # pragma: NO COVER
-    from google.api_core import client_logging
+    from google.api_core import client_logging  # type: ignore
     CLIENT_LOGGING_SUPPORTED = True
 except ImportError:
     CLIENT_LOGGING_SUPPORTED = False
