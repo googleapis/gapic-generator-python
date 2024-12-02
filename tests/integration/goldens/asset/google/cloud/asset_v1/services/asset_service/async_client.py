@@ -47,10 +47,10 @@ from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
 from .client import AssetServiceClient
 
-try:
+try:  # pragma: NO COVER
     from google.api_core import client_logging
     CLIENT_LOGGING_SUPPORTED = True
-except ImportError:  # pragma: NO COVER
+except ImportError:
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)

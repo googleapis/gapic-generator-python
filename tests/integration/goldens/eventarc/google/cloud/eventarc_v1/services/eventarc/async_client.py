@@ -56,10 +56,10 @@ from .transports.base import EventarcTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import EventarcGrpcAsyncIOTransport
 from .client import EventarcClient
 
-try:
+try:  # pragma: NO COVER
     from google.api_core import client_logging
     CLIENT_LOGGING_SUPPORTED = True
-except ImportError:  # pragma: NO COVER
+except ImportError:
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
