@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import logging
+import logging as std_logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
@@ -37,13 +37,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-try:
-    from google.api_core import client_logging
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
     CLIENT_LOGGING_SUPPORTED = True
 except ImportError:
     CLIENT_LOGGING_SUPPORTED = False
 
-_LOGGER = logging.getLogger(__name__)
+_LOGGER = std_logging.getLogger(__name__)
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -539,7 +539,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
-        if CLIENT_LOGGING_SUPPORTED:
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
             # Setup logging.
             client_logging.initialize_logging()
 
@@ -618,13 +618,12 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED:
-                # TODO: Make this performant when logging is not enabled
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
 
-                credential_info = None
                 # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
-                if hasattr(self.transport._credentials, "get_cred_info"):
-                    credential_info = self.transport._credentials.get_cred_info()
+                credential_info = getattr(self.transport._credentials, "get_cred_info", None)
+                if callable(credential_info):
+                    credential_info = credential_info()>>>>>>> initialize-logging
 
                 _LOGGER.debug(
                     "Created client `google.cloud.redis_v1.CloudRedisClient`.",
