@@ -81,6 +81,15 @@ load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
 
+# Pin the version of rules_cc to the version that is present in
+# https://github.com/protocolbuffers/protobuf/blob/29.x/protobuf_deps.bzl#L92-L98
+http_archive(
+    name = "rules_cc",
+    urls = ["https://github.com/bazelbuild/rules_cc/releases/download/0.0.16/rules_cc-0.0.16.tar.gz"],
+    sha256 = "bbf1ae2f83305b7053b11e4467d317a7ba3517a12cef608543c1b1c5bf48a4df",
+    strip_prefix = "rules_cc-0.0.16",
+)
+
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps", "PROTOBUF_MAVEN_ARTIFACTS")
 # This is actually already done within grpc_deps but calling this for Bazel convention.
 protobuf_deps()
