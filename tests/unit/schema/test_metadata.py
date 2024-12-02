@@ -98,7 +98,7 @@ def test_proto_package_version_parsing():
     assert addr.convert_to_versioned_package() == ("bah", "v20p1", "baj_v3")
 
     addr = metadata.Address(package=("bab", "v1"))
-    assert addr.proto_package_versioned() == "bab.v1"
+    assert addr.proto_package_versioned == "bab.v1"
 
 
 def test_address_child_no_parent():
