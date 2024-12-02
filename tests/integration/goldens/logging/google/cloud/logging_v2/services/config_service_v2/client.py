@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import logging
+import logging as std_logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
@@ -43,7 +43,7 @@ try:  # pragma: NO COVER
 except ImportError:
     CLIENT_LOGGING_SUPPORTED = False
 
-_LOGGER = logging.getLogger(__name__)
+_LOGGER = std_logging.getLogger(__name__)
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -625,7 +625,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
 
                 # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
                 credential_info = getattr(self.transport._credentials, "get_cred_info", None)

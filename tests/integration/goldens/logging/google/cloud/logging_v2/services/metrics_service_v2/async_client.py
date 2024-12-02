@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import logging
+import logging as std_logging
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
@@ -49,7 +49,7 @@ try:  # pragma: NO COVER
 except ImportError:
     CLIENT_LOGGING_SUPPORTED = False
 
-_LOGGER = logging.getLogger(__name__)
+_LOGGER = std_logging.getLogger(__name__)
 
 class MetricsServiceV2AsyncClient:
     """Service for configuring logs-based metrics."""
@@ -236,7 +236,7 @@ class MetricsServiceV2AsyncClient:
 
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             # TODO: Make this performant when logging is not enabled
 
             # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
