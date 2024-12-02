@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
@@ -35,6 +36,14 @@ try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
+try:
+    from google.api_core import client_logging
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -559,6 +568,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
+        if CLIENT_LOGGING_SUPPORTED:
+            # Setup logging.
+            client_logging.initialize_logging()
+
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
             raise ValueError("client_options.api_key and credentials are mutually exclusive")
@@ -610,6 +623,25 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 always_use_jwt_access=True,
                 api_audience=self._client_options.api_audience,
             )
+
+        if "async" not in str(self._transport):
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+                # TODO: Make this performant when logging is not enabled
+
+                credential_info = None
+                # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
+                if hasattr(self.transport._credentials, "get_cred_info"):
+                    credential_info = self.transport._credentials.get_cred_info()
+
+                _LOGGER.debug(
+                    "Created client `google.logging_v2.ConfigServiceV2Client`.",
+                    extra = {
+                        "serviceName": "google.logging.v2.ConfigServiceV2",
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
+                        "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                        "credentialInfo": credential_info,
+                    },
+                )
 
     def list_buckets(self,
             request: Optional[Union[logging_config.ListBucketsRequest, dict]] = None,
