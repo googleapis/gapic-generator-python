@@ -263,8 +263,8 @@ class {{ service.async_client_name }}:
                 "Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.async_client_name }}`.",
                 extra = {
                     "serviceName": "{{ service.meta.address.proto }}",
-                    "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
-                    "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialInfo": credential_info,
                 },
             )

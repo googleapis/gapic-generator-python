@@ -267,8 +267,8 @@ class AssetServiceAsyncClient:
                 "Created client `google.cloud.asset_v1.AssetServiceAsyncClient`.",
                 extra = {
                     "serviceName": "google.cloud.asset.v1.AssetService",
-                    "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
-                    "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialInfo": credential_info,
                 },
             )

@@ -275,8 +275,8 @@ class CloudRedisAsyncClient:
                 "Created client `google.cloud.redis_v1.CloudRedisAsyncClient`.",
                 extra = {
                     "serviceName": "google.cloud.redis.v1.CloudRedis",
-                    "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
-                    "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialInfo": credential_info,
                 },
             )

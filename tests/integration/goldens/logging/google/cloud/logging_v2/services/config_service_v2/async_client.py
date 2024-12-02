@@ -262,8 +262,8 @@ class ConfigServiceV2AsyncClient:
                 "Created client `google.logging_v2.ConfigServiceV2AsyncClient`.",
                 extra = {
                     "serviceName": "google.logging.v2.ConfigServiceV2",
-                    "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
-                    "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialInfo": credential_info,
                 },
             )

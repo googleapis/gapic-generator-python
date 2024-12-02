@@ -285,8 +285,8 @@ class EventarcAsyncClient:
                 "Created client `google.cloud.eventarc_v1.EventarcAsyncClient`.",
                 extra = {
                     "serviceName": "google.cloud.eventarc.v1.Eventarc",
-                    "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
-                    "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialInfo": credential_info,
                 },
             )

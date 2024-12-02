@@ -258,8 +258,8 @@ class IAMCredentialsAsyncClient:
                 "Created client `google.iam.credentials_v1.IAMCredentialsAsyncClient`.",
                 extra = {
                     "serviceName": "google.iam.credentials.v1.IAMCredentials",
-                    "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
-                    "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
+                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialInfo": credential_info,
                 },
             )
