@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 try:  # pragma: NO COVER
-    from google.api_core import client_logging
+    from google.api_core import client_logging  # type: ignore
     CLIENT_LOGGING_SUPPORTED = True
 except ImportError:
     CLIENT_LOGGING_SUPPORTED = False
@@ -570,12 +570,11 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                # TODO: Make this performant when logging is not enabled
 
-                credential_info = None
                 # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
-                if hasattr(self.transport._credentials, "get_cred_info"):
-                    credential_info = self.transport._credentials.get_cred_info()
+                credential_info = getattr(self.transport._credentials, "get_cred_info", None)
+                if callable(credential_info):
+                    credential_info = credential_info()
 
                 _LOGGER.debug(
                     "Created client `google.iam.credentials_v1.IAMCredentialsClient`.",

@@ -238,10 +238,10 @@ class LoggingServiceV2AsyncClient:
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
             # TODO: Make this performant when logging is not enabled
 
-            credential_info = None
             # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
-            if hasattr(self.transport._credentials, "get_cred_info"):
-                credential_info = self.transport._credentials.get_cred_info()
+            credential_info = getattr(self.transport._credentials, "get_cred_info", None)
+            if callable(credential_info):
+                credential_info = credential_info()
 
             _LOGGER.debug(
                 "Created client `google.logging_v2.LoggingServiceV2AsyncClient`.",
