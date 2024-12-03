@@ -338,6 +338,18 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             # Jsonify the query params
             query_params = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    f"Sending request via google.iam.credentials_v1.IAMCredentialsClient.GenerateAccessToken",
+                    extra = {
+                        "serviceName": "google.iam.credentials.v1.IAMCredentials",
+                        "rpcName": "GenerateAccessToken",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
+
             # Send the request
             response = IAMCredentialsRestTransport._GenerateAccessToken._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
@@ -424,6 +436,18 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             # Jsonify the query params
             query_params = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    f"Sending request via google.iam.credentials_v1.IAMCredentialsClient.GenerateIdToken",
+                    extra = {
+                        "serviceName": "google.iam.credentials.v1.IAMCredentials",
+                        "rpcName": "GenerateIdToken",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
 
             # Send the request
             response = IAMCredentialsRestTransport._GenerateIdToken._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
@@ -512,6 +536,18 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             # Jsonify the query params
             query_params = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_query_params_json(transcoded_request)
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    f"Sending request via google.iam.credentials_v1.IAMCredentialsClient.SignBlob",
+                    extra = {
+                        "serviceName": "google.iam.credentials.v1.IAMCredentials",
+                        "rpcName": "SignBlob",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
+
             # Send the request
             response = IAMCredentialsRestTransport._SignBlob._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
@@ -598,6 +634,18 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
 
             # Jsonify the query params
             query_params = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    f"Sending request via google.iam.credentials_v1.IAMCredentialsClient.SignJwt",
+                    extra = {
+                        "serviceName": "google.iam.credentials.v1.IAMCredentials",
+                        "rpcName": "SignJwt",
+                        "retryAttempt": 1,
+                        "request": type(request).to_json(request),
+                        "metadata": str(dict(metadata)),
+                    },
+                )
 
             # Send the request
             response = IAMCredentialsRestTransport._SignJwt._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
