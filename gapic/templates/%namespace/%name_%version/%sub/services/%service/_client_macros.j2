@@ -80,6 +80,22 @@
                 {{ method.client_output.meta.doc|rst(width=72, indent=16, source_format="rst") }}
         {% endif %}
         """
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
+        # Fields I can log here:
+        # - timestamp, severity, clientConfig
+        # - request fields: payload, partial headers, clientId, requestId
+        # - rpcName, serviceName
+
+        # Fields I can't log here:
+        # rest specific fields: method, url, partial headers for REST
+
+        # Fields I can't log here for response:
+        # response headers, status
+
+
         {% if method.is_deprecated %}
         warnings.warn("{{ service.client_name }}.{{ method.name|snake_case }} is deprecated",
             DeprecationWarning)
@@ -187,6 +203,10 @@
         {% endif %}
         {% if not method.void %}
 
+        # TODO(ohmayr): add extra fields to include information from;
+        # client options.
+        # client info.
+        # any other required fields in the design document.
         # Done; return the response.
         return response
         {% endif %}
