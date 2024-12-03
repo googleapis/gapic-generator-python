@@ -46,6 +46,16 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
+import logging
+
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
+
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
@@ -838,6 +848,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_iam_policy",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeIamPolicy",
+                        "retryAttempt": 1,
+                        "response": asset_service.AnalyzeIamPolicyResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _AnalyzeIamPolicyLongrunning(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning, AssetServiceRestStub):
@@ -917,6 +938,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_iam_policy_longrunning(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_iam_policy_longrunning",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeIamPolicyLongrunning",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _AnalyzeMove(_BaseAssetServiceRestTransport._BaseAnalyzeMove, AssetServiceRestStub):
@@ -993,6 +1025,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_move(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_move",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeMove",
+                        "retryAttempt": 1,
+                        "response": asset_service.AnalyzeMoveResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _AnalyzeOrgPolicies(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies, AssetServiceRestStub):
@@ -1069,6 +1112,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_org_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicies",
+                        "retryAttempt": 1,
+                        "response": asset_service.AnalyzeOrgPoliciesResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _AnalyzeOrgPolicyGovernedAssets(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets, AssetServiceRestStub):
@@ -1146,6 +1200,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policy_governed_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicyGovernedAssets",
+                        "retryAttempt": 1,
+                        "response": asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _AnalyzeOrgPolicyGovernedContainers(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers, AssetServiceRestStub):
@@ -1223,6 +1288,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policy_governed_containers",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicyGovernedContainers",
+                        "retryAttempt": 1,
+                        "response": asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _BatchGetAssetsHistory(_BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory, AssetServiceRestStub):
@@ -1296,6 +1372,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_batch_get_assets_history(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.batch_get_assets_history",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "BatchGetAssetsHistory",
+                        "retryAttempt": 1,
+                        "response": asset_service.BatchGetAssetsHistoryResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _BatchGetEffectiveIamPolicies(_BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies, AssetServiceRestStub):
@@ -1373,6 +1460,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.batch_get_effective_iam_policies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "BatchGetEffectiveIamPolicies",
+                        "retryAttempt": 1,
+                        "response": asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _CreateFeed(_BaseAssetServiceRestTransport._BaseCreateFeed, AssetServiceRestStub):
@@ -1457,6 +1555,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_feed(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.create_feed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "CreateFeed",
+                        "retryAttempt": 1,
+                        "response": asset_service.Feed.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _CreateSavedQuery(_BaseAssetServiceRestTransport._BaseCreateSavedQuery, AssetServiceRestStub):
@@ -1535,6 +1644,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_saved_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.create_saved_query",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "CreateSavedQuery",
+                        "retryAttempt": 1,
+                        "response": asset_service.SavedQuery.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _DeleteFeed(_BaseAssetServiceRestTransport._BaseDeleteFeed, AssetServiceRestStub):
@@ -1734,6 +1854,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_export_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.export_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ExportAssets",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _GetFeed(_BaseAssetServiceRestTransport._BaseGetFeed, AssetServiceRestStub):
@@ -1815,6 +1946,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_feed(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.get_feed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetFeed",
+                        "retryAttempt": 1,
+                        "response": asset_service.Feed.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _GetSavedQuery(_BaseAssetServiceRestTransport._BaseGetSavedQuery, AssetServiceRestStub):
@@ -1890,6 +2032,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_saved_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.get_saved_query",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetSavedQuery",
+                        "retryAttempt": 1,
+                        "response": asset_service.SavedQuery.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _ListAssets(_BaseAssetServiceRestTransport._BaseListAssets, AssetServiceRestStub):
@@ -1963,6 +2116,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.list_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListAssets",
+                        "retryAttempt": 1,
+                        "response": asset_service.ListAssetsResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _ListFeeds(_BaseAssetServiceRestTransport._BaseListFeeds, AssetServiceRestStub):
@@ -2036,6 +2200,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_feeds(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.list_feeds",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListFeeds",
+                        "retryAttempt": 1,
+                        "response": asset_service.ListFeedsResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _ListSavedQueries(_BaseAssetServiceRestTransport._BaseListSavedQueries, AssetServiceRestStub):
@@ -2109,6 +2284,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_saved_queries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.list_saved_queries",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListSavedQueries",
+                        "retryAttempt": 1,
+                        "response": asset_service.ListSavedQueriesResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _QueryAssets(_BaseAssetServiceRestTransport._BaseQueryAssets, AssetServiceRestStub):
@@ -2185,6 +2371,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_query_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.query_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "QueryAssets",
+                        "retryAttempt": 1,
+                        "response": asset_service.QueryAssetsResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _SearchAllIamPolicies(_BaseAssetServiceRestTransport._BaseSearchAllIamPolicies, AssetServiceRestStub):
@@ -2258,6 +2455,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_search_all_iam_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.search_all_iam_policies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "SearchAllIamPolicies",
+                        "retryAttempt": 1,
+                        "response": asset_service.SearchAllIamPoliciesResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _SearchAllResources(_BaseAssetServiceRestTransport._BaseSearchAllResources, AssetServiceRestStub):
@@ -2331,6 +2539,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_search_all_resources(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.search_all_resources",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "SearchAllResources",
+                        "retryAttempt": 1,
+                        "response": asset_service.SearchAllResourcesResponse.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _UpdateFeed(_BaseAssetServiceRestTransport._BaseUpdateFeed, AssetServiceRestStub):
@@ -2415,6 +2634,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_feed(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.update_feed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "UpdateFeed",
+                        "retryAttempt": 1,
+                        "response": asset_service.Feed.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     class _UpdateSavedQuery(_BaseAssetServiceRestTransport._BaseUpdateSavedQuery, AssetServiceRestStub):
@@ -2493,6 +2723,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_saved_query(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.update_saved_query",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "UpdateSavedQuery",
+                        "retryAttempt": 1,
+                        "response": asset_service.SavedQuery.to_json(resp),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     @property
@@ -2752,6 +2993,17 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceAsyncClient.GetOperation",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetOperation",
+                        "retryAttempt": 1,
+                        "response": json_format.MessageToJson(response),
+                        "metadata": str(dict(response.headers)),
+                    },
+                )
             return resp
 
     @property

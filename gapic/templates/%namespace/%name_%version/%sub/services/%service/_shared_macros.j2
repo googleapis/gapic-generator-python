@@ -197,7 +197,8 @@ def _get_http_options():
         method_name (str): The method name.
         service_name (str): The service name.
         is_async (bool): Used to determine the code path i.e. whether for sync or async call. #}
-{% macro rest_call_method_common(body_spec, method_name, service_name, is_async=False) %}
+{% macro rest_call_method_common(body_spec, method_name, service, is_async=False) %}
+{% set service_name = service.name %}
 {% set await_prefix = "await " if is_async else "" %}
 {% set async_class_prefix = "Async" if is_async else "" %}
 
@@ -434,7 +435,7 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
             {{ sig.response_type }}: Response from {{ name }} method.
         {% endif %}
         """
-        {{ rest_call_method_common(body_spec, name, service.name, is_async)|indent(4) }}
+        {{ rest_call_method_common(body_spec, name, service, is_async)|indent(4) }}
         
         {% if sig.response_type == "None" %}
         return {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(None)
@@ -447,6 +448,17 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
         resp = {{ sig.response_type }}()
         resp = json_format.Parse(content, resp)
         resp = {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(resp)
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Received response for {{ service.meta.address.proto_package_versioned }}.{{ service.async_client_name }}.{{ name }}",
+                extra = {
+                    "serviceName": "{{ service.meta.address.proto }}",
+                    "rpcName": "{{ name }}",
+                    "retryAttempt": 1,
+                    "response": json_format.MessageToJson(response),
+                    "metadata": str(dict(response.headers)),
+                },
+            )
         return resp
         {% endif %}
 
