@@ -29,6 +29,49 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import LoggingServiceV2Transport, DEFAULT_CLIENT_INFO
 
+import logging
+
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
+
+
+class MetadataClientInterceptor(grpc.UnaryUnaryClientInterceptor):
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        request_metadata = client_call_details.metadata
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            _LOGGER.debug(
+                f"Sending request via rpc {client_call_details.method}",
+                extra = {
+                    "serviceName": "google.logging.v2.LoggingServiceV2",
+                    "rpcName": client_call_details.method,
+                    "retryAttempt": 1,
+                    "request": type(request).to_json(request),
+                    "metadata": str(dict(request_metadata)),
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        response_metadata = response.trailing_metadata()
+        # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+        metadata = [(k, v) for k, v in response_metadata]
+        result = response.result()
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra = {
+                    "serviceName": "google.logging.v2.LoggingServiceV2",
+                    "rpcName": client_call_details.method,
+                    "response": type(result).to_json(result),
+                    "metadata": str(dict(metadata)),
+                },
+            )
+        return response
+
 
 class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
     """gRPC backend transport for LoggingServiceV2.
@@ -180,6 +223,8 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = MetadataClientInterceptor()
+        self._grpc_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
         self._prep_wrapped_messages(client_info)
 
     @classmethod

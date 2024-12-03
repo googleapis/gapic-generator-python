@@ -33,6 +33,48 @@ from google.protobuf import empty_pb2  # type: ignore
 from .base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 from .grpc import MetricsServiceV2GrpcTransport
 
+import logging
+
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
+
+
+class MetadataAsyncClientInterceptor(grpc.aio.UnaryUnaryClientInterceptor):
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        request_metadata = client_call_details.metadata
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            _LOGGER.debug(
+                f"Sending request via rpc {client_call_details.method}",
+                extra = {
+                    "serviceName": "google.logging.v2.MetricsServiceV2",
+                    "rpcName": str(client_call_details.method),
+                    "retryAttempt": 1,
+                    "request": type(request).to_json(request),
+                    "metadata": str(dict(request_metadata)),
+                },
+            )
+        response = await continuation(client_call_details, request)
+        response_metadata = await response.trailing_metadata()
+        # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+        metadata = [(k, v) for k, v in response_metadata]
+        result = await response
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra = {
+                    "serviceName": "google.logging.v2.MetricsServiceV2",
+                    "rpcName": str(client_call_details.method),
+                    "response": type(result).to_json(result),
+                    "metadata": str(dict(metadata)),
+                },
+            )
+        return response
+
 
 class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
     """gRPC AsyncIO backend transport for MetricsServiceV2.
@@ -227,6 +269,9 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
 
         # Wrap messages. This must be done after self._grpc_channel exists
         self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            self._interceptor = MetadataAsyncClientInterceptor()
+            self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._prep_wrapped_messages(client_info)
 
     @property
