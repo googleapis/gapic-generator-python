@@ -247,20 +247,13 @@ class IAMCredentialsAsyncClient:
         )
 
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
-            # TODO: Make this performant when logging is not enabled
-
-            # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
-            credential_info = getattr(self.transport._credentials, "get_cred_info", None)
-            if callable(credential_info):
-                credential_info = credential_info()
-
             _LOGGER.debug(
                 "Created client `google.iam.credentials_v1.IAMCredentialsAsyncClient`.",
                 extra = {
                     "serviceName": "google.iam.credentials.v1.IAMCredentials",
                     "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialInfo": credential_info,
+                    "credentialInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 },
             )
 

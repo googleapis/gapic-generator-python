@@ -633,19 +633,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
-
-                # TODO: Remove this condition once the minimum version of google-auth is 2.35.0
-                credential_info = getattr(self.transport._credentials, "get_cred_info", None)
-                if callable(credential_info):
-                    credential_info = credential_info()
-
                 _LOGGER.debug(
                     "Created client `google.cloud.asset_v1.AssetServiceClient`.",
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialInfo": credential_info,
+                        "credentialInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     },
                 )
 
