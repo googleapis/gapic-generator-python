@@ -242,6 +242,11 @@ class Proto:
                                                     address_allowlist: Set['metadata.Address'],
                                                     resource_messages: Dict[str, 'wrappers.MessageType'],
                                                     ) -> None:
+        """Builds a set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
         for service in self.services.values():
             # The method.operation_service for an extended LRO is not fully qualified, so we
             # truncate the service names accordingly so they can be found in
@@ -441,7 +446,7 @@ class API:
                 # then prune each Proto object. We look at metadata.Addresses, not objects, because
                 # objects that refer to the same thing in the proto are different Python objects
                 # in memory.
-                address_allowlist = set([])
+                address_allowlist: Set['metadata.Address'] = set([])
                 for proto in api.protos.values():
                     proto.build_address_allowlist_for_selective_gapic(method_names=selective_gapic_methods,
                                                                       address_allowlist=address_allowlist,

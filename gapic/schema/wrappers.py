@@ -392,6 +392,11 @@ class Field:
     def build_address_allowlist_for_selective_gapic(self, *,
                                                     address_allowlist: Set['metadata.Address'],
                                                     resource_messages: Dict[str, 'MessageType']) -> None:
+        """Builds a set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
         if self.message:
             self.message.build_address_allowlist_for_selective_gapic(
                 address_allowlist=address_allowlist,
@@ -785,6 +790,11 @@ class MessageType:
     def build_address_allowlist_for_selective_gapic(self, *,
                                                     address_allowlist: Set['metadata.Address'],
                                                     resource_messages: Dict[str, 'MessageType']):
+        """Builds a set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
         if self.ident not in address_allowlist:
             address_allowlist.add(self.ident)
 
@@ -860,6 +870,11 @@ class EnumType:
 
     def build_address_allowlist_for_selective_gapic(self, *,
                                                     address_allowlist: Set['metadata.Address']) -> None:
+        """Builds a set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
         address_allowlist.add(self.ident)
 
     @property
@@ -969,6 +984,11 @@ class ExtendedOperationInfo:
     def build_address_allowlist_for_selective_gapic(self, *,
                                                     address_allowlist: Set['metadata.Address'],
                                                     resource_messages: Dict[str, 'MessageType']) -> None:
+        """Builds a set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
         
         self.request_type.build_address_allowlist_for_selective_gapic(
             address_allowlist=address_allowlist,
@@ -1011,7 +1031,11 @@ class OperationInfo:
     def build_address_allowlist_for_selective_gapic(self, *,
                                                     address_allowlist: Set['metadata.Address'],
                                                     resource_messages: Dict[str, 'MessageType']) -> None:
-        """Build an allowlist of addresses of services/methods/messages/enums that will be included in selective GAPIC."""
+        """Builds a set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
         self.response_type.build_address_allowlist_for_selective_gapic(
             address_allowlist=address_allowlist,
             resource_messages=resource_messages,
@@ -1760,6 +1784,12 @@ class Method:
                                                     resource_messages: Dict[str, 'MessageType'],
                                                     services_in_proto: Dict[str, 'Service'],
                                                     ) -> None:
+        """Builds a set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
+
         address_allowlist.add(self.ident)
 
         if self.lro:
@@ -1770,7 +1800,7 @@ class Method:
             # We need to add the service/method pointed to by self.operation_service to 
             # the allowlist, as it might not have been specified by selective_gapic_generation.
             # We assume that the operation service lives in the same proto as this one.
-            operation_service = services_in_proto[self.operation_service]
+            operation_service = services_in_proto.get(self.operation_service)
             address_allowlist.add(operation_service.meta.address)
             operation_service.operation_polling_method.build_address_allowlist_for_selective_gapic(
                 address_allowlist=address_allowlist,
@@ -2115,7 +2145,11 @@ class Service:
                                                     resource_messages: Dict[str, 'MessageType'],
                                                     services_in_proto: Dict[str, 'Service'],
                                                     ) -> None:
-        """Builds a set of metadata addresses for objects to be included in selective GAPIC generation. """
+        """Builds a set of Addresses of wrapper objects to be included in selective GAPIC generation.
+
+        This method is used to create an allowlist of addresses to be used to filter out unneeded
+        services, methods, messages, and enums at a later step.
+        """
 
         for method in self.methods.values():
             if method.ident.proto in method_names:
@@ -2132,8 +2166,8 @@ class Service:
                                            address_allowlist: Set['metadata.Address']) -> 'Service':
         """Returns a truncated version of this Service.
         
-        Only the methods, messages, and enums contained in the allowlist
-        of visited addresses are included in the returned object.
+        Only the methods, messages, and enums contained in the address allowlist
+        are included in the returned object.
         """
         # Since the API/Proto level dataclass attributes only go down to the method
         # level from the top level services, and not any deeper in the schema tree
