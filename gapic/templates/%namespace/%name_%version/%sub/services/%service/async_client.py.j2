@@ -257,7 +257,7 @@ class {{ service.async_client_name }}:
                 extra = {
                     "serviceName": "{{ service.meta.address.proto }}",
                     "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
-                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 },
             )
