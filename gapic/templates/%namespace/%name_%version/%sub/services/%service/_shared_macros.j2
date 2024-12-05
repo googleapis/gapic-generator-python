@@ -195,7 +195,7 @@ def _get_http_options():
     Args:
         body_spec (str): The http options body i.e. method.http_options[0].body
         method_name (str): The method name.
-        service_name (str): The service name.
+        service: The service.
         is_async (bool): Used to determine the code path i.e. whether for sync or async call. #}
 {% macro rest_call_method_common(body_spec, method_name, service, is_async=False) %}
 {% set service_name = service.name %}
@@ -216,15 +216,18 @@ def _get_http_options():
     if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
         request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
         method = transcoded_request['method']
+        http_request = {
+          "payload":   type(request).to_json(request),
+          "requestmethod": method,
+          "requestUrl": request_url,
+        }
         _LOGGER.debug(
-            f"Sending request via {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method_name }}",
+            f"Sending request for  {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method_name }}",
             extra = {
                 "serviceName": "{{ service.meta.address.proto }}",
                 "rpcName": "{{ method_name }}",
-                "httpRequest": type(request).to_json(request),
-                "httpRequestMethod": method,
-                "httpRequestUrl": request_url,
                 "metadata": str(dict(metadata)),
+                "httpRequest": http_request,
             },
         )
 

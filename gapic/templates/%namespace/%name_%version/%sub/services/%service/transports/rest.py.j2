@@ -256,13 +256,17 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% endif %}{# method.lro #}
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(resp){% else %}json_format.MessageToJson(resp){% endif %},
+                "status": "OK", # need to obtain this properly
+                }
                 _LOGGER.debug(
                     "Received response for {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method.transport_safe_name|snake_case }}",
                     extra = {
                         "serviceName": "{{ service.meta.address.proto }}",
                         "rpcName": "{{ method.name }}",
-                        "response": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(resp){% else %}json_format.MessageToJson(resp){% endif %},
                         "metadata": str(dict(response.headers)),
+                        "httpResponse": http_response,
                     },
                 )
             return resp
