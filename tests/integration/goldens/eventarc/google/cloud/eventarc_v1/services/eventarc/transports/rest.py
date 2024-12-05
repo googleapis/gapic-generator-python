@@ -967,6 +967,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -974,7 +975,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateChannel",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1077,6 +1078,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1084,7 +1086,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateChannelConnection",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1187,6 +1189,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1194,7 +1197,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateTrigger",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1294,6 +1297,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1301,7 +1305,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteChannel",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1401,6 +1405,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1408,7 +1413,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteChannelConnection",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1508,6 +1513,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1515,7 +1521,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteTrigger",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1622,6 +1628,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": channel.Channel.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1629,7 +1636,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetChannel",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1735,6 +1742,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": channel_connection.ChannelConnection.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1742,7 +1750,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetChannelConnection",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1849,6 +1857,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": google_channel_config.GoogleChannelConfig.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1856,7 +1865,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetGoogleChannelConfig",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1957,6 +1966,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": discovery.Provider.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1964,7 +1974,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetProvider",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2065,6 +2075,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": trigger.Trigger.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2072,7 +2083,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetTrigger",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2173,6 +2184,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": eventarc.ListChannelConnectionsResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2180,7 +2192,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListChannelConnections",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2279,6 +2291,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": eventarc.ListChannelsResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2286,7 +2299,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListChannels",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2385,6 +2398,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": eventarc.ListProvidersResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2392,7 +2406,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListProviders",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2491,6 +2505,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": eventarc.ListTriggersResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2498,7 +2513,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListTriggers",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2601,6 +2616,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2608,7 +2624,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateChannel",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2719,6 +2735,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": gce_google_channel_config.GoogleChannelConfig.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2726,7 +2743,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateGoogleChannelConfig",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2829,6 +2846,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2836,7 +2854,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateTrigger",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )

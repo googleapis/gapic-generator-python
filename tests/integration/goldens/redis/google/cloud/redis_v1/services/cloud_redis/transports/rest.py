@@ -766,6 +766,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -773,7 +774,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "CreateInstance",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -873,6 +874,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -880,7 +882,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "DeleteInstance",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -983,6 +985,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -990,7 +993,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ExportInstance",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1093,6 +1096,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1100,7 +1104,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "FailoverInstance",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1199,6 +1203,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": cloud_redis.Instance.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1206,7 +1211,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetInstance",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1305,6 +1310,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": cloud_redis.InstanceAuthString.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1312,7 +1318,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetInstanceAuthString",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1415,6 +1421,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1422,7 +1429,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ImportInstance",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1523,6 +1530,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": cloud_redis.ListInstancesResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1530,7 +1538,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListInstances",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1633,6 +1641,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1640,7 +1649,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "RescheduleMaintenance",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1743,6 +1752,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1750,7 +1760,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "UpdateInstance",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1853,6 +1863,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1860,7 +1871,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "UpgradeInstance",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )

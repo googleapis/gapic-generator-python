@@ -867,6 +867,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.AnalyzeIamPolicyResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -874,7 +875,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeIamPolicy",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -978,6 +979,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -985,7 +987,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeIamPolicyLongrunning",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1086,6 +1088,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.AnalyzeMoveResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1093,7 +1096,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeMove",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1194,6 +1197,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.AnalyzeOrgPoliciesResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1201,7 +1205,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeOrgPolicies",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1303,6 +1307,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1310,7 +1315,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeOrgPolicyGovernedAssets",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1412,6 +1417,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1419,7 +1425,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "AnalyzeOrgPolicyGovernedContainers",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1517,6 +1523,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.BatchGetAssetsHistoryResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1524,7 +1531,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "BatchGetAssetsHistory",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1626,6 +1633,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1633,7 +1641,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "BatchGetEffectiveIamPolicies",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1742,6 +1750,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.Feed.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1749,7 +1758,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "CreateFeed",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -1852,6 +1861,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.SavedQuery.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -1859,7 +1869,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "CreateSavedQuery",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2119,6 +2129,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2126,7 +2137,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "ExportAssets",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2232,6 +2243,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.Feed.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2239,7 +2251,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "GetFeed",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2339,6 +2351,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.SavedQuery.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2346,7 +2359,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "GetSavedQuery",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2444,6 +2457,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.ListAssetsResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2451,7 +2465,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "ListAssets",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2549,6 +2563,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.ListFeedsResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2556,7 +2571,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "ListFeeds",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2654,6 +2669,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.ListSavedQueriesResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2661,7 +2677,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "ListSavedQueries",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2762,6 +2778,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.QueryAssetsResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2769,7 +2786,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "QueryAssets",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2867,6 +2884,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.SearchAllIamPoliciesResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2874,7 +2892,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "SearchAllIamPolicies",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -2972,6 +2990,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.SearchAllResourcesResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -2979,7 +2998,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "SearchAllResources",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -3088,6 +3107,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.Feed.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -3095,7 +3115,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "UpdateFeed",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -3198,6 +3218,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": asset_service.SavedQuery.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -3205,7 +3226,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     extra = {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "rpcName": "UpdateSavedQuery",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )

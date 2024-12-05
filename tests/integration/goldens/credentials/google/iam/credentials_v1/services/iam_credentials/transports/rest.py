@@ -371,6 +371,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": common.GenerateAccessTokenResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -378,7 +379,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateAccessToken",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -479,6 +480,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": common.GenerateIdTokenResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -486,7 +488,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateIdToken",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -587,6 +589,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": common.SignBlobResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -594,7 +597,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignBlob",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
@@ -695,6 +698,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": common.SignJwtResponse.to_json(resp),
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -702,7 +706,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignJwt",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )

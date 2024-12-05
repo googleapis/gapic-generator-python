@@ -258,6 +258,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(resp){% else %}json_format.MessageToJson(resp){% endif %},
+                "headers":  str(dict(response.headers)),
                 "status": "OK", # need to obtain this properly
                 }
                 _LOGGER.debug(
@@ -265,7 +266,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                     extra = {
                         "serviceName": "{{ service.meta.address.proto }}",
                         "rpcName": "{{ method.name }}",
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
