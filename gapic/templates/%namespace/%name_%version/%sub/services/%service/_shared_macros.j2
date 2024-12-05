@@ -214,12 +214,16 @@ def _get_http_options():
     query_params = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_query_params_json(transcoded_request)
 
     if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+        request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+        method = transcoded_request['method']
         _LOGGER.debug(
             f"Sending request via {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method_name }}",
             extra = {
                 "serviceName": "{{ service.meta.address.proto }}",
                 "rpcName": "{{ method_name }}",
-                "request": type(request).to_json(request),
+                "httpRequest": type(request).to_json(request),
+                "httpRequestMethod": method,
+                "httpRequestUrl": request_url,
                 "metadata": str(dict(metadata)),
             },
         )
