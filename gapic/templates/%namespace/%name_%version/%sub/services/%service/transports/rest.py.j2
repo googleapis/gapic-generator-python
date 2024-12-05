@@ -3,9 +3,10 @@
 
 {% block content %}
 
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -39,9 +40,6 @@ try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
-import logging
 
 try:  # pragma: NO COVER
     from google.api_core import client_logging  # type: ignore
@@ -263,7 +261,6 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                     extra = {
                         "serviceName": "{{ service.meta.address.proto }}",
                         "rpcName": "{{ method.name }}",
-                        "retryAttempt": 1,
                         "response": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(resp){% else %}json_format.MessageToJson(resp){% endif %},
                         "metadata": str(dict(response.headers)),
                     },
