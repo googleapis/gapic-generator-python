@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -41,9 +42,6 @@ try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
-import logging
 
 try:  # pragma: NO COVER
     from google.api_core import client_logging  # type: ignore
@@ -339,14 +337,20 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             query_params = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestmethod": method,
+                  "requestUrl": request_url,
+                }
                 _LOGGER.debug(
-                    f"Sending request via google.iam.credentials_v1.IAMCredentialsClient.GenerateAccessToken",
+                    f"Sending request for  google.iam.credentials_v1.IAMCredentialsClient.GenerateAccessToken",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateAccessToken",
-                        "retryAttempt": 1,
-                        "request": type(request).to_json(request),
                         "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
                     },
                 )
 
@@ -365,14 +369,17 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_generate_access_token(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": common.GenerateAccessTokenResponse.to_json(resp),
+                "status": "OK", # need to obtain this properly
+                }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.generate_access_token",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateAccessToken",
-                        "retryAttempt": 1,
-                        "response": common.GenerateAccessTokenResponse.to_json(resp),
                         "metadata": str(dict(response.headers)),
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -438,14 +445,20 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             query_params = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestmethod": method,
+                  "requestUrl": request_url,
+                }
                 _LOGGER.debug(
-                    f"Sending request via google.iam.credentials_v1.IAMCredentialsClient.GenerateIdToken",
+                    f"Sending request for  google.iam.credentials_v1.IAMCredentialsClient.GenerateIdToken",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateIdToken",
-                        "retryAttempt": 1,
-                        "request": type(request).to_json(request),
                         "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
                     },
                 )
 
@@ -464,14 +477,17 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_generate_id_token(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": common.GenerateIdTokenResponse.to_json(resp),
+                "status": "OK", # need to obtain this properly
+                }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.generate_id_token",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "GenerateIdToken",
-                        "retryAttempt": 1,
-                        "response": common.GenerateIdTokenResponse.to_json(resp),
                         "metadata": str(dict(response.headers)),
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -537,14 +553,20 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             query_params = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestmethod": method,
+                  "requestUrl": request_url,
+                }
                 _LOGGER.debug(
-                    f"Sending request via google.iam.credentials_v1.IAMCredentialsClient.SignBlob",
+                    f"Sending request for  google.iam.credentials_v1.IAMCredentialsClient.SignBlob",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignBlob",
-                        "retryAttempt": 1,
-                        "request": type(request).to_json(request),
                         "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
                     },
                 )
 
@@ -563,14 +585,17 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_sign_blob(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": common.SignBlobResponse.to_json(resp),
+                "status": "OK", # need to obtain this properly
+                }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.sign_blob",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignBlob",
-                        "retryAttempt": 1,
-                        "response": common.SignBlobResponse.to_json(resp),
                         "metadata": str(dict(response.headers)),
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -636,14 +661,20 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             query_params = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                http_request = {
+                  "payload":   type(request).to_json(request),
+                  "requestmethod": method,
+                  "requestUrl": request_url,
+                }
                 _LOGGER.debug(
-                    f"Sending request via google.iam.credentials_v1.IAMCredentialsClient.SignJwt",
+                    f"Sending request for  google.iam.credentials_v1.IAMCredentialsClient.SignJwt",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignJwt",
-                        "retryAttempt": 1,
-                        "request": type(request).to_json(request),
                         "metadata": str(dict(metadata)),
+                        "httpRequest": http_request,
                     },
                 )
 
@@ -662,14 +693,17 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_sign_jwt(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                "payload": common.SignJwtResponse.to_json(resp),
+                "status": "OK", # need to obtain this properly
+                }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.sign_jwt",
                     extra = {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
                         "rpcName": "SignJwt",
-                        "retryAttempt": 1,
-                        "response": common.SignJwtResponse.to_json(resp),
                         "metadata": str(dict(response.headers)),
+                        "httpResponse": http_response,
                     },
                 )
             return resp
