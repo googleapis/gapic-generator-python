@@ -219,7 +219,6 @@ def _get_http_options():
             extra = {
                 "serviceName": "{{ service.meta.address.proto }}",
                 "rpcName": "{{ method_name }}",
-                "retryAttempt": 1,
                 "request": type(request).to_json(request),
                 "metadata": str(dict(metadata)),
             },
