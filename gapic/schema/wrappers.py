@@ -407,7 +407,7 @@ class Field:
             self.enum.build_address_allowlist_for_selective_gapic(
                 address_allowlist=address_allowlist,
             )
-        
+
         if self.resource_reference and self.resource_reference in resource_messages:
             # The message types in resource_message are different objects, but should be
             # defined the same as the MessageTypes we're traversing here.
@@ -786,7 +786,7 @@ class MessageType:
             },
             meta=self.meta.with_context(collisions=collisions),
         )
-    
+
     def build_address_allowlist_for_selective_gapic(self, *,
                                                     address_allowlist: Set['metadata.Address'],
                                                     resource_messages: Dict[str, 'MessageType']):
@@ -803,12 +803,12 @@ class MessageType:
                     address_allowlist=address_allowlist,
                     resource_messages=resource_messages
                 )
-            
+
             for enum in self.nested_enums.values():
                 enum.build_address_allowlist_for_selective_gapic(
                     address_allowlist=address_allowlist,
                 )
-            
+
             for message in self.nested_messages.values():
                 message.build_address_allowlist_for_selective_gapic(
                     address_allowlist=address_allowlist,
@@ -980,7 +980,7 @@ class ExtendedOperationInfo:
                 visited_messages=visited_messages,
             ),
         )
-    
+
     def build_address_allowlist_for_selective_gapic(self, *,
                                                     address_allowlist: Set['metadata.Address'],
                                                     resource_messages: Dict[str, 'MessageType']) -> None:
@@ -989,7 +989,7 @@ class ExtendedOperationInfo:
         This method is used to create an allowlist of addresses to be used to filter out unneeded
         services, methods, messages, and enums at a later step.
         """
-        
+
         self.request_type.build_address_allowlist_for_selective_gapic(
             address_allowlist=address_allowlist,
             resource_messages=resource_messages,
@@ -1795,12 +1795,13 @@ class Method:
         if self.lro:
             self.lro.build_address_allowlist_for_selective_gapic(address_allowlist=address_allowlist,
                                                                  resource_messages=resource_messages)
-        
+
         if self.extended_lro:
-            # We need to add the service/method pointed to by self.operation_service to 
+            # We need to add the service/method pointed to by self.operation_service to
             # the allowlist, as it might not have been specified by selective_gapic_generation.
             # We assume that the operation service lives in the same proto as this one.
-            operation_service = services_in_proto[self.operation_service] # type: ignore
+            # type: ignore
+            operation_service = services_in_proto[self.operation_service]
             address_allowlist.add(operation_service.meta.address)
             operation_service.operation_polling_method.build_address_allowlist_for_selective_gapic(
                 address_allowlist=address_allowlist,
@@ -1812,7 +1813,7 @@ class Method:
                 address_allowlist=address_allowlist,
                 resource_messages=resource_messages,
             )
-        
+
         self.input.build_address_allowlist_for_selective_gapic(
             address_allowlist=address_allowlist,
             resource_messages=resource_messages,
@@ -2161,11 +2162,10 @@ class Service:
                     services_in_proto=services_in_proto,
                 )
 
-    
     def prune_messages_for_selective_gapic(self, *,
                                            address_allowlist: Set['metadata.Address']) -> 'Service':
         """Returns a truncated version of this Service.
-        
+
         Only the methods, messages, and enums contained in the address allowlist
         are included in the returned object.
         """

@@ -262,18 +262,19 @@ class Proto:
     def prune_messages_for_selective_gapic(self, *,
                                            address_allowlist: Set['metadata.Address']) -> Optional['Proto']:
         """Returns a truncated version of this Proto.
-        
+
         Only the services, messages, and enums contained in the allowlist
         of visited addresses are included in the returned object. If there
         are no services, messages, or enums left, and no file level resources,
         return None.
         """
         services = {
-            k: v.prune_messages_for_selective_gapic(address_allowlist=address_allowlist)
+            k: v.prune_messages_for_selective_gapic(
+                address_allowlist=address_allowlist)
             for k, v in self.services.items()
             if v.meta.address in address_allowlist
         }
-        
+
         # For messages and enums we should only be pruning them from all_messages if they
         # are proto plus types. This should apply to the Protos we are pruning from, but might
         # not in the future.
@@ -288,10 +289,10 @@ class Proto:
             for k, v in self.all_enums.items()
             if (v.ident in address_allowlist or not v.ident.is_proto_plus_type)
         }
-        
+
         if not services and not all_messages and not all_enums:
             return None
-        
+
         return dataclasses.replace(
             self,
             services=services,
@@ -427,19 +428,22 @@ class API:
             ignore_unknown_fields=True
         )
 
-        # Done; return the API.
-        return cls(naming=naming,
-                   all_protos=protos,
-                   service_yaml_config=service_yaml_config)
-    
+        # Third pass for various selective GAPIC settings; these require
+        # settings in the service.yaml and so we build the API object
+        # before doing another pass.
+        api = cls(naming=naming,
+                  all_protos=protos,
+                  service_yaml_config=service_yaml_config)
+
         if package in api.all_library_settings:
-            selective_gapic_methods = api.all_library_settings[package].python_settings.common.selective_gapic_generation.methods
+            selective_gapic_methods = api.all_library_settings[
+                package].python_settings.common.selective_gapic_generation.methods
             if selective_gapic_methods:
 
                 all_resource_messages = collections.ChainMap(
                     *(proto.resource_messages for proto in protos.values())
                 )
-                
+
                 # Prepare a list of addresses to include in selective GAPIC,
                 # then prune each Proto object. We look at metadata.Addresses, not objects, because
                 # objects that refer to the same thing in the proto are different Python objects
@@ -457,14 +461,15 @@ class API:
                     if name not in api.protos:
                         new_protos[name] = proto
                     else:
-                        pruned_proto = proto.prune_messages_for_selective_gapic(address_allowlist=address_allowlist)
+                        pruned_proto = proto.prune_messages_for_selective_gapic(
+                            address_allowlist=address_allowlist)
                         if pruned_proto:
                             new_protos[name] = pruned_proto
-                
+
                 api = cls(naming=naming,
                         all_protos=new_protos,
                         service_yaml_config=service_yaml_config)
-        
+
         return api
 
     @cached_property
@@ -839,6 +844,21 @@ class API:
                 all_errors[library_settings.version] = ["Duplicate version"]
                 continue
             versions_seen.add(library_settings.version)
+
+            # Check to see if selective gapic generation methods are valid.
+            selective_gapic_errors = {}
+            for method_name in library_settings.python_settings.common.selective_gapic_generation.methods:
+                if method_name not in self.all_methods:
+                    selective_gapic_errors[method_name] = "Method does not exist."
+                elif not method_name.startswith(library_settings.version):
+                    selective_gapic_errors[method_name] = "Mismatched version for method."
+
+            if selective_gapic_errors:
+                all_errors[library_settings.version] = [
+                    {
+                        "selective_gapic_generation": selective_gapic_errors,
+                    }
+                ]
 
         if all_errors:
             raise ClientLibrarySettingsError(yaml.dump(all_errors))
