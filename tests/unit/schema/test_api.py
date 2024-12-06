@@ -2799,7 +2799,8 @@ def test_python_settings_selective_gapic_nonexistent_method_raises_error():
             python_settings=client_pb2.PythonSettings(
                 common=client_pb2.CommonLanguageSettings(
                     selective_gapic_generation=client_pb2.SelectiveGapicGeneration(
-                        methods=["google.example.v1beta1.ServiceOne.DoesNotExist"]
+                        methods=[
+                            "google.example.v1beta1.ServiceOne.DoesNotExist"]
                     )
                 )
             )
@@ -2839,7 +2840,7 @@ def test_python_settings_selective_gapic_version_mismatch_method_raises_error():
 
 
 def get_service_yaml_for_selective_gapic_tests(
-        apis: Sequence[str]=["google.example.v1.FooService"],
+        apis: Sequence[str] = ["google.example.v1.FooService"],
         methods=["google.example.v1.FooService.GetFoo"],
 ) -> Dict[str, Any]:
     return {
@@ -2889,7 +2890,8 @@ def test_selective_gapic_api_build():
                     make_field_pb2(name='imported_message', number=1,
                                    type_name='.google.dep.ImportedMessage'),
                     make_field_pb2(name='primitive', number=2, type=1),
-                    make_field_pb2(name='bar', number=1, type_name='.google.example.v1.common.Bar')
+                    make_field_pb2(name='bar', number=1,
+                                   type_name='.google.example.v1.common.Bar')
                 )),
                 make_message_pb2(name='GetFooResponse', fields=(
                     make_field_pb2(name='foo', number=1,
@@ -2944,7 +2946,8 @@ def test_selective_gapic_api_build():
     assert len(api_schema.enums) == 0
     assert api_schema.protos['foo.proto'].python_modules == (
         imp.Import(package=('google', 'dep'), module='dep_pb2'),
-        imp.Import(package=('google', 'example_v1', 'common', 'types'), module='common'),
+        imp.Import(package=('google', 'example_v1',
+                   'common', 'types'), module='common'),
     )
 
     assert api_schema.requires_package(('google', 'example', 'v1'))
@@ -2998,7 +3001,7 @@ def test_selective_gapic_api_build_with_lro():
             metadata_type='google.example.v1.AsyncCreateBarMetadata',
         ),
     )
-    
+
     # Set up the service with an RPC.
     fd = (
         make_file_pb2(
@@ -3010,12 +3013,14 @@ def test_selective_gapic_api_build_with_lro():
                 make_message_pb2(name='AsyncCreateFooRequest', fields=()),
                 make_message_pb2(name='AsyncCreateFooResponse', fields=()),
                 make_message_pb2(name='AsyncCreateFooMetadata', fields=(
-                    make_field_pb2(name='foo', number=1, type_name='.google.example.v1.Foo'),
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
                 )),
                 make_message_pb2(name='AsyncCreateBarRequest', fields=()),
                 make_message_pb2(name='AsyncCreateBarResponse', fields=()),
                 make_message_pb2(name='AsyncCreateBarMetadata', fields=(
-                    make_field_pb2(name='bar', number=1, type_name='.google.example.v1.Bar'),
+                    make_field_pb2(name='bar', number=1,
+                                   type_name='.google.example.v1.Bar'),
                 )),
             ),
             services=(
@@ -3041,7 +3046,7 @@ def test_selective_gapic_api_build_with_lro():
                                opts=opts,
                                prior_protos={
                                    'google/longrunning/operations.proto': lro_proto,
-                                })
+                                   })
 
     assert 'google.example.v1.Foo' in api_schema.messages
     assert 'google.example.v1.AsyncCreateFooRequest' in api_schema.messages
@@ -3064,11 +3069,13 @@ def test_selective_gapic_api_build_remove_unnecessary_services():
                 make_message_pb2(name='Foo', fields=()),
                 make_message_pb2(name='Bar', fields=()),
                 make_message_pb2(name='GetFooRequest', fields=(
-                    make_field_pb2(name='foo', number=1, type_name='.google.example.v1.Foo'),
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
                 )),
                 make_message_pb2(name='GetFooResponse', fields=()),
                 make_message_pb2(name='GetBarRequest', fields=(
-                    make_field_pb2(name='bar', number=1, type_name='.google.example.v1.Bar'),
+                    make_field_pb2(name='bar', number=1,
+                                   type_name='.google.example.v1.Bar'),
                 )),
                 make_message_pb2(name='GetBarResponse', fields=()),
             ),
@@ -3139,7 +3146,8 @@ def test_selective_gapic_api_build_remove_unnecessary_proto_files():
             messages=(
                 make_message_pb2(name='Foo', fields=()),
                 make_message_pb2(name='GetFooRequest', fields=(
-                    make_field_pb2(name='foo', number=1, type_name='.google.example.v1.foo_common.Foo'),
+                    make_field_pb2(
+                        name='foo', number=1, type_name='.google.example.v1.foo_common.Foo'),
                 )),
                 make_message_pb2(name='GetFooResponse', fields=()),
             ),
@@ -3162,7 +3170,8 @@ def test_selective_gapic_api_build_remove_unnecessary_proto_files():
             messages=(
                 make_message_pb2(name='Bar', fields=()),
                 make_message_pb2(name='GetBarRequest', fields=(
-                    make_field_pb2(name='bar', number=1, type_name='.google.example.v1.bar_common.Bar'),
+                    make_field_pb2(
+                        name='bar', number=1, type_name='.google.example.v1.bar_common.Bar'),
                 )),
                 make_message_pb2(name='GetBarResponse', fields=()),
             ),
@@ -3220,17 +3229,21 @@ def test_selective_gapic_api_build_with_enums():
             package='google.example.v1',
             messages=(
                 make_message_pb2(name='Foo', fields=(
-                    make_field_pb2(name='status', number=1, type=14, type_name='.google.example.v1.FooStatus'),
+                    make_field_pb2(name='status', number=1, type=14,
+                                   type_name='.google.example.v1.FooStatus'),
                 )),
                 make_message_pb2(name='Bar', fields=(
-                    make_field_pb2(name='status', number=1, type=14, type_name='.google.example.v1.BarStatus'),
+                    make_field_pb2(name='status', number=1, type=14,
+                                   type_name='.google.example.v1.BarStatus'),
                 )),
                 make_message_pb2(name='GetFooRequest', fields=(
-                    make_field_pb2(name='foo', number=1, type_name='.google.example.v1.Foo'),
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
                 )),
                 make_message_pb2(name='GetFooResponse', fields=()),
                 make_message_pb2(name='GetBarRequest', fields=(
-                    make_field_pb2(name='bar', number=1, type_name='.google.example.v1.Bar'),
+                    make_field_pb2(name='bar', number=1,
+                                   type_name='.google.example.v1.Bar'),
                 )),
                 make_message_pb2(name='GetBarResponse', fields=()),
             ),
@@ -3287,12 +3300,13 @@ def test_selective_gapic_api_build_with_nested_fields():
             package='google.example.v1',
             messages=(
                 make_message_pb2(
-                    name='Foo', 
+                    name='Foo',
                     nested_type=(
                         make_message_pb2(
                             name='Bar',
                             fields=(
-                                make_field_pb2(name='baz', number=1, type_name='.google.example.v1.Baz'),
+                                make_field_pb2(
+                                    name='baz', number=1, type_name='.google.example.v1.Baz'),
                             )
                         ),
                     ),
@@ -3305,12 +3319,13 @@ def test_selective_gapic_api_build_with_nested_fields():
                     )
                 ),
                 make_message_pb2(
-                    name='Spam', 
+                    name='Spam',
                     nested_type=(
                         make_message_pb2(
                             name='Ham',
                             fields=(
-                                make_field_pb2(name='eggs', number=1, type_name='.google.example.v1.Eggs'),
+                                make_field_pb2(
+                                    name='eggs', number=1, type_name='.google.example.v1.Eggs'),
                             )
                         ),
                     ),
@@ -3325,11 +3340,13 @@ def test_selective_gapic_api_build_with_nested_fields():
                 make_message_pb2(name='Baz'),
                 make_message_pb2(name='Eggs'),
                 make_message_pb2(name='GetFooRequest', fields=(
-                    make_field_pb2(name='foo', number=1, type_name='.google.example.v1.Foo'),
+                    make_field_pb2(name='foo', number=1,
+                                   type_name='.google.example.v1.Foo'),
                 )),
                 make_message_pb2(name='GetFooResponse', fields=()),
                 make_message_pb2(name='GetBarRequest', fields=(
-                    make_field_pb2(name='spam', number=1, type_name='.google.example.v1.Spam'),
+                    make_field_pb2(name='spam', number=1,
+                                   type_name='.google.example.v1.Spam'),
                 )),
                 make_message_pb2(name='GetBarResponse', fields=()),
             ),
@@ -3393,7 +3410,8 @@ def test_selective_gapic_api_build_with_resources(reference_attr):
         resource_message = make_message_pb2(
             name=message_name,
             fields=(
-                make_field_pb2(name="dep", number=1, type_name=f".google.example.v1.{message_dep_name}"),
+                make_field_pb2(
+                    name="dep", number=1, type_name=f".google.example.v1.{message_dep_name}"),
             ),
         )
         request_message = make_message_pb2(
@@ -3413,14 +3431,15 @@ def test_selective_gapic_api_build_with_resources(reference_attr):
         # Set up the reference
         request_message_thing_field_opts = \
             request_message.field[0].options.Extensions[resource_pb2.resource_reference]
-        setattr(request_message_thing_field_opts, reference_attr, resource_type)
+        setattr(request_message_thing_field_opts,
+                reference_attr, resource_type)
 
         # Add to messages
         messages.append(resource_message_dep)
         messages.append(resource_message)
         messages.append(request_message)
         messages.append(response_message)
-    
+
     fds = (
         make_file_pb2(
             name='foo.proto',
@@ -3449,7 +3468,7 @@ def test_selective_gapic_api_build_with_resources(reference_attr):
     )
     opts = Options(service_yaml_config=service_yaml_config)
 
-    api_schema = api.API.build(fds, package='google.example.v1',opts=opts)
+    api_schema = api.API.build(fds, package='google.example.v1', opts=opts)
 
     assert 'google.example.v1.Foo' in api_schema.messages
     assert 'google.example.v1.FooDep' in api_schema.messages
@@ -3485,7 +3504,7 @@ def test_selective_gapic_api_build_extended_lro():
         options = descriptor_pb2.FieldOptions()
         options.Extensions[ex_ops_pb2.operation_field] = f.number
         f.options.MergeFrom(options)
-    
+
     fds = (
         make_file_pb2(
             name='foo.proto',
