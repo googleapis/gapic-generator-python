@@ -373,7 +373,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 http_response = {
                 "payload": common.GenerateAccessTokenResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.generate_access_token",
@@ -483,7 +483,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 http_response = {
                 "payload": common.GenerateIdTokenResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.generate_id_token",
@@ -593,7 +593,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 http_response = {
                 "payload": common.SignBlobResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.sign_blob",
@@ -703,7 +703,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 http_response = {
                 "payload": common.SignJwtResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.iam.credentials_v1.IAMCredentialsClient.sign_jwt",

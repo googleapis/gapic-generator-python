@@ -969,7 +969,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.create_channel_",
@@ -1081,7 +1081,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.create_channel_connection",
@@ -1193,7 +1193,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.create_trigger",
@@ -1302,7 +1302,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.delete_channel",
@@ -1411,7 +1411,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.delete_channel_connection",
@@ -1520,7 +1520,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.delete_trigger",
@@ -1636,7 +1636,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": channel.Channel.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.get_channel",
@@ -1751,7 +1751,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": channel_connection.ChannelConnection.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.get_channel_connection",
@@ -1867,7 +1867,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": google_channel_config.GoogleChannelConfig.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.get_google_channel_config",
@@ -1977,7 +1977,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": discovery.Provider.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.get_provider",
@@ -2087,7 +2087,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": trigger.Trigger.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.get_trigger",
@@ -2197,7 +2197,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": eventarc.ListChannelConnectionsResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.list_channel_connections",
@@ -2305,7 +2305,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": eventarc.ListChannelsResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.list_channels",
@@ -2413,7 +2413,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": eventarc.ListProvidersResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.list_providers",
@@ -2521,7 +2521,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": eventarc.ListTriggersResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.list_triggers",
@@ -2633,7 +2633,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.update_channel",
@@ -2753,7 +2753,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": gce_google_channel_config.GoogleChannelConfig.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.update_google_channel_config",
@@ -2865,7 +2865,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.update_trigger",

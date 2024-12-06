@@ -869,7 +869,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.AnalyzeIamPolicyResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_iam_policy",
@@ -982,7 +982,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_iam_policy_longrunning",
@@ -1092,7 +1092,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.AnalyzeMoveResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_move",
@@ -1202,7 +1202,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.AnalyzeOrgPoliciesResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policies",
@@ -1313,7 +1313,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policy_governed_assets",
@@ -1424,7 +1424,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policy_governed_containers",
@@ -1531,7 +1531,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.BatchGetAssetsHistoryResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.batch_get_assets_history",
@@ -1642,7 +1642,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.batch_get_effective_iam_policies",
@@ -1760,7 +1760,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.Feed.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.create_feed",
@@ -1872,7 +1872,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.SavedQuery.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.create_saved_query",
@@ -2143,7 +2143,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.export_assets",
@@ -2258,7 +2258,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.Feed.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.get_feed",
@@ -2367,7 +2367,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.SavedQuery.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.get_saved_query",
@@ -2474,7 +2474,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.ListAssetsResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.list_assets",
@@ -2581,7 +2581,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.ListFeedsResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.list_feeds",
@@ -2688,7 +2688,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.ListSavedQueriesResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.list_saved_queries",
@@ -2798,7 +2798,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.QueryAssetsResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.query_assets",
@@ -2905,7 +2905,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.SearchAllIamPoliciesResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.search_all_iam_policies",
@@ -3012,7 +3012,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.SearchAllResourcesResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.search_all_resources",
@@ -3130,7 +3130,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.Feed.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.update_feed",
@@ -3242,7 +3242,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 http_response = {
                 "payload": asset_service.SavedQuery.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.asset_v1.AssetServiceClient.update_saved_query",

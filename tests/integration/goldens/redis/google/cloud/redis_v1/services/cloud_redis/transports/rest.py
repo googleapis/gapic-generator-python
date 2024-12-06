@@ -768,7 +768,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.create_instance",
@@ -877,7 +877,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.delete_instance",
@@ -989,7 +989,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.export_instance",
@@ -1101,7 +1101,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.failover_instance",
@@ -1209,7 +1209,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": cloud_redis.Instance.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.get_instance",
@@ -1317,7 +1317,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": cloud_redis.InstanceAuthString.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.get_instance_auth_string",
@@ -1429,7 +1429,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.import_instance",
@@ -1539,7 +1539,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": cloud_redis.ListInstancesResponse.to_json(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.list_instances",
@@ -1651,7 +1651,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.reschedule_maintenance",
@@ -1763,7 +1763,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.update_instance",
@@ -1875,7 +1875,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisClient.upgrade_instance",

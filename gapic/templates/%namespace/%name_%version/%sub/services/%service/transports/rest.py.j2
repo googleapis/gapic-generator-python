@@ -259,13 +259,14 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                 http_response = {
                 "payload": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(resp){% else %}json_format.MessageToJson(resp){% endif %},
                 "headers":  str(dict(response.headers)),
-                "status": "OK", # need to obtain this properly
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for {{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}.{{ method.transport_safe_name|snake_case }}",
                     extra = {
                         "serviceName": "{{ service.meta.address.proto }}",
                         "rpcName": "{{ method.name }}",
+                        {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2275): logging `metadata` seems repetitive and may need to be cleaned up #}
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
