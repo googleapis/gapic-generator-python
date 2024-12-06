@@ -87,7 +87,7 @@ class MetadataAsyncClientInterceptor(grpc.aio.UnaryUnaryClientInterceptor):
                 extra = {
                     "serviceName": "google.cloud.eventarc.v1.Eventarc",
                     "rpcName": str(client_call_details.method),
-                    "response": grpc_response.
+                    "response": grpc_response,
                     "metadata": grpc_response["metadata"],
                 },
             )

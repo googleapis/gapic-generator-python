@@ -75,7 +75,7 @@ class MetadataClientInterceptor(grpc.UnaryUnaryClientInterceptor):
                 extra = {
                     "serviceName": "google.cloud.asset.v1.AssetService",
                     "rpcName": client_call_details.method,
-                    "response": grpc_response.
+                    "response": grpc_response,
                     "metadata": grpc_response["metadata"],
                 },
             )

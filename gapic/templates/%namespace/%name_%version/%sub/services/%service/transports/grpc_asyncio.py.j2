@@ -93,7 +93,7 @@ class MetadataAsyncClientInterceptor(grpc.aio.UnaryUnaryClientInterceptor):
                 extra = {
                     "serviceName": "{{ service.meta.address.proto }}",
                     "rpcName": str(client_call_details.method),
-                    "response": grpc_response.
+                    "response": grpc_response,
                     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2275): logging `metadata` seems repetitive and may need to be cleaned up. We're including it within "request" for consistency with REST transport.' #}
                     "metadata": grpc_response["metadata"],
                 },

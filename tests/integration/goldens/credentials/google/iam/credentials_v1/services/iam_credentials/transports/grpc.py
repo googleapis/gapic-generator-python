@@ -72,7 +72,7 @@ class MetadataClientInterceptor(grpc.UnaryUnaryClientInterceptor):
                 extra = {
                     "serviceName": "google.iam.credentials.v1.IAMCredentials",
                     "rpcName": client_call_details.method,
-                    "response": grpc_response.
+                    "response": grpc_response,
                     "metadata": grpc_response["metadata"],
                 },
             )

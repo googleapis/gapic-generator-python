@@ -74,7 +74,7 @@ class MetadataClientInterceptor(grpc.UnaryUnaryClientInterceptor):
                 extra = {
                     "serviceName": "google.logging.v2.MetricsServiceV2",
                     "rpcName": client_call_details.method,
-                    "response": grpc_response.
+                    "response": grpc_response,
                     "metadata": grpc_response["metadata"],
                 },
             )
