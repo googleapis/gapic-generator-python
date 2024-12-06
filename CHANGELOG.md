@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.21.0](https://github.com/googleapis/gapic-generator-python/compare/v1.20.2...v1.21.0) (2024-12-06)
+
+
+### Features
+
+* Add debug log when creating client ([#2265](https://github.com/googleapis/gapic-generator-python/issues/2265)) ([8be95a2](https://github.com/googleapis/gapic-generator-python/commit/8be95a2f4749a2882117154aa655c0a9d71cdc50))
+* Add debug log when sending requests via REST ([#2270](https://github.com/googleapis/gapic-generator-python/issues/2270)) ([4cb1fa2](https://github.com/googleapis/gapic-generator-python/commit/4cb1fa2452ad5ba59b34c9d25cb3ca0c635059ac))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([#2251](https://github.com/googleapis/gapic-generator-python/issues/2251)) ([8b3b80f](https://github.com/googleapis/gapic-generator-python/commit/8b3b80f4b55c295e5d13084284ff0e2a72b2e993))
+
 ## [1.20.2](https://github.com/googleapis/gapic-generator-python/compare/v1.20.1...v1.20.2) (2024-10-30)
 
 
