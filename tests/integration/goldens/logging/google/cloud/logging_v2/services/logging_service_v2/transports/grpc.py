@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -29,8 +30,6 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import LoggingServiceV2Transport, DEFAULT_CLIENT_INFO
 
-import logging
-
 try:  # pragma: NO COVER
     from google.api_core import client_logging  # type: ignore
     CLIENT_LOGGING_SUPPORTED = True
@@ -44,14 +43,18 @@ class MetadataClientInterceptor(grpc.UnaryUnaryClientInterceptor):
     def intercept_unary_unary(self, continuation, client_call_details, request):
         request_metadata = client_call_details.metadata
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            grpc_request = {
+              "payload":   type(request).to_json(request),
+              "requestMethod": "grpc",
+              "metadata": dict(request_metadata),
+            }
             _LOGGER.debug(
-                f"Sending request via rpc {client_call_details.method}",
+                f"Sending request for {client_call_details.method}",
                 extra = {
                     "serviceName": "google.logging.v2.LoggingServiceV2",
                     "rpcName": client_call_details.method,
-                    "retryAttempt": 1,
-                    "request": type(request).to_json(request),
-                    "metadata": str(dict(request_metadata)),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
                 },
             )
 
@@ -61,13 +64,18 @@ class MetadataClientInterceptor(grpc.UnaryUnaryClientInterceptor):
         metadata = [(k, v) for k, v in response_metadata]
         result = response.result()
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            grpc_response = {
+                "payload": type(result).to_json(result),
+                "metadata": dict(metadata),
+                "status": "OK",
+            }
             _LOGGER.debug(
-                f"Received response to rpc {client_call_details.method}.",
+                f"Received response for {client_call_details.method}.",
                 extra = {
                     "serviceName": "google.logging.v2.LoggingServiceV2",
                     "rpcName": client_call_details.method,
-                    "response": type(result).to_json(result),
-                    "metadata": str(dict(metadata)),
+                    "response": grpc_response.
+                    "metadata": grpc_response["metadata"],
                 },
             )
         return response

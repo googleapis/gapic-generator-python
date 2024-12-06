@@ -49,14 +49,18 @@ class MetadataAsyncClientInterceptor(grpc.aio.UnaryUnaryClientInterceptor):
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         request_metadata = client_call_details.metadata
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            grpc_request = {
+              "payload":   type(request).to_json(request),
+              "requestMethod": "grpc",
+              "metadata": dict(request_metadata),
+            }
             _LOGGER.debug(
-                f"Sending request via rpc {client_call_details.method}",
+                f"Sending request for {client_call_details.method}",
                 extra = {
                     "serviceName": "google.cloud.asset.v1.AssetService",
                     "rpcName": str(client_call_details.method),
-                    "retryAttempt": 1,
-                    "request": type(request).to_json(request),
-                    "metadata": str(dict(request_metadata)),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
                 },
             )
         response = await continuation(client_call_details, request)
@@ -65,13 +69,18 @@ class MetadataAsyncClientInterceptor(grpc.aio.UnaryUnaryClientInterceptor):
         metadata = [(k, v) for k, v in response_metadata]
         result = await response
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            grpc_response = {
+                "payload": type(result).to_json(result),
+                "metadata": dict(metadata),
+                "status": "OK",
+            }
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
                 extra = {
                     "serviceName": "google.cloud.asset.v1.AssetService",
                     "rpcName": str(client_call_details.method),
-                    "response": type(result).to_json(result),
-                    "metadata": str(dict(metadata)),
+                    "response": grpc_response.
+                    "metadata": grpc_response["metadata"],
                 },
             )
         return response
