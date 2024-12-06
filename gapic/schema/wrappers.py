@@ -1800,7 +1800,7 @@ class Method:
             # We need to add the service/method pointed to by self.operation_service to 
             # the allowlist, as it might not have been specified by selective_gapic_generation.
             # We assume that the operation service lives in the same proto as this one.
-            operation_service = services_in_proto.get(self.operation_service)
+            operation_service = services_in_proto[self.operation_service] # type: ignore
             address_allowlist.add(operation_service.meta.address)
             operation_service.operation_polling_method.build_address_allowlist_for_selective_gapic(
                 address_allowlist=address_allowlist,
