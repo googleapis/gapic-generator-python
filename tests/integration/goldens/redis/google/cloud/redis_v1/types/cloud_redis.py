@@ -32,29 +32,16 @@ __protobuf__ = proto.module(
         'NodeInfo',
         'Instance',
         'PersistenceConfig',
-        'RescheduleMaintenanceRequest',
         'MaintenancePolicy',
         'WeeklyMaintenanceWindow',
         'MaintenanceSchedule',
         'ListInstancesRequest',
         'ListInstancesResponse',
         'GetInstanceRequest',
-        'GetInstanceAuthStringRequest',
-        'InstanceAuthString',
         'CreateInstanceRequest',
         'UpdateInstanceRequest',
-        'UpgradeInstanceRequest',
         'DeleteInstanceRequest',
-        'GcsSource',
-        'InputConfig',
-        'ImportInstanceRequest',
-        'GcsDestination',
-        'OutputConfig',
-        'ExportInstanceRequest',
-        'FailoverInstanceRequest',
         'OperationMetadata',
-        'LocationMetadata',
-        'ZoneMetadata',
         'TlsCertificate',
     },
 )
@@ -631,61 +618,6 @@ class PersistenceConfig(proto.Message):
     )
 
 
-class RescheduleMaintenanceRequest(proto.Message):
-    r"""Request for
-    [RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-        reschedule_type (google.cloud.redis_v1.types.RescheduleMaintenanceRequest.RescheduleType):
-            Required. If reschedule type is SPECIFIC_TIME, must set up
-            schedule_time as well.
-        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional. Timestamp when the maintenance shall be
-            rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC 3339
-            format, for example ``2012-11-15T16:19:00.094Z``.
-    """
-    class RescheduleType(proto.Enum):
-        r"""Reschedule options.
-
-        Values:
-            RESCHEDULE_TYPE_UNSPECIFIED (0):
-                Not set.
-            IMMEDIATE (1):
-                If the user wants to schedule the maintenance
-                to happen now.
-            NEXT_AVAILABLE_WINDOW (2):
-                If the user wants to use the existing
-                maintenance policy to find the next available
-                window.
-            SPECIFIC_TIME (3):
-                If the user wants to reschedule the
-                maintenance to a specific time.
-        """
-        RESCHEDULE_TYPE_UNSPECIFIED = 0
-        IMMEDIATE = 1
-        NEXT_AVAILABLE_WINDOW = 2
-        SPECIFIC_TIME = 3
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    reschedule_type: RescheduleType = proto.Field(
-        proto.ENUM,
-        number=2,
-        enum=RescheduleType,
-    )
-    schedule_time: timestamp_pb2.Timestamp = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=timestamp_pb2.Timestamp,
-    )
-
-
 class MaintenancePolicy(proto.Message):
     r"""Maintenance policy for an instance.
 
@@ -901,37 +833,6 @@ class GetInstanceRequest(proto.Message):
     )
 
 
-class GetInstanceAuthStringRequest(proto.Message):
-    r"""Request for
-    [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class InstanceAuthString(proto.Message):
-    r"""Instance AUTH string details.
-
-    Attributes:
-        auth_string (str):
-            AUTH string set on the instance.
-    """
-
-    auth_string: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
 class CreateInstanceRequest(proto.Message):
     r"""Request for
     [CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].
@@ -1003,30 +904,6 @@ class UpdateInstanceRequest(proto.Message):
     )
 
 
-class UpgradeInstanceRequest(proto.Message):
-    r"""Request for
-    [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-        redis_version (str):
-            Required. Specifies the target version of
-            Redis software to upgrade to.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    redis_version: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-
-
 class DeleteInstanceRequest(proto.Message):
     r"""Request for
     [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
@@ -1041,174 +918,6 @@ class DeleteInstanceRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
-    )
-
-
-class GcsSource(proto.Message):
-    r"""The Cloud Storage location for the input content
-
-    Attributes:
-        uri (str):
-            Required. Source data URI. (e.g.
-            'gs://my_bucket/my_object').
-    """
-
-    uri: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class InputConfig(proto.Message):
-    r"""The input content
-
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
-    Attributes:
-        gcs_source (google.cloud.redis_v1.types.GcsSource):
-            Google Cloud Storage location where input
-            content is located.
-
-            This field is a member of `oneof`_ ``source``.
-    """
-
-    gcs_source: 'GcsSource' = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        oneof='source',
-        message='GcsSource',
-    )
-
-
-class ImportInstanceRequest(proto.Message):
-    r"""Request for
-    [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-        input_config (google.cloud.redis_v1.types.InputConfig):
-            Required. Specify data to be imported.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    input_config: 'InputConfig' = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message='InputConfig',
-    )
-
-
-class GcsDestination(proto.Message):
-    r"""The Cloud Storage location for the output content
-
-    Attributes:
-        uri (str):
-            Required. Data destination URI (e.g.
-            'gs://my_bucket/my_object'). Existing files will be
-            overwritten.
-    """
-
-    uri: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class OutputConfig(proto.Message):
-    r"""The output content
-
-    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
-
-    Attributes:
-        gcs_destination (google.cloud.redis_v1.types.GcsDestination):
-            Google Cloud Storage destination for output
-            content.
-
-            This field is a member of `oneof`_ ``destination``.
-    """
-
-    gcs_destination: 'GcsDestination' = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        oneof='destination',
-        message='GcsDestination',
-    )
-
-
-class ExportInstanceRequest(proto.Message):
-    r"""Request for
-    [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-        output_config (google.cloud.redis_v1.types.OutputConfig):
-            Required. Specify data to be exported.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    output_config: 'OutputConfig' = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message='OutputConfig',
-    )
-
-
-class FailoverInstanceRequest(proto.Message):
-    r"""Request for
-    [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
-
-    Attributes:
-        name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
-        data_protection_mode (google.cloud.redis_v1.types.FailoverInstanceRequest.DataProtectionMode):
-            Optional. Available data protection modes that the user can
-            choose. If it's unspecified, data protection mode will be
-            LIMITED_DATA_LOSS by default.
-    """
-    class DataProtectionMode(proto.Enum):
-        r"""Specifies different modes of operation in relation to the
-        data retention.
-
-        Values:
-            DATA_PROTECTION_MODE_UNSPECIFIED (0):
-                Defaults to LIMITED_DATA_LOSS if a data protection mode is
-                not specified.
-            LIMITED_DATA_LOSS (1):
-                Instance failover will be protected with data
-                loss control. More specifically, the failover
-                will only be performed if the current
-                replication offset diff between primary and
-                replica is under a certain threshold.
-            FORCE_DATA_LOSS (2):
-                Instance failover will be performed without
-                data loss control.
-        """
-        DATA_PROTECTION_MODE_UNSPECIFIED = 0
-        LIMITED_DATA_LOSS = 1
-        FORCE_DATA_LOSS = 2
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    data_protection_mode: DataProtectionMode = proto.Field(
-        proto.ENUM,
-        number=2,
-        enum=DataProtectionMode,
     )
 
 
@@ -1263,36 +972,6 @@ class OperationMetadata(proto.Message):
         proto.STRING,
         number=7,
     )
-
-
-class LocationMetadata(proto.Message):
-    r"""This location metadata represents additional configuration options
-    for a given location where a Redis instance may be created. All
-    fields are output only. It is returned as content of the
-    ``google.cloud.location.Location.metadata`` field.
-
-    Attributes:
-        available_zones (MutableMapping[str, google.cloud.redis_v1.types.ZoneMetadata]):
-            Output only. The set of available zones in the location. The
-            map is keyed by the lowercase ID of each zone, as defined by
-            GCE. These keys can be specified in ``location_id`` or
-            ``alternative_location_id`` fields when creating a Redis
-            instance.
-    """
-
-    available_zones: MutableMapping[str, 'ZoneMetadata'] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=1,
-        message='ZoneMetadata',
-    )
-
-
-class ZoneMetadata(proto.Message):
-    r"""Defines specific information for a particular zone. Currently
-    empty and reserved for future use only.
-
-    """
 
 
 class TlsCertificate(proto.Message):
