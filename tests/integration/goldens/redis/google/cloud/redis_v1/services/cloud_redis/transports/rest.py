@@ -763,11 +763,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -872,11 +873,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -984,11 +986,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1096,11 +1099,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_failover_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1204,11 +1208,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             pb_resp = cloud_redis.Instance.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": cloud_redis.Instance.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1312,11 +1317,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             pb_resp = cloud_redis.InstanceAuthString.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance_auth_string(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": cloud_redis.InstanceAuthString.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1424,11 +1430,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1534,11 +1541,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             pb_resp = cloud_redis.ListInstancesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instances(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": cloud_redis.ListInstancesResponse.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1646,11 +1654,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_reschedule_maintenance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1758,11 +1767,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1870,11 +1880,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_upgrade_instance(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -2069,14 +2080,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.GetLocation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetLocation",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -2174,14 +2189,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.ListLocations",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListLocations",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -2453,14 +2472,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.GetOperation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetOperation",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -2558,14 +2581,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.ListOperations",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListOperations",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -2666,14 +2693,18 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_wait_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.WaitOperation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "WaitOperation",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp

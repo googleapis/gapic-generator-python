@@ -964,11 +964,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_channel(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1076,11 +1077,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_channel_connection(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1188,11 +1190,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_trigger(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1297,11 +1300,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_channel(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1406,11 +1410,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_channel_connection(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1515,11 +1520,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_trigger(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1631,11 +1637,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = channel.Channel.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_channel(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": channel.Channel.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1746,11 +1753,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = channel_connection.ChannelConnection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_channel_connection(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": channel_connection.ChannelConnection.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1862,11 +1870,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = google_channel_config.GoogleChannelConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_google_channel_config(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": google_channel_config.GoogleChannelConfig.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -1972,11 +1981,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = discovery.Provider.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_provider(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": discovery.Provider.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -2082,11 +2092,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = trigger.Trigger.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_trigger(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": trigger.Trigger.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -2192,11 +2203,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = eventarc.ListChannelConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_channel_connections(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": eventarc.ListChannelConnectionsResponse.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -2300,11 +2312,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = eventarc.ListChannelsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_channels(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": eventarc.ListChannelsResponse.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -2408,11 +2421,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = eventarc.ListProvidersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_providers(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": eventarc.ListProvidersResponse.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -2516,11 +2530,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = eventarc.ListTriggersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_triggers(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": eventarc.ListTriggersResponse.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -2628,11 +2643,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_channel(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -2748,11 +2764,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             pb_resp = gce_google_channel_config.GoogleChannelConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_google_channel_config(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": gce_google_channel_config.GoogleChannelConfig.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -2860,11 +2877,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_trigger(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": json_format.MessageToJson(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -3115,14 +3133,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.GetLocation",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetLocation",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -3220,14 +3242,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.ListLocations",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListLocations",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -3325,14 +3351,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.GetIamPolicy",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetIamPolicy",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -3433,14 +3463,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.SetIamPolicy",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "SetIamPolicy",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -3541,14 +3575,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.TestIamPermissions",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "TestIamPermissions",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -3823,14 +3861,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.GetOperation",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetOperation",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -3928,14 +3970,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.ListOperations",
                     extra = {
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListOperations",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp

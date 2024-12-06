@@ -468,14 +468,19 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
         resp = json_format.Parse(content, resp)
         resp = {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(resp)
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            http_response = {
+                "payload": json_format.MessageToJson(response),
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+            }        
             _LOGGER.debug(
                 "Received response for {{ service.meta.address.proto_package_versioned }}.{{ service.async_client_name }}.{{ name }}",
                 extra = {
                     "serviceName": "{{ service.meta.address.proto }}",
                     "rpcName": "{{ name }}",
-                    "retryAttempt": 1,
-                    "response": json_format.MessageToJson(response),
-                    "metadata": str(dict(response.headers)),
+                    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2275): logging `metadata` seems repetitive and may need to be cleaned up #}
+                    "metadata": http_response["headers"],
+                    "httpResponse": http_response,
                 },
             )
         return resp

@@ -254,11 +254,12 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             {% endif %}{# method.lro #}
+            {#- TODO(https://github.com/googleapis/gapic-generator-python/issues/2274): Add debug log before intercepting a request #} 
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(resp){% else %}json_format.MessageToJson(resp){% endif %},
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(

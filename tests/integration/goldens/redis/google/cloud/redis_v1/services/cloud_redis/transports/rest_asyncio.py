@@ -2209,14 +2209,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_get_location(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.GetLocation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetLocation",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -2318,14 +2322,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_list_locations(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.ListLocations",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListLocations",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -2609,14 +2617,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_get_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.GetOperation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetOperation",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -2718,14 +2730,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_list_operations(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.ListOperations",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListOperations",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp
@@ -2830,14 +2846,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = json_format.Parse(content, resp)
             resp = await self._interceptor.post_wait_operation(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                http_response = {
+                    "payload": json_format.MessageToJson(response),
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
                 _LOGGER.debug(
                     "Received response for google.cloud.redis_v1.CloudRedisAsyncClient.WaitOperation",
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "WaitOperation",
-                        "retryAttempt": 1,
-                        "response": json_format.MessageToJson(response),
-                        "metadata": str(dict(response.headers)),
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
                     },
                 )
             return resp

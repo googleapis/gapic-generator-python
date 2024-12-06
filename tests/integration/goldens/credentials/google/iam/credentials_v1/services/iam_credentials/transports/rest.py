@@ -368,11 +368,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             pb_resp = common.GenerateAccessTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_access_token(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": common.GenerateAccessTokenResponse.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -478,11 +479,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             pb_resp = common.GenerateIdTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_id_token(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": common.GenerateIdTokenResponse.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -588,11 +590,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             pb_resp = common.SignBlobResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_sign_blob(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": common.SignBlobResponse.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
@@ -698,11 +701,12 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             pb_resp = common.SignJwtResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_sign_jwt(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                 "payload": common.SignJwtResponse.to_json(resp),
-                "headers":  str(dict(response.headers)),
+                "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
                 _LOGGER.debug(
