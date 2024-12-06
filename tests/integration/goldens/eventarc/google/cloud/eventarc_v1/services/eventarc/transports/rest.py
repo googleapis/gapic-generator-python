@@ -926,6 +926,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateChannel._get_http_options()
+
             request, metadata = self._interceptor.pre_create_channel(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseCreateChannel._get_transcoded_request(http_options, request)
 
@@ -939,7 +940,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -1037,6 +1038,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_http_options()
+
             request, metadata = self._interceptor.pre_create_channel_connection(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_transcoded_request(http_options, request)
 
@@ -1050,7 +1052,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -1148,6 +1150,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCreateTrigger._get_http_options()
+
             request, metadata = self._interceptor.pre_create_trigger(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseCreateTrigger._get_transcoded_request(http_options, request)
 
@@ -1161,7 +1164,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -1258,6 +1261,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteChannel._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_channel(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseDeleteChannel._get_transcoded_request(http_options, request)
 
@@ -1269,7 +1273,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -1366,6 +1370,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_channel_connection(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_transcoded_request(http_options, request)
 
@@ -1377,7 +1382,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -1474,6 +1479,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteTrigger._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_trigger(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseDeleteTrigger._get_transcoded_request(http_options, request)
 
@@ -1485,7 +1491,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -1587,6 +1593,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetChannel._get_http_options()
+
             request, metadata = self._interceptor.pre_get_channel(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetChannel._get_transcoded_request(http_options, request)
 
@@ -1598,7 +1605,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -1701,6 +1708,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetChannelConnection._get_http_options()
+
             request, metadata = self._interceptor.pre_get_channel_connection(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetChannelConnection._get_transcoded_request(http_options, request)
 
@@ -1712,7 +1720,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -1816,6 +1824,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_http_options()
+
             request, metadata = self._interceptor.pre_get_google_channel_config(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_transcoded_request(http_options, request)
 
@@ -1827,7 +1836,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -1925,6 +1934,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetProvider._get_http_options()
+
             request, metadata = self._interceptor.pre_get_provider(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetProvider._get_transcoded_request(http_options, request)
 
@@ -1936,7 +1946,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -2034,6 +2044,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetTrigger._get_http_options()
+
             request, metadata = self._interceptor.pre_get_trigger(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetTrigger._get_transcoded_request(http_options, request)
 
@@ -2045,7 +2056,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -2143,6 +2154,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListChannelConnections._get_http_options()
+
             request, metadata = self._interceptor.pre_list_channel_connections(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListChannelConnections._get_transcoded_request(http_options, request)
 
@@ -2154,7 +2166,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -2250,6 +2262,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListChannels._get_http_options()
+
             request, metadata = self._interceptor.pre_list_channels(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListChannels._get_transcoded_request(http_options, request)
 
@@ -2261,7 +2274,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -2357,6 +2370,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListProviders._get_http_options()
+
             request, metadata = self._interceptor.pre_list_providers(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListProviders._get_transcoded_request(http_options, request)
 
@@ -2368,7 +2382,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -2464,6 +2478,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListTriggers._get_http_options()
+
             request, metadata = self._interceptor.pre_list_triggers(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListTriggers._get_transcoded_request(http_options, request)
 
@@ -2475,7 +2490,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -2575,6 +2590,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateChannel._get_http_options()
+
             request, metadata = self._interceptor.pre_update_channel(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseUpdateChannel._get_transcoded_request(http_options, request)
 
@@ -2588,7 +2604,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -2692,6 +2708,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_http_options()
+
             request, metadata = self._interceptor.pre_update_google_channel_config(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_transcoded_request(http_options, request)
 
@@ -2705,7 +2722,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -2805,6 +2822,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseUpdateTrigger._get_http_options()
+
             request, metadata = self._interceptor.pre_update_trigger(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseUpdateTrigger._get_transcoded_request(http_options, request)
 
@@ -2818,7 +2836,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -3059,6 +3077,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetLocation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
@@ -3070,7 +3089,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -3163,6 +3182,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListLocations._get_http_options()
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
@@ -3174,7 +3194,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -3267,6 +3287,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetIamPolicy._get_http_options()
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
@@ -3278,7 +3299,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -3372,6 +3393,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseSetIamPolicy._get_http_options()
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
@@ -3385,7 +3407,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -3479,6 +3501,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseTestIamPermissions._get_http_options()
+
             request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
@@ -3492,7 +3515,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -3583,6 +3606,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseCancelOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
@@ -3596,7 +3620,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -3671,6 +3695,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseDeleteOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_operation(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
@@ -3682,7 +3707,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -3760,6 +3785,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseGetOperation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
@@ -3771,7 +3797,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -3864,6 +3890,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             """
 
             http_options = _BaseEventarcRestTransport._BaseListOperations._get_http_options()
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseEventarcRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
@@ -3875,7 +3902,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(

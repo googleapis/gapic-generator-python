@@ -328,6 +328,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_http_options()
+
             request, metadata = self._interceptor.pre_generate_access_token(request, metadata)
             transcoded_request = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_transcoded_request(http_options, request)
 
@@ -341,7 +342,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -437,6 +438,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_http_options()
+
             request, metadata = self._interceptor.pre_generate_id_token(request, metadata)
             transcoded_request = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_transcoded_request(http_options, request)
 
@@ -450,7 +452,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -546,6 +548,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_http_options()
+
             request, metadata = self._interceptor.pre_sign_blob(request, metadata)
             transcoded_request = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_transcoded_request(http_options, request)
 
@@ -559,7 +562,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
@@ -655,6 +658,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             """
 
             http_options = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_http_options()
+
             request, metadata = self._interceptor.pre_sign_jwt(request, metadata)
             transcoded_request = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_transcoded_request(http_options, request)
 
@@ -668,7 +672,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
                 method = transcoded_request['method']
                 http_request = {
                   "payload":   type(request).to_json(request),
-                  "requestmethod": method,
+                  "requestMethod": method,
                   "requestUrl": request_url,
                 }
                 _LOGGER.debug(
