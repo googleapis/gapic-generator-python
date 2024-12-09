@@ -64,7 +64,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
         metadata = [(k, v) for k, v in response_metadata]
         result = response.result()
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
             grpc_response = {
                 "payload": type(result).to_json(result),
                 "metadata": dict(metadata),
