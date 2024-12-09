@@ -58,7 +58,7 @@ from .client import EventarcClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-    CLIENT_LOGGING_SUPPORTED = True
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
