@@ -45,7 +45,7 @@ except ImportError:
 _LOGGER = logging.getLogger(__name__)
 
 
-class MetadataAsyncClientInterceptor(grpc.aio.UnaryUnaryClientInterceptor):
+class MetadataAsyncClientInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         request_metadata = client_call_details.metadata
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
