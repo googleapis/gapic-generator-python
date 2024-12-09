@@ -42,10 +42,10 @@ from .transports.base import LoggingServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import LoggingServiceV2GrpcAsyncIOTransport
 from .client import LoggingServiceV2Client
 
-try:  # pragma: NO COVER
+try:
     from google.api_core import client_logging  # type: ignore
     CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)

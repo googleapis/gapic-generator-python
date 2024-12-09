@@ -46,10 +46,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-try:  # pragma: NO COVER
+try:
     from google.api_core import client_logging  # type: ignore
     CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)

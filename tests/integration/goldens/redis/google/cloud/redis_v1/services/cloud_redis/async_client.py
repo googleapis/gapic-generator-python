@@ -46,10 +46,10 @@ from .transports.base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 from .client import CloudRedisClient
 
-try:  # pragma: NO COVER
+try:
     from google.api_core import client_logging  # type: ignore
     CLIENT_LOGGING_SUPPORTED = True
-except ImportError:
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
