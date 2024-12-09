@@ -817,6 +817,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     class _DeleteInstance(_BaseCloudRedisRestTransport._BaseDeleteInstance, AsyncCloudRedisRestStub):
@@ -933,6 +934,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     class _ExportInstance(_BaseCloudRedisRestTransport._BaseExportInstance, AsyncCloudRedisRestStub):
@@ -1052,6 +1054,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     class _FailoverInstance(_BaseCloudRedisRestTransport._BaseFailoverInstance, AsyncCloudRedisRestStub):
@@ -1171,6 +1174,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     class _GetInstance(_BaseCloudRedisRestTransport._BaseGetInstance, AsyncCloudRedisRestStub):
@@ -1284,6 +1288,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, AsyncCloudRedisRestStub):
@@ -1397,6 +1402,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, AsyncCloudRedisRestStub):
@@ -1516,6 +1522,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     class _ListInstances(_BaseCloudRedisRestTransport._BaseListInstances, AsyncCloudRedisRestStub):
@@ -1631,6 +1638,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, AsyncCloudRedisRestStub):
@@ -1750,6 +1758,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     class _UpdateInstance(_BaseCloudRedisRestTransport._BaseUpdateInstance, AsyncCloudRedisRestStub):
@@ -1869,6 +1878,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     class _UpgradeInstance(_BaseCloudRedisRestTransport._BaseUpgradeInstance, AsyncCloudRedisRestStub):
@@ -1988,6 +1998,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             return resp
 
     @property

@@ -234,6 +234,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                         "httpResponse": http_response,
                     },
                 )
+
             {% endif %}{# if not method.server_streaming #}
             return resp
 
