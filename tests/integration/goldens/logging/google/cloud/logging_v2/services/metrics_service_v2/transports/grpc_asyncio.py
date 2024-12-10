@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import inspect
+import logging as std_logging
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -32,6 +33,63 @@ from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 from .grpc import MetricsServiceV2GrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        request_metadata = client_call_details.metadata
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):
+            try:
+                request_payload = type(request).to_json(request)
+            except:
+                request_payload = MessageToJson(request)
+            grpc_request = {
+              "payload": request_payload,
+              "requestMethod": "grpc",
+              "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra = {
+                    "serviceName": "google.logging.v2.MetricsServiceV2",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        response_metadata = await response.trailing_metadata()
+        # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+        metadata = [(k, v) for k, v in response_metadata]
+        result = await response
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):
+            try:
+                response_payload = type(result).to_json(result)
+            except:
+                response_payload = MessageToJson(result)
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": dict(metadata),
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra = {
+                    "serviceName": "google.logging.v2.MetricsServiceV2",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
@@ -227,6 +285,9 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
 
         # Wrap messages. This must be done after self._grpc_channel exists
         self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+            self._interceptor = _LoggingClientAIOInterceptor()
+            self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -258,7 +319,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_log_metrics' not in self._stubs:
-            self._stubs['list_log_metrics'] = self.grpc_channel.unary_unary(
+            self._stubs['list_log_metrics'] = self._grpc_channel.unary_unary(
                 '/google.logging.v2.MetricsServiceV2/ListLogMetrics',
                 request_serializer=logging_metrics.ListLogMetricsRequest.serialize,
                 response_deserializer=logging_metrics.ListLogMetricsResponse.deserialize,
@@ -284,7 +345,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_log_metric' not in self._stubs:
-            self._stubs['get_log_metric'] = self.grpc_channel.unary_unary(
+            self._stubs['get_log_metric'] = self._grpc_channel.unary_unary(
                 '/google.logging.v2.MetricsServiceV2/GetLogMetric',
                 request_serializer=logging_metrics.GetLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
@@ -310,7 +371,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'create_log_metric' not in self._stubs:
-            self._stubs['create_log_metric'] = self.grpc_channel.unary_unary(
+            self._stubs['create_log_metric'] = self._grpc_channel.unary_unary(
                 '/google.logging.v2.MetricsServiceV2/CreateLogMetric',
                 request_serializer=logging_metrics.CreateLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
@@ -336,7 +397,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'update_log_metric' not in self._stubs:
-            self._stubs['update_log_metric'] = self.grpc_channel.unary_unary(
+            self._stubs['update_log_metric'] = self._grpc_channel.unary_unary(
                 '/google.logging.v2.MetricsServiceV2/UpdateLogMetric',
                 request_serializer=logging_metrics.UpdateLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
@@ -362,7 +423,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'delete_log_metric' not in self._stubs:
-            self._stubs['delete_log_metric'] = self.grpc_channel.unary_unary(
+            self._stubs['delete_log_metric'] = self._grpc_channel.unary_unary(
                 '/google.logging.v2.MetricsServiceV2/DeleteLogMetric',
                 request_serializer=logging_metrics.DeleteLogMetricRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -464,7 +525,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._grpc_channel.close()
 
     @property
     def kind(self) -> str:
@@ -481,7 +542,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._grpc_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -499,7 +560,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._grpc_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -517,7 +578,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._grpc_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
