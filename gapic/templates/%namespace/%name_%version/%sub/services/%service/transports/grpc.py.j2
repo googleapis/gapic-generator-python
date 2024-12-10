@@ -56,8 +56,10 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
     def intercept_unary_unary(self, continuation, client_call_details, request):
         request_metadata = client_call_details.metadata
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            request_payload = {% if method.output.ident.is_proto_plus_type %}{type(request).to_json(request){% else %}json_format.MessageToJson(request){% endif %}
+            {% else %}
             grpc_request = {
-              "payload":   type(request).to_json(request),
+              "payload":   request_payload,
               "requestMethod": "grpc",
               "metadata": dict(request_metadata),
             }
@@ -78,8 +80,9 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         metadata = [(k, v) for k, v in response_metadata]
         result = response.result()
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            response_payload = {% if method.output.ident.is_proto_plus_type %}{type(response).to_json(response){% else %}json_format.MessageToJson(response){% endif %}
             grpc_response = {
-                "payload": type(result).to_json(result),
+                "payload": response_payload,
                 "metadata": dict(metadata),
                 "status": "OK", 
             }
