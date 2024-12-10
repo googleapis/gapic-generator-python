@@ -4,6 +4,7 @@
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import inspect
+import json
 import logging as std_logging
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
@@ -62,9 +63,9 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         request_metadata = client_call_details.metadata
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):
-            try:
+            if issubclass(result, proto.Message):
                 request_payload = type(request).to_json(request)
-            except:
+            elif issubclass(result, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             grpc_request = {
               "payload": request_payload,
@@ -84,13 +85,15 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
         response = await continuation(client_call_details, request)
         response_metadata = await response.trailing_metadata()
         # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-        metadata = [(k, v) for k, v in response_metadata]
+        metadata = [(k, v) for k, v in response_metadata] if response_metadata else None
         result = await response
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):
-            try:
+            if issubclass(result, proto.Message):
                 response_payload = type(result).to_json(result)
-            except:
+            elif issubclass(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
+            else:
+                response_payload = json.dumps(result)
             grpc_response = {
                 "payload": response_payload,
                 "metadata": dict(metadata),
