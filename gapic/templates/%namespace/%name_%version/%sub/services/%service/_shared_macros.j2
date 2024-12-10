@@ -476,11 +476,7 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
         resp = json_format.Parse(content, resp)
         resp = {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(resp)
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-            try:
-                response_payload = json_format.MessageToJson(response),
-            except:
-                {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2283): Remove try/except and correctly parse response payload. #}
-                response_payload = None
+            response_payload = json_format.MessageToJson(response),
             http_response = {
                 "payload": response_payload,
                 "headers":  dict(response.headers),
