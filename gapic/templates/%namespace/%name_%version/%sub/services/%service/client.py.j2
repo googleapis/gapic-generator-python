@@ -621,7 +621,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                         "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     } if hasattr(self._transport, "_credentials") else {
                         "serviceName": "{{ service.meta.address.proto }}",
-                        "credentialsType": "(none)",
+                        "credentialsType": None,
                     }
                 )
 

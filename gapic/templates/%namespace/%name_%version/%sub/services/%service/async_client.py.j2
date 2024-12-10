@@ -261,7 +261,7 @@ class {{ service.async_client_name }}:
                     "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "{{ service.meta.address.proto }}",
-                    "credentialsType": "(none)",
+                    "credentialsType": None,
                 }
             )
 
