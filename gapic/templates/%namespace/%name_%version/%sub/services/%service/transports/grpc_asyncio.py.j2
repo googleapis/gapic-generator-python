@@ -50,6 +50,9 @@ from google.longrunning import operations_pb2 # type: ignore
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
 from .grpc import {{ service.name }}GrpcTransport
 
+import proto
+import google.protobuf.message
+
 try:
     from google.api_core import client_logging  # type: ignore
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
