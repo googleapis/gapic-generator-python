@@ -70,7 +70,7 @@ except ImportError:  # pragma: NO COVER
 
     {% else %}
 
-        if request.{{ routing_param.field }}:
+        if request.{{ routing_param.field }} is not None:
             header_params["{{ routing_param.key }}"] = request.{{ routing_param.field }}
 
         {% endif %}
