@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import inspect
+import logging as std_logging
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -30,6 +31,63 @@ from grpc.experimental import aio  # type: ignore
 from google.iam.credentials_v1.types import common
 from .base import IAMCredentialsTransport, DEFAULT_CLIENT_INFO
 from .grpc import IAMCredentialsGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        request_metadata = client_call_details.metadata
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):
+            try:
+                request_payload = type(request).to_json(request)
+            except:
+                request_payload = MessageToJson(request)
+            grpc_request = {
+              "payload": request_payload,
+              "requestMethod": "grpc",
+              "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra = {
+                    "serviceName": "google.iam.credentials.v1.IAMCredentials",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        response_metadata = await response.trailing_metadata()
+        # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+        metadata = [(k, v) for k, v in response_metadata]
+        result = await response
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):
+            try:
+                response_payload = type(result).to_json(result)
+            except:
+                response_payload = MessageToJson(result)
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": dict(metadata),
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra = {
+                    "serviceName": "google.iam.credentials.v1.IAMCredentials",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
@@ -234,6 +292,9 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
 
         # Wrap messages. This must be done after self._grpc_channel exists
         self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+            self._interceptor = _LoggingClientAIOInterceptor()
+            self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -266,7 +327,7 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'generate_access_token' not in self._stubs:
-            self._stubs['generate_access_token'] = self.grpc_channel.unary_unary(
+            self._stubs['generate_access_token'] = self._grpc_channel.unary_unary(
                 '/google.iam.credentials.v1.IAMCredentials/GenerateAccessToken',
                 request_serializer=common.GenerateAccessTokenRequest.serialize,
                 response_deserializer=common.GenerateAccessTokenResponse.deserialize,
@@ -293,7 +354,7 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'generate_id_token' not in self._stubs:
-            self._stubs['generate_id_token'] = self.grpc_channel.unary_unary(
+            self._stubs['generate_id_token'] = self._grpc_channel.unary_unary(
                 '/google.iam.credentials.v1.IAMCredentials/GenerateIdToken',
                 request_serializer=common.GenerateIdTokenRequest.serialize,
                 response_deserializer=common.GenerateIdTokenResponse.deserialize,
@@ -320,7 +381,7 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'sign_blob' not in self._stubs:
-            self._stubs['sign_blob'] = self.grpc_channel.unary_unary(
+            self._stubs['sign_blob'] = self._grpc_channel.unary_unary(
                 '/google.iam.credentials.v1.IAMCredentials/SignBlob',
                 request_serializer=common.SignBlobRequest.serialize,
                 response_deserializer=common.SignBlobResponse.deserialize,
@@ -347,7 +408,7 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'sign_jwt' not in self._stubs:
-            self._stubs['sign_jwt'] = self.grpc_channel.unary_unary(
+            self._stubs['sign_jwt'] = self._grpc_channel.unary_unary(
                 '/google.iam.credentials.v1.IAMCredentials/SignJwt',
                 request_serializer=common.SignJwtRequest.serialize,
                 response_deserializer=common.SignJwtResponse.deserialize,
@@ -425,7 +486,7 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._grpc_channel.close()
 
     @property
     def kind(self) -> str:
