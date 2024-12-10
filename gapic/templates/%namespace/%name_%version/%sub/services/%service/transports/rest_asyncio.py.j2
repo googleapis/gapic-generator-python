@@ -220,11 +220,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2279): Add logging support for rest streaming. #}
             {% if not method.server_streaming %}
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                try:
-                    response_payload = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(response){% else %}json_format.MessageToJson(response){% endif %},
-                except:
-                    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2283): Remove try/except and correctly parse response payload. #}
-                    response_payload = None
+                response_payload = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(response){% else %}json_format.MessageToJson(resp){% endif %}
                 http_response = {
                     "payload": response_payload,
                     "headers":  str(dict(response.headers)),
