@@ -283,7 +283,7 @@ class EventarcAsyncClient:
                     "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.eventarc.v1.Eventarc",
-                    "credentialsType": "(none)",
+                    "credentialsType": None,
                 }
             )
 

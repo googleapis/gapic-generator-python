@@ -567,7 +567,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                         "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     } if hasattr(self._transport, "_credentials") else {
                         "serviceName": "google.logging.v2.MetricsServiceV2",
-                        "credentialsType": "(none)",
+                        "credentialsType": None,
                     }
                 )
 

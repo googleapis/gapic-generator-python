@@ -635,7 +635,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                         "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     } if hasattr(self._transport, "_credentials") else {
                         "serviceName": "google.logging.v2.ConfigServiceV2",
-                        "credentialsType": "(none)",
+                        "credentialsType": None,
                     }
                 )
 

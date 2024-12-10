@@ -273,7 +273,7 @@ class CloudRedisAsyncClient:
                     "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.redis.v1.CloudRedis",
-                    "credentialsType": "(none)",
+                    "credentialsType": None,
                 }
             )
 

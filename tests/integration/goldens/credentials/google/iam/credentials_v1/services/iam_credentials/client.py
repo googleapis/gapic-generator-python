@@ -579,7 +579,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                         "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     } if hasattr(self._transport, "_credentials") else {
                         "serviceName": "google.iam.credentials.v1.IAMCredentials",
-                        "credentialsType": "(none)",
+                        "credentialsType": None,
                     }
                 )
 
