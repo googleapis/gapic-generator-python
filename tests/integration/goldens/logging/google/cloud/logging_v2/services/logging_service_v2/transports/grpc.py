@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -28,6 +29,56 @@ from google.cloud.logging_v2.types import logging
 from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import LoggingServiceV2Transport, DEFAULT_CLIENT_INFO
+
+try:  # pragma: NO COVER
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True
+except ImportError:
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        request_metadata = client_call_details.metadata
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+            grpc_request = {
+              "payload":   type(request).to_json(request),
+              "requestMethod": "grpc",
+              "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra = {
+                    "serviceName": "google.logging.v2.LoggingServiceV2",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        response_metadata = response.trailing_metadata()
+        # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+        metadata = [(k, v) for k, v in response_metadata]
+        result = response.result()
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            grpc_response = {
+                "payload": type(result).to_json(result),
+                "metadata": dict(metadata),
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra = {
+                    "serviceName": "google.logging.v2.LoggingServiceV2",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
@@ -180,6 +231,8 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._grpc_intercept_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -256,7 +309,7 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'delete_log' not in self._stubs:
-            self._stubs['delete_log'] = self.grpc_channel.unary_unary(
+            self._stubs['delete_log'] = self._grpc_intercept_channel.unary_unary(
                 '/google.logging.v2.LoggingServiceV2/DeleteLog',
                 request_serializer=logging.DeleteLogRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -288,7 +341,7 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'write_log_entries' not in self._stubs:
-            self._stubs['write_log_entries'] = self.grpc_channel.unary_unary(
+            self._stubs['write_log_entries'] = self._grpc_intercept_channel.unary_unary(
                 '/google.logging.v2.LoggingServiceV2/WriteLogEntries',
                 request_serializer=logging.WriteLogEntriesRequest.serialize,
                 response_deserializer=logging.WriteLogEntriesResponse.deserialize,
@@ -317,7 +370,7 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_log_entries' not in self._stubs:
-            self._stubs['list_log_entries'] = self.grpc_channel.unary_unary(
+            self._stubs['list_log_entries'] = self._grpc_intercept_channel.unary_unary(
                 '/google.logging.v2.LoggingServiceV2/ListLogEntries',
                 request_serializer=logging.ListLogEntriesRequest.serialize,
                 response_deserializer=logging.ListLogEntriesResponse.deserialize,
@@ -345,7 +398,7 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_monitored_resource_descriptors' not in self._stubs:
-            self._stubs['list_monitored_resource_descriptors'] = self.grpc_channel.unary_unary(
+            self._stubs['list_monitored_resource_descriptors'] = self._grpc_intercept_channel.unary_unary(
                 '/google.logging.v2.LoggingServiceV2/ListMonitoredResourceDescriptors',
                 request_serializer=logging.ListMonitoredResourceDescriptorsRequest.serialize,
                 response_deserializer=logging.ListMonitoredResourceDescriptorsResponse.deserialize,
@@ -373,7 +426,7 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_logs' not in self._stubs:
-            self._stubs['list_logs'] = self.grpc_channel.unary_unary(
+            self._stubs['list_logs'] = self._grpc_intercept_channel.unary_unary(
                 '/google.logging.v2.LoggingServiceV2/ListLogs',
                 request_serializer=logging.ListLogsRequest.serialize,
                 response_deserializer=logging.ListLogsResponse.deserialize,
@@ -401,7 +454,7 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'tail_log_entries' not in self._stubs:
-            self._stubs['tail_log_entries'] = self.grpc_channel.stream_stream(
+            self._stubs['tail_log_entries'] = self._grpc_intercept_channel.stream_stream(
                 '/google.logging.v2.LoggingServiceV2/TailLogEntries',
                 request_serializer=logging.TailLogEntriesRequest.serialize,
                 response_deserializer=logging.TailLogEntriesResponse.deserialize,
@@ -409,7 +462,7 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
         return self._stubs['tail_log_entries']
 
     def close(self):
-        self.grpc_channel.close()
+        self._grpc_intercept_channel.close()
 
     @property
     def cancel_operation(
