@@ -640,7 +640,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                         "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
                         "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                    },
+                    } if hasattr(self._transport, "_credentials") else {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "credentialsType": "(none)",
+                    }
                 )
 
     def export_assets(self,

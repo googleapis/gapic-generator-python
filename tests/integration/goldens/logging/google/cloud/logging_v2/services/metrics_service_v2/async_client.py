@@ -242,9 +242,12 @@ class MetricsServiceV2AsyncClient:
                 extra = {
                     "serviceName": "google.logging.v2.MetricsServiceV2",
                     "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
-                    "credentialType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                },
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
+                    "serviceName": "google.logging.v2.MetricsServiceV2",
+                    "credentialsType": "(none)",
+                }
             )
 
     async def list_log_metrics(self,
