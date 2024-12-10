@@ -377,8 +377,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = self._interceptor.post_generate_access_token(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = common.GenerateAccessTokenResponse.to_json(response),
-                except:
+                    response_payload = common.GenerateAccessTokenResponse.to_json(response)                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -497,8 +496,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = self._interceptor.post_generate_id_token(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = common.GenerateIdTokenResponse.to_json(response),
-                except:
+                    response_payload = common.GenerateIdTokenResponse.to_json(response)                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -617,8 +615,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = self._interceptor.post_sign_blob(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = common.SignBlobResponse.to_json(response),
-                except:
+                    response_payload = common.SignBlobResponse.to_json(response)                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -737,8 +734,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = self._interceptor.post_sign_jwt(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = common.SignJwtResponse.to_json(response),
-                except:
+                    response_payload = common.SignJwtResponse.to_json(response)                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,

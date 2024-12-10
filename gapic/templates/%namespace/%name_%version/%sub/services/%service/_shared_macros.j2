@@ -477,7 +477,7 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
         resp = {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(resp)
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
             try:
-                response_payload = json_format.MessageToJson(resp),
+                response_payload = json_format.MessageToJson(resp)
             except:
                 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2283): Remove try/except once unit tests are updated. #}
                 response_payload = None
