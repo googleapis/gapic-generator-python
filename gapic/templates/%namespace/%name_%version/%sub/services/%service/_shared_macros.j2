@@ -476,7 +476,7 @@ class _{{ name }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_m
         resp = json_format.Parse(content, resp)
         resp = {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(resp)
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-            response_payload = json_format.MessageToJson(response),
+            response_payload = type(resp).to_json(resp),
             http_response = {
                 "payload": response_payload,
                 "headers":  dict(response.headers),
