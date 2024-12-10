@@ -17,6 +17,7 @@ from google.api_core import operations_v1
 {% endif %}
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 import grpc                        # type: ignore
 from grpc.experimental import aio  # type: ignore
