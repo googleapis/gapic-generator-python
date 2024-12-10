@@ -52,7 +52,7 @@ from .grpc import {{ service.name }}GrpcTransport
 try:
     from google.api_core import client_logging  # type: ignore
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
-except ImportError:
+except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
