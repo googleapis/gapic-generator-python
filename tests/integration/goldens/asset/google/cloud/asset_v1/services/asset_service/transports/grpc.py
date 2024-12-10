@@ -54,7 +54,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(result).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -1019,7 +1019,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
