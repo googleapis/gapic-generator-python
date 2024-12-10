@@ -63,9 +63,9 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         request_metadata = client_call_details.metadata
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):
-            if issubclass(result, proto.Message):
+            if issubclass(request, proto.Message):
                 request_payload = type(request).to_json(request)
-            elif issubclass(result, google.protobuf.message.Message):
+            elif issubclass(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             grpc_request = {
               "payload": request_payload,
