@@ -55,47 +55,46 @@ _LOGGER = logging.getLogger(__name__)
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
         request_metadata = client_call_details.metadata
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
-            request_payload = {% if method.output.ident.is_proto_plus_type %}{type(request).to_json(request){% else %}json_format.MessageToJson(request){% endif %}
-            {% else %}
-            grpc_request = {
-              "payload":   request_payload,
-              "requestMethod": "grpc",
-              "metadata": dict(request_metadata),
-            }
-            _LOGGER.debug(
-                f"Sending request for {client_call_details.method}",
-                extra = {
-                    "serviceName": "{{ service.meta.address.proto }}",
-                    "rpcName": client_call_details.method,
-                    "request": grpc_request,
-                    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2275): logging `metadata` seems repetitive and may need to be cleaned up. We're including it within "request" for consistency with REST transport.' #}
-                    "metadata": grpc_request["metadata"],
-                },
-            )
+        # if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):
+        request_payload = {% if method.output.ident.is_proto_plus_type %}{type(request).to_json(request){% else %}json_format.MessageToJson(request){% endif %}
+        grpc_request = {
+            "payload":   request_payload,
+            "requestMethod": "grpc",
+            "metadata": dict(request_metadata),
+        }
+        _LOGGER.debug(
+            f"Sending request for {client_call_details.method}",
+            extra = {
+                "serviceName": "{{ service.meta.address.proto }}",
+                "rpcName": client_call_details.method,
+                "request": grpc_request,
+                {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2275): logging `metadata` seems repetitive and may need to be cleaned up. We're including it within "request" for consistency with REST transport.' #}
+                "metadata": grpc_request["metadata"],
+            },
+        )
 
         response = continuation(client_call_details, request)
         response_metadata = response.trailing_metadata()
         # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
         metadata = [(k, v) for k, v in response_metadata]
         result = response.result()
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-            response_payload = {% if method.output.ident.is_proto_plus_type %}{type(response).to_json(response){% else %}json_format.MessageToJson(response){% endif %}
-            grpc_response = {
-                "payload": response_payload,
-                "metadata": dict(metadata),
-                "status": "OK", 
-            }
-            _LOGGER.debug(
-                f"Received response for {client_call_details.method}.",
-                extra = {
-                    "serviceName": "{{ service.meta.address.proto }}",
-                    "rpcName": client_call_details.method,
-                    "response": grpc_response,
-                    {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2275): logging `metadata` seems repetitive and may need to be cleaned up. We're including it within "request" for consistency with REST transport.' #}
-                    "metadata": grpc_response["metadata"],
-                },
-            )
+        # if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+        response_payload = {% if method.output.ident.is_proto_plus_type %}{type(response).to_json(response){% else %}json_format.MessageToJson(response){% endif %}
+        grpc_response = {
+            "payload": response_payload,
+            "metadata": dict(metadata),
+            "status": "OK", 
+        }
+        _LOGGER.debug(
+            f"Received response for {client_call_details.method}.",
+            extra = {
+                "serviceName": "{{ service.meta.address.proto }}",
+                "rpcName": client_call_details.method,
+                "response": grpc_response,
+                {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2275): logging `metadata` seems repetitive and may need to be cleaned up. We're including it within "request" for consistency with REST transport.' #}
+                "metadata": grpc_response["metadata"],
+            },
+        )
         return response
 
 
