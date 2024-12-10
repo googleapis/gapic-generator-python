@@ -973,7 +973,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_create_channel(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)                except:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1094,7 +1095,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_create_channel_connection(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)                except:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1215,7 +1217,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_create_trigger(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)                except:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1333,7 +1336,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_delete_channel(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)                except:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1451,7 +1455,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_delete_channel_connection(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)                except:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1569,7 +1574,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_delete_trigger(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)                except:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1694,7 +1700,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_channel(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = channel.Channel.to_json(response)                except:
+                    response_payload = channel.Channel.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1818,7 +1825,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_channel_connection(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = channel_connection.ChannelConnection.to_json(response)                except:
+                    response_payload = channel_connection.ChannelConnection.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1943,7 +1951,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_google_channel_config(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = google_channel_config.GoogleChannelConfig.to_json(response)                except:
+                    response_payload = google_channel_config.GoogleChannelConfig.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2062,7 +2071,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_provider(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = discovery.Provider.to_json(response)                except:
+                    response_payload = discovery.Provider.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2181,7 +2191,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_trigger(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = trigger.Trigger.to_json(response)                except:
+                    response_payload = trigger.Trigger.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2300,7 +2311,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_list_channel_connections(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = eventarc.ListChannelConnectionsResponse.to_json(response)                except:
+                    response_payload = eventarc.ListChannelConnectionsResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2417,7 +2429,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_list_channels(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = eventarc.ListChannelsResponse.to_json(response)                except:
+                    response_payload = eventarc.ListChannelsResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2534,7 +2547,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_list_providers(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = eventarc.ListProvidersResponse.to_json(response)                except:
+                    response_payload = eventarc.ListProvidersResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2651,7 +2665,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_list_triggers(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = eventarc.ListTriggersResponse.to_json(response)                except:
+                    response_payload = eventarc.ListTriggersResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2772,7 +2787,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_update_channel(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)                except:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2901,7 +2917,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_update_google_channel_config(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gce_google_channel_config.GoogleChannelConfig.to_json(response)                except:
+                    response_payload = gce_google_channel_config.GoogleChannelConfig.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -3022,7 +3039,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_update_trigger(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)                except:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,

@@ -873,7 +873,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_iam_policy(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.AnalyzeIamPolicyResponse.to_json(response)                except:
+                    response_payload = asset_service.AnalyzeIamPolicyResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -995,7 +996,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_iam_policy_longrunning(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)                except:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1114,7 +1116,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_move(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.AnalyzeMoveResponse.to_json(response)                except:
+                    response_payload = asset_service.AnalyzeMoveResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1233,7 +1236,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_org_policies(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.AnalyzeOrgPoliciesResponse.to_json(response)                except:
+                    response_payload = asset_service.AnalyzeOrgPoliciesResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1353,7 +1357,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(response)                except:
+                    response_payload = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1473,7 +1478,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(response)                except:
+                    response_payload = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1589,7 +1595,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_batch_get_assets_history(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.BatchGetAssetsHistoryResponse.to_json(response)                except:
+                    response_payload = asset_service.BatchGetAssetsHistoryResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1709,7 +1716,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(response)                except:
+                    response_payload = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1836,7 +1844,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_create_feed(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.Feed.to_json(response)                except:
+                    response_payload = asset_service.Feed.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -1957,7 +1966,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_create_saved_query(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.SavedQuery.to_json(response)                except:
+                    response_payload = asset_service.SavedQuery.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2247,7 +2257,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_export_assets(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = json_format.MessageToJson(resp)                except:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2371,7 +2382,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_get_feed(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.Feed.to_json(response)                except:
+                    response_payload = asset_service.Feed.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2489,7 +2501,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_get_saved_query(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.SavedQuery.to_json(response)                except:
+                    response_payload = asset_service.SavedQuery.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2605,7 +2618,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_list_assets(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.ListAssetsResponse.to_json(response)                except:
+                    response_payload = asset_service.ListAssetsResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2721,7 +2735,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_list_feeds(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.ListFeedsResponse.to_json(response)                except:
+                    response_payload = asset_service.ListFeedsResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2837,7 +2852,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_list_saved_queries(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.ListSavedQueriesResponse.to_json(response)                except:
+                    response_payload = asset_service.ListSavedQueriesResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -2956,7 +2972,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_query_assets(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.QueryAssetsResponse.to_json(response)                except:
+                    response_payload = asset_service.QueryAssetsResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -3072,7 +3089,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_search_all_iam_policies(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.SearchAllIamPoliciesResponse.to_json(response)                except:
+                    response_payload = asset_service.SearchAllIamPoliciesResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -3188,7 +3206,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_search_all_resources(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.SearchAllResourcesResponse.to_json(response)                except:
+                    response_payload = asset_service.SearchAllResourcesResponse.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -3315,7 +3334,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_update_feed(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.Feed.to_json(response)                except:
+                    response_payload = asset_service.Feed.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
@@ -3436,7 +3456,8 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_update_saved_query(resp)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.SavedQuery.to_json(response)                except:
+                    response_payload = asset_service.SavedQuery.to_json(response)
+                except:
                     response_payload = None
                 http_response = {
                 "payload": response_payload,
