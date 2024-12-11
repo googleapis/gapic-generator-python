@@ -59,6 +59,11 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
                 request_payload = MessageToJson(request)
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -297,7 +302,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
         self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        # Wrap messages. This must be done after self._grpc_channel exists
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -329,7 +334,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_log_metrics' not in self._stubs:
-            self._stubs['list_log_metrics'] = self._grpc_channel.unary_unary(
+            self._stubs['list_log_metrics'] = self._logged_channel.unary_unary(
                 '/google.logging.v2.MetricsServiceV2/ListLogMetrics',
                 request_serializer=logging_metrics.ListLogMetricsRequest.serialize,
                 response_deserializer=logging_metrics.ListLogMetricsResponse.deserialize,
@@ -355,7 +360,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_log_metric' not in self._stubs:
-            self._stubs['get_log_metric'] = self._grpc_channel.unary_unary(
+            self._stubs['get_log_metric'] = self._logged_channel.unary_unary(
                 '/google.logging.v2.MetricsServiceV2/GetLogMetric',
                 request_serializer=logging_metrics.GetLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
@@ -381,7 +386,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'create_log_metric' not in self._stubs:
-            self._stubs['create_log_metric'] = self._grpc_channel.unary_unary(
+            self._stubs['create_log_metric'] = self._logged_channel.unary_unary(
                 '/google.logging.v2.MetricsServiceV2/CreateLogMetric',
                 request_serializer=logging_metrics.CreateLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
@@ -407,7 +412,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'update_log_metric' not in self._stubs:
-            self._stubs['update_log_metric'] = self._grpc_channel.unary_unary(
+            self._stubs['update_log_metric'] = self._logged_channel.unary_unary(
                 '/google.logging.v2.MetricsServiceV2/UpdateLogMetric',
                 request_serializer=logging_metrics.UpdateLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
@@ -433,7 +438,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'delete_log_metric' not in self._stubs:
-            self._stubs['delete_log_metric'] = self._grpc_channel.unary_unary(
+            self._stubs['delete_log_metric'] = self._logged_channel.unary_unary(
                 '/google.logging.v2.MetricsServiceV2/DeleteLogMetric',
                 request_serializer=logging_metrics.DeleteLogMetricRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -535,7 +540,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self._grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:

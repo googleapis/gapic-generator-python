@@ -59,6 +59,11 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
                 request_payload = MessageToJson(request)
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -297,7 +302,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
         self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        # Wrap messages. This must be done after self._grpc_channel exists
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -333,7 +338,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'delete_log' not in self._stubs:
-            self._stubs['delete_log'] = self._grpc_channel.unary_unary(
+            self._stubs['delete_log'] = self._logged_channel.unary_unary(
                 '/google.logging.v2.LoggingServiceV2/DeleteLog',
                 request_serializer=logging.DeleteLogRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -365,7 +370,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'write_log_entries' not in self._stubs:
-            self._stubs['write_log_entries'] = self._grpc_channel.unary_unary(
+            self._stubs['write_log_entries'] = self._logged_channel.unary_unary(
                 '/google.logging.v2.LoggingServiceV2/WriteLogEntries',
                 request_serializer=logging.WriteLogEntriesRequest.serialize,
                 response_deserializer=logging.WriteLogEntriesResponse.deserialize,
@@ -394,7 +399,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_log_entries' not in self._stubs:
-            self._stubs['list_log_entries'] = self._grpc_channel.unary_unary(
+            self._stubs['list_log_entries'] = self._logged_channel.unary_unary(
                 '/google.logging.v2.LoggingServiceV2/ListLogEntries',
                 request_serializer=logging.ListLogEntriesRequest.serialize,
                 response_deserializer=logging.ListLogEntriesResponse.deserialize,
@@ -422,7 +427,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_monitored_resource_descriptors' not in self._stubs:
-            self._stubs['list_monitored_resource_descriptors'] = self._grpc_channel.unary_unary(
+            self._stubs['list_monitored_resource_descriptors'] = self._logged_channel.unary_unary(
                 '/google.logging.v2.LoggingServiceV2/ListMonitoredResourceDescriptors',
                 request_serializer=logging.ListMonitoredResourceDescriptorsRequest.serialize,
                 response_deserializer=logging.ListMonitoredResourceDescriptorsResponse.deserialize,
@@ -450,7 +455,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_logs' not in self._stubs:
-            self._stubs['list_logs'] = self._grpc_channel.unary_unary(
+            self._stubs['list_logs'] = self._logged_channel.unary_unary(
                 '/google.logging.v2.LoggingServiceV2/ListLogs',
                 request_serializer=logging.ListLogsRequest.serialize,
                 response_deserializer=logging.ListLogsResponse.deserialize,
@@ -478,7 +483,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'tail_log_entries' not in self._stubs:
-            self._stubs['tail_log_entries'] = self._grpc_channel.stream_stream(
+            self._stubs['tail_log_entries'] = self._logged_channel.stream_stream(
                 '/google.logging.v2.LoggingServiceV2/TailLogEntries',
                 request_serializer=logging.TailLogEntriesRequest.serialize,
                 response_deserializer=logging.TailLogEntriesResponse.deserialize,
@@ -607,7 +612,7 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self._grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:

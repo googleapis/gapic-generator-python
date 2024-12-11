@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
 import logging as std_logging
 import pickle
 import warnings
@@ -52,6 +53,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
                 request_payload = MessageToJson(request)
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
