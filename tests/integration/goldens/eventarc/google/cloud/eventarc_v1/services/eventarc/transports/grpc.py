@@ -57,9 +57,9 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
-            if isinstance(result, proto.Message):
+            if isinstance(request, proto.Message):
                 request_payload = type(request).to_json(request)
-            elif isinstance(result, google.protobuf.message.Message):
+            elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
                 request_payload = f"{type(result).__name__}: {pickle.dumps(request)}"
