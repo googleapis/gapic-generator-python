@@ -27,7 +27,7 @@ from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 
 import grpc  # type: ignore
-import proto
+import proto  # type; ignore
 
 from google.cloud.location import locations_pb2 # type: ignore
 from google.cloud.redis_v1.types import cloud_redis

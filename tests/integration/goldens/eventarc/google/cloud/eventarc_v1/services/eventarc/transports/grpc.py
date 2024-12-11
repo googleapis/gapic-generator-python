@@ -27,7 +27,7 @@ from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 
 import grpc  # type: ignore
-import proto
+import proto  # type; ignore
 
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel_connection
