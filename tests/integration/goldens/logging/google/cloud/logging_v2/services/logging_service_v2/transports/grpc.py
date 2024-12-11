@@ -42,8 +42,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        request_metadata = client_call_details.metadata
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):
+        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
             try:
                 request_payload = type(request).to_json(request)
             except:
@@ -64,11 +64,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             )
 
         response = continuation(client_call_details, request)
-        response_metadata = response.trailing_metadata()
-        # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-        metadata = dict([(k, v) for k, v in response_metadata]) if response_metadata else None
-        result = response.result()
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = dict([(k, v) for k, v in response_metadata]) if response_metadata else None
+            result = response.result()
             try:
                 response_payload = type(result).to_json(result)
             except:
@@ -240,7 +240,7 @@ class LoggingServiceV2GrpcTransport(LoggingServiceV2Transport):
             )
 
         self._grpc_channel = self._base_channel
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
             self._interceptor = _LoggingClientInterceptor()
             self._grpc_channel =  grpc.intercept_channel(self._base_channel, self._interceptor)
 
