@@ -23,8 +23,10 @@ import google.auth                         # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 
 import grpc  # type: ignore
+import proto
 
 from google.cloud.logging_v2.types import logging
 from google.longrunning import operations_pb2 # type: ignore
@@ -70,9 +72,9 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
             metadata = dict([(k, v) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
-            try:
+            if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
-            except:
+            elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             grpc_response = {
                 "payload": response_payload,
