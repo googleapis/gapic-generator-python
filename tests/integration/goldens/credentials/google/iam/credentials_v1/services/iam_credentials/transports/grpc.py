@@ -26,7 +26,7 @@ from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 
 import grpc  # type: ignore
-import proto  # type; ignore
+import proto  # type: ignore
 
 from google.iam.credentials_v1.types import common
 from .base import IAMCredentialsTransport, DEFAULT_CLIENT_INFO

@@ -27,7 +27,7 @@ from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 
 import grpc  # type: ignore
-import proto  # type; ignore
+import proto  # type: ignore
 
 from google.cloud.logging_v2.types import logging_config
 from google.longrunning import operations_pb2 # type: ignore
