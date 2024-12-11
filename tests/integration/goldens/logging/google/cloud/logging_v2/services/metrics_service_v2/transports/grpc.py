@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import logging as std_logging
+import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
@@ -47,10 +48,12 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
-            try:
+            if isinstance(result, proto.Message):
                 request_payload = type(request).to_json(request)
-            except:
+            elif isinstance(result, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(result).__name__}: {pickle.dumps(request)}"
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -76,6 +79,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
                 response_payload = type(result).to_json(result)
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
