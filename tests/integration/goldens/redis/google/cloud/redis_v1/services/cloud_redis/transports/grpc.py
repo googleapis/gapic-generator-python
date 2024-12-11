@@ -43,7 +43,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             try:
                 request_payload = type(request).to_json(request)
@@ -65,7 +65,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             )
 
         response = continuation(client_call_details, request)
-        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
             metadata = dict([(k, v) for k, v in response_metadata]) if response_metadata else None
@@ -191,7 +191,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        self._base_channel = None
+        self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
         self._operations_client: Optional[operations_v1.OperationsClient] = None
@@ -206,7 +206,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
             credentials = None
             self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
-            self._base_channel = channel
+            self._grpc_channel = channel
             self._ssl_channel_credentials = None
 
         else:
@@ -242,10 +242,10 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
             api_audience=api_audience,
         )
 
-        if not self._base_channel:
+        if not self._grpc_channel:
             # initialize with the provided callable or the default channel
             channel_init = channel or type(self).create_channel
-            self._base_channel = channel_init(
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -261,12 +261,10 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
                 ],
             )
 
-        self._grpc_channel = self._base_channel
-        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
-            self._interceptor = _LoggingClientInterceptor()
-            self._grpc_channel =  grpc.intercept_channel(self._base_channel, self._interceptor)
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -318,7 +316,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
     def grpc_channel(self) -> grpc.Channel:
         """Return the channel designed to connect to this service.
         """
-        return self._base_channel
+        return self._grpc_channel
 
     @property
     def operations_client(self) -> operations_v1.OperationsClient:
@@ -330,7 +328,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsClient(
-                self._grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -364,7 +362,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_instances' not in self._stubs:
-            self._stubs['list_instances'] = self._grpc_channel.unary_unary(
+            self._stubs['list_instances'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/ListInstances',
                 request_serializer=cloud_redis.ListInstancesRequest.serialize,
                 response_deserializer=cloud_redis.ListInstancesResponse.deserialize,
@@ -390,7 +388,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_instance' not in self._stubs:
-            self._stubs['get_instance'] = self._grpc_channel.unary_unary(
+            self._stubs['get_instance'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/GetInstance',
                 request_serializer=cloud_redis.GetInstanceRequest.serialize,
                 response_deserializer=cloud_redis.Instance.deserialize,
@@ -419,7 +417,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_instance_auth_string' not in self._stubs:
-            self._stubs['get_instance_auth_string'] = self._grpc_channel.unary_unary(
+            self._stubs['get_instance_auth_string'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/GetInstanceAuthString',
                 request_serializer=cloud_redis.GetInstanceAuthStringRequest.serialize,
                 response_deserializer=cloud_redis.InstanceAuthString.deserialize,
@@ -458,7 +456,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'create_instance' not in self._stubs:
-            self._stubs['create_instance'] = self._grpc_channel.unary_unary(
+            self._stubs['create_instance'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/CreateInstance',
                 request_serializer=cloud_redis.CreateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -489,7 +487,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'update_instance' not in self._stubs:
-            self._stubs['update_instance'] = self._grpc_channel.unary_unary(
+            self._stubs['update_instance'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/UpdateInstance',
                 request_serializer=cloud_redis.UpdateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -516,7 +514,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'upgrade_instance' not in self._stubs:
-            self._stubs['upgrade_instance'] = self._grpc_channel.unary_unary(
+            self._stubs['upgrade_instance'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/UpgradeInstance',
                 request_serializer=cloud_redis.UpgradeInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -550,7 +548,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'import_instance' not in self._stubs:
-            self._stubs['import_instance'] = self._grpc_channel.unary_unary(
+            self._stubs['import_instance'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/ImportInstance',
                 request_serializer=cloud_redis.ImportInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -581,7 +579,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'export_instance' not in self._stubs:
-            self._stubs['export_instance'] = self._grpc_channel.unary_unary(
+            self._stubs['export_instance'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/ExportInstance',
                 request_serializer=cloud_redis.ExportInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -609,7 +607,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'failover_instance' not in self._stubs:
-            self._stubs['failover_instance'] = self._grpc_channel.unary_unary(
+            self._stubs['failover_instance'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/FailoverInstance',
                 request_serializer=cloud_redis.FailoverInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -636,7 +634,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'delete_instance' not in self._stubs:
-            self._stubs['delete_instance'] = self._grpc_channel.unary_unary(
+            self._stubs['delete_instance'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/DeleteInstance',
                 request_serializer=cloud_redis.DeleteInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -663,7 +661,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'reschedule_maintenance' not in self._stubs:
-            self._stubs['reschedule_maintenance'] = self._grpc_channel.unary_unary(
+            self._stubs['reschedule_maintenance'] = self._logged_channel.unary_unary(
                 '/google.cloud.redis.v1.CloudRedis/RescheduleMaintenance',
                 request_serializer=cloud_redis.RescheduleMaintenanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -671,7 +669,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs['reschedule_maintenance']
 
     def close(self):
-        self._grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(

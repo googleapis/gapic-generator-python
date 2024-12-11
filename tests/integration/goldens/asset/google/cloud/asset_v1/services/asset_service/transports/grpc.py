@@ -43,7 +43,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             try:
                 request_payload = type(request).to_json(request)
@@ -65,7 +65,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             )
 
         response = continuation(client_call_details, request)
-        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
             metadata = dict([(k, v) for k, v in response_metadata]) if response_metadata else None
@@ -171,7 +171,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        self._base_channel = None
+        self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
         self._operations_client: Optional[operations_v1.OperationsClient] = None
@@ -186,7 +186,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
             credentials = None
             self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
-            self._base_channel = channel
+            self._grpc_channel = channel
             self._ssl_channel_credentials = None
 
         else:
@@ -222,10 +222,10 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
             api_audience=api_audience,
         )
 
-        if not self._base_channel:
+        if not self._grpc_channel:
             # initialize with the provided callable or the default channel
             channel_init = channel or type(self).create_channel
-            self._base_channel = channel_init(
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -241,12 +241,10 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
                 ],
             )
 
-        self._grpc_channel = self._base_channel
-        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
-            self._interceptor = _LoggingClientInterceptor()
-            self._grpc_channel =  grpc.intercept_channel(self._base_channel, self._interceptor)
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -298,7 +296,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
     def grpc_channel(self) -> grpc.Channel:
         """Return the channel designed to connect to this service.
         """
-        return self._base_channel
+        return self._grpc_channel
 
     @property
     def operations_client(self) -> operations_v1.OperationsClient:
@@ -310,7 +308,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsClient(
-                self._grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -347,7 +345,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'export_assets' not in self._stubs:
-            self._stubs['export_assets'] = self._grpc_channel.unary_unary(
+            self._stubs['export_assets'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/ExportAssets',
                 request_serializer=asset_service.ExportAssetsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -374,7 +372,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_assets' not in self._stubs:
-            self._stubs['list_assets'] = self._grpc_channel.unary_unary(
+            self._stubs['list_assets'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/ListAssets',
                 request_serializer=asset_service.ListAssetsRequest.serialize,
                 response_deserializer=asset_service.ListAssetsResponse.deserialize,
@@ -406,7 +404,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'batch_get_assets_history' not in self._stubs:
-            self._stubs['batch_get_assets_history'] = self._grpc_channel.unary_unary(
+            self._stubs['batch_get_assets_history'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/BatchGetAssetsHistory',
                 request_serializer=asset_service.BatchGetAssetsHistoryRequest.serialize,
                 response_deserializer=asset_service.BatchGetAssetsHistoryResponse.deserialize,
@@ -434,7 +432,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'create_feed' not in self._stubs:
-            self._stubs['create_feed'] = self._grpc_channel.unary_unary(
+            self._stubs['create_feed'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/CreateFeed',
                 request_serializer=asset_service.CreateFeedRequest.serialize,
                 response_deserializer=asset_service.Feed.deserialize,
@@ -460,7 +458,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_feed' not in self._stubs:
-            self._stubs['get_feed'] = self._grpc_channel.unary_unary(
+            self._stubs['get_feed'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/GetFeed',
                 request_serializer=asset_service.GetFeedRequest.serialize,
                 response_deserializer=asset_service.Feed.deserialize,
@@ -487,7 +485,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_feeds' not in self._stubs:
-            self._stubs['list_feeds'] = self._grpc_channel.unary_unary(
+            self._stubs['list_feeds'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/ListFeeds',
                 request_serializer=asset_service.ListFeedsRequest.serialize,
                 response_deserializer=asset_service.ListFeedsResponse.deserialize,
@@ -513,7 +511,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'update_feed' not in self._stubs:
-            self._stubs['update_feed'] = self._grpc_channel.unary_unary(
+            self._stubs['update_feed'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/UpdateFeed',
                 request_serializer=asset_service.UpdateFeedRequest.serialize,
                 response_deserializer=asset_service.Feed.deserialize,
@@ -539,7 +537,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'delete_feed' not in self._stubs:
-            self._stubs['delete_feed'] = self._grpc_channel.unary_unary(
+            self._stubs['delete_feed'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/DeleteFeed',
                 request_serializer=asset_service.DeleteFeedRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -568,7 +566,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'search_all_resources' not in self._stubs:
-            self._stubs['search_all_resources'] = self._grpc_channel.unary_unary(
+            self._stubs['search_all_resources'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/SearchAllResources',
                 request_serializer=asset_service.SearchAllResourcesRequest.serialize,
                 response_deserializer=asset_service.SearchAllResourcesResponse.deserialize,
@@ -597,7 +595,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'search_all_iam_policies' not in self._stubs:
-            self._stubs['search_all_iam_policies'] = self._grpc_channel.unary_unary(
+            self._stubs['search_all_iam_policies'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/SearchAllIamPolicies',
                 request_serializer=asset_service.SearchAllIamPoliciesRequest.serialize,
                 response_deserializer=asset_service.SearchAllIamPoliciesResponse.deserialize,
@@ -624,7 +622,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'analyze_iam_policy' not in self._stubs:
-            self._stubs['analyze_iam_policy'] = self._grpc_channel.unary_unary(
+            self._stubs['analyze_iam_policy'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/AnalyzeIamPolicy',
                 request_serializer=asset_service.AnalyzeIamPolicyRequest.serialize,
                 response_deserializer=asset_service.AnalyzeIamPolicyResponse.deserialize,
@@ -661,7 +659,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'analyze_iam_policy_longrunning' not in self._stubs:
-            self._stubs['analyze_iam_policy_longrunning'] = self._grpc_channel.unary_unary(
+            self._stubs['analyze_iam_policy_longrunning'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/AnalyzeIamPolicyLongrunning',
                 request_serializer=asset_service.AnalyzeIamPolicyLongrunningRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -693,7 +691,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'analyze_move' not in self._stubs:
-            self._stubs['analyze_move'] = self._grpc_channel.unary_unary(
+            self._stubs['analyze_move'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/AnalyzeMove',
                 request_serializer=asset_service.AnalyzeMoveRequest.serialize,
                 response_deserializer=asset_service.AnalyzeMoveResponse.deserialize,
@@ -734,7 +732,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'query_assets' not in self._stubs:
-            self._stubs['query_assets'] = self._grpc_channel.unary_unary(
+            self._stubs['query_assets'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/QueryAssets',
                 request_serializer=asset_service.QueryAssetsRequest.serialize,
                 response_deserializer=asset_service.QueryAssetsResponse.deserialize,
@@ -761,7 +759,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'create_saved_query' not in self._stubs:
-            self._stubs['create_saved_query'] = self._grpc_channel.unary_unary(
+            self._stubs['create_saved_query'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/CreateSavedQuery',
                 request_serializer=asset_service.CreateSavedQueryRequest.serialize,
                 response_deserializer=asset_service.SavedQuery.deserialize,
@@ -787,7 +785,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'get_saved_query' not in self._stubs:
-            self._stubs['get_saved_query'] = self._grpc_channel.unary_unary(
+            self._stubs['get_saved_query'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/GetSavedQuery',
                 request_serializer=asset_service.GetSavedQueryRequest.serialize,
                 response_deserializer=asset_service.SavedQuery.deserialize,
@@ -814,7 +812,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'list_saved_queries' not in self._stubs:
-            self._stubs['list_saved_queries'] = self._grpc_channel.unary_unary(
+            self._stubs['list_saved_queries'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/ListSavedQueries',
                 request_serializer=asset_service.ListSavedQueriesRequest.serialize,
                 response_deserializer=asset_service.ListSavedQueriesResponse.deserialize,
@@ -840,7 +838,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'update_saved_query' not in self._stubs:
-            self._stubs['update_saved_query'] = self._grpc_channel.unary_unary(
+            self._stubs['update_saved_query'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/UpdateSavedQuery',
                 request_serializer=asset_service.UpdateSavedQueryRequest.serialize,
                 response_deserializer=asset_service.SavedQuery.deserialize,
@@ -866,7 +864,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'delete_saved_query' not in self._stubs:
-            self._stubs['delete_saved_query'] = self._grpc_channel.unary_unary(
+            self._stubs['delete_saved_query'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/DeleteSavedQuery',
                 request_serializer=asset_service.DeleteSavedQueryRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -893,7 +891,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'batch_get_effective_iam_policies' not in self._stubs:
-            self._stubs['batch_get_effective_iam_policies'] = self._grpc_channel.unary_unary(
+            self._stubs['batch_get_effective_iam_policies'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/BatchGetEffectiveIamPolicies',
                 request_serializer=asset_service.BatchGetEffectiveIamPoliciesRequest.serialize,
                 response_deserializer=asset_service.BatchGetEffectiveIamPoliciesResponse.deserialize,
@@ -919,7 +917,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'analyze_org_policies' not in self._stubs:
-            self._stubs['analyze_org_policies'] = self._grpc_channel.unary_unary(
+            self._stubs['analyze_org_policies'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicies',
                 request_serializer=asset_service.AnalyzeOrgPoliciesRequest.serialize,
                 response_deserializer=asset_service.AnalyzeOrgPoliciesResponse.deserialize,
@@ -947,7 +945,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'analyze_org_policy_governed_containers' not in self._stubs:
-            self._stubs['analyze_org_policy_governed_containers'] = self._grpc_channel.unary_unary(
+            self._stubs['analyze_org_policy_governed_containers'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedContainers',
                 request_serializer=asset_service.AnalyzeOrgPolicyGovernedContainersRequest.serialize,
                 response_deserializer=asset_service.AnalyzeOrgPolicyGovernedContainersResponse.deserialize,
@@ -992,7 +990,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'analyze_org_policy_governed_assets' not in self._stubs:
-            self._stubs['analyze_org_policy_governed_assets'] = self._grpc_channel.unary_unary(
+            self._stubs['analyze_org_policy_governed_assets'] = self._logged_channel.unary_unary(
                 '/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedAssets',
                 request_serializer=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.serialize,
                 response_deserializer=asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.deserialize,
@@ -1000,7 +998,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         return self._stubs['analyze_org_policy_governed_assets']
 
     def close(self):
-        self._grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def get_operation(

@@ -40,7 +40,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             try:
                 request_payload = type(request).to_json(request)
@@ -62,7 +62,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             )
 
         response = continuation(client_call_details, request)
-        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
             metadata = dict([(k, v) for k, v in response_metadata]) if response_metadata else None
@@ -177,7 +177,7 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        self._base_channel = None
+        self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
 
@@ -191,7 +191,7 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
             credentials = None
             self._ignore_credentials = True
             # If a channel was explicitly provided, set it.
-            self._base_channel = channel
+            self._grpc_channel = channel
             self._ssl_channel_credentials = None
 
         else:
@@ -227,10 +227,10 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
             api_audience=api_audience,
         )
 
-        if not self._base_channel:
+        if not self._grpc_channel:
             # initialize with the provided callable or the default channel
             channel_init = channel or type(self).create_channel
-            self._base_channel = channel_init(
+            self._grpc_channel = channel_init(
                 self._host,
                 # use the credentials which are saved
                 credentials=self._credentials,
@@ -246,12 +246,10 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
                 ],
             )
 
-        self._grpc_channel = self._base_channel
-        if CLIENT_LOGGING_SUPPORTED and not _LOGGER.isEnabledFor(std_logging.NOTSET):  # pragma: NO COVER
-            self._interceptor = _LoggingClientInterceptor()
-            self._grpc_channel =  grpc.intercept_channel(self._base_channel, self._interceptor)
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -303,7 +301,7 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
     def grpc_channel(self) -> grpc.Channel:
         """Return the channel designed to connect to this service.
         """
-        return self._base_channel
+        return self._grpc_channel
 
     @property
     def generate_access_token(self) -> Callable[
@@ -325,7 +323,7 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'generate_access_token' not in self._stubs:
-            self._stubs['generate_access_token'] = self._grpc_channel.unary_unary(
+            self._stubs['generate_access_token'] = self._logged_channel.unary_unary(
                 '/google.iam.credentials.v1.IAMCredentials/GenerateAccessToken',
                 request_serializer=common.GenerateAccessTokenRequest.serialize,
                 response_deserializer=common.GenerateAccessTokenResponse.deserialize,
@@ -352,7 +350,7 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'generate_id_token' not in self._stubs:
-            self._stubs['generate_id_token'] = self._grpc_channel.unary_unary(
+            self._stubs['generate_id_token'] = self._logged_channel.unary_unary(
                 '/google.iam.credentials.v1.IAMCredentials/GenerateIdToken',
                 request_serializer=common.GenerateIdTokenRequest.serialize,
                 response_deserializer=common.GenerateIdTokenResponse.deserialize,
@@ -379,7 +377,7 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'sign_blob' not in self._stubs:
-            self._stubs['sign_blob'] = self._grpc_channel.unary_unary(
+            self._stubs['sign_blob'] = self._logged_channel.unary_unary(
                 '/google.iam.credentials.v1.IAMCredentials/SignBlob',
                 request_serializer=common.SignBlobRequest.serialize,
                 response_deserializer=common.SignBlobResponse.deserialize,
@@ -406,7 +404,7 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if 'sign_jwt' not in self._stubs:
-            self._stubs['sign_jwt'] = self._grpc_channel.unary_unary(
+            self._stubs['sign_jwt'] = self._logged_channel.unary_unary(
                 '/google.iam.credentials.v1.IAMCredentials/SignJwt',
                 request_serializer=common.SignJwtRequest.serialize,
                 response_deserializer=common.SignJwtResponse.deserialize,
@@ -414,7 +412,7 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
         return self._stubs['sign_jwt']
 
     def close(self):
-        self._grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def kind(self) -> str:
