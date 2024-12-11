@@ -132,11 +132,6 @@ class CloudRedisTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_instance_auth_string: gapic_v1.method.wrap_method(
-                self.get_instance_auth_string,
-                default_timeout=600.0,
-                client_info=client_info,
-            ),
             self.create_instance: gapic_v1.method.wrap_method(
                 self.create_instance,
                 default_timeout=600.0,
@@ -147,34 +142,9 @@ class CloudRedisTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.upgrade_instance: gapic_v1.method.wrap_method(
-                self.upgrade_instance,
-                default_timeout=600.0,
-                client_info=client_info,
-            ),
-            self.import_instance: gapic_v1.method.wrap_method(
-                self.import_instance,
-                default_timeout=600.0,
-                client_info=client_info,
-            ),
-            self.export_instance: gapic_v1.method.wrap_method(
-                self.export_instance,
-                default_timeout=600.0,
-                client_info=client_info,
-            ),
-            self.failover_instance: gapic_v1.method.wrap_method(
-                self.failover_instance,
-                default_timeout=600.0,
-                client_info=client_info,
-            ),
             self.delete_instance: gapic_v1.method.wrap_method(
                 self.delete_instance,
                 default_timeout=600.0,
-                client_info=client_info,
-            ),
-            self.reschedule_maintenance: gapic_v1.method.wrap_method(
-                self.reschedule_maintenance,
-                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: gapic_v1.method.wrap_method(
@@ -247,15 +217,6 @@ class CloudRedisTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_instance_auth_string(self) -> Callable[
-            [cloud_redis.GetInstanceAuthStringRequest],
-            Union[
-                cloud_redis.InstanceAuthString,
-                Awaitable[cloud_redis.InstanceAuthString]
-            ]]:
-        raise NotImplementedError()
-
-    @property
     def create_instance(self) -> Callable[
             [cloud_redis.CreateInstanceRequest],
             Union[
@@ -274,53 +235,8 @@ class CloudRedisTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def upgrade_instance(self) -> Callable[
-            [cloud_redis.UpgradeInstanceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
-        raise NotImplementedError()
-
-    @property
-    def import_instance(self) -> Callable[
-            [cloud_redis.ImportInstanceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
-        raise NotImplementedError()
-
-    @property
-    def export_instance(self) -> Callable[
-            [cloud_redis.ExportInstanceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
-        raise NotImplementedError()
-
-    @property
-    def failover_instance(self) -> Callable[
-            [cloud_redis.FailoverInstanceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
-        raise NotImplementedError()
-
-    @property
     def delete_instance(self) -> Callable[
             [cloud_redis.DeleteInstanceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
-        raise NotImplementedError()
-
-    @property
-    def reschedule_maintenance(self) -> Callable[
-            [cloud_redis.RescheduleMaintenanceRequest],
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]

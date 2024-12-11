@@ -20,29 +20,9 @@
                 "delete_instance"
               ]
             },
-            "ExportInstance": {
-              "methods": [
-                "export_instance"
-              ]
-            },
-            "FailoverInstance": {
-              "methods": [
-                "failover_instance"
-              ]
-            },
             "GetInstance": {
               "methods": [
                 "get_instance"
-              ]
-            },
-            "GetInstanceAuthString": {
-              "methods": [
-                "get_instance_auth_string"
-              ]
-            },
-            "ImportInstance": {
-              "methods": [
-                "import_instance"
               ]
             },
             "ListInstances": {
@@ -50,19 +30,9 @@
                 "list_instances"
               ]
             },
-            "RescheduleMaintenance": {
-              "methods": [
-                "reschedule_maintenance"
-              ]
-            },
             "UpdateInstance": {
               "methods": [
                 "update_instance"
-              ]
-            },
-            "UpgradeInstance": {
-              "methods": [
-                "upgrade_instance"
               ]
             }
           }
@@ -80,29 +50,9 @@
                 "delete_instance"
               ]
             },
-            "ExportInstance": {
-              "methods": [
-                "export_instance"
-              ]
-            },
-            "FailoverInstance": {
-              "methods": [
-                "failover_instance"
-              ]
-            },
             "GetInstance": {
               "methods": [
                 "get_instance"
-              ]
-            },
-            "GetInstanceAuthString": {
-              "methods": [
-                "get_instance_auth_string"
-              ]
-            },
-            "ImportInstance": {
-              "methods": [
-                "import_instance"
               ]
             },
             "ListInstances": {
@@ -110,19 +60,9 @@
                 "list_instances"
               ]
             },
-            "RescheduleMaintenance": {
-              "methods": [
-                "reschedule_maintenance"
-              ]
-            },
             "UpdateInstance": {
               "methods": [
                 "update_instance"
-              ]
-            },
-            "UpgradeInstance": {
-              "methods": [
-                "upgrade_instance"
               ]
             }
           }
@@ -140,29 +80,9 @@
                 "delete_instance"
               ]
             },
-            "ExportInstance": {
-              "methods": [
-                "export_instance"
-              ]
-            },
-            "FailoverInstance": {
-              "methods": [
-                "failover_instance"
-              ]
-            },
             "GetInstance": {
               "methods": [
                 "get_instance"
-              ]
-            },
-            "GetInstanceAuthString": {
-              "methods": [
-                "get_instance_auth_string"
-              ]
-            },
-            "ImportInstance": {
-              "methods": [
-                "import_instance"
               ]
             },
             "ListInstances": {
@@ -170,19 +90,9 @@
                 "list_instances"
               ]
             },
-            "RescheduleMaintenance": {
-              "methods": [
-                "reschedule_maintenance"
-              ]
-            },
             "UpdateInstance": {
               "methods": [
                 "update_instance"
-              ]
-            },
-            "UpgradeInstance": {
-              "methods": [
-                "upgrade_instance"
               ]
             }
           }

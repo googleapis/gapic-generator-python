@@ -92,43 +92,11 @@ class CloudRedisRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_export_instance(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_export_instance(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_failover_instance(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_failover_instance(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_get_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_instance(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_instance_auth_string(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_instance_auth_string(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_import_instance(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_import_instance(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -140,27 +108,11 @@ class CloudRedisRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_reschedule_maintenance(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_reschedule_maintenance(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_update_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_update_instance(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_upgrade_instance(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_upgrade_instance(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -203,40 +155,6 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_export_instance(self, request: cloud_redis.ExportInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ExportInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for export_instance
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_export_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for export_instance
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_failover_instance(self, request: cloud_redis.FailoverInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.FailoverInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for failover_instance
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_failover_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for failover_instance
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
     def pre_get_instance(self, request: cloud_redis.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
@@ -247,40 +165,6 @@ class CloudRedisRestInterceptor:
 
     def post_get_instance(self, response: cloud_redis.Instance) -> cloud_redis.Instance:
         """Post-rpc interceptor for get_instance
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_get_instance_auth_string(self, request: cloud_redis.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.GetInstanceAuthStringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for get_instance_auth_string
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_get_instance_auth_string(self, response: cloud_redis.InstanceAuthString) -> cloud_redis.InstanceAuthString:
-        """Post-rpc interceptor for get_instance_auth_string
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_import_instance(self, request: cloud_redis.ImportInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ImportInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for import_instance
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_import_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for import_instance
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudRedis server but before
@@ -305,23 +189,6 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_reschedule_maintenance(self, request: cloud_redis.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.RescheduleMaintenanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for reschedule_maintenance
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_reschedule_maintenance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for reschedule_maintenance
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
     def pre_update_instance(self, request: cloud_redis.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
@@ -332,23 +199,6 @@ class CloudRedisRestInterceptor:
 
     def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_upgrade_instance(self, request: cloud_redis.UpgradeInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.UpgradeInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for upgrade_instance
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_upgrade_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for upgrade_instance
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudRedis server but before
@@ -1287,44 +1137,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
         return self._DeleteInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def export_instance(self) -> Callable[
-            [cloud_redis.ExportInstanceRequest],
-            operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ExportInstance(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
-    def failover_instance(self) -> Callable[
-            [cloud_redis.FailoverInstanceRequest],
-            operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._FailoverInstance(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
     def get_instance(self) -> Callable[
             [cloud_redis.GetInstanceRequest],
             cloud_redis.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
-    def get_instance_auth_string(self) -> Callable[
-            [cloud_redis.GetInstanceAuthStringRequest],
-            cloud_redis.InstanceAuthString]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetInstanceAuthString(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
-    def import_instance(self) -> Callable[
-            [cloud_redis.ImportInstanceRequest],
-            operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ImportInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def list_instances(self) -> Callable[
@@ -1335,28 +1153,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
         return self._ListInstances(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def reschedule_maintenance(self) -> Callable[
-            [cloud_redis.RescheduleMaintenanceRequest],
-            operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._RescheduleMaintenance(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
     def update_instance(self) -> Callable[
             [cloud_redis.UpdateInstanceRequest],
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
-    def upgrade_instance(self) -> Callable[
-            [cloud_redis.UpgradeInstanceRequest],
-            operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._UpgradeInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_location(self):

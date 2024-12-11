@@ -24,7 +24,7 @@ import keyword
 import os
 import sys
 from types import MappingProxyType
-from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
+from typing import Callable, Container, Dict, FrozenSet, Iterable, Mapping, Optional, Sequence, Set, Tuple
 import yaml
 
 from google.api_core import exceptions

@@ -14,7 +14,7 @@
 
 import collections
 import re
-from typing import Sequence
+from typing import Any, Dict, Sequence
 from unittest import mock
 import yaml
 

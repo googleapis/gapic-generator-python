@@ -41,15 +41,9 @@ class redisCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_instance': ('parent', 'instance_id', 'instance', ),
         'delete_instance': ('name', ),
-        'export_instance': ('name', 'output_config', ),
-        'failover_instance': ('name', 'data_protection_mode', ),
         'get_instance': ('name', ),
-        'get_instance_auth_string': ('name', ),
-        'import_instance': ('name', 'input_config', ),
         'list_instances': ('parent', 'page_size', 'page_token', ),
-        'reschedule_maintenance': ('name', 'reschedule_type', 'schedule_time', ),
         'update_instance': ('update_mask', 'instance', ),
-        'upgrade_instance': ('name', 'redis_version', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
