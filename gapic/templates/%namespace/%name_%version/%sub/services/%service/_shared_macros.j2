@@ -403,7 +403,7 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
         This `post_{{ method.name|snake_case }}_with_metadata` interceptor runs after the
         `post_{{ method.name|snake_case }}` iterceptor. If the response is modified in
         `post_{{ method.name|snake_case }}`, the modified response will be used in
-        `post_{{ method.name|snake_case }}_with_metadata. This `post_{{ method.name|snake_case }}_with_metadata`
+        `post_{{ method.name|snake_case }}_with_metadata`. This `post_{{ method.name|snake_case }}_with_metadata`
         interceptor is recommended for new development instead of `post_{{ method.name|snake_case }}`.
         """
         return response, metadata
