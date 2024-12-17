@@ -385,7 +385,8 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
 
         Override in a subclass to manipulate the response
         after it is returned by the {{ service.name }} server but before
-        it is returned to user code.
+        it is returned to user code. This `post_{{ method.name|snake_case }}` iterceptor runs
+        before the `post_{{ method.name|snake_case }}_with_metadata` iterceptor.
         """
         return response
 
@@ -398,7 +399,10 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
 
         Override in a subclass to either manipulate or read, either the response
         or metadata after it is returned by the {{ service.name }} server but before
-        it is returned to user code.
+        it is returned to user code. This `post_{{ method.name|snake_case }}_with_metadata`
+        interceptor runs after the `post_{{ method.name|snake_case }}` iterceptor. This
+        `post_{{ method.name|snake_case }}_with_metadata` interceptor is recommended for
+        new development instead of `post_{{ method.name|snake_case }}`.
         """
         return response, metadata
 
