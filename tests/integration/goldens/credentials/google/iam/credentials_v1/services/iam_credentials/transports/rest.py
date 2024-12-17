@@ -121,18 +121,24 @@ class IAMCredentialsRestInterceptor:
     def post_generate_access_token(self, response: common.GenerateAccessTokenResponse) -> common.GenerateAccessTokenResponse:
         """Post-rpc interceptor for generate_access_token
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_generate_access_token_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the IAMCredentials server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_access_token` iterceptor runs
+        before the `post_generate_access_token_with_metadata` iterceptor.
         """
         return response
 
     def post_generate_access_token_with_metadata(self, response: common.GenerateAccessTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateAccessTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_access_token
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the IAMCredentials server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IAMCredentials server but before it is returned to user code.
+        This `post_generate_access_token_with_metadata` interceptor runs after the
+        `post_generate_access_token` iterceptor. If the response is modified in
+        `post_generate_access_token`, the modified response will be used in
+        `post_generate_access_token_with_metadata`. This `post_generate_access_token_with_metadata`
+        interceptor is recommended for new development instead of `post_generate_access_token`.
         """
         return response, metadata
 
@@ -147,18 +153,24 @@ class IAMCredentialsRestInterceptor:
     def post_generate_id_token(self, response: common.GenerateIdTokenResponse) -> common.GenerateIdTokenResponse:
         """Post-rpc interceptor for generate_id_token
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_generate_id_token_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the IAMCredentials server but before
-        it is returned to user code.
+        it is returned to user code. This `post_generate_id_token` iterceptor runs
+        before the `post_generate_id_token_with_metadata` iterceptor.
         """
         return response
 
     def post_generate_id_token_with_metadata(self, response: common.GenerateIdTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.GenerateIdTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_id_token
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the IAMCredentials server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IAMCredentials server but before it is returned to user code.
+        This `post_generate_id_token_with_metadata` interceptor runs after the
+        `post_generate_id_token` iterceptor. If the response is modified in
+        `post_generate_id_token`, the modified response will be used in
+        `post_generate_id_token_with_metadata`. This `post_generate_id_token_with_metadata`
+        interceptor is recommended for new development instead of `post_generate_id_token`.
         """
         return response, metadata
 
@@ -173,18 +185,24 @@ class IAMCredentialsRestInterceptor:
     def post_sign_blob(self, response: common.SignBlobResponse) -> common.SignBlobResponse:
         """Post-rpc interceptor for sign_blob
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_sign_blob_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the IAMCredentials server but before
-        it is returned to user code.
+        it is returned to user code. This `post_sign_blob` iterceptor runs
+        before the `post_sign_blob_with_metadata` iterceptor.
         """
         return response
 
     def post_sign_blob_with_metadata(self, response: common.SignBlobResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignBlobResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for sign_blob
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the IAMCredentials server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IAMCredentials server but before it is returned to user code.
+        This `post_sign_blob_with_metadata` interceptor runs after the
+        `post_sign_blob` iterceptor. If the response is modified in
+        `post_sign_blob`, the modified response will be used in
+        `post_sign_blob_with_metadata`. This `post_sign_blob_with_metadata`
+        interceptor is recommended for new development instead of `post_sign_blob`.
         """
         return response, metadata
 
@@ -199,18 +217,24 @@ class IAMCredentialsRestInterceptor:
     def post_sign_jwt(self, response: common.SignJwtResponse) -> common.SignJwtResponse:
         """Post-rpc interceptor for sign_jwt
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_sign_jwt_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the IAMCredentials server but before
-        it is returned to user code.
+        it is returned to user code. This `post_sign_jwt` iterceptor runs
+        before the `post_sign_jwt_with_metadata` iterceptor.
         """
         return response
 
     def post_sign_jwt_with_metadata(self, response: common.SignJwtResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[common.SignJwtResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for sign_jwt
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the IAMCredentials server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the IAMCredentials server but before it is returned to user code.
+        This `post_sign_jwt_with_metadata` interceptor runs after the
+        `post_sign_jwt` iterceptor. If the response is modified in
+        `post_sign_jwt`, the modified response will be used in
+        `post_sign_jwt_with_metadata`. This `post_sign_jwt_with_metadata`
+        interceptor is recommended for new development instead of `post_sign_jwt`.
         """
         return response, metadata
 

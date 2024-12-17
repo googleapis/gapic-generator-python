@@ -180,18 +180,24 @@ class CloudRedisRestInterceptor:
     def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_create_instance_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_instance` iterceptor runs
+        before the `post_create_instance_with_metadata` iterceptor.
         """
         return response
 
     def post_create_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_instance
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_create_instance_with_metadata` interceptor runs after the
+        `post_create_instance` iterceptor. If the response is modified in
+        `post_create_instance`, the modified response will be used in
+        `post_create_instance_with_metadata`. This `post_create_instance_with_metadata`
+        interceptor is recommended for new development instead of `post_create_instance`.
         """
         return response, metadata
 
@@ -206,18 +212,24 @@ class CloudRedisRestInterceptor:
     def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_delete_instance_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_instance` iterceptor runs
+        before the `post_delete_instance_with_metadata` iterceptor.
         """
         return response
 
     def post_delete_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_instance
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_delete_instance_with_metadata` interceptor runs after the
+        `post_delete_instance` iterceptor. If the response is modified in
+        `post_delete_instance`, the modified response will be used in
+        `post_delete_instance_with_metadata`. This `post_delete_instance_with_metadata`
+        interceptor is recommended for new development instead of `post_delete_instance`.
         """
         return response, metadata
 
@@ -232,18 +244,24 @@ class CloudRedisRestInterceptor:
     def post_export_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_instance
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_export_instance_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_instance` iterceptor runs
+        before the `post_export_instance_with_metadata` iterceptor.
         """
         return response
 
     def post_export_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_instance
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_export_instance_with_metadata` interceptor runs after the
+        `post_export_instance` iterceptor. If the response is modified in
+        `post_export_instance`, the modified response will be used in
+        `post_export_instance_with_metadata`. This `post_export_instance_with_metadata`
+        interceptor is recommended for new development instead of `post_export_instance`.
         """
         return response, metadata
 
@@ -258,18 +276,24 @@ class CloudRedisRestInterceptor:
     def post_failover_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for failover_instance
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_failover_instance_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_failover_instance` iterceptor runs
+        before the `post_failover_instance_with_metadata` iterceptor.
         """
         return response
 
     def post_failover_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for failover_instance
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_failover_instance_with_metadata` interceptor runs after the
+        `post_failover_instance` iterceptor. If the response is modified in
+        `post_failover_instance`, the modified response will be used in
+        `post_failover_instance_with_metadata`. This `post_failover_instance_with_metadata`
+        interceptor is recommended for new development instead of `post_failover_instance`.
         """
         return response, metadata
 
@@ -284,18 +308,24 @@ class CloudRedisRestInterceptor:
     def post_get_instance(self, response: cloud_redis.Instance) -> cloud_redis.Instance:
         """Post-rpc interceptor for get_instance
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_get_instance_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_instance` iterceptor runs
+        before the `post_get_instance_with_metadata` iterceptor.
         """
         return response
 
     def post_get_instance_with_metadata(self, response: cloud_redis.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_get_instance_with_metadata` interceptor runs after the
+        `post_get_instance` iterceptor. If the response is modified in
+        `post_get_instance`, the modified response will be used in
+        `post_get_instance_with_metadata`. This `post_get_instance_with_metadata`
+        interceptor is recommended for new development instead of `post_get_instance`.
         """
         return response, metadata
 
@@ -310,18 +340,24 @@ class CloudRedisRestInterceptor:
     def post_get_instance_auth_string(self, response: cloud_redis.InstanceAuthString) -> cloud_redis.InstanceAuthString:
         """Post-rpc interceptor for get_instance_auth_string
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_get_instance_auth_string_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_instance_auth_string` iterceptor runs
+        before the `post_get_instance_auth_string_with_metadata` iterceptor.
         """
         return response
 
     def post_get_instance_auth_string_with_metadata(self, response: cloud_redis.InstanceAuthString, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.InstanceAuthString, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance_auth_string
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_get_instance_auth_string_with_metadata` interceptor runs after the
+        `post_get_instance_auth_string` iterceptor. If the response is modified in
+        `post_get_instance_auth_string`, the modified response will be used in
+        `post_get_instance_auth_string_with_metadata`. This `post_get_instance_auth_string_with_metadata`
+        interceptor is recommended for new development instead of `post_get_instance_auth_string`.
         """
         return response, metadata
 
@@ -336,18 +372,24 @@ class CloudRedisRestInterceptor:
     def post_import_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_instance
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_import_instance_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_import_instance` iterceptor runs
+        before the `post_import_instance_with_metadata` iterceptor.
         """
         return response
 
     def post_import_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_instance
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_import_instance_with_metadata` interceptor runs after the
+        `post_import_instance` iterceptor. If the response is modified in
+        `post_import_instance`, the modified response will be used in
+        `post_import_instance_with_metadata`. This `post_import_instance_with_metadata`
+        interceptor is recommended for new development instead of `post_import_instance`.
         """
         return response, metadata
 
@@ -362,18 +404,24 @@ class CloudRedisRestInterceptor:
     def post_list_instances(self, response: cloud_redis.ListInstancesResponse) -> cloud_redis.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_list_instances_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instances` iterceptor runs
+        before the `post_list_instances_with_metadata` iterceptor.
         """
         return response
 
     def post_list_instances_with_metadata(self, response: cloud_redis.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_list_instances_with_metadata` interceptor runs after the
+        `post_list_instances` iterceptor. If the response is modified in
+        `post_list_instances`, the modified response will be used in
+        `post_list_instances_with_metadata`. This `post_list_instances_with_metadata`
+        interceptor is recommended for new development instead of `post_list_instances`.
         """
         return response, metadata
 
@@ -388,18 +436,24 @@ class CloudRedisRestInterceptor:
     def post_reschedule_maintenance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reschedule_maintenance
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_reschedule_maintenance_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_reschedule_maintenance` iterceptor runs
+        before the `post_reschedule_maintenance_with_metadata` iterceptor.
         """
         return response
 
     def post_reschedule_maintenance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reschedule_maintenance
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_reschedule_maintenance_with_metadata` interceptor runs after the
+        `post_reschedule_maintenance` iterceptor. If the response is modified in
+        `post_reschedule_maintenance`, the modified response will be used in
+        `post_reschedule_maintenance_with_metadata`. This `post_reschedule_maintenance_with_metadata`
+        interceptor is recommended for new development instead of `post_reschedule_maintenance`.
         """
         return response, metadata
 
@@ -414,18 +468,24 @@ class CloudRedisRestInterceptor:
     def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_update_instance_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_instance` iterceptor runs
+        before the `post_update_instance_with_metadata` iterceptor.
         """
         return response
 
     def post_update_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_instance
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_update_instance_with_metadata` interceptor runs after the
+        `post_update_instance` iterceptor. If the response is modified in
+        `post_update_instance`, the modified response will be used in
+        `post_update_instance_with_metadata`. This `post_update_instance_with_metadata`
+        interceptor is recommended for new development instead of `post_update_instance`.
         """
         return response, metadata
 
@@ -440,18 +500,24 @@ class CloudRedisRestInterceptor:
     def post_upgrade_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_instance
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_upgrade_instance_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_upgrade_instance` iterceptor runs
+        before the `post_upgrade_instance_with_metadata` iterceptor.
         """
         return response
 
     def post_upgrade_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for upgrade_instance
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+        This `post_upgrade_instance_with_metadata` interceptor runs after the
+        `post_upgrade_instance` iterceptor. If the response is modified in
+        `post_upgrade_instance`, the modified response will be used in
+        `post_upgrade_instance_with_metadata`. This `post_upgrade_instance_with_metadata`
+        interceptor is recommended for new development instead of `post_upgrade_instance`.
         """
         return response, metadata
 

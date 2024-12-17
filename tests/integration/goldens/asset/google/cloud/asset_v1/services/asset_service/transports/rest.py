@@ -268,18 +268,24 @@ class AssetServiceRestInterceptor:
     def post_analyze_iam_policy(self, response: asset_service.AnalyzeIamPolicyResponse) -> asset_service.AnalyzeIamPolicyResponse:
         """Post-rpc interceptor for analyze_iam_policy
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_analyze_iam_policy_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_iam_policy` iterceptor runs
+        before the `post_analyze_iam_policy_with_metadata` iterceptor.
         """
         return response
 
     def post_analyze_iam_policy_with_metadata(self, response: asset_service.AnalyzeIamPolicyResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeIamPolicyResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_iam_policy
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_analyze_iam_policy_with_metadata` interceptor runs after the
+        `post_analyze_iam_policy` iterceptor. If the response is modified in
+        `post_analyze_iam_policy`, the modified response will be used in
+        `post_analyze_iam_policy_with_metadata`. This `post_analyze_iam_policy_with_metadata`
+        interceptor is recommended for new development instead of `post_analyze_iam_policy`.
         """
         return response, metadata
 
@@ -294,18 +300,24 @@ class AssetServiceRestInterceptor:
     def post_analyze_iam_policy_longrunning(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for analyze_iam_policy_longrunning
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_analyze_iam_policy_longrunning_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_iam_policy_longrunning` iterceptor runs
+        before the `post_analyze_iam_policy_longrunning_with_metadata` iterceptor.
         """
         return response
 
     def post_analyze_iam_policy_longrunning_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_iam_policy_longrunning
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_analyze_iam_policy_longrunning_with_metadata` interceptor runs after the
+        `post_analyze_iam_policy_longrunning` iterceptor. If the response is modified in
+        `post_analyze_iam_policy_longrunning`, the modified response will be used in
+        `post_analyze_iam_policy_longrunning_with_metadata`. This `post_analyze_iam_policy_longrunning_with_metadata`
+        interceptor is recommended for new development instead of `post_analyze_iam_policy_longrunning`.
         """
         return response, metadata
 
@@ -320,18 +332,24 @@ class AssetServiceRestInterceptor:
     def post_analyze_move(self, response: asset_service.AnalyzeMoveResponse) -> asset_service.AnalyzeMoveResponse:
         """Post-rpc interceptor for analyze_move
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_analyze_move_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_move` iterceptor runs
+        before the `post_analyze_move_with_metadata` iterceptor.
         """
         return response
 
     def post_analyze_move_with_metadata(self, response: asset_service.AnalyzeMoveResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeMoveResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_move
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_analyze_move_with_metadata` interceptor runs after the
+        `post_analyze_move` iterceptor. If the response is modified in
+        `post_analyze_move`, the modified response will be used in
+        `post_analyze_move_with_metadata`. This `post_analyze_move_with_metadata`
+        interceptor is recommended for new development instead of `post_analyze_move`.
         """
         return response, metadata
 
@@ -346,18 +364,24 @@ class AssetServiceRestInterceptor:
     def post_analyze_org_policies(self, response: asset_service.AnalyzeOrgPoliciesResponse) -> asset_service.AnalyzeOrgPoliciesResponse:
         """Post-rpc interceptor for analyze_org_policies
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_analyze_org_policies_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_org_policies` iterceptor runs
+        before the `post_analyze_org_policies_with_metadata` iterceptor.
         """
         return response
 
     def post_analyze_org_policies_with_metadata(self, response: asset_service.AnalyzeOrgPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_org_policies
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_analyze_org_policies_with_metadata` interceptor runs after the
+        `post_analyze_org_policies` iterceptor. If the response is modified in
+        `post_analyze_org_policies`, the modified response will be used in
+        `post_analyze_org_policies_with_metadata`. This `post_analyze_org_policies_with_metadata`
+        interceptor is recommended for new development instead of `post_analyze_org_policies`.
         """
         return response, metadata
 
@@ -372,18 +396,24 @@ class AssetServiceRestInterceptor:
     def post_analyze_org_policy_governed_assets(self, response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse) -> asset_service.AnalyzeOrgPolicyGovernedAssetsResponse:
         """Post-rpc interceptor for analyze_org_policy_governed_assets
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_analyze_org_policy_governed_assets_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_org_policy_governed_assets` iterceptor runs
+        before the `post_analyze_org_policy_governed_assets_with_metadata` iterceptor.
         """
         return response
 
     def post_analyze_org_policy_governed_assets_with_metadata(self, response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_org_policy_governed_assets
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_analyze_org_policy_governed_assets_with_metadata` interceptor runs after the
+        `post_analyze_org_policy_governed_assets` iterceptor. If the response is modified in
+        `post_analyze_org_policy_governed_assets`, the modified response will be used in
+        `post_analyze_org_policy_governed_assets_with_metadata`. This `post_analyze_org_policy_governed_assets_with_metadata`
+        interceptor is recommended for new development instead of `post_analyze_org_policy_governed_assets`.
         """
         return response, metadata
 
@@ -398,18 +428,24 @@ class AssetServiceRestInterceptor:
     def post_analyze_org_policy_governed_containers(self, response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse) -> asset_service.AnalyzeOrgPolicyGovernedContainersResponse:
         """Post-rpc interceptor for analyze_org_policy_governed_containers
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_analyze_org_policy_governed_containers_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_org_policy_governed_containers` iterceptor runs
+        before the `post_analyze_org_policy_governed_containers_with_metadata` iterceptor.
         """
         return response
 
     def post_analyze_org_policy_governed_containers_with_metadata(self, response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedContainersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_org_policy_governed_containers
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_analyze_org_policy_governed_containers_with_metadata` interceptor runs after the
+        `post_analyze_org_policy_governed_containers` iterceptor. If the response is modified in
+        `post_analyze_org_policy_governed_containers`, the modified response will be used in
+        `post_analyze_org_policy_governed_containers_with_metadata`. This `post_analyze_org_policy_governed_containers_with_metadata`
+        interceptor is recommended for new development instead of `post_analyze_org_policy_governed_containers`.
         """
         return response, metadata
 
@@ -424,18 +460,24 @@ class AssetServiceRestInterceptor:
     def post_batch_get_assets_history(self, response: asset_service.BatchGetAssetsHistoryResponse) -> asset_service.BatchGetAssetsHistoryResponse:
         """Post-rpc interceptor for batch_get_assets_history
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_batch_get_assets_history_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_get_assets_history` iterceptor runs
+        before the `post_batch_get_assets_history_with_metadata` iterceptor.
         """
         return response
 
     def post_batch_get_assets_history_with_metadata(self, response: asset_service.BatchGetAssetsHistoryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.BatchGetAssetsHistoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_get_assets_history
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_batch_get_assets_history_with_metadata` interceptor runs after the
+        `post_batch_get_assets_history` iterceptor. If the response is modified in
+        `post_batch_get_assets_history`, the modified response will be used in
+        `post_batch_get_assets_history_with_metadata`. This `post_batch_get_assets_history_with_metadata`
+        interceptor is recommended for new development instead of `post_batch_get_assets_history`.
         """
         return response, metadata
 
@@ -450,18 +492,24 @@ class AssetServiceRestInterceptor:
     def post_batch_get_effective_iam_policies(self, response: asset_service.BatchGetEffectiveIamPoliciesResponse) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
         """Post-rpc interceptor for batch_get_effective_iam_policies
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_batch_get_effective_iam_policies_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_get_effective_iam_policies` iterceptor runs
+        before the `post_batch_get_effective_iam_policies_with_metadata` iterceptor.
         """
         return response
 
     def post_batch_get_effective_iam_policies_with_metadata(self, response: asset_service.BatchGetEffectiveIamPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.BatchGetEffectiveIamPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_get_effective_iam_policies
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_batch_get_effective_iam_policies_with_metadata` interceptor runs after the
+        `post_batch_get_effective_iam_policies` iterceptor. If the response is modified in
+        `post_batch_get_effective_iam_policies`, the modified response will be used in
+        `post_batch_get_effective_iam_policies_with_metadata`. This `post_batch_get_effective_iam_policies_with_metadata`
+        interceptor is recommended for new development instead of `post_batch_get_effective_iam_policies`.
         """
         return response, metadata
 
@@ -476,18 +524,24 @@ class AssetServiceRestInterceptor:
     def post_create_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for create_feed
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_create_feed_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_feed` iterceptor runs
+        before the `post_create_feed_with_metadata` iterceptor.
         """
         return response
 
     def post_create_feed_with_metadata(self, response: asset_service.Feed, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_feed
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_create_feed_with_metadata` interceptor runs after the
+        `post_create_feed` iterceptor. If the response is modified in
+        `post_create_feed`, the modified response will be used in
+        `post_create_feed_with_metadata`. This `post_create_feed_with_metadata`
+        interceptor is recommended for new development instead of `post_create_feed`.
         """
         return response, metadata
 
@@ -502,18 +556,24 @@ class AssetServiceRestInterceptor:
     def post_create_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for create_saved_query
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_create_saved_query_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_saved_query` iterceptor runs
+        before the `post_create_saved_query_with_metadata` iterceptor.
         """
         return response
 
     def post_create_saved_query_with_metadata(self, response: asset_service.SavedQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SavedQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_saved_query
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_create_saved_query_with_metadata` interceptor runs after the
+        `post_create_saved_query` iterceptor. If the response is modified in
+        `post_create_saved_query`, the modified response will be used in
+        `post_create_saved_query_with_metadata`. This `post_create_saved_query_with_metadata`
+        interceptor is recommended for new development instead of `post_create_saved_query`.
         """
         return response, metadata
 
@@ -544,18 +604,24 @@ class AssetServiceRestInterceptor:
     def post_export_assets(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_assets
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_export_assets_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_assets` iterceptor runs
+        before the `post_export_assets_with_metadata` iterceptor.
         """
         return response
 
     def post_export_assets_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_assets
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_export_assets_with_metadata` interceptor runs after the
+        `post_export_assets` iterceptor. If the response is modified in
+        `post_export_assets`, the modified response will be used in
+        `post_export_assets_with_metadata`. This `post_export_assets_with_metadata`
+        interceptor is recommended for new development instead of `post_export_assets`.
         """
         return response, metadata
 
@@ -570,18 +636,24 @@ class AssetServiceRestInterceptor:
     def post_get_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for get_feed
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_get_feed_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_feed` iterceptor runs
+        before the `post_get_feed_with_metadata` iterceptor.
         """
         return response
 
     def post_get_feed_with_metadata(self, response: asset_service.Feed, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_feed
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_get_feed_with_metadata` interceptor runs after the
+        `post_get_feed` iterceptor. If the response is modified in
+        `post_get_feed`, the modified response will be used in
+        `post_get_feed_with_metadata`. This `post_get_feed_with_metadata`
+        interceptor is recommended for new development instead of `post_get_feed`.
         """
         return response, metadata
 
@@ -596,18 +668,24 @@ class AssetServiceRestInterceptor:
     def post_get_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for get_saved_query
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_get_saved_query_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_saved_query` iterceptor runs
+        before the `post_get_saved_query_with_metadata` iterceptor.
         """
         return response
 
     def post_get_saved_query_with_metadata(self, response: asset_service.SavedQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SavedQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_saved_query
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_get_saved_query_with_metadata` interceptor runs after the
+        `post_get_saved_query` iterceptor. If the response is modified in
+        `post_get_saved_query`, the modified response will be used in
+        `post_get_saved_query_with_metadata`. This `post_get_saved_query_with_metadata`
+        interceptor is recommended for new development instead of `post_get_saved_query`.
         """
         return response, metadata
 
@@ -622,18 +700,24 @@ class AssetServiceRestInterceptor:
     def post_list_assets(self, response: asset_service.ListAssetsResponse) -> asset_service.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_list_assets_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_assets` iterceptor runs
+        before the `post_list_assets_with_metadata` iterceptor.
         """
         return response
 
     def post_list_assets_with_metadata(self, response: asset_service.ListAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_assets
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_list_assets_with_metadata` interceptor runs after the
+        `post_list_assets` iterceptor. If the response is modified in
+        `post_list_assets`, the modified response will be used in
+        `post_list_assets_with_metadata`. This `post_list_assets_with_metadata`
+        interceptor is recommended for new development instead of `post_list_assets`.
         """
         return response, metadata
 
@@ -648,18 +732,24 @@ class AssetServiceRestInterceptor:
     def post_list_feeds(self, response: asset_service.ListFeedsResponse) -> asset_service.ListFeedsResponse:
         """Post-rpc interceptor for list_feeds
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_list_feeds_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_feeds` iterceptor runs
+        before the `post_list_feeds_with_metadata` iterceptor.
         """
         return response
 
     def post_list_feeds_with_metadata(self, response: asset_service.ListFeedsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListFeedsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_feeds
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_list_feeds_with_metadata` interceptor runs after the
+        `post_list_feeds` iterceptor. If the response is modified in
+        `post_list_feeds`, the modified response will be used in
+        `post_list_feeds_with_metadata`. This `post_list_feeds_with_metadata`
+        interceptor is recommended for new development instead of `post_list_feeds`.
         """
         return response, metadata
 
@@ -674,18 +764,24 @@ class AssetServiceRestInterceptor:
     def post_list_saved_queries(self, response: asset_service.ListSavedQueriesResponse) -> asset_service.ListSavedQueriesResponse:
         """Post-rpc interceptor for list_saved_queries
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_list_saved_queries_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_saved_queries` iterceptor runs
+        before the `post_list_saved_queries_with_metadata` iterceptor.
         """
         return response
 
     def post_list_saved_queries_with_metadata(self, response: asset_service.ListSavedQueriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListSavedQueriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_saved_queries
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_list_saved_queries_with_metadata` interceptor runs after the
+        `post_list_saved_queries` iterceptor. If the response is modified in
+        `post_list_saved_queries`, the modified response will be used in
+        `post_list_saved_queries_with_metadata`. This `post_list_saved_queries_with_metadata`
+        interceptor is recommended for new development instead of `post_list_saved_queries`.
         """
         return response, metadata
 
@@ -700,18 +796,24 @@ class AssetServiceRestInterceptor:
     def post_query_assets(self, response: asset_service.QueryAssetsResponse) -> asset_service.QueryAssetsResponse:
         """Post-rpc interceptor for query_assets
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_query_assets_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_query_assets` iterceptor runs
+        before the `post_query_assets_with_metadata` iterceptor.
         """
         return response
 
     def post_query_assets_with_metadata(self, response: asset_service.QueryAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.QueryAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_assets
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_query_assets_with_metadata` interceptor runs after the
+        `post_query_assets` iterceptor. If the response is modified in
+        `post_query_assets`, the modified response will be used in
+        `post_query_assets_with_metadata`. This `post_query_assets_with_metadata`
+        interceptor is recommended for new development instead of `post_query_assets`.
         """
         return response, metadata
 
@@ -726,18 +828,24 @@ class AssetServiceRestInterceptor:
     def post_search_all_iam_policies(self, response: asset_service.SearchAllIamPoliciesResponse) -> asset_service.SearchAllIamPoliciesResponse:
         """Post-rpc interceptor for search_all_iam_policies
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_search_all_iam_policies_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_all_iam_policies` iterceptor runs
+        before the `post_search_all_iam_policies_with_metadata` iterceptor.
         """
         return response
 
     def post_search_all_iam_policies_with_metadata(self, response: asset_service.SearchAllIamPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SearchAllIamPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_all_iam_policies
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_search_all_iam_policies_with_metadata` interceptor runs after the
+        `post_search_all_iam_policies` iterceptor. If the response is modified in
+        `post_search_all_iam_policies`, the modified response will be used in
+        `post_search_all_iam_policies_with_metadata`. This `post_search_all_iam_policies_with_metadata`
+        interceptor is recommended for new development instead of `post_search_all_iam_policies`.
         """
         return response, metadata
 
@@ -752,18 +860,24 @@ class AssetServiceRestInterceptor:
     def post_search_all_resources(self, response: asset_service.SearchAllResourcesResponse) -> asset_service.SearchAllResourcesResponse:
         """Post-rpc interceptor for search_all_resources
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_search_all_resources_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_all_resources` iterceptor runs
+        before the `post_search_all_resources_with_metadata` iterceptor.
         """
         return response
 
     def post_search_all_resources_with_metadata(self, response: asset_service.SearchAllResourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SearchAllResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_all_resources
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_search_all_resources_with_metadata` interceptor runs after the
+        `post_search_all_resources` iterceptor. If the response is modified in
+        `post_search_all_resources`, the modified response will be used in
+        `post_search_all_resources_with_metadata`. This `post_search_all_resources_with_metadata`
+        interceptor is recommended for new development instead of `post_search_all_resources`.
         """
         return response, metadata
 
@@ -778,18 +892,24 @@ class AssetServiceRestInterceptor:
     def post_update_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for update_feed
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_update_feed_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_feed` iterceptor runs
+        before the `post_update_feed_with_metadata` iterceptor.
         """
         return response
 
     def post_update_feed_with_metadata(self, response: asset_service.Feed, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_feed
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_update_feed_with_metadata` interceptor runs after the
+        `post_update_feed` iterceptor. If the response is modified in
+        `post_update_feed`, the modified response will be used in
+        `post_update_feed_with_metadata`. This `post_update_feed_with_metadata`
+        interceptor is recommended for new development instead of `post_update_feed`.
         """
         return response, metadata
 
@@ -804,18 +924,24 @@ class AssetServiceRestInterceptor:
     def post_update_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for update_saved_query
 
-        Override in a subclass to manipulate the response
+        Deprecated. This interceptor is deprecated. Please use the `post_update_saved_query_with_metadata`
+        interceptor instead. Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_saved_query` iterceptor runs
+        before the `post_update_saved_query_with_metadata` iterceptor.
         """
         return response
 
     def post_update_saved_query_with_metadata(self, response: asset_service.SavedQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SavedQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_saved_query
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the AssetService server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+        This `post_update_saved_query_with_metadata` interceptor runs after the
+        `post_update_saved_query` iterceptor. If the response is modified in
+        `post_update_saved_query`, the modified response will be used in
+        `post_update_saved_query_with_metadata`. This `post_update_saved_query_with_metadata`
+        interceptor is recommended for new development instead of `post_update_saved_query`.
         """
         return response, metadata
 
