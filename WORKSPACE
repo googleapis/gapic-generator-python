@@ -73,9 +73,9 @@ http_archive(
 # instantiated in grpc_deps().
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "10a0d58f39a1a909e95e00e8ba0b5b1dc64d02997f741151953a2b3659f6e78c",
-    strip_prefix = "protobuf-29.0",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v29.0.tar.gz"],
+    sha256 = "63150aba23f7a90fd7d87bdf514e459dd5fe7023fdde01b56ac53335df64d4bd",
+    strip_prefix = "protobuf-29.2",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v29.2.tar.gz"],
 )
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
@@ -85,9 +85,9 @@ grpc_deps()
 # https://github.com/protocolbuffers/protobuf/blob/29.x/protobuf_deps.bzl#L92-L98
 http_archive(
     name = "rules_cc",
-    urls = ["https://github.com/bazelbuild/rules_cc/releases/download/0.0.16/rules_cc-0.0.16.tar.gz"],
-    sha256 = "bbf1ae2f83305b7053b11e4467d317a7ba3517a12cef608543c1b1c5bf48a4df",
-    strip_prefix = "rules_cc-0.0.16",
+    urls = ["https://github.com/bazelbuild/rules_cc/releases/download/0.1.0/rules_cc-0.1.0.tar.gz"],
+    sha256 = "4b12149a041ddfb8306a8fd0e904e39d673552ce82e4296e96fac9cbf0780e59",
+    strip_prefix = "rules_cc-0.1.0",
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps", "PROTOBUF_MAVEN_ARTIFACTS")
