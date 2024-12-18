@@ -193,11 +193,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
-        Deprecated. This interceptor is deprecated. Please use the `post_create_instance_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_create_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_create_instance` iterceptor runs
-        before the `post_create_instance_with_metadata` iterceptor.
+        it is returned to user code. This `post_create_instance` interceptor runs
+        before the `post_create_instance_with_metadata` interceptor.
         """
         return response
 
@@ -225,11 +227,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
-        Deprecated. This interceptor is deprecated. Please use the `post_delete_instance_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_delete_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_delete_instance` iterceptor runs
-        before the `post_delete_instance_with_metadata` iterceptor.
+        it is returned to user code. This `post_delete_instance` interceptor runs
+        before the `post_delete_instance_with_metadata` interceptor.
         """
         return response
 
@@ -257,11 +261,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_export_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_instance
 
-        Deprecated. This interceptor is deprecated. Please use the `post_export_instance_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_export_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_export_instance` iterceptor runs
-        before the `post_export_instance_with_metadata` iterceptor.
+        it is returned to user code. This `post_export_instance` interceptor runs
+        before the `post_export_instance_with_metadata` interceptor.
         """
         return response
 
@@ -289,11 +295,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_failover_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for failover_instance
 
-        Deprecated. This interceptor is deprecated. Please use the `post_failover_instance_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_failover_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_failover_instance` iterceptor runs
-        before the `post_failover_instance_with_metadata` iterceptor.
+        it is returned to user code. This `post_failover_instance` interceptor runs
+        before the `post_failover_instance_with_metadata` interceptor.
         """
         return response
 
@@ -321,11 +329,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_get_instance(self, response: cloud_redis.Instance) -> cloud_redis.Instance:
         """Post-rpc interceptor for get_instance
 
-        Deprecated. This interceptor is deprecated. Please use the `post_get_instance_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_get_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_get_instance` iterceptor runs
-        before the `post_get_instance_with_metadata` iterceptor.
+        it is returned to user code. This `post_get_instance` interceptor runs
+        before the `post_get_instance_with_metadata` interceptor.
         """
         return response
 
@@ -353,11 +363,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_get_instance_auth_string(self, response: cloud_redis.InstanceAuthString) -> cloud_redis.InstanceAuthString:
         """Post-rpc interceptor for get_instance_auth_string
 
-        Deprecated. This interceptor is deprecated. Please use the `post_get_instance_auth_string_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_get_instance_auth_string_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_get_instance_auth_string` iterceptor runs
-        before the `post_get_instance_auth_string_with_metadata` iterceptor.
+        it is returned to user code. This `post_get_instance_auth_string` interceptor runs
+        before the `post_get_instance_auth_string_with_metadata` interceptor.
         """
         return response
 
@@ -385,11 +397,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_import_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_instance
 
-        Deprecated. This interceptor is deprecated. Please use the `post_import_instance_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_import_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_import_instance` iterceptor runs
-        before the `post_import_instance_with_metadata` iterceptor.
+        it is returned to user code. This `post_import_instance` interceptor runs
+        before the `post_import_instance_with_metadata` interceptor.
         """
         return response
 
@@ -417,11 +431,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_list_instances(self, response: cloud_redis.ListInstancesResponse) -> cloud_redis.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
-        Deprecated. This interceptor is deprecated. Please use the `post_list_instances_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_list_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_list_instances` iterceptor runs
-        before the `post_list_instances_with_metadata` iterceptor.
+        it is returned to user code. This `post_list_instances` interceptor runs
+        before the `post_list_instances_with_metadata` interceptor.
         """
         return response
 
@@ -449,11 +465,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_reschedule_maintenance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reschedule_maintenance
 
-        Deprecated. This interceptor is deprecated. Please use the `post_reschedule_maintenance_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_reschedule_maintenance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_reschedule_maintenance` iterceptor runs
-        before the `post_reschedule_maintenance_with_metadata` iterceptor.
+        it is returned to user code. This `post_reschedule_maintenance` interceptor runs
+        before the `post_reschedule_maintenance_with_metadata` interceptor.
         """
         return response
 
@@ -481,11 +499,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
-        Deprecated. This interceptor is deprecated. Please use the `post_update_instance_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_update_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_update_instance` iterceptor runs
-        before the `post_update_instance_with_metadata` iterceptor.
+        it is returned to user code. This `post_update_instance` interceptor runs
+        before the `post_update_instance_with_metadata` interceptor.
         """
         return response
 
@@ -513,11 +533,13 @@ class AsyncCloudRedisRestInterceptor:
     async def post_upgrade_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_instance
 
-        Deprecated. This interceptor is deprecated. Please use the `post_upgrade_instance_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_upgrade_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code. This `post_upgrade_instance` iterceptor runs
-        before the `post_upgrade_instance_with_metadata` iterceptor.
+        it is returned to user code. This `post_upgrade_instance` interceptor runs
+        before the `post_upgrade_instance_with_metadata` interceptor.
         """
         return response
 

@@ -383,11 +383,13 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
     {% endif %}
         """Post-rpc interceptor for {{ method.name|snake_case }}
 
-        Deprecated. This interceptor is deprecated. Please use the `post_{{ method.name|snake_case }}_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_{{ method.name|snake_case }}_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the {{ service.name }} server but before
-        it is returned to user code. This `post_{{ method.name|snake_case }}` iterceptor runs
-        before the `post_{{ method.name|snake_case }}_with_metadata` iterceptor.
+        it is returned to user code. This `post_{{ method.name|snake_case }}` interceptor runs
+        before the `post_{{ method.name|snake_case }}_with_metadata` interceptor.
         """
         return response
 

@@ -244,11 +244,13 @@ class EventarcRestInterceptor:
     def post_create_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel
 
-        Deprecated. This interceptor is deprecated. Please use the `post_create_channel_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_create_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_create_channel` iterceptor runs
-        before the `post_create_channel_with_metadata` iterceptor.
+        it is returned to user code. This `post_create_channel` interceptor runs
+        before the `post_create_channel_with_metadata` interceptor.
         """
         return response
 
@@ -276,11 +278,13 @@ class EventarcRestInterceptor:
     def post_create_channel_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel_connection
 
-        Deprecated. This interceptor is deprecated. Please use the `post_create_channel_connection_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_create_channel_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_create_channel_connection` iterceptor runs
-        before the `post_create_channel_connection_with_metadata` iterceptor.
+        it is returned to user code. This `post_create_channel_connection` interceptor runs
+        before the `post_create_channel_connection_with_metadata` interceptor.
         """
         return response
 
@@ -308,11 +312,13 @@ class EventarcRestInterceptor:
     def post_create_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_trigger
 
-        Deprecated. This interceptor is deprecated. Please use the `post_create_trigger_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_create_trigger_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_create_trigger` iterceptor runs
-        before the `post_create_trigger_with_metadata` iterceptor.
+        it is returned to user code. This `post_create_trigger` interceptor runs
+        before the `post_create_trigger_with_metadata` interceptor.
         """
         return response
 
@@ -340,11 +346,13 @@ class EventarcRestInterceptor:
     def post_delete_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_channel
 
-        Deprecated. This interceptor is deprecated. Please use the `post_delete_channel_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_delete_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_delete_channel` iterceptor runs
-        before the `post_delete_channel_with_metadata` iterceptor.
+        it is returned to user code. This `post_delete_channel` interceptor runs
+        before the `post_delete_channel_with_metadata` interceptor.
         """
         return response
 
@@ -372,11 +380,13 @@ class EventarcRestInterceptor:
     def post_delete_channel_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_channel_connection
 
-        Deprecated. This interceptor is deprecated. Please use the `post_delete_channel_connection_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_delete_channel_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_delete_channel_connection` iterceptor runs
-        before the `post_delete_channel_connection_with_metadata` iterceptor.
+        it is returned to user code. This `post_delete_channel_connection` interceptor runs
+        before the `post_delete_channel_connection_with_metadata` interceptor.
         """
         return response
 
@@ -404,11 +414,13 @@ class EventarcRestInterceptor:
     def post_delete_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_trigger
 
-        Deprecated. This interceptor is deprecated. Please use the `post_delete_trigger_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_delete_trigger_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_delete_trigger` iterceptor runs
-        before the `post_delete_trigger_with_metadata` iterceptor.
+        it is returned to user code. This `post_delete_trigger` interceptor runs
+        before the `post_delete_trigger_with_metadata` interceptor.
         """
         return response
 
@@ -436,11 +448,13 @@ class EventarcRestInterceptor:
     def post_get_channel(self, response: channel.Channel) -> channel.Channel:
         """Post-rpc interceptor for get_channel
 
-        Deprecated. This interceptor is deprecated. Please use the `post_get_channel_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_get_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_get_channel` iterceptor runs
-        before the `post_get_channel_with_metadata` iterceptor.
+        it is returned to user code. This `post_get_channel` interceptor runs
+        before the `post_get_channel_with_metadata` interceptor.
         """
         return response
 
@@ -468,11 +482,13 @@ class EventarcRestInterceptor:
     def post_get_channel_connection(self, response: channel_connection.ChannelConnection) -> channel_connection.ChannelConnection:
         """Post-rpc interceptor for get_channel_connection
 
-        Deprecated. This interceptor is deprecated. Please use the `post_get_channel_connection_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_get_channel_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_get_channel_connection` iterceptor runs
-        before the `post_get_channel_connection_with_metadata` iterceptor.
+        it is returned to user code. This `post_get_channel_connection` interceptor runs
+        before the `post_get_channel_connection_with_metadata` interceptor.
         """
         return response
 
@@ -500,11 +516,13 @@ class EventarcRestInterceptor:
     def post_get_google_channel_config(self, response: google_channel_config.GoogleChannelConfig) -> google_channel_config.GoogleChannelConfig:
         """Post-rpc interceptor for get_google_channel_config
 
-        Deprecated. This interceptor is deprecated. Please use the `post_get_google_channel_config_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_get_google_channel_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_get_google_channel_config` iterceptor runs
-        before the `post_get_google_channel_config_with_metadata` iterceptor.
+        it is returned to user code. This `post_get_google_channel_config` interceptor runs
+        before the `post_get_google_channel_config_with_metadata` interceptor.
         """
         return response
 
@@ -532,11 +550,13 @@ class EventarcRestInterceptor:
     def post_get_provider(self, response: discovery.Provider) -> discovery.Provider:
         """Post-rpc interceptor for get_provider
 
-        Deprecated. This interceptor is deprecated. Please use the `post_get_provider_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_get_provider_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_get_provider` iterceptor runs
-        before the `post_get_provider_with_metadata` iterceptor.
+        it is returned to user code. This `post_get_provider` interceptor runs
+        before the `post_get_provider_with_metadata` interceptor.
         """
         return response
 
@@ -564,11 +584,13 @@ class EventarcRestInterceptor:
     def post_get_trigger(self, response: trigger.Trigger) -> trigger.Trigger:
         """Post-rpc interceptor for get_trigger
 
-        Deprecated. This interceptor is deprecated. Please use the `post_get_trigger_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_get_trigger_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_get_trigger` iterceptor runs
-        before the `post_get_trigger_with_metadata` iterceptor.
+        it is returned to user code. This `post_get_trigger` interceptor runs
+        before the `post_get_trigger_with_metadata` interceptor.
         """
         return response
 
@@ -596,11 +618,13 @@ class EventarcRestInterceptor:
     def post_list_channel_connections(self, response: eventarc.ListChannelConnectionsResponse) -> eventarc.ListChannelConnectionsResponse:
         """Post-rpc interceptor for list_channel_connections
 
-        Deprecated. This interceptor is deprecated. Please use the `post_list_channel_connections_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_list_channel_connections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_list_channel_connections` iterceptor runs
-        before the `post_list_channel_connections_with_metadata` iterceptor.
+        it is returned to user code. This `post_list_channel_connections` interceptor runs
+        before the `post_list_channel_connections_with_metadata` interceptor.
         """
         return response
 
@@ -628,11 +652,13 @@ class EventarcRestInterceptor:
     def post_list_channels(self, response: eventarc.ListChannelsResponse) -> eventarc.ListChannelsResponse:
         """Post-rpc interceptor for list_channels
 
-        Deprecated. This interceptor is deprecated. Please use the `post_list_channels_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_list_channels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_list_channels` iterceptor runs
-        before the `post_list_channels_with_metadata` iterceptor.
+        it is returned to user code. This `post_list_channels` interceptor runs
+        before the `post_list_channels_with_metadata` interceptor.
         """
         return response
 
@@ -660,11 +686,13 @@ class EventarcRestInterceptor:
     def post_list_providers(self, response: eventarc.ListProvidersResponse) -> eventarc.ListProvidersResponse:
         """Post-rpc interceptor for list_providers
 
-        Deprecated. This interceptor is deprecated. Please use the `post_list_providers_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_list_providers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_list_providers` iterceptor runs
-        before the `post_list_providers_with_metadata` iterceptor.
+        it is returned to user code. This `post_list_providers` interceptor runs
+        before the `post_list_providers_with_metadata` interceptor.
         """
         return response
 
@@ -692,11 +720,13 @@ class EventarcRestInterceptor:
     def post_list_triggers(self, response: eventarc.ListTriggersResponse) -> eventarc.ListTriggersResponse:
         """Post-rpc interceptor for list_triggers
 
-        Deprecated. This interceptor is deprecated. Please use the `post_list_triggers_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_list_triggers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_list_triggers` iterceptor runs
-        before the `post_list_triggers_with_metadata` iterceptor.
+        it is returned to user code. This `post_list_triggers` interceptor runs
+        before the `post_list_triggers_with_metadata` interceptor.
         """
         return response
 
@@ -724,11 +754,13 @@ class EventarcRestInterceptor:
     def post_update_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_channel
 
-        Deprecated. This interceptor is deprecated. Please use the `post_update_channel_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_update_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_update_channel` iterceptor runs
-        before the `post_update_channel_with_metadata` iterceptor.
+        it is returned to user code. This `post_update_channel` interceptor runs
+        before the `post_update_channel_with_metadata` interceptor.
         """
         return response
 
@@ -756,11 +788,13 @@ class EventarcRestInterceptor:
     def post_update_google_channel_config(self, response: gce_google_channel_config.GoogleChannelConfig) -> gce_google_channel_config.GoogleChannelConfig:
         """Post-rpc interceptor for update_google_channel_config
 
-        Deprecated. This interceptor is deprecated. Please use the `post_update_google_channel_config_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_update_google_channel_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_update_google_channel_config` iterceptor runs
-        before the `post_update_google_channel_config_with_metadata` iterceptor.
+        it is returned to user code. This `post_update_google_channel_config` interceptor runs
+        before the `post_update_google_channel_config_with_metadata` interceptor.
         """
         return response
 
@@ -788,11 +822,13 @@ class EventarcRestInterceptor:
     def post_update_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_trigger
 
-        Deprecated. This interceptor is deprecated. Please use the `post_update_trigger_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_update_trigger_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code. This `post_update_trigger` iterceptor runs
-        before the `post_update_trigger_with_metadata` iterceptor.
+        it is returned to user code. This `post_update_trigger` interceptor runs
+        before the `post_update_trigger_with_metadata` interceptor.
         """
         return response
 

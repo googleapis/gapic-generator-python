@@ -268,11 +268,13 @@ class AssetServiceRestInterceptor:
     def post_analyze_iam_policy(self, response: asset_service.AnalyzeIamPolicyResponse) -> asset_service.AnalyzeIamPolicyResponse:
         """Post-rpc interceptor for analyze_iam_policy
 
-        Deprecated. This interceptor is deprecated. Please use the `post_analyze_iam_policy_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_analyze_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_analyze_iam_policy` iterceptor runs
-        before the `post_analyze_iam_policy_with_metadata` iterceptor.
+        it is returned to user code. This `post_analyze_iam_policy` interceptor runs
+        before the `post_analyze_iam_policy_with_metadata` interceptor.
         """
         return response
 
@@ -300,11 +302,13 @@ class AssetServiceRestInterceptor:
     def post_analyze_iam_policy_longrunning(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for analyze_iam_policy_longrunning
 
-        Deprecated. This interceptor is deprecated. Please use the `post_analyze_iam_policy_longrunning_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_analyze_iam_policy_longrunning_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_analyze_iam_policy_longrunning` iterceptor runs
-        before the `post_analyze_iam_policy_longrunning_with_metadata` iterceptor.
+        it is returned to user code. This `post_analyze_iam_policy_longrunning` interceptor runs
+        before the `post_analyze_iam_policy_longrunning_with_metadata` interceptor.
         """
         return response
 
@@ -332,11 +336,13 @@ class AssetServiceRestInterceptor:
     def post_analyze_move(self, response: asset_service.AnalyzeMoveResponse) -> asset_service.AnalyzeMoveResponse:
         """Post-rpc interceptor for analyze_move
 
-        Deprecated. This interceptor is deprecated. Please use the `post_analyze_move_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_analyze_move_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_analyze_move` iterceptor runs
-        before the `post_analyze_move_with_metadata` iterceptor.
+        it is returned to user code. This `post_analyze_move` interceptor runs
+        before the `post_analyze_move_with_metadata` interceptor.
         """
         return response
 
@@ -364,11 +370,13 @@ class AssetServiceRestInterceptor:
     def post_analyze_org_policies(self, response: asset_service.AnalyzeOrgPoliciesResponse) -> asset_service.AnalyzeOrgPoliciesResponse:
         """Post-rpc interceptor for analyze_org_policies
 
-        Deprecated. This interceptor is deprecated. Please use the `post_analyze_org_policies_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_analyze_org_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_analyze_org_policies` iterceptor runs
-        before the `post_analyze_org_policies_with_metadata` iterceptor.
+        it is returned to user code. This `post_analyze_org_policies` interceptor runs
+        before the `post_analyze_org_policies_with_metadata` interceptor.
         """
         return response
 
@@ -396,11 +404,13 @@ class AssetServiceRestInterceptor:
     def post_analyze_org_policy_governed_assets(self, response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse) -> asset_service.AnalyzeOrgPolicyGovernedAssetsResponse:
         """Post-rpc interceptor for analyze_org_policy_governed_assets
 
-        Deprecated. This interceptor is deprecated. Please use the `post_analyze_org_policy_governed_assets_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_analyze_org_policy_governed_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_analyze_org_policy_governed_assets` iterceptor runs
-        before the `post_analyze_org_policy_governed_assets_with_metadata` iterceptor.
+        it is returned to user code. This `post_analyze_org_policy_governed_assets` interceptor runs
+        before the `post_analyze_org_policy_governed_assets_with_metadata` interceptor.
         """
         return response
 
@@ -428,11 +438,13 @@ class AssetServiceRestInterceptor:
     def post_analyze_org_policy_governed_containers(self, response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse) -> asset_service.AnalyzeOrgPolicyGovernedContainersResponse:
         """Post-rpc interceptor for analyze_org_policy_governed_containers
 
-        Deprecated. This interceptor is deprecated. Please use the `post_analyze_org_policy_governed_containers_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_analyze_org_policy_governed_containers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_analyze_org_policy_governed_containers` iterceptor runs
-        before the `post_analyze_org_policy_governed_containers_with_metadata` iterceptor.
+        it is returned to user code. This `post_analyze_org_policy_governed_containers` interceptor runs
+        before the `post_analyze_org_policy_governed_containers_with_metadata` interceptor.
         """
         return response
 
@@ -460,11 +472,13 @@ class AssetServiceRestInterceptor:
     def post_batch_get_assets_history(self, response: asset_service.BatchGetAssetsHistoryResponse) -> asset_service.BatchGetAssetsHistoryResponse:
         """Post-rpc interceptor for batch_get_assets_history
 
-        Deprecated. This interceptor is deprecated. Please use the `post_batch_get_assets_history_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_batch_get_assets_history_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_batch_get_assets_history` iterceptor runs
-        before the `post_batch_get_assets_history_with_metadata` iterceptor.
+        it is returned to user code. This `post_batch_get_assets_history` interceptor runs
+        before the `post_batch_get_assets_history_with_metadata` interceptor.
         """
         return response
 
@@ -492,11 +506,13 @@ class AssetServiceRestInterceptor:
     def post_batch_get_effective_iam_policies(self, response: asset_service.BatchGetEffectiveIamPoliciesResponse) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
         """Post-rpc interceptor for batch_get_effective_iam_policies
 
-        Deprecated. This interceptor is deprecated. Please use the `post_batch_get_effective_iam_policies_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_batch_get_effective_iam_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_batch_get_effective_iam_policies` iterceptor runs
-        before the `post_batch_get_effective_iam_policies_with_metadata` iterceptor.
+        it is returned to user code. This `post_batch_get_effective_iam_policies` interceptor runs
+        before the `post_batch_get_effective_iam_policies_with_metadata` interceptor.
         """
         return response
 
@@ -524,11 +540,13 @@ class AssetServiceRestInterceptor:
     def post_create_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for create_feed
 
-        Deprecated. This interceptor is deprecated. Please use the `post_create_feed_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_create_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_create_feed` iterceptor runs
-        before the `post_create_feed_with_metadata` iterceptor.
+        it is returned to user code. This `post_create_feed` interceptor runs
+        before the `post_create_feed_with_metadata` interceptor.
         """
         return response
 
@@ -556,11 +574,13 @@ class AssetServiceRestInterceptor:
     def post_create_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for create_saved_query
 
-        Deprecated. This interceptor is deprecated. Please use the `post_create_saved_query_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_create_saved_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_create_saved_query` iterceptor runs
-        before the `post_create_saved_query_with_metadata` iterceptor.
+        it is returned to user code. This `post_create_saved_query` interceptor runs
+        before the `post_create_saved_query_with_metadata` interceptor.
         """
         return response
 
@@ -604,11 +624,13 @@ class AssetServiceRestInterceptor:
     def post_export_assets(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_assets
 
-        Deprecated. This interceptor is deprecated. Please use the `post_export_assets_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_export_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_export_assets` iterceptor runs
-        before the `post_export_assets_with_metadata` iterceptor.
+        it is returned to user code. This `post_export_assets` interceptor runs
+        before the `post_export_assets_with_metadata` interceptor.
         """
         return response
 
@@ -636,11 +658,13 @@ class AssetServiceRestInterceptor:
     def post_get_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for get_feed
 
-        Deprecated. This interceptor is deprecated. Please use the `post_get_feed_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_get_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_get_feed` iterceptor runs
-        before the `post_get_feed_with_metadata` iterceptor.
+        it is returned to user code. This `post_get_feed` interceptor runs
+        before the `post_get_feed_with_metadata` interceptor.
         """
         return response
 
@@ -668,11 +692,13 @@ class AssetServiceRestInterceptor:
     def post_get_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for get_saved_query
 
-        Deprecated. This interceptor is deprecated. Please use the `post_get_saved_query_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_get_saved_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_get_saved_query` iterceptor runs
-        before the `post_get_saved_query_with_metadata` iterceptor.
+        it is returned to user code. This `post_get_saved_query` interceptor runs
+        before the `post_get_saved_query_with_metadata` interceptor.
         """
         return response
 
@@ -700,11 +726,13 @@ class AssetServiceRestInterceptor:
     def post_list_assets(self, response: asset_service.ListAssetsResponse) -> asset_service.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
-        Deprecated. This interceptor is deprecated. Please use the `post_list_assets_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_list_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_list_assets` iterceptor runs
-        before the `post_list_assets_with_metadata` iterceptor.
+        it is returned to user code. This `post_list_assets` interceptor runs
+        before the `post_list_assets_with_metadata` interceptor.
         """
         return response
 
@@ -732,11 +760,13 @@ class AssetServiceRestInterceptor:
     def post_list_feeds(self, response: asset_service.ListFeedsResponse) -> asset_service.ListFeedsResponse:
         """Post-rpc interceptor for list_feeds
 
-        Deprecated. This interceptor is deprecated. Please use the `post_list_feeds_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_list_feeds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_list_feeds` iterceptor runs
-        before the `post_list_feeds_with_metadata` iterceptor.
+        it is returned to user code. This `post_list_feeds` interceptor runs
+        before the `post_list_feeds_with_metadata` interceptor.
         """
         return response
 
@@ -764,11 +794,13 @@ class AssetServiceRestInterceptor:
     def post_list_saved_queries(self, response: asset_service.ListSavedQueriesResponse) -> asset_service.ListSavedQueriesResponse:
         """Post-rpc interceptor for list_saved_queries
 
-        Deprecated. This interceptor is deprecated. Please use the `post_list_saved_queries_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_list_saved_queries_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_list_saved_queries` iterceptor runs
-        before the `post_list_saved_queries_with_metadata` iterceptor.
+        it is returned to user code. This `post_list_saved_queries` interceptor runs
+        before the `post_list_saved_queries_with_metadata` interceptor.
         """
         return response
 
@@ -796,11 +828,13 @@ class AssetServiceRestInterceptor:
     def post_query_assets(self, response: asset_service.QueryAssetsResponse) -> asset_service.QueryAssetsResponse:
         """Post-rpc interceptor for query_assets
 
-        Deprecated. This interceptor is deprecated. Please use the `post_query_assets_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_query_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_query_assets` iterceptor runs
-        before the `post_query_assets_with_metadata` iterceptor.
+        it is returned to user code. This `post_query_assets` interceptor runs
+        before the `post_query_assets_with_metadata` interceptor.
         """
         return response
 
@@ -828,11 +862,13 @@ class AssetServiceRestInterceptor:
     def post_search_all_iam_policies(self, response: asset_service.SearchAllIamPoliciesResponse) -> asset_service.SearchAllIamPoliciesResponse:
         """Post-rpc interceptor for search_all_iam_policies
 
-        Deprecated. This interceptor is deprecated. Please use the `post_search_all_iam_policies_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_search_all_iam_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_search_all_iam_policies` iterceptor runs
-        before the `post_search_all_iam_policies_with_metadata` iterceptor.
+        it is returned to user code. This `post_search_all_iam_policies` interceptor runs
+        before the `post_search_all_iam_policies_with_metadata` interceptor.
         """
         return response
 
@@ -860,11 +896,13 @@ class AssetServiceRestInterceptor:
     def post_search_all_resources(self, response: asset_service.SearchAllResourcesResponse) -> asset_service.SearchAllResourcesResponse:
         """Post-rpc interceptor for search_all_resources
 
-        Deprecated. This interceptor is deprecated. Please use the `post_search_all_resources_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_search_all_resources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_search_all_resources` iterceptor runs
-        before the `post_search_all_resources_with_metadata` iterceptor.
+        it is returned to user code. This `post_search_all_resources` interceptor runs
+        before the `post_search_all_resources_with_metadata` interceptor.
         """
         return response
 
@@ -892,11 +930,13 @@ class AssetServiceRestInterceptor:
     def post_update_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for update_feed
 
-        Deprecated. This interceptor is deprecated. Please use the `post_update_feed_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_update_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_update_feed` iterceptor runs
-        before the `post_update_feed_with_metadata` iterceptor.
+        it is returned to user code. This `post_update_feed` interceptor runs
+        before the `post_update_feed_with_metadata` interceptor.
         """
         return response
 
@@ -924,11 +964,13 @@ class AssetServiceRestInterceptor:
     def post_update_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for update_saved_query
 
-        Deprecated. This interceptor is deprecated. Please use the `post_update_saved_query_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_update_saved_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code. This `post_update_saved_query` iterceptor runs
-        before the `post_update_saved_query_with_metadata` iterceptor.
+        it is returned to user code. This `post_update_saved_query` interceptor runs
+        before the `post_update_saved_query_with_metadata` interceptor.
         """
         return response
 

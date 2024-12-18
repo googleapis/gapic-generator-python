@@ -121,11 +121,13 @@ class IAMCredentialsRestInterceptor:
     def post_generate_access_token(self, response: common.GenerateAccessTokenResponse) -> common.GenerateAccessTokenResponse:
         """Post-rpc interceptor for generate_access_token
 
-        Deprecated. This interceptor is deprecated. Please use the `post_generate_access_token_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_generate_access_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IAMCredentials server but before
-        it is returned to user code. This `post_generate_access_token` iterceptor runs
-        before the `post_generate_access_token_with_metadata` iterceptor.
+        it is returned to user code. This `post_generate_access_token` interceptor runs
+        before the `post_generate_access_token_with_metadata` interceptor.
         """
         return response
 
@@ -153,11 +155,13 @@ class IAMCredentialsRestInterceptor:
     def post_generate_id_token(self, response: common.GenerateIdTokenResponse) -> common.GenerateIdTokenResponse:
         """Post-rpc interceptor for generate_id_token
 
-        Deprecated. This interceptor is deprecated. Please use the `post_generate_id_token_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_generate_id_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IAMCredentials server but before
-        it is returned to user code. This `post_generate_id_token` iterceptor runs
-        before the `post_generate_id_token_with_metadata` iterceptor.
+        it is returned to user code. This `post_generate_id_token` interceptor runs
+        before the `post_generate_id_token_with_metadata` interceptor.
         """
         return response
 
@@ -185,11 +189,13 @@ class IAMCredentialsRestInterceptor:
     def post_sign_blob(self, response: common.SignBlobResponse) -> common.SignBlobResponse:
         """Post-rpc interceptor for sign_blob
 
-        Deprecated. This interceptor is deprecated. Please use the `post_sign_blob_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_sign_blob_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IAMCredentials server but before
-        it is returned to user code. This `post_sign_blob` iterceptor runs
-        before the `post_sign_blob_with_metadata` iterceptor.
+        it is returned to user code. This `post_sign_blob` interceptor runs
+        before the `post_sign_blob_with_metadata` interceptor.
         """
         return response
 
@@ -217,11 +223,13 @@ class IAMCredentialsRestInterceptor:
     def post_sign_jwt(self, response: common.SignJwtResponse) -> common.SignJwtResponse:
         """Post-rpc interceptor for sign_jwt
 
-        Deprecated. This interceptor is deprecated. Please use the `post_sign_jwt_with_metadata`
-        interceptor instead. Override in a subclass to read or manipulate the response
+        DEPRECATED. Please use the `post_sign_jwt_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the IAMCredentials server but before
-        it is returned to user code. This `post_sign_jwt` iterceptor runs
-        before the `post_sign_jwt_with_metadata` iterceptor.
+        it is returned to user code. This `post_sign_jwt` interceptor runs
+        before the `post_sign_jwt_with_metadata` interceptor.
         """
         return response
 
