@@ -402,11 +402,13 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the {{ service.name }} server but before it is returned to user code.
-        This `post_{{ method.name|snake_case }}_with_metadata` interceptor runs after the
-        `post_{{ method.name|snake_case }}` iterceptor. If the response is modified in
-        `post_{{ method.name|snake_case }}`, the modified response will be used in
-        `post_{{ method.name|snake_case }}_with_metadata`. This `post_{{ method.name|snake_case }}_with_metadata`
-        interceptor is recommended for new development instead of `post_{{ method.name|snake_case }}`.
+        
+        We recommend only using this `post_{{ method.name|snake_case }}_with_metadata`
+        interceptor in new development instead of the `post_{{ method.name|snake_case }}` interceptor.
+        When both interceptors are used, this `post_{{ method.name|snake_case }}_with_metadata` interceptor runs after the
+        `post_{{ method.name|snake_case }}` interceptor. The (possibly modified) response returned by 
+        `post_{{ method.name|snake_case }}` will be passed to
+        `post_{{ method.name|snake_case }}_with_metadata`.
         """
         return response, metadata
 

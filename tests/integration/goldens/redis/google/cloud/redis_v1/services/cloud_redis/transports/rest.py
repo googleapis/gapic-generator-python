@@ -195,11 +195,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_create_instance_with_metadata` interceptor runs after the
-        `post_create_instance` iterceptor. If the response is modified in
-        `post_create_instance`, the modified response will be used in
-        `post_create_instance_with_metadata`. This `post_create_instance_with_metadata`
-        interceptor is recommended for new development instead of `post_create_instance`.
+
+        We recommend only using this `post_create_instance_with_metadata`
+        interceptor in new development instead of the `post_create_instance` interceptor.
+        When both interceptors are used, this `post_create_instance_with_metadata` interceptor runs after the
+        `post_create_instance` interceptor. The (possibly modified) response returned by
+        `post_create_instance` will be passed to
+        `post_create_instance_with_metadata`.
         """
         return response, metadata
 
@@ -229,11 +231,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_delete_instance_with_metadata` interceptor runs after the
-        `post_delete_instance` iterceptor. If the response is modified in
-        `post_delete_instance`, the modified response will be used in
-        `post_delete_instance_with_metadata`. This `post_delete_instance_with_metadata`
-        interceptor is recommended for new development instead of `post_delete_instance`.
+
+        We recommend only using this `post_delete_instance_with_metadata`
+        interceptor in new development instead of the `post_delete_instance` interceptor.
+        When both interceptors are used, this `post_delete_instance_with_metadata` interceptor runs after the
+        `post_delete_instance` interceptor. The (possibly modified) response returned by
+        `post_delete_instance` will be passed to
+        `post_delete_instance_with_metadata`.
         """
         return response, metadata
 
@@ -263,11 +267,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_export_instance_with_metadata` interceptor runs after the
-        `post_export_instance` iterceptor. If the response is modified in
-        `post_export_instance`, the modified response will be used in
-        `post_export_instance_with_metadata`. This `post_export_instance_with_metadata`
-        interceptor is recommended for new development instead of `post_export_instance`.
+
+        We recommend only using this `post_export_instance_with_metadata`
+        interceptor in new development instead of the `post_export_instance` interceptor.
+        When both interceptors are used, this `post_export_instance_with_metadata` interceptor runs after the
+        `post_export_instance` interceptor. The (possibly modified) response returned by
+        `post_export_instance` will be passed to
+        `post_export_instance_with_metadata`.
         """
         return response, metadata
 
@@ -297,11 +303,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_failover_instance_with_metadata` interceptor runs after the
-        `post_failover_instance` iterceptor. If the response is modified in
-        `post_failover_instance`, the modified response will be used in
-        `post_failover_instance_with_metadata`. This `post_failover_instance_with_metadata`
-        interceptor is recommended for new development instead of `post_failover_instance`.
+
+        We recommend only using this `post_failover_instance_with_metadata`
+        interceptor in new development instead of the `post_failover_instance` interceptor.
+        When both interceptors are used, this `post_failover_instance_with_metadata` interceptor runs after the
+        `post_failover_instance` interceptor. The (possibly modified) response returned by
+        `post_failover_instance` will be passed to
+        `post_failover_instance_with_metadata`.
         """
         return response, metadata
 
@@ -331,11 +339,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_get_instance_with_metadata` interceptor runs after the
-        `post_get_instance` iterceptor. If the response is modified in
-        `post_get_instance`, the modified response will be used in
-        `post_get_instance_with_metadata`. This `post_get_instance_with_metadata`
-        interceptor is recommended for new development instead of `post_get_instance`.
+
+        We recommend only using this `post_get_instance_with_metadata`
+        interceptor in new development instead of the `post_get_instance` interceptor.
+        When both interceptors are used, this `post_get_instance_with_metadata` interceptor runs after the
+        `post_get_instance` interceptor. The (possibly modified) response returned by
+        `post_get_instance` will be passed to
+        `post_get_instance_with_metadata`.
         """
         return response, metadata
 
@@ -365,11 +375,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_get_instance_auth_string_with_metadata` interceptor runs after the
-        `post_get_instance_auth_string` iterceptor. If the response is modified in
-        `post_get_instance_auth_string`, the modified response will be used in
-        `post_get_instance_auth_string_with_metadata`. This `post_get_instance_auth_string_with_metadata`
-        interceptor is recommended for new development instead of `post_get_instance_auth_string`.
+
+        We recommend only using this `post_get_instance_auth_string_with_metadata`
+        interceptor in new development instead of the `post_get_instance_auth_string` interceptor.
+        When both interceptors are used, this `post_get_instance_auth_string_with_metadata` interceptor runs after the
+        `post_get_instance_auth_string` interceptor. The (possibly modified) response returned by
+        `post_get_instance_auth_string` will be passed to
+        `post_get_instance_auth_string_with_metadata`.
         """
         return response, metadata
 
@@ -399,11 +411,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_import_instance_with_metadata` interceptor runs after the
-        `post_import_instance` iterceptor. If the response is modified in
-        `post_import_instance`, the modified response will be used in
-        `post_import_instance_with_metadata`. This `post_import_instance_with_metadata`
-        interceptor is recommended for new development instead of `post_import_instance`.
+
+        We recommend only using this `post_import_instance_with_metadata`
+        interceptor in new development instead of the `post_import_instance` interceptor.
+        When both interceptors are used, this `post_import_instance_with_metadata` interceptor runs after the
+        `post_import_instance` interceptor. The (possibly modified) response returned by
+        `post_import_instance` will be passed to
+        `post_import_instance_with_metadata`.
         """
         return response, metadata
 
@@ -433,11 +447,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_list_instances_with_metadata` interceptor runs after the
-        `post_list_instances` iterceptor. If the response is modified in
-        `post_list_instances`, the modified response will be used in
-        `post_list_instances_with_metadata`. This `post_list_instances_with_metadata`
-        interceptor is recommended for new development instead of `post_list_instances`.
+
+        We recommend only using this `post_list_instances_with_metadata`
+        interceptor in new development instead of the `post_list_instances` interceptor.
+        When both interceptors are used, this `post_list_instances_with_metadata` interceptor runs after the
+        `post_list_instances` interceptor. The (possibly modified) response returned by
+        `post_list_instances` will be passed to
+        `post_list_instances_with_metadata`.
         """
         return response, metadata
 
@@ -467,11 +483,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_reschedule_maintenance_with_metadata` interceptor runs after the
-        `post_reschedule_maintenance` iterceptor. If the response is modified in
-        `post_reschedule_maintenance`, the modified response will be used in
-        `post_reschedule_maintenance_with_metadata`. This `post_reschedule_maintenance_with_metadata`
-        interceptor is recommended for new development instead of `post_reschedule_maintenance`.
+
+        We recommend only using this `post_reschedule_maintenance_with_metadata`
+        interceptor in new development instead of the `post_reschedule_maintenance` interceptor.
+        When both interceptors are used, this `post_reschedule_maintenance_with_metadata` interceptor runs after the
+        `post_reschedule_maintenance` interceptor. The (possibly modified) response returned by
+        `post_reschedule_maintenance` will be passed to
+        `post_reschedule_maintenance_with_metadata`.
         """
         return response, metadata
 
@@ -501,11 +519,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_update_instance_with_metadata` interceptor runs after the
-        `post_update_instance` iterceptor. If the response is modified in
-        `post_update_instance`, the modified response will be used in
-        `post_update_instance_with_metadata`. This `post_update_instance_with_metadata`
-        interceptor is recommended for new development instead of `post_update_instance`.
+
+        We recommend only using this `post_update_instance_with_metadata`
+        interceptor in new development instead of the `post_update_instance` interceptor.
+        When both interceptors are used, this `post_update_instance_with_metadata` interceptor runs after the
+        `post_update_instance` interceptor. The (possibly modified) response returned by
+        `post_update_instance` will be passed to
+        `post_update_instance_with_metadata`.
         """
         return response, metadata
 
@@ -535,11 +555,13 @@ class CloudRedisRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the CloudRedis server but before it is returned to user code.
-        This `post_upgrade_instance_with_metadata` interceptor runs after the
-        `post_upgrade_instance` iterceptor. If the response is modified in
-        `post_upgrade_instance`, the modified response will be used in
-        `post_upgrade_instance_with_metadata`. This `post_upgrade_instance_with_metadata`
-        interceptor is recommended for new development instead of `post_upgrade_instance`.
+
+        We recommend only using this `post_upgrade_instance_with_metadata`
+        interceptor in new development instead of the `post_upgrade_instance` interceptor.
+        When both interceptors are used, this `post_upgrade_instance_with_metadata` interceptor runs after the
+        `post_upgrade_instance` interceptor. The (possibly modified) response returned by
+        `post_upgrade_instance` will be passed to
+        `post_upgrade_instance_with_metadata`.
         """
         return response, metadata
 

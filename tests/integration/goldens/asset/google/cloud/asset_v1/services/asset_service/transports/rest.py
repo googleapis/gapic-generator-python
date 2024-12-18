@@ -283,11 +283,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_analyze_iam_policy_with_metadata` interceptor runs after the
-        `post_analyze_iam_policy` iterceptor. If the response is modified in
-        `post_analyze_iam_policy`, the modified response will be used in
-        `post_analyze_iam_policy_with_metadata`. This `post_analyze_iam_policy_with_metadata`
-        interceptor is recommended for new development instead of `post_analyze_iam_policy`.
+
+        We recommend only using this `post_analyze_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_analyze_iam_policy` interceptor.
+        When both interceptors are used, this `post_analyze_iam_policy_with_metadata` interceptor runs after the
+        `post_analyze_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_analyze_iam_policy` will be passed to
+        `post_analyze_iam_policy_with_metadata`.
         """
         return response, metadata
 
@@ -317,11 +319,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_analyze_iam_policy_longrunning_with_metadata` interceptor runs after the
-        `post_analyze_iam_policy_longrunning` iterceptor. If the response is modified in
-        `post_analyze_iam_policy_longrunning`, the modified response will be used in
-        `post_analyze_iam_policy_longrunning_with_metadata`. This `post_analyze_iam_policy_longrunning_with_metadata`
-        interceptor is recommended for new development instead of `post_analyze_iam_policy_longrunning`.
+
+        We recommend only using this `post_analyze_iam_policy_longrunning_with_metadata`
+        interceptor in new development instead of the `post_analyze_iam_policy_longrunning` interceptor.
+        When both interceptors are used, this `post_analyze_iam_policy_longrunning_with_metadata` interceptor runs after the
+        `post_analyze_iam_policy_longrunning` interceptor. The (possibly modified) response returned by
+        `post_analyze_iam_policy_longrunning` will be passed to
+        `post_analyze_iam_policy_longrunning_with_metadata`.
         """
         return response, metadata
 
@@ -351,11 +355,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_analyze_move_with_metadata` interceptor runs after the
-        `post_analyze_move` iterceptor. If the response is modified in
-        `post_analyze_move`, the modified response will be used in
-        `post_analyze_move_with_metadata`. This `post_analyze_move_with_metadata`
-        interceptor is recommended for new development instead of `post_analyze_move`.
+
+        We recommend only using this `post_analyze_move_with_metadata`
+        interceptor in new development instead of the `post_analyze_move` interceptor.
+        When both interceptors are used, this `post_analyze_move_with_metadata` interceptor runs after the
+        `post_analyze_move` interceptor. The (possibly modified) response returned by
+        `post_analyze_move` will be passed to
+        `post_analyze_move_with_metadata`.
         """
         return response, metadata
 
@@ -385,11 +391,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_analyze_org_policies_with_metadata` interceptor runs after the
-        `post_analyze_org_policies` iterceptor. If the response is modified in
-        `post_analyze_org_policies`, the modified response will be used in
-        `post_analyze_org_policies_with_metadata`. This `post_analyze_org_policies_with_metadata`
-        interceptor is recommended for new development instead of `post_analyze_org_policies`.
+
+        We recommend only using this `post_analyze_org_policies_with_metadata`
+        interceptor in new development instead of the `post_analyze_org_policies` interceptor.
+        When both interceptors are used, this `post_analyze_org_policies_with_metadata` interceptor runs after the
+        `post_analyze_org_policies` interceptor. The (possibly modified) response returned by
+        `post_analyze_org_policies` will be passed to
+        `post_analyze_org_policies_with_metadata`.
         """
         return response, metadata
 
@@ -419,11 +427,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_analyze_org_policy_governed_assets_with_metadata` interceptor runs after the
-        `post_analyze_org_policy_governed_assets` iterceptor. If the response is modified in
-        `post_analyze_org_policy_governed_assets`, the modified response will be used in
-        `post_analyze_org_policy_governed_assets_with_metadata`. This `post_analyze_org_policy_governed_assets_with_metadata`
-        interceptor is recommended for new development instead of `post_analyze_org_policy_governed_assets`.
+
+        We recommend only using this `post_analyze_org_policy_governed_assets_with_metadata`
+        interceptor in new development instead of the `post_analyze_org_policy_governed_assets` interceptor.
+        When both interceptors are used, this `post_analyze_org_policy_governed_assets_with_metadata` interceptor runs after the
+        `post_analyze_org_policy_governed_assets` interceptor. The (possibly modified) response returned by
+        `post_analyze_org_policy_governed_assets` will be passed to
+        `post_analyze_org_policy_governed_assets_with_metadata`.
         """
         return response, metadata
 
@@ -453,11 +463,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_analyze_org_policy_governed_containers_with_metadata` interceptor runs after the
-        `post_analyze_org_policy_governed_containers` iterceptor. If the response is modified in
-        `post_analyze_org_policy_governed_containers`, the modified response will be used in
-        `post_analyze_org_policy_governed_containers_with_metadata`. This `post_analyze_org_policy_governed_containers_with_metadata`
-        interceptor is recommended for new development instead of `post_analyze_org_policy_governed_containers`.
+
+        We recommend only using this `post_analyze_org_policy_governed_containers_with_metadata`
+        interceptor in new development instead of the `post_analyze_org_policy_governed_containers` interceptor.
+        When both interceptors are used, this `post_analyze_org_policy_governed_containers_with_metadata` interceptor runs after the
+        `post_analyze_org_policy_governed_containers` interceptor. The (possibly modified) response returned by
+        `post_analyze_org_policy_governed_containers` will be passed to
+        `post_analyze_org_policy_governed_containers_with_metadata`.
         """
         return response, metadata
 
@@ -487,11 +499,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_batch_get_assets_history_with_metadata` interceptor runs after the
-        `post_batch_get_assets_history` iterceptor. If the response is modified in
-        `post_batch_get_assets_history`, the modified response will be used in
-        `post_batch_get_assets_history_with_metadata`. This `post_batch_get_assets_history_with_metadata`
-        interceptor is recommended for new development instead of `post_batch_get_assets_history`.
+
+        We recommend only using this `post_batch_get_assets_history_with_metadata`
+        interceptor in new development instead of the `post_batch_get_assets_history` interceptor.
+        When both interceptors are used, this `post_batch_get_assets_history_with_metadata` interceptor runs after the
+        `post_batch_get_assets_history` interceptor. The (possibly modified) response returned by
+        `post_batch_get_assets_history` will be passed to
+        `post_batch_get_assets_history_with_metadata`.
         """
         return response, metadata
 
@@ -521,11 +535,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_batch_get_effective_iam_policies_with_metadata` interceptor runs after the
-        `post_batch_get_effective_iam_policies` iterceptor. If the response is modified in
-        `post_batch_get_effective_iam_policies`, the modified response will be used in
-        `post_batch_get_effective_iam_policies_with_metadata`. This `post_batch_get_effective_iam_policies_with_metadata`
-        interceptor is recommended for new development instead of `post_batch_get_effective_iam_policies`.
+
+        We recommend only using this `post_batch_get_effective_iam_policies_with_metadata`
+        interceptor in new development instead of the `post_batch_get_effective_iam_policies` interceptor.
+        When both interceptors are used, this `post_batch_get_effective_iam_policies_with_metadata` interceptor runs after the
+        `post_batch_get_effective_iam_policies` interceptor. The (possibly modified) response returned by
+        `post_batch_get_effective_iam_policies` will be passed to
+        `post_batch_get_effective_iam_policies_with_metadata`.
         """
         return response, metadata
 
@@ -555,11 +571,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_create_feed_with_metadata` interceptor runs after the
-        `post_create_feed` iterceptor. If the response is modified in
-        `post_create_feed`, the modified response will be used in
-        `post_create_feed_with_metadata`. This `post_create_feed_with_metadata`
-        interceptor is recommended for new development instead of `post_create_feed`.
+
+        We recommend only using this `post_create_feed_with_metadata`
+        interceptor in new development instead of the `post_create_feed` interceptor.
+        When both interceptors are used, this `post_create_feed_with_metadata` interceptor runs after the
+        `post_create_feed` interceptor. The (possibly modified) response returned by
+        `post_create_feed` will be passed to
+        `post_create_feed_with_metadata`.
         """
         return response, metadata
 
@@ -589,11 +607,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_create_saved_query_with_metadata` interceptor runs after the
-        `post_create_saved_query` iterceptor. If the response is modified in
-        `post_create_saved_query`, the modified response will be used in
-        `post_create_saved_query_with_metadata`. This `post_create_saved_query_with_metadata`
-        interceptor is recommended for new development instead of `post_create_saved_query`.
+
+        We recommend only using this `post_create_saved_query_with_metadata`
+        interceptor in new development instead of the `post_create_saved_query` interceptor.
+        When both interceptors are used, this `post_create_saved_query_with_metadata` interceptor runs after the
+        `post_create_saved_query` interceptor. The (possibly modified) response returned by
+        `post_create_saved_query` will be passed to
+        `post_create_saved_query_with_metadata`.
         """
         return response, metadata
 
@@ -639,11 +659,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_export_assets_with_metadata` interceptor runs after the
-        `post_export_assets` iterceptor. If the response is modified in
-        `post_export_assets`, the modified response will be used in
-        `post_export_assets_with_metadata`. This `post_export_assets_with_metadata`
-        interceptor is recommended for new development instead of `post_export_assets`.
+
+        We recommend only using this `post_export_assets_with_metadata`
+        interceptor in new development instead of the `post_export_assets` interceptor.
+        When both interceptors are used, this `post_export_assets_with_metadata` interceptor runs after the
+        `post_export_assets` interceptor. The (possibly modified) response returned by
+        `post_export_assets` will be passed to
+        `post_export_assets_with_metadata`.
         """
         return response, metadata
 
@@ -673,11 +695,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_get_feed_with_metadata` interceptor runs after the
-        `post_get_feed` iterceptor. If the response is modified in
-        `post_get_feed`, the modified response will be used in
-        `post_get_feed_with_metadata`. This `post_get_feed_with_metadata`
-        interceptor is recommended for new development instead of `post_get_feed`.
+
+        We recommend only using this `post_get_feed_with_metadata`
+        interceptor in new development instead of the `post_get_feed` interceptor.
+        When both interceptors are used, this `post_get_feed_with_metadata` interceptor runs after the
+        `post_get_feed` interceptor. The (possibly modified) response returned by
+        `post_get_feed` will be passed to
+        `post_get_feed_with_metadata`.
         """
         return response, metadata
 
@@ -707,11 +731,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_get_saved_query_with_metadata` interceptor runs after the
-        `post_get_saved_query` iterceptor. If the response is modified in
-        `post_get_saved_query`, the modified response will be used in
-        `post_get_saved_query_with_metadata`. This `post_get_saved_query_with_metadata`
-        interceptor is recommended for new development instead of `post_get_saved_query`.
+
+        We recommend only using this `post_get_saved_query_with_metadata`
+        interceptor in new development instead of the `post_get_saved_query` interceptor.
+        When both interceptors are used, this `post_get_saved_query_with_metadata` interceptor runs after the
+        `post_get_saved_query` interceptor. The (possibly modified) response returned by
+        `post_get_saved_query` will be passed to
+        `post_get_saved_query_with_metadata`.
         """
         return response, metadata
 
@@ -741,11 +767,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_list_assets_with_metadata` interceptor runs after the
-        `post_list_assets` iterceptor. If the response is modified in
-        `post_list_assets`, the modified response will be used in
-        `post_list_assets_with_metadata`. This `post_list_assets_with_metadata`
-        interceptor is recommended for new development instead of `post_list_assets`.
+
+        We recommend only using this `post_list_assets_with_metadata`
+        interceptor in new development instead of the `post_list_assets` interceptor.
+        When both interceptors are used, this `post_list_assets_with_metadata` interceptor runs after the
+        `post_list_assets` interceptor. The (possibly modified) response returned by
+        `post_list_assets` will be passed to
+        `post_list_assets_with_metadata`.
         """
         return response, metadata
 
@@ -775,11 +803,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_list_feeds_with_metadata` interceptor runs after the
-        `post_list_feeds` iterceptor. If the response is modified in
-        `post_list_feeds`, the modified response will be used in
-        `post_list_feeds_with_metadata`. This `post_list_feeds_with_metadata`
-        interceptor is recommended for new development instead of `post_list_feeds`.
+
+        We recommend only using this `post_list_feeds_with_metadata`
+        interceptor in new development instead of the `post_list_feeds` interceptor.
+        When both interceptors are used, this `post_list_feeds_with_metadata` interceptor runs after the
+        `post_list_feeds` interceptor. The (possibly modified) response returned by
+        `post_list_feeds` will be passed to
+        `post_list_feeds_with_metadata`.
         """
         return response, metadata
 
@@ -809,11 +839,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_list_saved_queries_with_metadata` interceptor runs after the
-        `post_list_saved_queries` iterceptor. If the response is modified in
-        `post_list_saved_queries`, the modified response will be used in
-        `post_list_saved_queries_with_metadata`. This `post_list_saved_queries_with_metadata`
-        interceptor is recommended for new development instead of `post_list_saved_queries`.
+
+        We recommend only using this `post_list_saved_queries_with_metadata`
+        interceptor in new development instead of the `post_list_saved_queries` interceptor.
+        When both interceptors are used, this `post_list_saved_queries_with_metadata` interceptor runs after the
+        `post_list_saved_queries` interceptor. The (possibly modified) response returned by
+        `post_list_saved_queries` will be passed to
+        `post_list_saved_queries_with_metadata`.
         """
         return response, metadata
 
@@ -843,11 +875,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_query_assets_with_metadata` interceptor runs after the
-        `post_query_assets` iterceptor. If the response is modified in
-        `post_query_assets`, the modified response will be used in
-        `post_query_assets_with_metadata`. This `post_query_assets_with_metadata`
-        interceptor is recommended for new development instead of `post_query_assets`.
+
+        We recommend only using this `post_query_assets_with_metadata`
+        interceptor in new development instead of the `post_query_assets` interceptor.
+        When both interceptors are used, this `post_query_assets_with_metadata` interceptor runs after the
+        `post_query_assets` interceptor. The (possibly modified) response returned by
+        `post_query_assets` will be passed to
+        `post_query_assets_with_metadata`.
         """
         return response, metadata
 
@@ -877,11 +911,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_search_all_iam_policies_with_metadata` interceptor runs after the
-        `post_search_all_iam_policies` iterceptor. If the response is modified in
-        `post_search_all_iam_policies`, the modified response will be used in
-        `post_search_all_iam_policies_with_metadata`. This `post_search_all_iam_policies_with_metadata`
-        interceptor is recommended for new development instead of `post_search_all_iam_policies`.
+
+        We recommend only using this `post_search_all_iam_policies_with_metadata`
+        interceptor in new development instead of the `post_search_all_iam_policies` interceptor.
+        When both interceptors are used, this `post_search_all_iam_policies_with_metadata` interceptor runs after the
+        `post_search_all_iam_policies` interceptor. The (possibly modified) response returned by
+        `post_search_all_iam_policies` will be passed to
+        `post_search_all_iam_policies_with_metadata`.
         """
         return response, metadata
 
@@ -911,11 +947,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_search_all_resources_with_metadata` interceptor runs after the
-        `post_search_all_resources` iterceptor. If the response is modified in
-        `post_search_all_resources`, the modified response will be used in
-        `post_search_all_resources_with_metadata`. This `post_search_all_resources_with_metadata`
-        interceptor is recommended for new development instead of `post_search_all_resources`.
+
+        We recommend only using this `post_search_all_resources_with_metadata`
+        interceptor in new development instead of the `post_search_all_resources` interceptor.
+        When both interceptors are used, this `post_search_all_resources_with_metadata` interceptor runs after the
+        `post_search_all_resources` interceptor. The (possibly modified) response returned by
+        `post_search_all_resources` will be passed to
+        `post_search_all_resources_with_metadata`.
         """
         return response, metadata
 
@@ -945,11 +983,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_update_feed_with_metadata` interceptor runs after the
-        `post_update_feed` iterceptor. If the response is modified in
-        `post_update_feed`, the modified response will be used in
-        `post_update_feed_with_metadata`. This `post_update_feed_with_metadata`
-        interceptor is recommended for new development instead of `post_update_feed`.
+
+        We recommend only using this `post_update_feed_with_metadata`
+        interceptor in new development instead of the `post_update_feed` interceptor.
+        When both interceptors are used, this `post_update_feed_with_metadata` interceptor runs after the
+        `post_update_feed` interceptor. The (possibly modified) response returned by
+        `post_update_feed` will be passed to
+        `post_update_feed_with_metadata`.
         """
         return response, metadata
 
@@ -979,11 +1019,13 @@ class AssetServiceRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the AssetService server but before it is returned to user code.
-        This `post_update_saved_query_with_metadata` interceptor runs after the
-        `post_update_saved_query` iterceptor. If the response is modified in
-        `post_update_saved_query`, the modified response will be used in
-        `post_update_saved_query_with_metadata`. This `post_update_saved_query_with_metadata`
-        interceptor is recommended for new development instead of `post_update_saved_query`.
+
+        We recommend only using this `post_update_saved_query_with_metadata`
+        interceptor in new development instead of the `post_update_saved_query` interceptor.
+        When both interceptors are used, this `post_update_saved_query_with_metadata` interceptor runs after the
+        `post_update_saved_query` interceptor. The (possibly modified) response returned by
+        `post_update_saved_query` will be passed to
+        `post_update_saved_query_with_metadata`.
         """
         return response, metadata
 

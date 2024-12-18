@@ -136,11 +136,13 @@ class IAMCredentialsRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the IAMCredentials server but before it is returned to user code.
-        This `post_generate_access_token_with_metadata` interceptor runs after the
-        `post_generate_access_token` iterceptor. If the response is modified in
-        `post_generate_access_token`, the modified response will be used in
-        `post_generate_access_token_with_metadata`. This `post_generate_access_token_with_metadata`
-        interceptor is recommended for new development instead of `post_generate_access_token`.
+
+        We recommend only using this `post_generate_access_token_with_metadata`
+        interceptor in new development instead of the `post_generate_access_token` interceptor.
+        When both interceptors are used, this `post_generate_access_token_with_metadata` interceptor runs after the
+        `post_generate_access_token` interceptor. The (possibly modified) response returned by
+        `post_generate_access_token` will be passed to
+        `post_generate_access_token_with_metadata`.
         """
         return response, metadata
 
@@ -170,11 +172,13 @@ class IAMCredentialsRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the IAMCredentials server but before it is returned to user code.
-        This `post_generate_id_token_with_metadata` interceptor runs after the
-        `post_generate_id_token` iterceptor. If the response is modified in
-        `post_generate_id_token`, the modified response will be used in
-        `post_generate_id_token_with_metadata`. This `post_generate_id_token_with_metadata`
-        interceptor is recommended for new development instead of `post_generate_id_token`.
+
+        We recommend only using this `post_generate_id_token_with_metadata`
+        interceptor in new development instead of the `post_generate_id_token` interceptor.
+        When both interceptors are used, this `post_generate_id_token_with_metadata` interceptor runs after the
+        `post_generate_id_token` interceptor. The (possibly modified) response returned by
+        `post_generate_id_token` will be passed to
+        `post_generate_id_token_with_metadata`.
         """
         return response, metadata
 
@@ -204,11 +208,13 @@ class IAMCredentialsRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the IAMCredentials server but before it is returned to user code.
-        This `post_sign_blob_with_metadata` interceptor runs after the
-        `post_sign_blob` iterceptor. If the response is modified in
-        `post_sign_blob`, the modified response will be used in
-        `post_sign_blob_with_metadata`. This `post_sign_blob_with_metadata`
-        interceptor is recommended for new development instead of `post_sign_blob`.
+
+        We recommend only using this `post_sign_blob_with_metadata`
+        interceptor in new development instead of the `post_sign_blob` interceptor.
+        When both interceptors are used, this `post_sign_blob_with_metadata` interceptor runs after the
+        `post_sign_blob` interceptor. The (possibly modified) response returned by
+        `post_sign_blob` will be passed to
+        `post_sign_blob_with_metadata`.
         """
         return response, metadata
 
@@ -238,11 +244,13 @@ class IAMCredentialsRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the IAMCredentials server but before it is returned to user code.
-        This `post_sign_jwt_with_metadata` interceptor runs after the
-        `post_sign_jwt` iterceptor. If the response is modified in
-        `post_sign_jwt`, the modified response will be used in
-        `post_sign_jwt_with_metadata`. This `post_sign_jwt_with_metadata`
-        interceptor is recommended for new development instead of `post_sign_jwt`.
+
+        We recommend only using this `post_sign_jwt_with_metadata`
+        interceptor in new development instead of the `post_sign_jwt` interceptor.
+        When both interceptors are used, this `post_sign_jwt_with_metadata` interceptor runs after the
+        `post_sign_jwt` interceptor. The (possibly modified) response returned by
+        `post_sign_jwt` will be passed to
+        `post_sign_jwt_with_metadata`.
         """
         return response, metadata
 

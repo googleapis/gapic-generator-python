@@ -259,11 +259,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_create_channel_with_metadata` interceptor runs after the
-        `post_create_channel` iterceptor. If the response is modified in
-        `post_create_channel`, the modified response will be used in
-        `post_create_channel_with_metadata`. This `post_create_channel_with_metadata`
-        interceptor is recommended for new development instead of `post_create_channel`.
+
+        We recommend only using this `post_create_channel_with_metadata`
+        interceptor in new development instead of the `post_create_channel` interceptor.
+        When both interceptors are used, this `post_create_channel_with_metadata` interceptor runs after the
+        `post_create_channel` interceptor. The (possibly modified) response returned by
+        `post_create_channel` will be passed to
+        `post_create_channel_with_metadata`.
         """
         return response, metadata
 
@@ -293,11 +295,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_create_channel_connection_with_metadata` interceptor runs after the
-        `post_create_channel_connection` iterceptor. If the response is modified in
-        `post_create_channel_connection`, the modified response will be used in
-        `post_create_channel_connection_with_metadata`. This `post_create_channel_connection_with_metadata`
-        interceptor is recommended for new development instead of `post_create_channel_connection`.
+
+        We recommend only using this `post_create_channel_connection_with_metadata`
+        interceptor in new development instead of the `post_create_channel_connection` interceptor.
+        When both interceptors are used, this `post_create_channel_connection_with_metadata` interceptor runs after the
+        `post_create_channel_connection` interceptor. The (possibly modified) response returned by
+        `post_create_channel_connection` will be passed to
+        `post_create_channel_connection_with_metadata`.
         """
         return response, metadata
 
@@ -327,11 +331,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_create_trigger_with_metadata` interceptor runs after the
-        `post_create_trigger` iterceptor. If the response is modified in
-        `post_create_trigger`, the modified response will be used in
-        `post_create_trigger_with_metadata`. This `post_create_trigger_with_metadata`
-        interceptor is recommended for new development instead of `post_create_trigger`.
+
+        We recommend only using this `post_create_trigger_with_metadata`
+        interceptor in new development instead of the `post_create_trigger` interceptor.
+        When both interceptors are used, this `post_create_trigger_with_metadata` interceptor runs after the
+        `post_create_trigger` interceptor. The (possibly modified) response returned by
+        `post_create_trigger` will be passed to
+        `post_create_trigger_with_metadata`.
         """
         return response, metadata
 
@@ -361,11 +367,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_delete_channel_with_metadata` interceptor runs after the
-        `post_delete_channel` iterceptor. If the response is modified in
-        `post_delete_channel`, the modified response will be used in
-        `post_delete_channel_with_metadata`. This `post_delete_channel_with_metadata`
-        interceptor is recommended for new development instead of `post_delete_channel`.
+
+        We recommend only using this `post_delete_channel_with_metadata`
+        interceptor in new development instead of the `post_delete_channel` interceptor.
+        When both interceptors are used, this `post_delete_channel_with_metadata` interceptor runs after the
+        `post_delete_channel` interceptor. The (possibly modified) response returned by
+        `post_delete_channel` will be passed to
+        `post_delete_channel_with_metadata`.
         """
         return response, metadata
 
@@ -395,11 +403,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_delete_channel_connection_with_metadata` interceptor runs after the
-        `post_delete_channel_connection` iterceptor. If the response is modified in
-        `post_delete_channel_connection`, the modified response will be used in
-        `post_delete_channel_connection_with_metadata`. This `post_delete_channel_connection_with_metadata`
-        interceptor is recommended for new development instead of `post_delete_channel_connection`.
+
+        We recommend only using this `post_delete_channel_connection_with_metadata`
+        interceptor in new development instead of the `post_delete_channel_connection` interceptor.
+        When both interceptors are used, this `post_delete_channel_connection_with_metadata` interceptor runs after the
+        `post_delete_channel_connection` interceptor. The (possibly modified) response returned by
+        `post_delete_channel_connection` will be passed to
+        `post_delete_channel_connection_with_metadata`.
         """
         return response, metadata
 
@@ -429,11 +439,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_delete_trigger_with_metadata` interceptor runs after the
-        `post_delete_trigger` iterceptor. If the response is modified in
-        `post_delete_trigger`, the modified response will be used in
-        `post_delete_trigger_with_metadata`. This `post_delete_trigger_with_metadata`
-        interceptor is recommended for new development instead of `post_delete_trigger`.
+
+        We recommend only using this `post_delete_trigger_with_metadata`
+        interceptor in new development instead of the `post_delete_trigger` interceptor.
+        When both interceptors are used, this `post_delete_trigger_with_metadata` interceptor runs after the
+        `post_delete_trigger` interceptor. The (possibly modified) response returned by
+        `post_delete_trigger` will be passed to
+        `post_delete_trigger_with_metadata`.
         """
         return response, metadata
 
@@ -463,11 +475,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_get_channel_with_metadata` interceptor runs after the
-        `post_get_channel` iterceptor. If the response is modified in
-        `post_get_channel`, the modified response will be used in
-        `post_get_channel_with_metadata`. This `post_get_channel_with_metadata`
-        interceptor is recommended for new development instead of `post_get_channel`.
+
+        We recommend only using this `post_get_channel_with_metadata`
+        interceptor in new development instead of the `post_get_channel` interceptor.
+        When both interceptors are used, this `post_get_channel_with_metadata` interceptor runs after the
+        `post_get_channel` interceptor. The (possibly modified) response returned by
+        `post_get_channel` will be passed to
+        `post_get_channel_with_metadata`.
         """
         return response, metadata
 
@@ -497,11 +511,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_get_channel_connection_with_metadata` interceptor runs after the
-        `post_get_channel_connection` iterceptor. If the response is modified in
-        `post_get_channel_connection`, the modified response will be used in
-        `post_get_channel_connection_with_metadata`. This `post_get_channel_connection_with_metadata`
-        interceptor is recommended for new development instead of `post_get_channel_connection`.
+
+        We recommend only using this `post_get_channel_connection_with_metadata`
+        interceptor in new development instead of the `post_get_channel_connection` interceptor.
+        When both interceptors are used, this `post_get_channel_connection_with_metadata` interceptor runs after the
+        `post_get_channel_connection` interceptor. The (possibly modified) response returned by
+        `post_get_channel_connection` will be passed to
+        `post_get_channel_connection_with_metadata`.
         """
         return response, metadata
 
@@ -531,11 +547,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_get_google_channel_config_with_metadata` interceptor runs after the
-        `post_get_google_channel_config` iterceptor. If the response is modified in
-        `post_get_google_channel_config`, the modified response will be used in
-        `post_get_google_channel_config_with_metadata`. This `post_get_google_channel_config_with_metadata`
-        interceptor is recommended for new development instead of `post_get_google_channel_config`.
+
+        We recommend only using this `post_get_google_channel_config_with_metadata`
+        interceptor in new development instead of the `post_get_google_channel_config` interceptor.
+        When both interceptors are used, this `post_get_google_channel_config_with_metadata` interceptor runs after the
+        `post_get_google_channel_config` interceptor. The (possibly modified) response returned by
+        `post_get_google_channel_config` will be passed to
+        `post_get_google_channel_config_with_metadata`.
         """
         return response, metadata
 
@@ -565,11 +583,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_get_provider_with_metadata` interceptor runs after the
-        `post_get_provider` iterceptor. If the response is modified in
-        `post_get_provider`, the modified response will be used in
-        `post_get_provider_with_metadata`. This `post_get_provider_with_metadata`
-        interceptor is recommended for new development instead of `post_get_provider`.
+
+        We recommend only using this `post_get_provider_with_metadata`
+        interceptor in new development instead of the `post_get_provider` interceptor.
+        When both interceptors are used, this `post_get_provider_with_metadata` interceptor runs after the
+        `post_get_provider` interceptor. The (possibly modified) response returned by
+        `post_get_provider` will be passed to
+        `post_get_provider_with_metadata`.
         """
         return response, metadata
 
@@ -599,11 +619,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_get_trigger_with_metadata` interceptor runs after the
-        `post_get_trigger` iterceptor. If the response is modified in
-        `post_get_trigger`, the modified response will be used in
-        `post_get_trigger_with_metadata`. This `post_get_trigger_with_metadata`
-        interceptor is recommended for new development instead of `post_get_trigger`.
+
+        We recommend only using this `post_get_trigger_with_metadata`
+        interceptor in new development instead of the `post_get_trigger` interceptor.
+        When both interceptors are used, this `post_get_trigger_with_metadata` interceptor runs after the
+        `post_get_trigger` interceptor. The (possibly modified) response returned by
+        `post_get_trigger` will be passed to
+        `post_get_trigger_with_metadata`.
         """
         return response, metadata
 
@@ -633,11 +655,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_list_channel_connections_with_metadata` interceptor runs after the
-        `post_list_channel_connections` iterceptor. If the response is modified in
-        `post_list_channel_connections`, the modified response will be used in
-        `post_list_channel_connections_with_metadata`. This `post_list_channel_connections_with_metadata`
-        interceptor is recommended for new development instead of `post_list_channel_connections`.
+
+        We recommend only using this `post_list_channel_connections_with_metadata`
+        interceptor in new development instead of the `post_list_channel_connections` interceptor.
+        When both interceptors are used, this `post_list_channel_connections_with_metadata` interceptor runs after the
+        `post_list_channel_connections` interceptor. The (possibly modified) response returned by
+        `post_list_channel_connections` will be passed to
+        `post_list_channel_connections_with_metadata`.
         """
         return response, metadata
 
@@ -667,11 +691,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_list_channels_with_metadata` interceptor runs after the
-        `post_list_channels` iterceptor. If the response is modified in
-        `post_list_channels`, the modified response will be used in
-        `post_list_channels_with_metadata`. This `post_list_channels_with_metadata`
-        interceptor is recommended for new development instead of `post_list_channels`.
+
+        We recommend only using this `post_list_channels_with_metadata`
+        interceptor in new development instead of the `post_list_channels` interceptor.
+        When both interceptors are used, this `post_list_channels_with_metadata` interceptor runs after the
+        `post_list_channels` interceptor. The (possibly modified) response returned by
+        `post_list_channels` will be passed to
+        `post_list_channels_with_metadata`.
         """
         return response, metadata
 
@@ -701,11 +727,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_list_providers_with_metadata` interceptor runs after the
-        `post_list_providers` iterceptor. If the response is modified in
-        `post_list_providers`, the modified response will be used in
-        `post_list_providers_with_metadata`. This `post_list_providers_with_metadata`
-        interceptor is recommended for new development instead of `post_list_providers`.
+
+        We recommend only using this `post_list_providers_with_metadata`
+        interceptor in new development instead of the `post_list_providers` interceptor.
+        When both interceptors are used, this `post_list_providers_with_metadata` interceptor runs after the
+        `post_list_providers` interceptor. The (possibly modified) response returned by
+        `post_list_providers` will be passed to
+        `post_list_providers_with_metadata`.
         """
         return response, metadata
 
@@ -735,11 +763,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_list_triggers_with_metadata` interceptor runs after the
-        `post_list_triggers` iterceptor. If the response is modified in
-        `post_list_triggers`, the modified response will be used in
-        `post_list_triggers_with_metadata`. This `post_list_triggers_with_metadata`
-        interceptor is recommended for new development instead of `post_list_triggers`.
+
+        We recommend only using this `post_list_triggers_with_metadata`
+        interceptor in new development instead of the `post_list_triggers` interceptor.
+        When both interceptors are used, this `post_list_triggers_with_metadata` interceptor runs after the
+        `post_list_triggers` interceptor. The (possibly modified) response returned by
+        `post_list_triggers` will be passed to
+        `post_list_triggers_with_metadata`.
         """
         return response, metadata
 
@@ -769,11 +799,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_update_channel_with_metadata` interceptor runs after the
-        `post_update_channel` iterceptor. If the response is modified in
-        `post_update_channel`, the modified response will be used in
-        `post_update_channel_with_metadata`. This `post_update_channel_with_metadata`
-        interceptor is recommended for new development instead of `post_update_channel`.
+
+        We recommend only using this `post_update_channel_with_metadata`
+        interceptor in new development instead of the `post_update_channel` interceptor.
+        When both interceptors are used, this `post_update_channel_with_metadata` interceptor runs after the
+        `post_update_channel` interceptor. The (possibly modified) response returned by
+        `post_update_channel` will be passed to
+        `post_update_channel_with_metadata`.
         """
         return response, metadata
 
@@ -803,11 +835,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_update_google_channel_config_with_metadata` interceptor runs after the
-        `post_update_google_channel_config` iterceptor. If the response is modified in
-        `post_update_google_channel_config`, the modified response will be used in
-        `post_update_google_channel_config_with_metadata`. This `post_update_google_channel_config_with_metadata`
-        interceptor is recommended for new development instead of `post_update_google_channel_config`.
+
+        We recommend only using this `post_update_google_channel_config_with_metadata`
+        interceptor in new development instead of the `post_update_google_channel_config` interceptor.
+        When both interceptors are used, this `post_update_google_channel_config_with_metadata` interceptor runs after the
+        `post_update_google_channel_config` interceptor. The (possibly modified) response returned by
+        `post_update_google_channel_config` will be passed to
+        `post_update_google_channel_config_with_metadata`.
         """
         return response, metadata
 
@@ -837,11 +871,13 @@ class EventarcRestInterceptor:
 
         Override in a subclass to read or manipulate the response or metadata after it
         is returned by the Eventarc server but before it is returned to user code.
-        This `post_update_trigger_with_metadata` interceptor runs after the
-        `post_update_trigger` iterceptor. If the response is modified in
-        `post_update_trigger`, the modified response will be used in
-        `post_update_trigger_with_metadata`. This `post_update_trigger_with_metadata`
-        interceptor is recommended for new development instead of `post_update_trigger`.
+
+        We recommend only using this `post_update_trigger_with_metadata`
+        interceptor in new development instead of the `post_update_trigger` interceptor.
+        When both interceptors are used, this `post_update_trigger_with_metadata` interceptor runs after the
+        `post_update_trigger` interceptor. The (possibly modified) response returned by
+        `post_update_trigger` will be passed to
+        `post_update_trigger_with_metadata`.
         """
         return response, metadata
 
