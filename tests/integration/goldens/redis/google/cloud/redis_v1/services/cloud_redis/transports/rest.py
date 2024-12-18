@@ -92,43 +92,11 @@ class CloudRedisRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_export_instance(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_export_instance(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_failover_instance(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_failover_instance(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_get_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_instance(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_get_instance_auth_string(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_instance_auth_string(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_import_instance(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_import_instance(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -140,27 +108,11 @@ class CloudRedisRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_reschedule_maintenance(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_reschedule_maintenance(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
             def pre_update_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_update_instance(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_upgrade_instance(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_upgrade_instance(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -203,40 +155,6 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_export_instance(self, request: cloud_redis.ExportInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ExportInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for export_instance
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_export_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for export_instance
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_failover_instance(self, request: cloud_redis.FailoverInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.FailoverInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for failover_instance
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_failover_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for failover_instance
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
     def pre_get_instance(self, request: cloud_redis.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
@@ -247,40 +165,6 @@ class CloudRedisRestInterceptor:
 
     def post_get_instance(self, response: cloud_redis.Instance) -> cloud_redis.Instance:
         """Post-rpc interceptor for get_instance
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_get_instance_auth_string(self, request: cloud_redis.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.GetInstanceAuthStringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for get_instance_auth_string
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_get_instance_auth_string(self, response: cloud_redis.InstanceAuthString) -> cloud_redis.InstanceAuthString:
-        """Post-rpc interceptor for get_instance_auth_string
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_import_instance(self, request: cloud_redis.ImportInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ImportInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for import_instance
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_import_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for import_instance
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudRedis server but before
@@ -305,23 +189,6 @@ class CloudRedisRestInterceptor:
         """
         return response
 
-    def pre_reschedule_maintenance(self, request: cloud_redis.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.RescheduleMaintenanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for reschedule_maintenance
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_reschedule_maintenance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for reschedule_maintenance
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
     def pre_update_instance(self, request: cloud_redis.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
@@ -332,23 +199,6 @@ class CloudRedisRestInterceptor:
 
     def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
-
-        Override in a subclass to manipulate the response
-        after it is returned by the CloudRedis server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_upgrade_instance(self, request: cloud_redis.UpgradeInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.UpgradeInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for upgrade_instance
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the CloudRedis server.
-        """
-        return request, metadata
-
-    def post_upgrade_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
-        """Post-rpc interceptor for upgrade_instance
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudRedis server but before
@@ -910,250 +760,6 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
             return resp
 
-    class _ExportInstance(_BaseCloudRedisRestTransport._BaseExportInstance, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.ExportInstance")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
-
-        def __call__(self,
-                request: cloud_redis.ExportInstanceRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
-            r"""Call the export instance method over HTTP.
-
-            Args:
-                request (~.cloud_redis.ExportInstanceRequest):
-                    The request object. Request for
-                [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options = _BaseCloudRedisRestTransport._BaseExportInstance._get_http_options()
-
-            request, metadata = self._interceptor.pre_export_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseExportInstance._get_transcoded_request(http_options, request)
-
-            body = _BaseCloudRedisRestTransport._BaseExportInstance._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseExportInstance._get_query_params_json(transcoded_request)
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                try:
-                    request_payload = json_format.MessageToJson(request)
-                except:
-                    request_payload = None
-                http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.ExportInstance",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "ExportInstance",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = CloudRedisRestTransport._ExportInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_export_instance(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.redis_v1.CloudRedisClient.export_instance",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "ExportInstance",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _FailoverInstance(_BaseCloudRedisRestTransport._BaseFailoverInstance, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.FailoverInstance")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
-
-        def __call__(self,
-                request: cloud_redis.FailoverInstanceRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
-            r"""Call the failover instance method over HTTP.
-
-            Args:
-                request (~.cloud_redis.FailoverInstanceRequest):
-                    The request object. Request for
-                [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_http_options()
-
-            request, metadata = self._interceptor.pre_failover_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_transcoded_request(http_options, request)
-
-            body = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_query_params_json(transcoded_request)
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                try:
-                    request_payload = json_format.MessageToJson(request)
-                except:
-                    request_payload = None
-                http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.FailoverInstance",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "FailoverInstance",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = CloudRedisRestTransport._FailoverInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_failover_instance(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.redis_v1.CloudRedisClient.failover_instance",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "FailoverInstance",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
     class _GetInstance(_BaseCloudRedisRestTransport._BaseGetInstance, CloudRedisRestStub):
         def __hash__(self):
             return hash("CloudRedisRestTransport.GetInstance")
@@ -1266,246 +872,6 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "GetInstance",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _GetInstanceAuthString(_BaseCloudRedisRestTransport._BaseGetInstanceAuthString, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.GetInstanceAuthString")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
-            return response
-
-        def __call__(self,
-                request: cloud_redis.GetInstanceAuthStringRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> cloud_redis.InstanceAuthString:
-            r"""Call the get instance auth string method over HTTP.
-
-            Args:
-                request (~.cloud_redis.GetInstanceAuthStringRequest):
-                    The request object. Request for
-                [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.cloud_redis.InstanceAuthString:
-                    Instance AUTH string details.
-            """
-
-            http_options = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_http_options()
-
-            request, metadata = self._interceptor.pre_get_instance_auth_string(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_transcoded_request(http_options, request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_query_params_json(transcoded_request)
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.GetInstanceAuthString",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "GetInstanceAuthString",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = CloudRedisRestTransport._GetInstanceAuthString._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = cloud_redis.InstanceAuthString()
-            pb_resp = cloud_redis.InstanceAuthString.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_get_instance_auth_string(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                try:
-                    response_payload = cloud_redis.InstanceAuthString.to_json(response)
-                except:
-                    response_payload = None
-                http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.redis_v1.CloudRedisClient.get_instance_auth_string",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "GetInstanceAuthString",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _ImportInstance(_BaseCloudRedisRestTransport._BaseImportInstance, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.ImportInstance")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
-
-        def __call__(self,
-                request: cloud_redis.ImportInstanceRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
-            r"""Call the import instance method over HTTP.
-
-            Args:
-                request (~.cloud_redis.ImportInstanceRequest):
-                    The request object. Request for
-                [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options = _BaseCloudRedisRestTransport._BaseImportInstance._get_http_options()
-
-            request, metadata = self._interceptor.pre_import_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseImportInstance._get_transcoded_request(http_options, request)
-
-            body = _BaseCloudRedisRestTransport._BaseImportInstance._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseImportInstance._get_query_params_json(transcoded_request)
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                try:
-                    request_payload = json_format.MessageToJson(request)
-                except:
-                    request_payload = None
-                http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.ImportInstance",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "ImportInstance",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = CloudRedisRestTransport._ImportInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_import_instance(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.redis_v1.CloudRedisClient.import_instance",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "ImportInstance",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1626,128 +992,6 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                     extra = {
                         "serviceName": "google.cloud.redis.v1.CloudRedis",
                         "rpcName": "ListInstances",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _RescheduleMaintenance(_BaseCloudRedisRestTransport._BaseRescheduleMaintenance, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.RescheduleMaintenance")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
-
-        def __call__(self,
-                request: cloud_redis.RescheduleMaintenanceRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
-            r"""Call the reschedule maintenance method over HTTP.
-
-            Args:
-                request (~.cloud_redis.RescheduleMaintenanceRequest):
-                    The request object. Request for
-                [RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_http_options()
-
-            request, metadata = self._interceptor.pre_reschedule_maintenance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_transcoded_request(http_options, request)
-
-            body = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_query_params_json(transcoded_request)
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                try:
-                    request_payload = json_format.MessageToJson(request)
-                except:
-                    request_payload = None
-                http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.RescheduleMaintenance",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "RescheduleMaintenance",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = CloudRedisRestTransport._RescheduleMaintenance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_reschedule_maintenance(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.redis_v1.CloudRedisClient.reschedule_maintenance",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "RescheduleMaintenance",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1876,128 +1120,6 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 )
             return resp
 
-    class _UpgradeInstance(_BaseCloudRedisRestTransport._BaseUpgradeInstance, CloudRedisRestStub):
-        def __hash__(self):
-            return hash("CloudRedisRestTransport.UpgradeInstance")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
-            return response
-
-        def __call__(self,
-                request: cloud_redis.UpgradeInstanceRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
-            r"""Call the upgrade instance method over HTTP.
-
-            Args:
-                request (~.cloud_redis.UpgradeInstanceRequest):
-                    The request object. Request for
-                [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_http_options()
-
-            request, metadata = self._interceptor.pre_upgrade_instance(request, metadata)
-            transcoded_request = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_transcoded_request(http_options, request)
-
-            body = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_request_body_json(transcoded_request)
-
-            # Jsonify the query params
-            query_params = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_query_params_json(transcoded_request)
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
-                try:
-                    request_payload = json_format.MessageToJson(request)
-                except:
-                    request_payload = None
-                http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.redis_v1.CloudRedisClient.UpgradeInstance",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "UpgradeInstance",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = CloudRedisRestTransport._UpgradeInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_upgrade_instance(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                try:
-                    response_payload = json_format.MessageToJson(resp)
-                except:
-                    response_payload = None
-                http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.redis_v1.CloudRedisClient.upgrade_instance",
-                    extra = {
-                        "serviceName": "google.cloud.redis.v1.CloudRedis",
-                        "rpcName": "UpgradeInstance",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
     @property
     def create_instance(self) -> Callable[
             [cloud_redis.CreateInstanceRequest],
@@ -2015,44 +1137,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
         return self._DeleteInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def export_instance(self) -> Callable[
-            [cloud_redis.ExportInstanceRequest],
-            operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ExportInstance(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
-    def failover_instance(self) -> Callable[
-            [cloud_redis.FailoverInstanceRequest],
-            operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._FailoverInstance(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
     def get_instance(self) -> Callable[
             [cloud_redis.GetInstanceRequest],
             cloud_redis.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
-    def get_instance_auth_string(self) -> Callable[
-            [cloud_redis.GetInstanceAuthStringRequest],
-            cloud_redis.InstanceAuthString]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetInstanceAuthString(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
-    def import_instance(self) -> Callable[
-            [cloud_redis.ImportInstanceRequest],
-            operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ImportInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def list_instances(self) -> Callable[
@@ -2063,28 +1153,12 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
         return self._ListInstances(self._session, self._host, self._interceptor) # type: ignore
 
     @property
-    def reschedule_maintenance(self) -> Callable[
-            [cloud_redis.RescheduleMaintenanceRequest],
-            operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._RescheduleMaintenance(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
     def update_instance(self) -> Callable[
             [cloud_redis.UpdateInstanceRequest],
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor) # type: ignore
-
-    @property
-    def upgrade_instance(self) -> Callable[
-            [cloud_redis.UpgradeInstanceRequest],
-            operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._UpgradeInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_location(self):
