@@ -132,11 +132,30 @@ class CloudRedisRestInterceptor:
     def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_instance` interceptor runs
+        before the `post_create_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_create_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+
+        We recommend only using this `post_create_instance_with_metadata`
+        interceptor in new development instead of the `post_create_instance` interceptor.
+        When both interceptors are used, this `post_create_instance_with_metadata` interceptor runs after the
+        `post_create_instance` interceptor. The (possibly modified) response returned by
+        `post_create_instance` will be passed to
+        `post_create_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_delete_instance(self, request: cloud_redis.DeleteInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instance
@@ -149,11 +168,30 @@ class CloudRedisRestInterceptor:
     def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_instance` interceptor runs
+        before the `post_delete_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_delete_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+
+        We recommend only using this `post_delete_instance_with_metadata`
+        interceptor in new development instead of the `post_delete_instance` interceptor.
+        When both interceptors are used, this `post_delete_instance_with_metadata` interceptor runs after the
+        `post_delete_instance` interceptor. The (possibly modified) response returned by
+        `post_delete_instance` will be passed to
+        `post_delete_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_instance(self, request: cloud_redis.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
@@ -166,11 +204,30 @@ class CloudRedisRestInterceptor:
     def post_get_instance(self, response: cloud_redis.Instance) -> cloud_redis.Instance:
         """Post-rpc interceptor for get_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_instance` interceptor runs
+        before the `post_get_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_get_instance_with_metadata(self, response: cloud_redis.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+
+        We recommend only using this `post_get_instance_with_metadata`
+        interceptor in new development instead of the `post_get_instance` interceptor.
+        When both interceptors are used, this `post_get_instance_with_metadata` interceptor runs after the
+        `post_get_instance` interceptor. The (possibly modified) response returned by
+        `post_get_instance` will be passed to
+        `post_get_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_instances(self, request: cloud_redis.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
@@ -183,11 +240,30 @@ class CloudRedisRestInterceptor:
     def post_list_instances(self, response: cloud_redis.ListInstancesResponse) -> cloud_redis.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_instances_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_instances` interceptor runs
+        before the `post_list_instances_with_metadata` interceptor.
         """
         return response
+
+    def post_list_instances_with_metadata(self, response: cloud_redis.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_instances
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+
+        We recommend only using this `post_list_instances_with_metadata`
+        interceptor in new development instead of the `post_list_instances` interceptor.
+        When both interceptors are used, this `post_list_instances_with_metadata` interceptor runs after the
+        `post_list_instances` interceptor. The (possibly modified) response returned by
+        `post_list_instances` will be passed to
+        `post_list_instances_with_metadata`.
+        """
+        return response, metadata
 
     def pre_update_instance(self, request: cloud_redis.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[cloud_redis.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
@@ -200,11 +276,30 @@ class CloudRedisRestInterceptor:
     def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the CloudRedis server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_instance` interceptor runs
+        before the `post_update_instance_with_metadata` interceptor.
         """
         return response
+
+    def post_update_instance_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CloudRedis server but before it is returned to user code.
+
+        We recommend only using this `post_update_instance_with_metadata`
+        interceptor in new development instead of the `post_update_instance` interceptor.
+        When both interceptors are used, this `post_update_instance_with_metadata` interceptor runs after the
+        `post_update_instance` interceptor. The (possibly modified) response returned by
+        `post_update_instance` will be passed to
+        `post_update_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_location(
         self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
@@ -620,6 +715,8 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_create_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
@@ -739,6 +836,8 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_delete_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
@@ -857,6 +956,8 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_redis.Instance.to_json(response)
@@ -977,6 +1078,8 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_instances(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_redis.ListInstancesResponse.to_json(response)
@@ -1099,6 +1202,8 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_update_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_instance_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)

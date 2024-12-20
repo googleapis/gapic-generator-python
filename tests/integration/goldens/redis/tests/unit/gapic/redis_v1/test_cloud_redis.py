@@ -4023,9 +4023,11 @@ def test_list_instances_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_list_instances") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_list_instances_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_list_instances") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
         transcode.return_value = {
             "method": "post",
@@ -4047,11 +4049,13 @@ def test_list_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis.ListInstancesResponse()
+        post_with_metadata.return_value = cloud_redis.ListInstancesResponse(), metadata
 
         client.list_instances(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_instance_rest_bad_request(request_type=cloud_redis.GetInstanceRequest):
@@ -4177,9 +4181,11 @@ def test_get_instance_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -4201,11 +4207,13 @@ def test_get_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis.Instance()
+        post_with_metadata.return_value = cloud_redis.Instance(), metadata
 
         client.get_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_instance_rest_bad_request(request_type=cloud_redis.CreateInstanceRequest):
@@ -4338,9 +4346,11 @@ def test_create_instance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_create_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_create_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_create_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.CreateInstanceRequest.pb(cloud_redis.CreateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -4362,11 +4372,13 @@ def test_create_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_instance_rest_bad_request(request_type=cloud_redis.UpdateInstanceRequest):
@@ -4499,9 +4511,11 @@ def test_update_instance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_update_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_update_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_update_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.UpdateInstanceRequest.pb(cloud_redis.UpdateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -4523,11 +4537,13 @@ def test_update_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_instance_rest_bad_request(request_type=cloud_redis.DeleteInstanceRequest):
@@ -4596,9 +4612,11 @@ def test_delete_instance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_delete_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_delete_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_delete_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.DeleteInstanceRequest.pb(cloud_redis.DeleteInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -4620,11 +4638,13 @@ def test_delete_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
@@ -5221,9 +5241,11 @@ async def test_list_instances_rest_asyncio_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_list_instances") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_list_instances_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_list_instances") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
         transcode.return_value = {
             "method": "post",
@@ -5245,11 +5267,13 @@ async def test_list_instances_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis.ListInstancesResponse()
+        post_with_metadata.return_value = cloud_redis.ListInstancesResponse(), metadata
 
         await client.list_instances(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_get_instance_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceRequest):
@@ -5382,9 +5406,11 @@ async def test_get_instance_rest_asyncio_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_get_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_get_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_get_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -5406,11 +5432,13 @@ async def test_get_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis.Instance()
+        post_with_metadata.return_value = cloud_redis.Instance(), metadata
 
         await client.get_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_create_instance_rest_asyncio_bad_request(request_type=cloud_redis.CreateInstanceRequest):
@@ -5550,9 +5578,11 @@ async def test_create_instance_rest_asyncio_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_create_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_create_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_create_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.CreateInstanceRequest.pb(cloud_redis.CreateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -5574,11 +5604,13 @@ async def test_create_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.create_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_update_instance_rest_asyncio_bad_request(request_type=cloud_redis.UpdateInstanceRequest):
@@ -5718,9 +5750,11 @@ async def test_update_instance_rest_asyncio_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_update_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_update_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_update_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.UpdateInstanceRequest.pb(cloud_redis.UpdateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -5742,11 +5776,13 @@ async def test_update_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.update_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_delete_instance_rest_asyncio_bad_request(request_type=cloud_redis.DeleteInstanceRequest):
@@ -5822,9 +5858,11 @@ async def test_delete_instance_rest_asyncio_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_delete_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_delete_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_delete_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.DeleteInstanceRequest.pb(cloud_redis.DeleteInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -5846,11 +5884,13 @@ async def test_delete_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.delete_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_get_location_rest_asyncio_bad_request(request_type=locations_pb2.GetLocationRequest):
