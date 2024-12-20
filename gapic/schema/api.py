@@ -461,7 +461,7 @@ class API:
                     if name not in api.protos:
                         new_protos[name] = proto
                     else:
-                        pruned_proto = proto.prune_messages_for_selective_gapic(
+                        proto_to_generate = proto.prune_messages_for_selective_gapic(
                             address_allowlist=address_allowlist)
                         if pruned_proto:
                             new_protos[name] = pruned_proto
