@@ -456,7 +456,7 @@ class API:
 
                 new_protos = {}
 
-                # We only prune services/messages/enums from protos that are not depepdencies.
+                # We only prune services/messages/enums from protos that are not dependencies.
                 for name, proto in api.all_protos.items():
                     if name not in api.protos:
                         new_protos[name] = proto
