@@ -47,3 +47,50 @@ Windows
     python3 -m venv <your-env>
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install \path\to\library
+
+
+LOGGING
+-------
+
+This library has support to enable logging for debugging and monitoring purposes. Note that logs may contain sensitive information and care should be
+taken to restrict access to the logs if they are saved, whether it be on local storage or Google Cloud Logging.
+
+Users must **explicitly opt-in** to enable logging by configuring the `GOOGLE_SDK_PYTHON_LOGGING_SCOPE` environment variable with a valid logging scope.
+
+A logging scope is a namespace that begins with :code:`google`.
+
+- Valid logging scopes: :code:`google`, :code:`google.cloud.asset.v1`, :code:`google.api`, :code:`google.auth`, etc.
+- Invalid logging scopes: :code:`foo`, :code:`123`, etc.
+
+**NOTE**: If an invalid logging scope is configured, we do not act on the corresponding logger.
+
+To set a handler that applies to all Google-based loggers:
+
+.. code-block:: console
+
+    export GOOGLE_SDK_PYTHON_LOGGING_SCOPE=google
+
+To enable a handler for a specific GAPIC:
+
+.. code-block:: console
+
+    export GOOGLE_SDK_PYTHON_LOGGING_SCOPE=google.cloud.abc.v1
+
+:code:`GOOGLE_SDK_PYTHON_LOGGING_SCOPE` allows users to enable or disable logs by configuring a log system; it does not let them configure log levels, handlers, formatters, etc.
+
+Loggers so configured will handle log messages at level DEBUG or higher, outputting them to stderr. The default log format for these log messages is structured log format.
+
+Alternatively, users can define and configure a valid logging scope using the standard logging library.
+
+A typical use case is the following, which defines a handler that applies to all Google-based loggers:
+
+.. code-block:: python3
+
+    import logging
+
+    from google.cloud.translate_v3 import translate
+
+    base_logger = logging.getLogger("google")
+    base_logger.addHandler(logging.StreamHandler())
+    base_logger.setLevel(logging.DEBUG)
+    Client = translate.TranslationServiceClient()
