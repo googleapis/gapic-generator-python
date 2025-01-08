@@ -441,7 +441,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         if not hasattr(cred, "get_cred_info"):
             return
 
-        cred_info = cred.get_cred_info()  # type: ignore
+        cred_info = cred.get_cred_info()
         if cred_info and hasattr(error._details, "append"):
             error._details.append(json.dumps(cred_info))
 
