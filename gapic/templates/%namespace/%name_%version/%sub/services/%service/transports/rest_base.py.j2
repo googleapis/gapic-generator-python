@@ -31,7 +31,6 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 from .base import {{service.name}}Transport, DEFAULT_CLIENT_INFO
-from google.auth import credentials as ga_credentials  # type: ignore
 
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
@@ -56,7 +55,7 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
     {# TODO: handle mtls stuff if that is relevant for rest transport #}
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials: Optional[Any] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             always_use_jwt_access: Optional[bool] = False,
             url_scheme: str = 'https',
@@ -66,7 +65,12 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
                 {{ ' ' }}The hostname to connect to {% if service.host %}(default: '{{ service.host }}'){% endif %}.
-            credentials (Optional[google.auth.credentials.Credentials]): The
+            {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2173): Type hint for credentials is
+             # set to `Any` to support async and sync credential types in the parent rest transport classes. 
+             # However, we should have a stronger type here such as an abstract base credentials
+             # class leveraged by sync and async credential classes.
+            #}
+            credentials (Optional[Any]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the

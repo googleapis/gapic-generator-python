@@ -1,6 +1,75 @@
 # Changelog
 
 
+## [1.21.0](https://github.com/googleapis/gapic-generator-python/compare/v1.20.2...v1.21.0) (2024-12-11)
+
+
+### Features
+
+* Add client debug logging support for async gRPC ([#2291](https://github.com/googleapis/gapic-generator-python/issues/2291)) ([f45935a](https://github.com/googleapis/gapic-generator-python/commit/f45935a4d760a36bf989ed79bfd02aa7ec203468))
+* Add client logging support for sync gRPC ([#2284](https://github.com/googleapis/gapic-generator-python/issues/2284)) ([dddf797](https://github.com/googleapis/gapic-generator-python/commit/dddf797a1ec7bf0496b4b4c75f8d37faa753c824))
+* Add debug log when creating client ([#2265](https://github.com/googleapis/gapic-generator-python/issues/2265)) ([8be95a2](https://github.com/googleapis/gapic-generator-python/commit/8be95a2f4749a2882117154aa655c0a9d71cdc50))
+* Add debug log when sending requests via REST ([#2270](https://github.com/googleapis/gapic-generator-python/issues/2270)) ([4cb1fa2](https://github.com/googleapis/gapic-generator-python/commit/4cb1fa2452ad5ba59b34c9d25cb3ca0c635059ac))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([#2251](https://github.com/googleapis/gapic-generator-python/issues/2251)) ([8b3b80f](https://github.com/googleapis/gapic-generator-python/commit/8b3b80f4b55c295e5d13084284ff0e2a72b2e993))
+* **log:** Preserve dict of rest async response headers ([#2288](https://github.com/googleapis/gapic-generator-python/issues/2288)) ([b10cc21](https://github.com/googleapis/gapic-generator-python/commit/b10cc21daf7d17567119f5c9b33d98fe18072eb4))
+
+## [1.20.2](https://github.com/googleapis/gapic-generator-python/compare/v1.20.1...v1.20.2) (2024-10-30)
+
+
+### Bug Fixes
+
+* Disable universe-domain validation ([#2236](https://github.com/googleapis/gapic-generator-python/issues/2236)) ([ecaa41e](https://github.com/googleapis/gapic-generator-python/commit/ecaa41e7984a8aa2244138cce99cb91a87872c54))
+
+## [1.20.1](https://github.com/googleapis/gapic-generator-python/compare/v1.20.0...v1.20.1) (2024-10-25)
+
+
+### Bug Fixes
+
+* Allow google-cloud-documentai 3.x ([#2237](https://github.com/googleapis/gapic-generator-python/issues/2237)) ([946adf1](https://github.com/googleapis/gapic-generator-python/commit/946adf16d8a1cf83019eaa9b6a9e8b1baf95159d))
+
+## [1.20.0](https://github.com/googleapis/gapic-generator-python/compare/v1.19.1...v1.20.0) (2024-10-23)
+
+
+### Features
+
+* Add support for Python 3.13 ([#2215](https://github.com/googleapis/gapic-generator-python/issues/2215)) ([4e1f9c6](https://github.com/googleapis/gapic-generator-python/commit/4e1f9c623065e5917dbd1d2178228776b7ea536d))
+
+
+### Bug Fixes
+
+* Added underscores in services/types in index.rst.j2 ([#2232](https://github.com/googleapis/gapic-generator-python/issues/2232)) ([f2053ee](https://github.com/googleapis/gapic-generator-python/commit/f2053ee04127f1f0d23fd04438ee4607ee1ce76c))
+* Allow `google-cloud-kms` 3.x ([#2226](https://github.com/googleapis/gapic-generator-python/issues/2226)) ([5e07501](https://github.com/googleapis/gapic-generator-python/commit/5e075016a2119782e611cd51335fa0af7e4c18c2))
+
+## [1.19.1](https://github.com/googleapis/gapic-generator-python/compare/v1.19.0...v1.19.1) (2024-10-10)
+
+
+### Bug Fixes
+
+* Add default library settings for incorrect lib version ([#2212](https://github.com/googleapis/gapic-generator-python/issues/2212)) ([de46272](https://github.com/googleapis/gapic-generator-python/commit/de46272ae65e9117be7f362355cefd28d0780917))
+* Resolve issue with wait operation mixin ([#2218](https://github.com/googleapis/gapic-generator-python/issues/2218)) ([095d060](https://github.com/googleapis/gapic-generator-python/commit/095d0600803dace8d665fee9ccbc460720b5fe17))
+* Use disambiguated name for rpcs to avoid collisions ([#2217](https://github.com/googleapis/gapic-generator-python/issues/2217)) ([296cd3e](https://github.com/googleapis/gapic-generator-python/commit/296cd3e814ba58954c16ca6256db0359bcab0f09))
+
+## [1.19.0](https://github.com/googleapis/gapic-generator-python/compare/v1.18.5...v1.19.0) (2024-10-09)
+
+
+### Features
+
+* Add async rest transport support in gapics ([#2164](https://github.com/googleapis/gapic-generator-python/issues/2164)) ([2949465](https://github.com/googleapis/gapic-generator-python/commit/29494651fb39719af920ee1c114c82bd903e544b))
+* Add support for reading ClientLibrarySettings from service configuration YAML ([#2098](https://github.com/googleapis/gapic-generator-python/issues/2098)) ([11e3967](https://github.com/googleapis/gapic-generator-python/commit/11e3967b6a3b1e86f5ec0f5387bd340e3a8ae9d0))
+* Implement async rest transport constructor ([#2123](https://github.com/googleapis/gapic-generator-python/issues/2123)) ([2809753](https://github.com/googleapis/gapic-generator-python/commit/28097536e1a47063a5d3211e9c1c498a1f06c724))
+* Leverage async anonymous credentials in tests ([#2105](https://github.com/googleapis/gapic-generator-python/issues/2105)) ([4afac87](https://github.com/googleapis/gapic-generator-python/commit/4afac87efc8fcdd7090d003b6247be64071b611d))
+
+
+### Bug Fixes
+
+* Add support for field with name 'self' ([#2205](https://github.com/googleapis/gapic-generator-python/issues/2205)) ([ed88fe2](https://github.com/googleapis/gapic-generator-python/commit/ed88fe298647cdad310a5341f931a0de42f1b81e))
+* Resolve issue where explicit routing metadata was not sent in async clients ([#2133](https://github.com/googleapis/gapic-generator-python/issues/2133)) ([c222b12](https://github.com/googleapis/gapic-generator-python/commit/c222b125d741426259d82e726c0c07397d099a8a))
+* Streaming for sync REST API calls ([#2204](https://github.com/googleapis/gapic-generator-python/issues/2204)) ([ce3b84c](https://github.com/googleapis/gapic-generator-python/commit/ce3b84c67a31785f45eb46f154ef08af6edc9a36))
+
 ## [1.18.5](https://github.com/googleapis/gapic-generator-python/compare/v1.18.4...v1.18.5) (2024-08-06)
 
 
