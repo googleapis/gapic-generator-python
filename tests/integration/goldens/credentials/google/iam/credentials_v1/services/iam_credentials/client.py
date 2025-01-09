@@ -434,9 +434,13 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             return
 
         cred = self._transport._credentials
+
+        # get_cred_info is only available in google-auth>=2.35.0
         if not hasattr(cred, "get_cred_info"):
             return
 
+        # ignore the type check since pypy test fails when get_cred_info
+        # is not available
         cred_info = cred.get_cred_info()  # type: ignore
         if cred_info and hasattr(error._details, "append"):
             error._details.append(json.dumps(cred_info))
