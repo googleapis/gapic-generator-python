@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.22.0](https://github.com/googleapis/gapic-generator-python/compare/v1.21.0...v1.22.0) (2025-01-09)
+
+
+### Features
+
+* Add cred info to auth related errors ([#2115](https://github.com/googleapis/gapic-generator-python/issues/2115)) ([a694ceb](https://github.com/googleapis/gapic-generator-python/commit/a694cebf386aace80aab36ef9cc2d1102078d3d0))
+* Add REST Interceptors to support reading metadata ([#2299](https://github.com/googleapis/gapic-generator-python/issues/2299)) ([e050f4e](https://github.com/googleapis/gapic-generator-python/commit/e050f4eb3eddfe150f028a2a2bd901899afb965a))
+
 ## [1.21.0](https://github.com/googleapis/gapic-generator-python/compare/v1.20.2...v1.21.0) (2024-12-11)
 
 
