@@ -285,7 +285,7 @@ def showcase_library(
             f"--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             opts,
-            f"--python_gapic_out={tmp_dir}",
+            f"--python_gapic_out=showcase_nextgen",
             f"google/showcase/v1beta1/echo.proto",
             f"google/showcase/v1beta1/identity.proto",
             f"google/showcase/v1beta1/messaging.proto",
@@ -296,12 +296,12 @@ def showcase_library(
         # Temporary code to facilitate testing of nextgen protobuf API
         # Piggy back on `rest_async_io_enabled` temporarily
         if rest_async_io_enabled:
-            shutil.copy("tests/system/resources/echo_pb2.py", f"{tmp_dir}/google/showcase_v1beta1/types/echo_pb2.py")
-            shutil.copy("tests/system/resources/echo_pb2.pyi", f"{tmp_dir}/google/showcase_v1beta1/types/echo_pb2.pyi")
-            shutil.copy("tests/system/resources/identity_pb2.py", f"{tmp_dir}/google/showcase_v1beta1/types/identity_pb2.py")
-            shutil.copy("tests/system/resources/identity_pb2.pyi", f"{tmp_dir}/google/showcase_v1beta1/types/identity_pb2.pyi")
-            shutil.copy("tests/system/resources/messaging_pb2.py", f"{tmp_dir}/google/showcase_v1beta1/types/messaging_pb2.py")
-            shutil.copy("tests/system/resources/messaging_pb2.pyi", f"{tmp_dir}/google/showcase_v1beta1/types/messaging_pb2.pyi")
+            shutil.copy("tests/system/resources/echo_pb2.py", f"showcase_nextgen/google/showcase_v1beta1/types/echo_pb2.py")
+            shutil.copy("tests/system/resources/echo_pb2.pyi", f"showcase_nextgen/google/showcase_v1beta1/types/echo_pb2.pyi")
+            shutil.copy("tests/system/resources/identity_pb2.py", f"showcase_nextgen/google/showcase_v1beta1/types/identity_pb2.py")
+            shutil.copy("tests/system/resources/identity_pb2.pyi", f"showcase_nextgen/google/showcase_v1beta1/types/identity_pb2.pyi")
+            shutil.copy("tests/system/resources/messaging_pb2.py", f"showcase_nextgen/google/showcase_v1beta1/types/messaging_pb2.py")
+            shutil.copy("tests/system/resources/messaging_pb2.pyi", f"showcase_nextgen/google/showcase_v1beta1/types/messaging_pb2.pyi")
         # Install the generated showcase library.
         if templates == "DEFAULT":
             # Use the constraints file for the specific python runtime version.
