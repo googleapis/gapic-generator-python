@@ -134,8 +134,10 @@ Logging details
    :code:`logging.getLogger("google").propagate = True` in your code.
 #. You can mix the different logging configurations above for different Google modules. For example, you may want use a code-based logging configuration for
    one library, but decide you need to also set up environment-based logging configuration for another library.
+
    #. If you attempt to use both code-based and environment-based configuration for the same module, the environment-based configuration will be ineffectual
       if the code -based configuration gets applied first.
+
 #. The Google-specific logging configurations (default handlers for environment-based configuration; not propagating logging events to the root logger) get
    executed the first time *any* client library is instantiated in your application, and only if the affected loggers have not been previously configured.
    (This is the reason for 2.1 above.)
