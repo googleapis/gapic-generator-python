@@ -55,7 +55,7 @@ LOGGING
 This library uses the standard Python :code:`logging` functionality to log some RPC events that could be of interest for debugging and monitoring purposes.
 Note the following:
 
-#. Logs may contain sensitive information. Take care to **restrict access to the logs** if they are saved, whether it be on local storage or Google Cloud Logging.
+#. Logs may contain sensitive information. Take care to **restrict access to the logs** if they are saved, whether it be on local storage or on Google Cloud Logging.
 #. Google may refine the occurrence, level, and content of various log messages in this library without flagging such changes as breaking. **Do not depend on immutability of the logging events**.
 #. By default, the logging events from this library are not handled. You must **explicitly configure log handling** using one of the mechanisms below.
 
@@ -85,7 +85,7 @@ Examples
 
     export GOOGLE_SDK_PYTHON_LOGGING_SCOPE=google
 
-- Enabling the default handler for a specific Google module (In the case of a client library called :code:`Library`):
+- Enabling the default handler for a specific Google module (for a client library called :code:`library_v1`):
 
 .. code-block:: console
 
@@ -113,7 +113,7 @@ Examples
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
 
-- Configuring a handler for a specific Google module (In the case of a client library called :code:`library_v1`):
+- Configuring a handler for a specific Google module (for a client library called :code:`library_v1`):
 
 .. code-block:: python
 
@@ -134,7 +134,7 @@ Logging details
    :code:`logging.getLogger("google").propagate = True` in your code.
 #. You can mix the different logging configurations above for different Google modules. For example, you may want use a code-based logging configuration for
    one library, but decide you need to also set up environment-based logging configuration for another library.
-   1.  If you attempt to use both code-based and environment-based configuration for the same module, the environment-based configuration will be ineffectual
+   #. If you attempt to use both code-based and environment-based configuration for the same module, the environment-based configuration will be ineffectual
    if the code -based configuration gets applied first.
 #. The Google-specific logging configurations (default handlers for environment-based configuration; not propagating logging events to the root logger) get
    executed the first time *any* client library is instantiated in your application, and only if the affected loggers have not been previously configured.
