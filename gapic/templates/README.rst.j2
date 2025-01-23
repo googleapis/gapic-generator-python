@@ -55,7 +55,7 @@ LOGGING
 This library uses the standard Python :code:`logging` functionality to log some RPC events that could be of interest for debugging and monitoring purposes.
 Note the following:
 
-#. Logs may contain sensitive information. Take care to **restrict access to the logs** if they are saved, whether it be on local storage or Google Cloud Logging.
+#. Logs may contain sensitive information. Take care to **restrict access to the logs** if they are saved, whether it be on local storage or on Google Cloud Logging.
 #. Google may refine the occurrence, level, and content of various log messages in this library without flagging such changes as breaking. **Do not depend on immutability of the logging events**.
 #. By default, the logging events from this library are not handled. You must **explicitly configure log handling** using one of the mechanisms below.
 
