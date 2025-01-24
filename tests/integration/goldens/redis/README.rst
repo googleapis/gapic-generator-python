@@ -49,7 +49,7 @@ Windows
     <your-env>\Scripts\pip.exe install \path\to\library
 
 
-LOGGING
+Logging
 -------
 
 This library uses the standard Python :code:`logging` functionality to log some RPC events that could be of interest for debugging and monitoring purposes.
