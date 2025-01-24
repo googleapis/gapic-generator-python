@@ -415,6 +415,35 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         return self._stubs['get_instance']
 
     @property
+    def get_instance_auth_string(self) -> Callable[
+            [cloud_redis.GetInstanceAuthStringRequest],
+            Awaitable[cloud_redis.InstanceAuthString]]:
+        r"""Return a callable for the get instance auth string method over gRPC.
+
+        Gets the AUTH string for a Redis instance. If AUTH is
+        not enabled for the instance the response will be empty.
+        This information is not included in the details returned
+        to GetInstance.
+
+        Returns:
+            Callable[[~.GetInstanceAuthStringRequest],
+                    Awaitable[~.InstanceAuthString]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'get_instance_auth_string' not in self._stubs:
+            self._stubs['get_instance_auth_string'] = self._logged_channel.unary_unary(
+                '/google.cloud.redis.v1.CloudRedis/GetInstanceAuthString',
+                request_serializer=cloud_redis.GetInstanceAuthStringRequest.serialize,
+                response_deserializer=cloud_redis.InstanceAuthString.deserialize,
+            )
+        return self._stubs['get_instance_auth_string']
+
+    @property
     def create_instance(self) -> Callable[
             [cloud_redis.CreateInstanceRequest],
             Awaitable[operations_pb2.Operation]]:
@@ -485,6 +514,126 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         return self._stubs['update_instance']
 
     @property
+    def upgrade_instance(self) -> Callable[
+            [cloud_redis.UpgradeInstanceRequest],
+            Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the upgrade instance method over gRPC.
+
+        Upgrades Redis instance to the newer Redis version
+        specified in the request.
+
+        Returns:
+            Callable[[~.UpgradeInstanceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'upgrade_instance' not in self._stubs:
+            self._stubs['upgrade_instance'] = self._logged_channel.unary_unary(
+                '/google.cloud.redis.v1.CloudRedis/UpgradeInstance',
+                request_serializer=cloud_redis.UpgradeInstanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs['upgrade_instance']
+
+    @property
+    def import_instance(self) -> Callable[
+            [cloud_redis.ImportInstanceRequest],
+            Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the import instance method over gRPC.
+
+        Import a Redis RDB snapshot file from Cloud Storage
+        into a Redis instance.
+        Redis may stop serving during this operation. Instance
+        state will be IMPORTING for entire operation. When
+        complete, the instance will contain only data from the
+        imported file.
+
+        The returned operation is automatically deleted after a
+        few hours, so there is no need to call DeleteOperation.
+
+        Returns:
+            Callable[[~.ImportInstanceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'import_instance' not in self._stubs:
+            self._stubs['import_instance'] = self._logged_channel.unary_unary(
+                '/google.cloud.redis.v1.CloudRedis/ImportInstance',
+                request_serializer=cloud_redis.ImportInstanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs['import_instance']
+
+    @property
+    def export_instance(self) -> Callable[
+            [cloud_redis.ExportInstanceRequest],
+            Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the export instance method over gRPC.
+
+        Export Redis instance data into a Redis RDB format
+        file in Cloud Storage.
+        Redis will continue serving during this operation.
+
+        The returned operation is automatically deleted after a
+        few hours, so there is no need to call DeleteOperation.
+
+        Returns:
+            Callable[[~.ExportInstanceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'export_instance' not in self._stubs:
+            self._stubs['export_instance'] = self._logged_channel.unary_unary(
+                '/google.cloud.redis.v1.CloudRedis/ExportInstance',
+                request_serializer=cloud_redis.ExportInstanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs['export_instance']
+
+    @property
+    def failover_instance(self) -> Callable[
+            [cloud_redis.FailoverInstanceRequest],
+            Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the failover instance method over gRPC.
+
+        Initiates a failover of the primary node to current
+        replica node for a specific STANDARD tier Cloud
+        Memorystore for Redis instance.
+
+        Returns:
+            Callable[[~.FailoverInstanceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'failover_instance' not in self._stubs:
+            self._stubs['failover_instance'] = self._logged_channel.unary_unary(
+                '/google.cloud.redis.v1.CloudRedis/FailoverInstance',
+                request_serializer=cloud_redis.FailoverInstanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs['failover_instance']
+
+    @property
     def delete_instance(self) -> Callable[
             [cloud_redis.DeleteInstanceRequest],
             Awaitable[operations_pb2.Operation]]:
@@ -511,6 +660,33 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
             )
         return self._stubs['delete_instance']
 
+    @property
+    def reschedule_maintenance(self) -> Callable[
+            [cloud_redis.RescheduleMaintenanceRequest],
+            Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the reschedule maintenance method over gRPC.
+
+        Reschedule maintenance for a given instance in a
+        given project and location.
+
+        Returns:
+            Callable[[~.RescheduleMaintenanceRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'reschedule_maintenance' not in self._stubs:
+            self._stubs['reschedule_maintenance'] = self._logged_channel.unary_unary(
+                '/google.cloud.redis.v1.CloudRedis/RescheduleMaintenance',
+                request_serializer=cloud_redis.RescheduleMaintenanceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs['reschedule_maintenance']
+
     def _prep_wrapped_messages(self, client_info):
         """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -524,6 +700,11 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.get_instance_auth_string: self._wrap_method(
+                self.get_instance_auth_string,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.create_instance: self._wrap_method(
                 self.create_instance,
                 default_timeout=600.0,
@@ -534,9 +715,34 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
+            self.upgrade_instance: self._wrap_method(
+                self.upgrade_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.import_instance: self._wrap_method(
+                self.import_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.export_instance: self._wrap_method(
+                self.export_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.failover_instance: self._wrap_method(
+                self.failover_instance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.delete_instance: self._wrap_method(
                 self.delete_instance,
                 default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.reschedule_maintenance: self._wrap_method(
+                self.reschedule_maintenance,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: self._wrap_method(

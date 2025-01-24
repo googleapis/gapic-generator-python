@@ -238,24 +238,37 @@ class Proto:
         return string
 
     def add_to_address_allowlist(self, *,
-                                 method_allowlist: Iterable[str],
                                  address_allowlist: Set['metadata.Address'],
+                                 method_allowlist: Set[str],
                                  resource_messages: Dict[str, 'wrappers.MessageType'],
                                  ) -> None:
         """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
         services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+            method_allowlist (Set[str]): An allowlist of fully-qualified method names.
+            resource_messages (Dict[str, wrappers.MessageType]): A dictionary mapping the unified
+                resource type name of a resource message to the corresponding MessageType object
+                representing that resource message. Only resources with a message representation
+                should be included in the dictionary.
+        Returns:
+            None
         """
+        # The method.operation_service for an extended LRO is not fully qualified, so we
+        # truncate the service names accordingly so they can be found in
+        # method.add_to_address_allowlist
+        services_in_proto = {
+            service.name: service for service in self.services.values()
+        }
         for service in self.services.values():
-            # The method.operation_service for an extended LRO is not fully qualified, so we
-            # truncate the service names accordingly so they can be found in
-            # method.add_to_address_allowlist
-            services_in_proto = {
-                service.name: service for service in self.services.values()
-            }
-            service.add_to_address_allowlist(method_allowlist=method_allowlist,
-                                             address_allowlist=address_allowlist,
+            service.add_to_address_allowlist(address_allowlist=address_allowlist,
+                                             method_allowlist=method_allowlist,
                                              resource_messages=resource_messages,
                                              services_in_proto=services_in_proto)
 
@@ -267,7 +280,23 @@ class Proto:
         of visited addresses are included in the returned object. If there
         are no services, messages, or enums left, and no file level resources,
         return None.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to filter against. Objects with addresses not the allowlist will be
+                removed from the returned Proto.
+        Returns:
+            Optional[Proto]: A truncated version of this proto. If there are no services, messages,
+                or enums left after the truncation process and there are no file level resources,
+                return None.
         """
+        # Once the address allowlist has been created, it suffices to only
+        # prune items at 2 different levels to truncate the Proto object:
+        #
+        #   1. At the Proto level, we remove unnecessary services, messages,
+        #      and enums.
+        #   2. For allowlisted services, at the Service level, we remove
+        #      non-allowlisted methods.
         services = {
             k: v.prune_messages_for_selective_generation(
                 address_allowlist=address_allowlist)
@@ -275,18 +304,16 @@ class Proto:
             if v.meta.address in address_allowlist
         }
 
-        # For messages and enums we should only be pruning them from all_messages if they
-        # are proto plus types. This should apply to the Protos we are pruning from.
         all_messages = {
             k: v
             for k, v in self.all_messages.items()
-            if (v.ident in address_allowlist or not v.ident.is_proto_plus_type)
+            if v.ident in address_allowlist
         }
 
         all_enums = {
             k: v
             for k, v in self.all_enums.items()
-            if (v.ident in address_allowlist or not v.ident.is_proto_plus_type)
+            if v.ident in address_allowlist
         }
 
         if not services and not all_messages and not all_enums:
@@ -435,8 +462,9 @@ class API:
                   service_yaml_config=service_yaml_config)
 
         if package in api.all_library_settings:
-            selective_gapic_methods = api.all_library_settings[
-                package].python_settings.common.selective_gapic_generation.methods
+            selective_gapic_methods = set(
+                api.all_library_settings[package].python_settings.common.selective_gapic_generation.methods
+            )
             if selective_gapic_methods:
 
                 all_resource_messages = collections.ChainMap(
@@ -449,24 +477,26 @@ class API:
                 # in memory.
                 address_allowlist: Set['metadata.Address'] = set([])
                 for proto in api.protos.values():
-                    proto.add_to_address_allowlist(method_allowlist=selective_gapic_methods,
-                                                   address_allowlist=address_allowlist,
+                    proto.add_to_address_allowlist(address_allowlist=address_allowlist,
+                                                   method_allowlist=selective_gapic_methods,
                                                    resource_messages=all_resource_messages)
-
-                new_protos = {}
+    
+                # The list of explicitly allow-listed protos to generate, plus all
+                # the proto dependencies regardless of the allow-list.
+                new_all_protos = {}
 
                 # We only prune services/messages/enums from protos that are not dependencies.
                 for name, proto in api.all_protos.items():
                     if name not in api.protos:
-                        new_protos[name] = proto
+                        new_all_protos[name] = proto
                     else:
                         proto_to_generate = proto.prune_messages_for_selective_generation(
                             address_allowlist=address_allowlist)
                         if proto_to_generate:
-                            new_protos[name] = proto_to_generate
+                            new_all_protos[name] = proto_to_generate
 
                 api = cls(naming=naming,
-                        all_protos=new_protos,
+                        all_protos=new_all_protos,
                         service_yaml_config=service_yaml_config)
 
         return api

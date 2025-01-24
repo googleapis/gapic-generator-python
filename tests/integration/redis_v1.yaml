@@ -80,11 +80,3 @@ publishing:
     python_settings:
       experimental_features:
         rest_async_io_enabled: true
-      common:
-        selective_gapic_generation:
-          methods:
-            - google.cloud.redis.v1.CloudRedis.CreateInstance
-            - google.cloud.redis.v1.CloudRedis.DeleteInstance
-            - google.cloud.redis.v1.CloudRedis.GetInstance
-            - google.cloud.redis.v1.CloudRedis.ListInstances
-            - google.cloud.redis.v1.CloudRedis.UpdateInstance

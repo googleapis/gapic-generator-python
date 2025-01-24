@@ -391,11 +391,24 @@ class Field:
 
     def add_to_address_allowlist(self, *,
                                  address_allowlist: Set['metadata.Address'],
-                                 resource_messages: Dict[str, 'MessageType']) -> None:
+                                 resource_messages: Dict[str, 'MessageType']
+                                ) -> None:
         """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
         services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+            resource_messages (Dict[str, wrappers.MessageType]): A dictionary mapping the unified
+                resource type name of a resource message to the corresponding MessageType object
+                representing that resource message. Only resources with a message representation
+                should be included in the dictionary.
+        Returns:
+            None
         """
         if self.message:
             self.message.add_to_address_allowlist(
@@ -789,11 +802,24 @@ class MessageType:
 
     def add_to_address_allowlist(self, *,
                                  address_allowlist: Set['metadata.Address'],
-                                 resource_messages: Dict[str, 'MessageType']):
+                                 resource_messages: Dict[str, 'MessageType']
+                                ) -> None:
         """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
         services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+            resource_messages (Dict[str, wrappers.MessageType]): A dictionary mapping the unified
+                resource type name of a resource message to the corresponding MessageType object
+                representing that resource message. Only resources with a message representation
+                should be included in the dictionary.
+        Returns:
+            None
         """
         if self.ident not in address_allowlist:
             address_allowlist.add(self.ident)
@@ -2142,8 +2168,8 @@ class Service:
         )
 
     def add_to_address_allowlist(self, *,
-                                 method_allowlist: Iterable[str],
                                  address_allowlist: Set['metadata.Address'],
+                                 method_allowlist: Set[str],
                                  resource_messages: Dict[str, 'MessageType'],
                                  services_in_proto: Dict[str, 'Service'],
                                  ) -> None:
@@ -2151,6 +2177,20 @@ class Service:
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
         services, methods, messages, and enums at a later step.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to add to. Only the addresses of the allowlisted methods, the services
+                containing these methods, and messages/enums those methods use will be part of the
+                final address_allowlist. The set may be modified during this call.
+            method_allowlist (Set[str]): An allowlist of fully-qualified method names.
+            resource_messages (Dict[str, wrappers.MessageType]): A dictionary mapping the unified
+                resource type name of a resource message to the corresponding MessageType object
+                representing that resource message. Only resources with a message representation
+                should be included in the dictionary.
+            services_in_proto (Dict[str, Service]): 
+        Returns:
+            None
         """
 
         for method in self.methods.values():
@@ -2169,10 +2209,14 @@ class Service:
 
         Only the methods, messages, and enums contained in the address allowlist
         are included in the returned object.
+
+        Args:
+            address_allowlist (Set[metadata.Address]): A set of allowlisted metadata.Address
+                objects to filter against. Objects with addresses not the allowlist will be
+                removed from the returned Proto.
+        Returns:
+            Service: A truncated version of this proto.
         """
-        # Since the API/Proto level dataclass attributes only go down to the method
-        # level from the top level services, and not any deeper in the schema tree
-        # (all_messages and all_enums are different objects), we can stop here.
         return dataclasses.replace(
             self,
             methods={
