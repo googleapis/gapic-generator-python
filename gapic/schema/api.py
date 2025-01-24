@@ -480,7 +480,7 @@ class API:
                     proto.add_to_address_allowlist(address_allowlist=address_allowlist,
                                                    method_allowlist=selective_gapic_methods,
                                                    resource_messages=all_resource_messages)
-    
+
                 # The list of explicitly allow-listed protos to generate, plus all
                 # the proto dependencies regardless of the allow-list.
                 new_all_protos = {}

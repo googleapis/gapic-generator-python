@@ -392,7 +392,7 @@ class Field:
     def add_to_address_allowlist(self, *,
                                  address_allowlist: Set['metadata.Address'],
                                  resource_messages: Dict[str, 'MessageType']
-                                ) -> None:
+                                 ) -> None:
         """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
@@ -803,7 +803,7 @@ class MessageType:
     def add_to_address_allowlist(self, *,
                                  address_allowlist: Set['metadata.Address'],
                                  resource_messages: Dict[str, 'MessageType']
-                                ) -> None:
+                                 ) -> None:
         """Adds to the set of Addresses of wrapper objects to be included in selective GAPIC generation.
 
         This method is used to create an allowlist of addresses to be used to filter out unneeded
