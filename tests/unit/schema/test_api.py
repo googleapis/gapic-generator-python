@@ -2882,7 +2882,9 @@ def test_selective_gapic_api_build():
         ),
     )
 
-    service_yaml_config = get_service_yaml_for_selective_gapic_tests()
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        methods=["google.example.v1.FooService.GetFoo"]
+    )
     opts = Options(service_yaml_config=service_yaml_config)
 
     # Create an API with those protos.
@@ -2911,7 +2913,8 @@ def test_selective_gapic_api_build():
 
     assert not api_schema.requires_package(('elgoog', 'example', 'v1'))
 
-    # Establish that the subpackages still work even under some pruning.
+    # Establish that the subpackages still work even when they are transitively
+    # partially pruned.
     assert 'common' in api_schema.subpackages
     sub = api_schema.subpackages['common']
     assert len(sub.protos) == 1
@@ -3171,7 +3174,8 @@ def test_selective_gapic_api_build_remove_unnecessary_proto_files():
     assert 'bar.proto' not in api_schema.protos
     assert 'bar_common.proto' not in api_schema.protos
 
-    # Establish that the subpackages have been pruned so that some don't exist, but still work.
+    # Check that the sub-packages have been completely pruned are excluded from generation,
+    # but the ones that have only been partially pruned will still be appropriately included.
     assert 'foo_common' in api_schema.subpackages
     sub = api_schema.subpackages['foo_common']
     assert len(sub.protos) == 1
@@ -3250,7 +3254,8 @@ def test_selective_gapic_api_build_with_enums():
 
 
 def test_selective_gapic_api_build_with_nested_fields():
-    # Test that a nested message is traversed properly when selected for selective GAPIC.
+    # Test that, when including or excluding messages for selective GAPIC generation,
+    # any nested messages they may contain are included or excluded appropriately.
     fd = (
         make_file_pb2(
             name='foobar.proto',
@@ -3339,7 +3344,7 @@ def test_selective_gapic_api_build_with_nested_fields():
     assert 'google.example.v1.Foo.FooStatus' in api_schema.enums
     assert 'google.example.v1.Foo.Bar' in api_schema.messages
 
-    # Establish that we can truncate nested types as well
+    # Check that we can exclude nested types as well
     assert 'google.example.v1.Spam' not in api_schema.messages
     assert 'google.example.v1.Spam.SpamStatus' not in api_schema.enums
     assert 'google.example.v1.Spam.Ham' not in api_schema.messages
@@ -3383,7 +3388,7 @@ def test_selective_gapic_api_build_with_resources(reference_attr):
         resource_message_opts = resource_message.options.Extensions[resource_pb2.resource]
         resource_message_opts.type = resource_type
         resource_message_opts.pattern.append(
-            "foo/{foo}/bar/{bar}")
+            "octopus/{octopus}/squid/{squid}")
 
         # Set up the reference
         request_message_thing_field_opts = \

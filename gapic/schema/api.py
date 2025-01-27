@@ -288,7 +288,7 @@ class Proto:
         Returns:
             Optional[Proto]: A truncated version of this proto. If there are no services, messages,
                 or enums left after the truncation process and there are no file level resources,
-                return None.
+                returns None.
         """
         # Once the address allowlist has been created, it suffices to only
         # prune items at 2 different levels to truncate the Proto object:
