@@ -2892,8 +2892,10 @@ def test_selective_gapic_api_build():
 
     # Establish that the API has the data expected.
     assert isinstance(api_schema, api.API)
-    assert len(api_schema.all_protos) == 3 # foo.proto, common.proto, dep.proto
-    assert len(api_schema.protos) == 2 # foo.proto, common.proto
+
+    # foo.proto, common.proto, dep.proto
+    assert len(api_schema.all_protos) == 3
+    assert len(api_schema.protos) == 2  # foo.proto, common.proto
 
     assert 'google.dep.ImportedMessage' not in api_schema.messages
     assert 'google.example.v1.Foo' in api_schema.messages
