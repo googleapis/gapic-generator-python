@@ -2773,8 +2773,8 @@ def test_python_settings_selective_gapic_nonexistent_method_raises_error():
 
 def test_python_settings_selective_gapic_version_mismatch_method_raises_error():
     """
-    Test that `ClientLibrarySettingsError` is raised when there are nonexistent methods in
-    `client_pb2.ClientLibrarySettings.PythonSettings.CommonSettings.SelectiveGapicGeneration`.
+    Test that `ClientLibrarySettingsError` is raised when a method listed for selective generation
+    exists only in a different version of the library.
     """
     client_library_settings = [
         client_pb2.ClientLibrarySettings(
@@ -2892,8 +2892,8 @@ def test_selective_gapic_api_build():
 
     # Establish that the API has the data expected.
     assert isinstance(api_schema, api.API)
-    assert len(api_schema.all_protos) == 3
-    assert len(api_schema.protos) == 2
+    assert len(api_schema.all_protos) == 3 # foo.proto, common.proto, dep.proto
+    assert len(api_schema.protos) == 2 # foo.proto, common.proto
 
     assert 'google.dep.ImportedMessage' not in api_schema.messages
     assert 'google.example.v1.Foo' in api_schema.messages
@@ -3174,7 +3174,7 @@ def test_selective_gapic_api_build_remove_unnecessary_proto_files():
     assert 'bar.proto' not in api_schema.protos
     assert 'bar_common.proto' not in api_schema.protos
 
-    # Check that the sub-packages have been completely pruned are excluded from generation,
+    # Check that the sub-packages that have been completely pruned are excluded from generation,
     # but the ones that have only been partially pruned will still be appropriately included.
     assert 'foo_common' in api_schema.subpackages
     sub = api_schema.subpackages['foo_common']
