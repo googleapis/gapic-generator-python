@@ -1088,7 +1088,7 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
     if not method.void:
         snippet_metadata.client_method.result_type = method.client_output_async.ident.sphinx if async_ else method.client_output.ident.sphinx
         if method.server_streaming:
-            snippet_metadata.client_method.result_type = f"Iterable[{snippet_metadata.client_method.result_type }]"
+            snippet_metadata.client_method.result_type = f"Iterable[{snippet_metadata.client_method.result_type}]"
 
     # Client Method Parameters
     parameters = snippet_metadata.client_method.parameters
@@ -1107,7 +1107,7 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
     parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
         name="timeout", type="float"))
     parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
-        name="metadata", type="Sequence[Tuple[str, str]"))
+        name="metadata", type="Sequence[Tuple[str, Union[str, bytes]]]"))
 
     return snippet_metadata
 

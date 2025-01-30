@@ -23,6 +23,7 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
+import json
 import math
 import pytest
 from google.api_core import api_core_version
@@ -59,6 +60,15 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
+
+
+
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -182,66 +192,43 @@ def test__get_universe_domain():
         ConfigServiceV2Client._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
-@pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    (ConfigServiceV2Client, transports.ConfigServiceV2GrpcTransport, "grpc"),
+@pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
+    (401, CRED_INFO_JSON, True),
+    (403, CRED_INFO_JSON, True),
+    (404, CRED_INFO_JSON, True),
+    (500, CRED_INFO_JSON, False),
+    (401, None, False),
+    (403, None, False),
+    (404, None, False),
+    (500, None, False)
 ])
-def test__validate_universe_domain(client_class, transport_class, transport_name):
-    client = client_class(
-        transport=transport_class(
-            credentials=ga_credentials.AnonymousCredentials()
-        )
-    )
-    assert client._validate_universe_domain() == True
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = ConfigServiceV2Client(credentials=cred)
+    client._transport._credentials = cred
 
-    # Test the case when universe is already validated.
-    assert client._validate_universe_domain() == True
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
 
-    if transport_name == "grpc":
-        # Test the case where credentials are provided by the
-        # `local_channel_credentials`. The default universes in both match.
-        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-        client = client_class(transport=transport_class(channel=channel))
-        assert client._validate_universe_domain() == True
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
 
-        # Test the case where credentials do not exist: e.g. a transport is provided
-        # with no credentials. Validation should still succeed because there is no
-        # mismatch with non-existent credentials.
-        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-        transport=transport_class(channel=channel)
-        transport._credentials = None
-        client = client_class(transport=transport)
-        assert client._validate_universe_domain() == True
+@pytest.mark.parametrize("error_code", [401,403,404,500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = ConfigServiceV2Client(credentials=cred)
+    client._transport._credentials = cred
 
-    # TODO: This is needed to cater for older versions of google-auth
-    # Make this test unconditional once the minimum supported version of
-    # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor = [int(part) for part in google.auth.__version__.split(".")[0:2]]
-    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
-        credentials = ga_credentials.AnonymousCredentials()
-        credentials._universe_domain = "foo.com"
-        # Test the case when there is a universe mismatch from the credentials.
-        client = client_class(
-            transport=transport_class(credentials=credentials)
-        )
-        with pytest.raises(ValueError) as excinfo:
-            client._validate_universe_domain()
-        assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
 
-        # Test the case when there is a universe mismatch from the client.
-        #
-        # TODO: Make this test unconditional once the minimum supported version of
-        # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
-        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-            client = client_class(client_options={"universe_domain": "bar.com"}, transport=transport_class(credentials=ga_credentials.AnonymousCredentials(),))
-            with pytest.raises(ValueError) as excinfo:
-                client._validate_universe_domain()
-            assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-
-    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
-    with pytest.raises(ValueError):
-        client._compare_universes("foo.bar", None)
-
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (ConfigServiceV2Client, "grpc"),

@@ -79,6 +79,15 @@ from google.type import timeofday_pb2  # type: ignore
 import google.auth
 
 
+
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -200,67 +209,43 @@ def test__get_universe_domain():
         CloudRedisClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
-@pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    (CloudRedisClient, transports.CloudRedisGrpcTransport, "grpc"),
-    (CloudRedisClient, transports.CloudRedisRestTransport, "rest"),
+@pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
+    (401, CRED_INFO_JSON, True),
+    (403, CRED_INFO_JSON, True),
+    (404, CRED_INFO_JSON, True),
+    (500, CRED_INFO_JSON, False),
+    (401, None, False),
+    (403, None, False),
+    (404, None, False),
+    (500, None, False)
 ])
-def test__validate_universe_domain(client_class, transport_class, transport_name):
-    client = client_class(
-        transport=transport_class(
-            credentials=ga_credentials.AnonymousCredentials()
-        )
-    )
-    assert client._validate_universe_domain() == True
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = CloudRedisClient(credentials=cred)
+    client._transport._credentials = cred
 
-    # Test the case when universe is already validated.
-    assert client._validate_universe_domain() == True
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
 
-    if transport_name == "grpc":
-        # Test the case where credentials are provided by the
-        # `local_channel_credentials`. The default universes in both match.
-        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-        client = client_class(transport=transport_class(channel=channel))
-        assert client._validate_universe_domain() == True
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
 
-        # Test the case where credentials do not exist: e.g. a transport is provided
-        # with no credentials. Validation should still succeed because there is no
-        # mismatch with non-existent credentials.
-        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-        transport=transport_class(channel=channel)
-        transport._credentials = None
-        client = client_class(transport=transport)
-        assert client._validate_universe_domain() == True
+@pytest.mark.parametrize("error_code", [401,403,404,500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = CloudRedisClient(credentials=cred)
+    client._transport._credentials = cred
 
-    # TODO: This is needed to cater for older versions of google-auth
-    # Make this test unconditional once the minimum supported version of
-    # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor = [int(part) for part in google.auth.__version__.split(".")[0:2]]
-    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
-        credentials = ga_credentials.AnonymousCredentials()
-        credentials._universe_domain = "foo.com"
-        # Test the case when there is a universe mismatch from the credentials.
-        client = client_class(
-            transport=transport_class(credentials=credentials)
-        )
-        with pytest.raises(ValueError) as excinfo:
-            client._validate_universe_domain()
-        assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
 
-        # Test the case when there is a universe mismatch from the client.
-        #
-        # TODO: Make this test unconditional once the minimum supported version of
-        # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
-        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-            client = client_class(client_options={"universe_domain": "bar.com"}, transport=transport_class(credentials=ga_credentials.AnonymousCredentials(),))
-            with pytest.raises(ValueError) as excinfo:
-                client._validate_universe_domain()
-            assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-
-    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
-    with pytest.raises(ValueError):
-        client._compare_universes("foo.bar", None)
-
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (CloudRedisClient, "grpc"),
@@ -4750,6 +4735,7 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_instances(request)
 
@@ -4794,6 +4780,7 @@ def test_list_instances_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_instances(**mock_args)
 
@@ -4976,6 +4963,7 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_instance(request)
 
@@ -5020,6 +5008,7 @@ def test_get_instance_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_instance(**mock_args)
 
@@ -5140,6 +5129,7 @@ def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_instance_auth_string(request)
 
@@ -5184,6 +5174,7 @@ def test_get_instance_auth_string_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_instance_auth_string(**mock_args)
 
@@ -5315,6 +5306,7 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_instance(request)
 
@@ -5363,6 +5355,7 @@ def test_create_instance_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_instance(**mock_args)
 
@@ -5484,6 +5477,7 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_instance(request)
 
@@ -5527,6 +5521,7 @@ def test_update_instance_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_instance(**mock_args)
 
@@ -5654,6 +5649,7 @@ def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeI
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.upgrade_instance(request)
 
@@ -5697,6 +5693,7 @@ def test_upgrade_instance_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.upgrade_instance(**mock_args)
 
@@ -5820,6 +5817,7 @@ def test_import_instance_rest_required_fields(request_type=cloud_redis.ImportIns
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.import_instance(request)
 
@@ -5863,6 +5861,7 @@ def test_import_instance_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.import_instance(**mock_args)
 
@@ -5986,6 +5985,7 @@ def test_export_instance_rest_required_fields(request_type=cloud_redis.ExportIns
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.export_instance(request)
 
@@ -6029,6 +6029,7 @@ def test_export_instance_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.export_instance(**mock_args)
 
@@ -6152,6 +6153,7 @@ def test_failover_instance_rest_required_fields(request_type=cloud_redis.Failove
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.failover_instance(request)
 
@@ -6195,6 +6197,7 @@ def test_failover_instance_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.failover_instance(**mock_args)
 
@@ -6317,6 +6320,7 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_instance(request)
 
@@ -6359,6 +6363,7 @@ def test_delete_instance_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_instance(**mock_args)
 
@@ -6481,6 +6486,7 @@ def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.Re
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.reschedule_maintenance(request)
 
@@ -6525,6 +6531,7 @@ def test_reschedule_maintenance_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.reschedule_maintenance(**mock_args)
 
@@ -7271,6 +7278,7 @@ def test_list_instances_rest_bad_request(request_type=cloud_redis.ListInstancesR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_instances(request)
 
 
@@ -7305,6 +7313,7 @@ def test_list_instances_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_instances(request)
 
     # Establish that the response is the type that we expect.
@@ -7324,9 +7333,11 @@ def test_list_instances_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_list_instances") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_list_instances_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_list_instances") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
         transcode.return_value = {
             "method": "post",
@@ -7337,6 +7348,7 @@ def test_list_instances_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_redis.ListInstancesResponse.to_json(cloud_redis.ListInstancesResponse())
         req.return_value.content = return_value
 
@@ -7347,11 +7359,13 @@ def test_list_instances_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis.ListInstancesResponse()
+        post_with_metadata.return_value = cloud_redis.ListInstancesResponse(), metadata
 
         client.list_instances(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_instance_rest_bad_request(request_type=cloud_redis.GetInstanceRequest):
@@ -7372,6 +7386,7 @@ def test_get_instance_rest_bad_request(request_type=cloud_redis.GetInstanceReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_instance(request)
 
 
@@ -7431,6 +7446,7 @@ def test_get_instance_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -7475,9 +7491,11 @@ def test_get_instance_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -7488,6 +7506,7 @@ def test_get_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_redis.Instance.to_json(cloud_redis.Instance())
         req.return_value.content = return_value
 
@@ -7498,11 +7517,13 @@ def test_get_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis.Instance()
+        post_with_metadata.return_value = cloud_redis.Instance(), metadata
 
         client.get_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_instance_auth_string_rest_bad_request(request_type=cloud_redis.GetInstanceAuthStringRequest):
@@ -7523,6 +7544,7 @@ def test_get_instance_auth_string_rest_bad_request(request_type=cloud_redis.GetI
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_instance_auth_string(request)
 
 
@@ -7556,6 +7578,7 @@ def test_get_instance_auth_string_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_instance_auth_string(request)
 
     # Establish that the response is the type that we expect.
@@ -7574,9 +7597,11 @@ def test_get_instance_auth_string_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance_auth_string") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance_auth_string_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance_auth_string") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
         transcode.return_value = {
             "method": "post",
@@ -7587,6 +7612,7 @@ def test_get_instance_auth_string_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
         req.return_value.content = return_value
 
@@ -7597,11 +7623,13 @@ def test_get_instance_auth_string_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis.InstanceAuthString()
+        post_with_metadata.return_value = cloud_redis.InstanceAuthString(), metadata
 
         client.get_instance_auth_string(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_instance_rest_bad_request(request_type=cloud_redis.CreateInstanceRequest):
@@ -7622,6 +7650,7 @@ def test_create_instance_rest_bad_request(request_type=cloud_redis.CreateInstanc
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_instance(request)
 
 
@@ -7714,6 +7743,7 @@ def test_create_instance_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -7732,9 +7762,11 @@ def test_create_instance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_create_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_create_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_create_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.CreateInstanceRequest.pb(cloud_redis.CreateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -7745,6 +7777,7 @@ def test_create_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7755,11 +7788,13 @@ def test_create_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.create_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_instance_rest_bad_request(request_type=cloud_redis.UpdateInstanceRequest):
@@ -7780,6 +7815,7 @@ def test_update_instance_rest_bad_request(request_type=cloud_redis.UpdateInstanc
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_instance(request)
 
 
@@ -7872,6 +7908,7 @@ def test_update_instance_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -7890,9 +7927,11 @@ def test_update_instance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_update_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_update_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_update_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.UpdateInstanceRequest.pb(cloud_redis.UpdateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -7903,6 +7942,7 @@ def test_update_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7913,11 +7953,13 @@ def test_update_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.update_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_upgrade_instance_rest_bad_request(request_type=cloud_redis.UpgradeInstanceRequest):
@@ -7938,6 +7980,7 @@ def test_upgrade_instance_rest_bad_request(request_type=cloud_redis.UpgradeInsta
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.upgrade_instance(request)
 
 
@@ -7966,6 +8009,7 @@ def test_upgrade_instance_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.upgrade_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -7984,9 +8028,11 @@ def test_upgrade_instance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_upgrade_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_upgrade_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_upgrade_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.UpgradeInstanceRequest.pb(cloud_redis.UpgradeInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -7997,6 +8043,7 @@ def test_upgrade_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8007,11 +8054,13 @@ def test_upgrade_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.upgrade_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_import_instance_rest_bad_request(request_type=cloud_redis.ImportInstanceRequest):
@@ -8032,6 +8081,7 @@ def test_import_instance_rest_bad_request(request_type=cloud_redis.ImportInstanc
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.import_instance(request)
 
 
@@ -8060,6 +8110,7 @@ def test_import_instance_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.import_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -8078,9 +8129,11 @@ def test_import_instance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_import_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_import_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_import_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.ImportInstanceRequest.pb(cloud_redis.ImportInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -8091,6 +8144,7 @@ def test_import_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8101,11 +8155,13 @@ def test_import_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.import_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_export_instance_rest_bad_request(request_type=cloud_redis.ExportInstanceRequest):
@@ -8126,6 +8182,7 @@ def test_export_instance_rest_bad_request(request_type=cloud_redis.ExportInstanc
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.export_instance(request)
 
 
@@ -8154,6 +8211,7 @@ def test_export_instance_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.export_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -8172,9 +8230,11 @@ def test_export_instance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_export_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_export_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_export_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.ExportInstanceRequest.pb(cloud_redis.ExportInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -8185,6 +8245,7 @@ def test_export_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8195,11 +8256,13 @@ def test_export_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_failover_instance_rest_bad_request(request_type=cloud_redis.FailoverInstanceRequest):
@@ -8220,6 +8283,7 @@ def test_failover_instance_rest_bad_request(request_type=cloud_redis.FailoverIns
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.failover_instance(request)
 
 
@@ -8248,6 +8312,7 @@ def test_failover_instance_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.failover_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -8266,9 +8331,11 @@ def test_failover_instance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_failover_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_failover_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_failover_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.FailoverInstanceRequest.pb(cloud_redis.FailoverInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -8279,6 +8346,7 @@ def test_failover_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8289,11 +8357,13 @@ def test_failover_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.failover_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_instance_rest_bad_request(request_type=cloud_redis.DeleteInstanceRequest):
@@ -8314,6 +8384,7 @@ def test_delete_instance_rest_bad_request(request_type=cloud_redis.DeleteInstanc
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_instance(request)
 
 
@@ -8342,6 +8413,7 @@ def test_delete_instance_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -8360,9 +8432,11 @@ def test_delete_instance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_delete_instance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_delete_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_delete_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.DeleteInstanceRequest.pb(cloud_redis.DeleteInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -8373,6 +8447,7 @@ def test_delete_instance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8383,11 +8458,13 @@ def test_delete_instance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.delete_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_reschedule_maintenance_rest_bad_request(request_type=cloud_redis.RescheduleMaintenanceRequest):
@@ -8408,6 +8485,7 @@ def test_reschedule_maintenance_rest_bad_request(request_type=cloud_redis.Resche
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.reschedule_maintenance(request)
 
 
@@ -8436,6 +8514,7 @@ def test_reschedule_maintenance_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.reschedule_maintenance(request)
 
     # Establish that the response is the type that we expect.
@@ -8454,9 +8533,11 @@ def test_reschedule_maintenance_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.CloudRedisRestInterceptor, "post_reschedule_maintenance") as post, \
+        mock.patch.object(transports.CloudRedisRestInterceptor, "post_reschedule_maintenance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_reschedule_maintenance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.RescheduleMaintenanceRequest.pb(cloud_redis.RescheduleMaintenanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -8467,6 +8548,7 @@ def test_reschedule_maintenance_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -8477,11 +8559,13 @@ def test_reschedule_maintenance_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.reschedule_maintenance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
@@ -8501,6 +8585,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -8528,6 +8613,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode('UTF-8')
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -8552,6 +8638,7 @@ def test_list_locations_rest_bad_request(request_type=locations_pb2.ListLocation
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -8579,6 +8666,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode('UTF-8')
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 
@@ -8603,6 +8691,7 @@ def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOpe
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -8630,6 +8719,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode('UTF-8')
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -8654,6 +8744,7 @@ def test_delete_operation_rest_bad_request(request_type=operations_pb2.DeleteOpe
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -8681,6 +8772,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode('UTF-8')
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -8705,6 +8797,7 @@ def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperation
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -8732,6 +8825,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode('UTF-8')
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -8756,6 +8850,7 @@ def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperat
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -8783,6 +8878,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode('UTF-8')
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 
@@ -8807,6 +8903,7 @@ def test_wait_operation_rest_bad_request(request_type=operations_pb2.WaitOperati
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.wait_operation(request)
 
 
@@ -8834,6 +8931,7 @@ def test_wait_operation_rest(request_type):
         response_value.content = json_return_value.encode('UTF-8')
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.wait_operation(request)
 
@@ -9135,6 +9233,7 @@ async def test_list_instances_rest_asyncio_bad_request(request_type=cloud_redis.
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.list_instances(request)
 
 
@@ -9172,6 +9271,7 @@ async def test_list_instances_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.list_instances(request)
 
     # Establish that the response is the type that we expect.
@@ -9194,9 +9294,11 @@ async def test_list_instances_rest_asyncio_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_list_instances") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_list_instances_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_list_instances") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.ListInstancesRequest.pb(cloud_redis.ListInstancesRequest())
         transcode.return_value = {
             "method": "post",
@@ -9207,6 +9309,7 @@ async def test_list_instances_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_redis.ListInstancesResponse.to_json(cloud_redis.ListInstancesResponse())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9217,11 +9320,13 @@ async def test_list_instances_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis.ListInstancesResponse()
+        post_with_metadata.return_value = cloud_redis.ListInstancesResponse(), metadata
 
         await client.list_instances(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_get_instance_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceRequest):
@@ -9243,6 +9348,7 @@ async def test_get_instance_rest_asyncio_bad_request(request_type=cloud_redis.Ge
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.get_instance(request)
 
 
@@ -9305,6 +9411,7 @@ async def test_get_instance_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.get_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -9352,9 +9459,11 @@ async def test_get_instance_rest_asyncio_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_get_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_get_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_get_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.GetInstanceRequest.pb(cloud_redis.GetInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -9365,6 +9474,7 @@ async def test_get_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_redis.Instance.to_json(cloud_redis.Instance())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9375,11 +9485,13 @@ async def test_get_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis.Instance()
+        post_with_metadata.return_value = cloud_redis.Instance(), metadata
 
         await client.get_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_get_instance_auth_string_rest_asyncio_bad_request(request_type=cloud_redis.GetInstanceAuthStringRequest):
@@ -9401,6 +9513,7 @@ async def test_get_instance_auth_string_rest_asyncio_bad_request(request_type=cl
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.get_instance_auth_string(request)
 
 
@@ -9437,6 +9550,7 @@ async def test_get_instance_auth_string_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.get_instance_auth_string(request)
 
     # Establish that the response is the type that we expect.
@@ -9458,9 +9572,11 @@ async def test_get_instance_auth_string_rest_asyncio_interceptors(null_intercept
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_get_instance_auth_string") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_get_instance_auth_string_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_get_instance_auth_string") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
         transcode.return_value = {
             "method": "post",
@@ -9471,6 +9587,7 @@ async def test_get_instance_auth_string_rest_asyncio_interceptors(null_intercept
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9481,11 +9598,13 @@ async def test_get_instance_auth_string_rest_asyncio_interceptors(null_intercept
         ]
         pre.return_value = request, metadata
         post.return_value = cloud_redis.InstanceAuthString()
+        post_with_metadata.return_value = cloud_redis.InstanceAuthString(), metadata
 
         await client.get_instance_auth_string(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_create_instance_rest_asyncio_bad_request(request_type=cloud_redis.CreateInstanceRequest):
@@ -9507,6 +9626,7 @@ async def test_create_instance_rest_asyncio_bad_request(request_type=cloud_redis
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.create_instance(request)
 
 
@@ -9602,6 +9722,7 @@ async def test_create_instance_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.create_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -9623,9 +9744,11 @@ async def test_create_instance_rest_asyncio_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_create_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_create_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_create_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.CreateInstanceRequest.pb(cloud_redis.CreateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -9636,6 +9759,7 @@ async def test_create_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9646,11 +9770,13 @@ async def test_create_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.create_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_update_instance_rest_asyncio_bad_request(request_type=cloud_redis.UpdateInstanceRequest):
@@ -9672,6 +9798,7 @@ async def test_update_instance_rest_asyncio_bad_request(request_type=cloud_redis
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.update_instance(request)
 
 
@@ -9767,6 +9894,7 @@ async def test_update_instance_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.update_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -9788,9 +9916,11 @@ async def test_update_instance_rest_asyncio_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_update_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_update_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_update_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.UpdateInstanceRequest.pb(cloud_redis.UpdateInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -9801,6 +9931,7 @@ async def test_update_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9811,11 +9942,13 @@ async def test_update_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.update_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_upgrade_instance_rest_asyncio_bad_request(request_type=cloud_redis.UpgradeInstanceRequest):
@@ -9837,6 +9970,7 @@ async def test_upgrade_instance_rest_asyncio_bad_request(request_type=cloud_redi
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.upgrade_instance(request)
 
 
@@ -9868,6 +10002,7 @@ async def test_upgrade_instance_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.upgrade_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -9889,9 +10024,11 @@ async def test_upgrade_instance_rest_asyncio_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_upgrade_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_upgrade_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_upgrade_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.UpgradeInstanceRequest.pb(cloud_redis.UpgradeInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -9902,6 +10039,7 @@ async def test_upgrade_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -9912,11 +10050,13 @@ async def test_upgrade_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.upgrade_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_import_instance_rest_asyncio_bad_request(request_type=cloud_redis.ImportInstanceRequest):
@@ -9938,6 +10078,7 @@ async def test_import_instance_rest_asyncio_bad_request(request_type=cloud_redis
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.import_instance(request)
 
 
@@ -9969,6 +10110,7 @@ async def test_import_instance_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.import_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -9990,9 +10132,11 @@ async def test_import_instance_rest_asyncio_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_import_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_import_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_import_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.ImportInstanceRequest.pb(cloud_redis.ImportInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -10003,6 +10147,7 @@ async def test_import_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -10013,11 +10158,13 @@ async def test_import_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.import_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_export_instance_rest_asyncio_bad_request(request_type=cloud_redis.ExportInstanceRequest):
@@ -10039,6 +10186,7 @@ async def test_export_instance_rest_asyncio_bad_request(request_type=cloud_redis
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.export_instance(request)
 
 
@@ -10070,6 +10218,7 @@ async def test_export_instance_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.export_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -10091,9 +10240,11 @@ async def test_export_instance_rest_asyncio_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_export_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_export_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_export_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.ExportInstanceRequest.pb(cloud_redis.ExportInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -10104,6 +10255,7 @@ async def test_export_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -10114,11 +10266,13 @@ async def test_export_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.export_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_failover_instance_rest_asyncio_bad_request(request_type=cloud_redis.FailoverInstanceRequest):
@@ -10140,6 +10294,7 @@ async def test_failover_instance_rest_asyncio_bad_request(request_type=cloud_red
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.failover_instance(request)
 
 
@@ -10171,6 +10326,7 @@ async def test_failover_instance_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.failover_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -10192,9 +10348,11 @@ async def test_failover_instance_rest_asyncio_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_failover_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_failover_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_failover_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.FailoverInstanceRequest.pb(cloud_redis.FailoverInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -10205,6 +10363,7 @@ async def test_failover_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -10215,11 +10374,13 @@ async def test_failover_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.failover_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_delete_instance_rest_asyncio_bad_request(request_type=cloud_redis.DeleteInstanceRequest):
@@ -10241,6 +10402,7 @@ async def test_delete_instance_rest_asyncio_bad_request(request_type=cloud_redis
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.delete_instance(request)
 
 
@@ -10272,6 +10434,7 @@ async def test_delete_instance_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.delete_instance(request)
 
     # Establish that the response is the type that we expect.
@@ -10293,9 +10456,11 @@ async def test_delete_instance_rest_asyncio_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_delete_instance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_delete_instance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_delete_instance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.DeleteInstanceRequest.pb(cloud_redis.DeleteInstanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -10306,6 +10471,7 @@ async def test_delete_instance_rest_asyncio_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -10316,11 +10482,13 @@ async def test_delete_instance_rest_asyncio_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.delete_instance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_reschedule_maintenance_rest_asyncio_bad_request(request_type=cloud_redis.RescheduleMaintenanceRequest):
@@ -10342,6 +10510,7 @@ async def test_reschedule_maintenance_rest_asyncio_bad_request(request_type=clou
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.reschedule_maintenance(request)
 
 
@@ -10373,6 +10542,7 @@ async def test_reschedule_maintenance_rest_asyncio_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = await client.reschedule_maintenance(request)
 
     # Establish that the response is the type that we expect.
@@ -10394,9 +10564,11 @@ async def test_reschedule_maintenance_rest_asyncio_interceptors(null_interceptor
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_reschedule_maintenance") as post, \
+        mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "post_reschedule_maintenance_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AsyncCloudRedisRestInterceptor, "pre_reschedule_maintenance") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = cloud_redis.RescheduleMaintenanceRequest.pb(cloud_redis.RescheduleMaintenanceRequest())
         transcode.return_value = {
             "method": "post",
@@ -10407,6 +10579,7 @@ async def test_reschedule_maintenance_rest_asyncio_interceptors(null_interceptor
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.read = mock.AsyncMock(return_value=return_value)
 
@@ -10417,11 +10590,13 @@ async def test_reschedule_maintenance_rest_asyncio_interceptors(null_interceptor
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         await client.reschedule_maintenance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 @pytest.mark.asyncio
 async def test_get_location_rest_asyncio_bad_request(request_type=locations_pb2.GetLocationRequest):
@@ -10442,6 +10617,7 @@ async def test_get_location_rest_asyncio_bad_request(request_type=locations_pb2.
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.get_location(request)
 
 @pytest.mark.asyncio
@@ -10471,6 +10647,7 @@ async def test_get_location_rest_asyncio(request_type):
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = await client.get_location(request)
 
@@ -10496,6 +10673,7 @@ async def test_list_locations_rest_asyncio_bad_request(request_type=locations_pb
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.list_locations(request)
 
 @pytest.mark.asyncio
@@ -10525,6 +10703,7 @@ async def test_list_locations_rest_asyncio(request_type):
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = await client.list_locations(request)
 
@@ -10550,6 +10729,7 @@ async def test_cancel_operation_rest_asyncio_bad_request(request_type=operations
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.cancel_operation(request)
 
 @pytest.mark.asyncio
@@ -10579,6 +10759,7 @@ async def test_cancel_operation_rest_asyncio(request_type):
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = await client.cancel_operation(request)
 
@@ -10604,6 +10785,7 @@ async def test_delete_operation_rest_asyncio_bad_request(request_type=operations
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.delete_operation(request)
 
 @pytest.mark.asyncio
@@ -10633,6 +10815,7 @@ async def test_delete_operation_rest_asyncio(request_type):
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = await client.delete_operation(request)
 
@@ -10658,6 +10841,7 @@ async def test_get_operation_rest_asyncio_bad_request(request_type=operations_pb
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.get_operation(request)
 
 @pytest.mark.asyncio
@@ -10687,6 +10871,7 @@ async def test_get_operation_rest_asyncio(request_type):
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = await client.get_operation(request)
 
@@ -10712,6 +10897,7 @@ async def test_list_operations_rest_asyncio_bad_request(request_type=operations_
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.list_operations(request)
 
 @pytest.mark.asyncio
@@ -10741,6 +10927,7 @@ async def test_list_operations_rest_asyncio(request_type):
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = await client.list_operations(request)
 
@@ -10766,6 +10953,7 @@ async def test_wait_operation_rest_asyncio_bad_request(request_type=operations_p
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         await client.wait_operation(request)
 
 @pytest.mark.asyncio
@@ -10795,6 +10983,7 @@ async def test_wait_operation_rest_asyncio(request_type):
         response_value.read = mock.AsyncMock(return_value=json_return_value.encode('UTF-8'))
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = await client.wait_operation(request)
 
