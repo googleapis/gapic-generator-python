@@ -1993,7 +1993,7 @@ def test_gapic_metadata():
     assert expected == actual
 
 
-def test_http_options(fs):
+def test_http_options():
     fd = (
         make_file_pb2(
             name='example.proto',
