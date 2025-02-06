@@ -29,7 +29,9 @@ dependencies = [
     # templated setup.py.j2: https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
     "click >= 6.7",
     "google-api-core[grpc] >= 1.34.1, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "googleapis-common-protos >= 1.55.0",
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2322): Upgrade the version of googleapis-common-protos once a
+    # formal version of 1.67.0 is published
+    "googleapis-common-protos >= 1.67.0rc1",
     "grpcio >= 1.24.3",
     # 2.11.0 is required which adds the `default` argument to `jinja-filters.map()`
     # https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.map
