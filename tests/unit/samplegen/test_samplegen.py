@@ -2244,7 +2244,7 @@ def test_generate_sample_spec_internal_method():
     service_options = descriptor_pb2.ServiceOptions()
     service_options.Extensions[client_pb2.default_host] = "example.googleapis.com"
 
-    file_descriptors=[
+    file_descriptors = [
         descriptor_pb2.FileDescriptorProto(
             name="cephalopod.proto",
             package="animalia.mollusca.v1",
@@ -2316,7 +2316,8 @@ def test_generate_sample_spec_internal_method():
 
     api_opts = Options(service_yaml_config=service_yaml)
 
-    api_schema = api.API.build(file_descriptors, "animalia.mollusca.v1", opts=api_opts)
+    api_schema = api.API.build(
+        file_descriptors, "animalia.mollusca.v1", opts=api_opts)
 
     samplegen_opts = Options.build("transport=rest")
 
@@ -2341,7 +2342,7 @@ def test_generate_sample_spec_internal_method():
             "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
             "description": "Snippet for ramshorn"
         },
-                {
+        {
             "rpc": "_NotRamshorn",
             "transport": "rest",
             "service": "animalia.mollusca.v1.Squid",
@@ -2350,7 +2351,7 @@ def test_generate_sample_spec_internal_method():
         },
     ]
 
-    assert specs == expected_specs    
+    assert specs == expected_specs
 
 
 def test__set_sample_metadata_server_streaming():

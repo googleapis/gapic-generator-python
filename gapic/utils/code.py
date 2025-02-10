@@ -64,6 +64,7 @@ def nth(iterable: Iterable[T], n: int, default: Optional[T] = None) -> Optional[
     """
     return next(itertools.islice(iterable, n, None), default)
 
+
 def make_private(object_name: str) -> str:
     """Labels the object name like a private object (i.e. prefixes it with underscore)
 

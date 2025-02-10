@@ -50,4 +50,4 @@ def test_make_private():
     assert code.make_private('private_func') == '_private_func'
 
     # Starts with underscore
-    assert code.make_private('_already_private') == '_already_private'
+    assert code.make_private('_no_dunder_plz') == '_no_dunder_plz'
