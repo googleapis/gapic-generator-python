@@ -244,6 +244,14 @@ class Generator:
         if not opts.metadata and template_name.endswith("gapic_metadata.json.j2"):
             return answer
 
+        # Exclude unversioned imports `google.cloud.library` instead of `google.cloud.library_v2`
+        # if `unversioned_package_disabled` is set
+        if template_name.startswith("%namespace/%name/") and \
+                api_schema.all_library_settings[
+                    api_schema.naming.proto_package
+                ].python_settings.experimental_features.unversioned_package_disabled:
+            return answer
+
         # Quick check: Rendering per service and per proto would be a
         # combinatorial explosion and is almost certainly not what anyone
         # ever wants. Error colorfully on it.
