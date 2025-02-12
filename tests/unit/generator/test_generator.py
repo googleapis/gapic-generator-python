@@ -21,6 +21,7 @@ import jinja2
 import pytest
 
 from google.api import service_pb2
+from google.api import client_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
@@ -143,6 +144,56 @@ def test_get_response_ignore_gapic_metadata():
 
             # We don't expect any files because opts.metadata is not set.
             assert res.file == CodeGeneratorResponse().file
+
+
+@pytest.mark.parametrize(
+    "unversioned_package_disabled, result",
+    [
+        (True, []),
+        (False, [{"name"}]),
+    ],
+)
+def test_get_response_ignore_unversioned_package(unversioned_package_disabled, result):
+    g = make_generator()
+    naming = make_naming(
+        namespace=("Foo",),
+        name="Bar",
+        proto_package="foo.bar.v2",
+        version="v2",
+    )
+    python_settings = client_pb2.PythonSettings(
+        experimental_features=client_pb2.PythonSettings.ExperimentalFeatures(
+            unversioned_package_disabled=unversioned_package_disabled
+        )
+    )
+    service_config = service_pb2.Service(
+        publishing=client_pb2.Publishing(
+            library_settings=[
+                client_pb2.ClientLibrarySettings(
+                    version="foo.bar.v2", python_settings=python_settings
+                )
+            ]
+        )
+    )
+    api = make_api(
+        naming=naming,
+        service_yaml_config=service_config,
+    )
+
+    with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
+        lt.return_value = ["%namespace/%name/test"]
+        with mock.patch.object(jinja2.Environment, "get_template") as gt:
+            gt.return_value = jinja2.Template("unversioned_contents")
+            res = g.get_response(
+                api_schema=api,
+                opts=Options.build(""),
+            )
+            if unversioned_package_disabled:
+                assert res.file == []
+            else:
+                assert {file_entry.content.strip() for file_entry in res.file} == {
+                    "unversioned_contents",
+                }
 
 
 def test_get_response_ignores_unwanted_transports_and_clients():
