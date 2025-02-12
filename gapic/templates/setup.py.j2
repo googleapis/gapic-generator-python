@@ -17,12 +17,7 @@ name = '{{ api.naming.warehouse_package_name }}'
 
 {% set warehouse_description = api.naming.warehouse_package_name.replace('-',' ')|title %}
 
-{% if unversioned_package_disabled %}
-{% set package_path = api.naming.module_namespace|join('/') + "/" + api.naming.versioned_module_name %}
-{% else %}
-{% set package_path = api.naming.module_namespace|join('/') + "/" + api.naming.module_name %}
-{% endif %}
-
+{% set package_path = api.naming.module_namespace|join('/') + "/" + (api.naming.versioned_module_name if unversioned_package_disabled else api.naming.module_name) %}
 description = "{{ warehouse_description }} API client library"
 
 version = None
