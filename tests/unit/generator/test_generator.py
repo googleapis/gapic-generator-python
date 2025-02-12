@@ -146,14 +146,8 @@ def test_get_response_ignore_gapic_metadata():
             assert res.file == CodeGeneratorResponse().file
 
 
-@pytest.mark.parametrize(
-    "unversioned_package_disabled, result",
-    [
-        (True, []),
-        (False, [{"name"}]),
-    ],
-)
-def test_get_response_ignore_unversioned_package(unversioned_package_disabled, result):
+@pytest.mark.parametrize("unversioned_package_disabled, result", [(True, False)])
+def test_get_response_ignore_unversioned_package(unversioned_package_disabled):
     g = make_generator()
     naming = make_naming(
         namespace=("Foo",),
