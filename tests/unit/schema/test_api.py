@@ -2705,7 +2705,7 @@ def test_read_python_settings_from_service_yaml():
                 {
                     "version": "google.example.v1beta1",
                     "python_settings": {
-                        "experimental_features": {"rest_async_io_enabled": True},
+                        "experimental_features": {"rest_async_io_enabled": True, "unversioned_package_disabled": True},
                     },
                 }
             ]
