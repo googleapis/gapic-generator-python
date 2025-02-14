@@ -48,19 +48,19 @@ def mock_generate_sample(*args, **kwargs):
 def test_custom_template_directory():
     # Create a generator.
     opts = Options.build("python-gapic-templates=/templates/")
-    g = generator.Generator(opts)
+    generator_obj = generator.Generator(opts)
 
     # Assert that the Jinja loader will pull from the correct location.
-    assert g._env.loader.searchpath == ["/templates"]
+    assert generator_obj._env.loader.searchpath == ["/templates"]
 
 
 def test_get_response():
-    g = make_generator()
+    generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
         lt.return_value = ["foo/bar/baz.py.j2", "molluscs/squid/sample.py.j2"]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("I am a template result.")
-            cgr = g.get_response(api_schema=make_api(),
+            cgr = generator_obj.get_response(api_schema=make_api(),
                                  opts=Options.build(""))
             lt.assert_called_once()
             gt.assert_has_calls(
@@ -75,12 +75,12 @@ def test_get_response():
 
 
 def test_get_response_ignores_empty_files():
-    g = make_generator()
+    generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
         lt.return_value = ["foo/bar/baz.py.j2", "molluscs/squid/sample.py.j2"]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("# Meaningless comment")
-            cgr = g.get_response(api_schema=make_api(),
+            cgr = generator_obj.get_response(api_schema=make_api(),
                                  opts=Options.build(""))
             lt.assert_called_once()
             gt.assert_has_calls(
@@ -93,7 +93,7 @@ def test_get_response_ignores_empty_files():
 
 
 def test_get_response_ignores_private_files():
-    g = make_generator()
+    generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
         lt.return_value = [
             "foo/bar/baz.py.j2",
@@ -102,7 +102,7 @@ def test_get_response_ignores_private_files():
         ]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("I am a template result.")
-            cgr = g.get_response(api_schema=make_api(),
+            cgr = generator_obj.get_response(api_schema=make_api(),
                                  opts=Options.build(""))
             lt.assert_called_once()
             gt.assert_has_calls(
@@ -117,13 +117,13 @@ def test_get_response_ignores_private_files():
 
 
 def test_get_response_fails_invalid_file_paths():
-    g = make_generator()
+    generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
         lt.return_value = [
             "foo/bar/%service/%proto/baz.py.j2",
         ]
         with pytest.raises(ValueError) as ex:
-            g.get_response(api_schema=make_api(),
+            generator_obj.get_response(api_schema=make_api(),
                            opts=Options.build(""))
 
         ex_str = str(ex.value)
@@ -131,13 +131,13 @@ def test_get_response_fails_invalid_file_paths():
 
 
 def test_get_response_ignore_gapic_metadata():
-    g = make_generator()
+    generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
         lt.return_value = ["gapic/gapic_metadata.json.j2"]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template(
                 "This is not something we want to see")
-            res = g.get_response(
+            res = generator_obj.get_response(
                 api_schema=make_api(),
                 opts=Options.build(""),
             )
@@ -148,7 +148,7 @@ def test_get_response_ignore_gapic_metadata():
 
 @pytest.mark.parametrize("unversioned_package_disabled", (True, False))
 def test_get_response_ignore_unversioned_package(unversioned_package_disabled):
-    g = make_generator()
+    generator_obj = make_generator()
     naming = make_naming(
         namespace=("Foo",),
         name="Bar",
@@ -178,7 +178,7 @@ def test_get_response_ignore_unversioned_package(unversioned_package_disabled):
         lt.return_value = ["%namespace/%name/test"]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("unversioned_contents")
-            res = g.get_response(
+            res = generator_obj.get_response(
                 api_schema=api,
                 opts=Options.build(""),
             )
@@ -191,7 +191,7 @@ def test_get_response_ignore_unversioned_package(unversioned_package_disabled):
 
 
 def test_get_response_ignores_unwanted_transports_and_clients():
-    g = make_generator()
+    generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
         lt.return_value = [
             "foo/%service/transports/river.py.j2",
@@ -218,7 +218,7 @@ def test_get_response_ignores_unwanted_transports_and_clients():
                 )
             )
 
-            cgr = g.get_response(
+            cgr = generator_obj.get_response(
                 api_schema=api_schema,
                 opts=Options.build("transport=river+car")
             )
@@ -232,7 +232,7 @@ def test_get_response_ignores_unwanted_transports_and_clients():
                 "foo/some_service/client.py",
             }
 
-            cgr = g.get_response(
+            cgr = generator_obj.get_response(
                 api_schema=api_schema,
                 opts=Options.build("transport=grpc")
             )
@@ -247,7 +247,7 @@ def test_get_response_ignores_unwanted_transports_and_clients():
 
 
 def test_get_response_enumerates_services():
-    g = make_generator()
+    generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
         lt.return_value = [
             "foo/%service/baz.py.j2",
@@ -255,7 +255,7 @@ def test_get_response_enumerates_services():
         ]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("Service: {{ service.name }}")
-            cgr = g.get_response(
+            cgr = generator_obj.get_response(
                 api_schema=make_api(
                     make_proto(
                         descriptor_pb2.FileDescriptorProto(
@@ -279,7 +279,7 @@ def test_get_response_enumerates_services():
 
 
 def test_get_response_enumerates_proto():
-    g = make_generator()
+    generator_obj = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
         lt.return_value = [
             "foo/%proto.py.j2",
@@ -287,7 +287,7 @@ def test_get_response_enumerates_proto():
         ]
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("Proto: {{ proto.module_name }}")
-            cgr = g.get_response(
+            cgr = generator_obj.get_response(
                 api_schema=make_api(
                     make_proto(
                         descriptor_pb2.FileDescriptorProto(name="a.proto")),
@@ -304,7 +304,7 @@ def test_get_response_divides_subpackages():
     # NOTE: autogen-snippets is intentionally disabled for this test
     # The API schema below is incomplete and will result in errors when the
     # snippetgen logic tries to parse it.
-    g = make_generator("autogen-snippets=false")
+    generator_obj = make_generator("autogen-snippets=false")
     api_schema = api.API.build(
         [
             descriptor_pb2.FileDescriptorProto(
@@ -338,7 +338,7 @@ def test_get_response_divides_subpackages():
                 {{- '' }}Subpackage: {{ '.'.join(api.subpackage_view) }}
             """.strip()
             )
-            cgr = g.get_response(api_schema=api_schema,
+            cgr = generator_obj.get_response(api_schema=api_schema,
                                  opts=Options.build("autogen-snippets=false"))
             assert len(cgr.file) == 6
             assert {i.name for i in cgr.file} == {
@@ -352,10 +352,10 @@ def test_get_response_divides_subpackages():
 
 
 def test_get_filename():
-    g = make_generator()
+    generator_obj = make_generator()
     template_name = "%namespace/%name_%version/foo.py.j2"
     assert (
-        g._get_filename(
+        generator_obj._get_filename(
             template_name,
             api_schema=make_api(
                 naming=make_naming(namespace=(), name="Spam", version="v2"),
@@ -366,10 +366,10 @@ def test_get_filename():
 
 
 def test_get_filename_with_namespace():
-    g = make_generator()
+    generator_obj = make_generator()
     template_name = "%namespace/%name_%version/foo.py.j2"
     assert (
-        g._get_filename(
+        generator_obj._get_filename(
             template_name,
             api_schema=make_api(
                 naming=make_naming(
@@ -382,10 +382,10 @@ def test_get_filename_with_namespace():
 
 
 def test_get_filename_with_service():
-    g = make_generator()
+    generator_obj = make_generator()
     template_name = "%name/%service/foo.py.j2"
     assert (
-        g._get_filename(
+        generator_obj._get_filename(
             template_name,
             api_schema=make_api(
                 naming=make_naming(namespace=(), name="Spam", version="v2"),
@@ -412,9 +412,9 @@ def test_get_filename_with_proto():
         naming=make_naming(namespace=(), name="Spam", version="v2"),
     )
 
-    g = make_generator()
+    generator_obj = make_generator()
     assert (
-        g._get_filename(
+        generator_obj._get_filename(
             "%name/types/%proto.py.j2",
             api_schema=api,
             context={"proto": api.protos["bacon.proto"]},
@@ -434,9 +434,9 @@ def test_get_filename_with_proto_and_sub():
         make_proto(file_pb2, naming=naming), naming=naming, subpackage_view=("baz",),
     )
 
-    g = make_generator()
+    generator_obj = make_generator()
     assert (
-        g._get_filename(
+        generator_obj._get_filename(
             "%name/types/%sub/%proto.py.j2",
             api_schema=api,
             context={"proto": api.protos["bacon.proto"]},
@@ -496,9 +496,9 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
         ),
     )
 
-    g = generator.Generator(Options.build("samples=samples.yaml",))
+    generator_obj = generator.Generator(Options.build("samples=samples.yaml",))
     # Need to have the sample template visible to the generator.
-    g._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
+    generator_obj._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
 
     api_schema = DummyApiSchema(
         services={"Mollusc": DummyService(
@@ -514,7 +514,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
     )
 
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
-        actual_response = g.get_response(
+        actual_response = generator_obj.get_response(
             api_schema, opts=Options.build("autogen-snippets=False"))
 
     expected_snippet_index_json = {
@@ -593,14 +593,14 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
 )
 def test_generate_autogen_samples(mock_generate_sample, mock_generate_specs):
     opts = Options.build("autogen-snippets")
-    g = generator.Generator(opts)
+    generator_obj = generator.Generator(opts)
     # Need to have the sample template visible to the generator.
-    g._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
+    generator_obj._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
 
     api_schema = make_api(naming=naming.NewNaming(
         name="Mollusc", version="v6"))
 
-    actual_response = g.get_response(api_schema, opts=opts)
+    generator_obj.get_response(api_schema, opts=opts)
 
     # Just check that generate_sample_specs was called
     # Correctness of the spec is tested in samplegen unit tests
@@ -649,9 +649,9 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
             """
         ),
     )
-    g = generator.Generator(Options.build("samples=samples.yaml"))
+    generator_obj = generator.Generator(Options.build("samples=samples.yaml"))
     # Need to have the sample template visible to the generator.
-    g._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
+    generator_obj._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
 
     api_schema = DummyApiSchema(
         services={"Mollusc": DummyService(
@@ -666,7 +666,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
                            versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod", proto_package="google.mollusca.v1"),
     )
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
-        actual_response = g.get_response(api_schema,
+        actual_response = generator_obj.get_response(api_schema,
                                      opts=Options.build("autogen-snippets=False"))
 
     expected_snippet_metadata_json = {
