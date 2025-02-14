@@ -711,7 +711,7 @@ def lint(session):
     )
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python="3.10")
 def blacken(session):
     """Run black. Format code to uniform standard."""
     session.install(BLACK_VERSION)
