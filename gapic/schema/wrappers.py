@@ -2004,9 +2004,7 @@ class Method:
             # the allowlist, as it might not have been specified by
             # the methods under selective_gapic_generation.
             # We assume that the operation service lives in the same proto file as this one.
-            operation_service = services_in_proto[
-                self.operation_service
-            ]
+            operation_service = services_in_proto[self.operation_service]
             address_allowlist.add(operation_service.meta.address)
             operation_service.operation_polling_method.add_to_address_allowlist(
                 address_allowlist=address_allowlist,
