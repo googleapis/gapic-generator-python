@@ -146,7 +146,7 @@ def test_get_field_recursive():
     outer_field = make_field("inner", message=inner)
     outer = make_message("Outer", fields=(outer_field,))
 
-    # Assert that a recusive retrieval works.
+    # Assert that a recursive retrieval works.
     assert outer.get_field("inner", "zero") == inner_fields[0]
     assert outer.get_field("inner", "one") == inner_fields[1]
     assert outer.get_field("inner.one") == inner_fields[1]
@@ -161,7 +161,7 @@ def test_get_field_nested_not_found_error():
     outer_field = make_field("inner", message=inner)
     outer = make_message("Outer", fields=(outer_field,))
 
-    # Assert that a recusive retrieval fails.
+    # Assert that a recursive retrieval fails.
     with pytest.raises(KeyError):
         assert outer.get_field("inner", "zero", "beyond")
 
@@ -175,7 +175,7 @@ def test_get_field_nonterminal_repeated_error():
     outer_field = make_field("inner", message=inner, repeated=True)
     outer = make_message("Outer", fields=(outer_field,))
 
-    # Assert that a recusive retrieval fails.
+    # Assert that a recursive retrieval fails.
     with pytest.raises(KeyError):
         assert outer.get_field("inner", "zero") == inner_fields[0]
     with pytest.raises(KeyError):
@@ -310,7 +310,7 @@ def test_oneof_fields():
     length_f = make_field(name="length_f", oneof="length", type=5)
     color = make_field(name="color", type=5)
     request = make_message(
-        name="CreateMolluscReuqest",
+        name="CreateMolluscRequest",
         fields=(
             mass_kg,
             mass_lbs,
@@ -340,7 +340,7 @@ def test_required_fields():
     color.options.Extensions[field_behavior_pb2.field_behavior].append(REQUIRED)
 
     request = make_message(
-        name="CreateMolluscReuqest",
+        name="CreateMolluscRequest",
         fields=(
             mass_kg,
             length_m,

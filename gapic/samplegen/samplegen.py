@@ -319,7 +319,7 @@ class Validator:
             service.async_client_name if is_async else service.client_name
         )
 
-        # the MessageType of the request object passed to the rpc e.g, `ListRequest`
+        # the MessageType of the request object passed to the rpc e.g., `ListRequest`
         sample["request_type"] = rpc.input
 
         # We check if the request object is part of the service proto package.
@@ -754,7 +754,7 @@ class Validator:
         num_prints = fmt_str.count("%s")
         if num_prints != len(body) - 1:
             raise types.MismatchedFormatSpecifier(
-                "Expected {} expresssions in format string '{}' but found {}".format(
+                "Expected {} expressions in format string '{}' but found {}".format(
                     num_prints, fmt_str, len(body) - 1
                 )
             )
@@ -831,7 +831,7 @@ class Validator:
         Checks for correctly defined loop constructs,
         either 'collection' loops with a collection and iteration variable,
         or 'map' loops with a map and at least one of 'key' or 'value'.
-        Loops also have a 'body', which contains statments that may
+        Loops also have a 'body', which contains statements that may
         use the variables from the header.
 
         The body statements are validated recursively.

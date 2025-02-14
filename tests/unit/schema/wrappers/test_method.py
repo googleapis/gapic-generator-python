@@ -772,7 +772,7 @@ def test_flattened_oneof_fields():
         ),
     )
     request = make_message(
-        name="CreateMolluscReuqest",
+        name="CreateMolluscRequest",
         fields=(
             length_m,
             length_f,
@@ -796,7 +796,7 @@ def test_flattened_oneof_fields():
     actual = method.flattened_oneof_fields()
     assert expected == actual
 
-    # Check this method too becasue the setup is a lot of work.
+    # Check this method too because the setup is a lot of work.
     expected = {
         "color": "color",
         "length_m": "length_m",
