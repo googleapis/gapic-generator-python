@@ -33,9 +33,8 @@ showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 BLACK_VERSION = "black==25.1.0"
 BLACK_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
-BLACK_EXCLUDES = "|".join(
-    ["tests/integration", ".*pb2.py", "tests/unit/samplegen/golden_snippets"]
-)
+# exclude golden files and generated protobuf code
+BLACK_EXCLUDES = "|".join([".*golden.*", ".*pb2.py"])
 
 ALL_PYTHON = (
     "3.7",

@@ -60,5 +60,4 @@ async def sample_method_bidi_streaming():
     async for response in stream:
         print(response)
 
-
 # [END mollusca_v1_generated_Snippets_MethodBidiStreaming_async]
