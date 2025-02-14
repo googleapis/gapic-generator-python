@@ -1999,14 +1999,14 @@ class Method:
                 address_allowlist=address_allowlist, resource_messages=resource_messages
             )
 
-        if self.extended_lro:
+        if self.extended_lro and self.operation_service:
             # We need to add the service/method pointed to by self.operation_service to
             # the allowlist, as it might not have been specified by
             # the methods under selective_gapic_generation.
             # We assume that the operation service lives in the same proto file as this one.
             operation_service = services_in_proto[
                 self.operation_service
-            ]  # type: ignore
+            ]
             address_allowlist.add(operation_service.meta.address)
             operation_service.operation_polling_method.add_to_address_allowlist(
                 address_allowlist=address_allowlist,

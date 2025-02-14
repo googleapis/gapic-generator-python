@@ -163,9 +163,9 @@ class ConfiguredSnippet:
 
             # The result of applying a transformer could be of a different type
             # in general, but we will only update the sample function def here.
-            self._sample_function_def = self._sample_function_def.visit(
+            self._sample_function_def = self._sample_function_def.visit( # type: ignore
                 transformer
-            )  # type: ignore
+            )
 
     def _add_sample_function_parameters(self) -> None:
         """Adds sample function parameters.
