@@ -719,5 +719,5 @@ def blacken(session):
         "black",
         *BLACK_PATHS,
         "--extend-exclude",
-        "tests/integration|.*pb2.py",
+        "tests/integration|.*pb2.py|tests/unit/samplegen/golden_snippets",
     )
