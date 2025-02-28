@@ -20,6 +20,7 @@ from gapic.utils.checks import is_str_field_pb
 from gapic.utils.code import empty
 from gapic.utils.code import nth
 from gapic.utils.code import partition
+from gapic.utils.code import make_private
 from gapic.utils.doc import doc
 from gapic.utils.filename import to_valid_filename
 from gapic.utils.filename import to_valid_module_name
@@ -32,21 +33,22 @@ from gapic.utils.uri_conv import convert_uri_fieldnames
 
 
 __all__ = (
-    'cached_property',
-    'convert_uri_fieldnames',
-    'doc',
-    'empty',
-    'is_msg_field_pb',
-    'is_str_field_pb',
-    'nth',
-    'Options',
-    'partition',
-    'RESERVED_NAMES',
-    'rst',
-    'sort_lines',
-    'to_snake_case',
-    'to_camel_case',
-    'to_valid_filename',
-    'to_valid_module_name',
-    'wrap',
+    "cached_property",
+    "convert_uri_fieldnames",
+    "doc",
+    "empty",
+    "is_msg_field_pb",
+    "is_str_field_pb",
+    "make_private",
+    "nth",
+    "Options",
+    "partition",
+    "RESERVED_NAMES",
+    "rst",
+    "sort_lines",
+    "to_snake_case",
+    "to_camel_case",
+    "to_valid_filename",
+    "to_valid_module_name",
+    "wrap",
 )

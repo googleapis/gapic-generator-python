@@ -1,6 +1,53 @@
 # Changelog
 
 
+## [1.23.1](https://github.com/googleapis/gapic-generator-python/compare/v1.23.0...v1.23.1) (2025-02-14)
+
+
+### Documentation
+
+* Fix minor typos ([#2318](https://github.com/googleapis/gapic-generator-python/issues/2318)) ([7be3a55](https://github.com/googleapis/gapic-generator-python/commit/7be3a559d59b778c5733e21b4c0169b17bd05c4a))
+
+## [1.23.0](https://github.com/googleapis/gapic-generator-python/compare/v1.22.1...v1.23.0) (2025-02-14)
+
+
+### Features
+
+* Add ability to remove unversioned modules ([#2329](https://github.com/googleapis/gapic-generator-python/issues/2329)) ([ccd619f](https://github.com/googleapis/gapic-generator-python/commit/ccd619f0461f6b1aa22cdd6fbcc37039bcdc541a))
+* Added support for internal methods in selective GAPIC generation ([#2325](https://github.com/googleapis/gapic-generator-python/issues/2325)) ([eb8a69e](https://github.com/googleapis/gapic-generator-python/commit/eb8a69e3141f865903716b9c5013e2c7650c60da))
+
+## [1.22.1](https://github.com/googleapis/gapic-generator-python/compare/v1.22.0...v1.22.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([#2327](https://github.com/googleapis/gapic-generator-python/issues/2327)) ([d4236c8](https://github.com/googleapis/gapic-generator-python/commit/d4236c8a823d78350015c97c0d10e505771da564))
+
+## [1.22.0](https://github.com/googleapis/gapic-generator-python/compare/v1.21.0...v1.22.0) (2025-01-30)
+
+
+### Features
+
+* Add cred info to auth related errors ([#2115](https://github.com/googleapis/gapic-generator-python/issues/2115)) ([a694ceb](https://github.com/googleapis/gapic-generator-python/commit/a694cebf386aace80aab36ef9cc2d1102078d3d0))
+* Add REST Interceptors to support reading metadata ([#2299](https://github.com/googleapis/gapic-generator-python/issues/2299)) ([e050f4e](https://github.com/googleapis/gapic-generator-python/commit/e050f4eb3eddfe150f028a2a2bd901899afb965a))
+* Add support for reading selective GAPIC generation methods from service YAML ([#2272](https://github.com/googleapis/gapic-generator-python/issues/2272)) ([3a1a91c](https://github.com/googleapis/gapic-generator-python/commit/3a1a91cadf4438d7b5bf0edaf93ffa3f966eb7e2))
+
+## [1.21.0](https://github.com/googleapis/gapic-generator-python/compare/v1.20.2...v1.21.0) (2024-12-11)
+
+
+### Features
+
+* Add client debug logging support for async gRPC ([#2291](https://github.com/googleapis/gapic-generator-python/issues/2291)) ([f45935a](https://github.com/googleapis/gapic-generator-python/commit/f45935a4d760a36bf989ed79bfd02aa7ec203468))
+* Add client logging support for sync gRPC ([#2284](https://github.com/googleapis/gapic-generator-python/issues/2284)) ([dddf797](https://github.com/googleapis/gapic-generator-python/commit/dddf797a1ec7bf0496b4b4c75f8d37faa753c824))
+* Add debug log when creating client ([#2265](https://github.com/googleapis/gapic-generator-python/issues/2265)) ([8be95a2](https://github.com/googleapis/gapic-generator-python/commit/8be95a2f4749a2882117154aa655c0a9d71cdc50))
+* Add debug log when sending requests via REST ([#2270](https://github.com/googleapis/gapic-generator-python/issues/2270)) ([4cb1fa2](https://github.com/googleapis/gapic-generator-python/commit/4cb1fa2452ad5ba59b34c9d25cb3ca0c635059ac))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([#2251](https://github.com/googleapis/gapic-generator-python/issues/2251)) ([8b3b80f](https://github.com/googleapis/gapic-generator-python/commit/8b3b80f4b55c295e5d13084284ff0e2a72b2e993))
+* **log:** Preserve dict of rest async response headers ([#2288](https://github.com/googleapis/gapic-generator-python/issues/2288)) ([b10cc21](https://github.com/googleapis/gapic-generator-python/commit/b10cc21daf7d17567119f5c9b33d98fe18072eb4))
+
 ## [1.20.2](https://github.com/googleapis/gapic-generator-python/compare/v1.20.1...v1.20.2) (2024-10-30)
 
 

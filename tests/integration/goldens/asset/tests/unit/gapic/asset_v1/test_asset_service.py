@@ -71,6 +71,15 @@ from google.type import expr_pb2  # type: ignore
 import google.auth
 
 
+
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -192,6 +201,43 @@ def test__get_universe_domain():
         AssetServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
+@pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
+    (401, CRED_INFO_JSON, True),
+    (403, CRED_INFO_JSON, True),
+    (404, CRED_INFO_JSON, True),
+    (500, CRED_INFO_JSON, False),
+    (401, None, False),
+    (403, None, False),
+    (404, None, False),
+    (500, None, False)
+])
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = AssetServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
+
+@pytest.mark.parametrize("error_code", [401,403,404,500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = AssetServiceClient(credentials=cred)
+    client._transport._credentials = cred
+
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
+
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (AssetServiceClient, "grpc"),
@@ -8966,6 +9012,7 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.export_assets(request)
 
@@ -9079,6 +9126,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_assets(request)
 
@@ -9123,6 +9171,7 @@ def test_list_assets_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_assets(**mock_args)
 
@@ -9307,6 +9356,7 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_get_assets_history(request)
 
@@ -9423,6 +9473,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_feed(request)
 
@@ -9467,6 +9518,7 @@ def test_create_feed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_feed(**mock_args)
 
@@ -9587,6 +9639,7 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_feed(request)
 
@@ -9631,6 +9684,7 @@ def test_get_feed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_feed(**mock_args)
 
@@ -9751,6 +9805,7 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_feeds(request)
 
@@ -9795,6 +9850,7 @@ def test_list_feeds_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_feeds(**mock_args)
 
@@ -9911,6 +9967,7 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_feed(request)
 
@@ -9955,6 +10012,7 @@ def test_update_feed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_feed(**mock_args)
 
@@ -10072,6 +10130,7 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_feed(request)
 
@@ -10114,6 +10173,7 @@ def test_delete_feed_rest_flattened():
         json_return_value = ''
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_feed(**mock_args)
 
@@ -10236,6 +10296,7 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_all_resources(request)
 
@@ -10282,6 +10343,7 @@ def test_search_all_resources_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_all_resources(**mock_args)
 
@@ -10468,6 +10530,7 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_all_iam_policies(request)
 
@@ -10513,6 +10576,7 @@ def test_search_all_iam_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.search_all_iam_policies(**mock_args)
 
@@ -10693,6 +10757,7 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_iam_policy(request)
 
@@ -10801,6 +10866,7 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_iam_policy_longrunning(request)
 
@@ -10921,6 +10987,7 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_move(request)
 
@@ -11037,6 +11104,7 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.query_assets(request)
 
@@ -11158,6 +11226,7 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_saved_query(request)
 
@@ -11208,6 +11277,7 @@ def test_create_saved_query_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_saved_query(**mock_args)
 
@@ -11330,6 +11400,7 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_saved_query(request)
 
@@ -11374,6 +11445,7 @@ def test_get_saved_query_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_saved_query(**mock_args)
 
@@ -11496,6 +11568,7 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_saved_queries(request)
 
@@ -11540,6 +11613,7 @@ def test_list_saved_queries_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_saved_queries(**mock_args)
 
@@ -11720,6 +11794,7 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_saved_query(request)
 
@@ -11765,6 +11840,7 @@ def test_update_saved_query_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_saved_query(**mock_args)
 
@@ -11883,6 +11959,7 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_saved_query(request)
 
@@ -11925,6 +12002,7 @@ def test_delete_saved_query_rest_flattened():
         json_return_value = ''
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_saved_query(**mock_args)
 
@@ -12054,6 +12132,7 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_get_effective_iam_policies(request)
 
@@ -12178,6 +12257,7 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_org_policies(request)
 
@@ -12228,6 +12308,7 @@ def test_analyze_org_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_org_policies(**mock_args)
 
@@ -12421,6 +12502,7 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_org_policy_governed_containers(request)
 
@@ -12471,6 +12553,7 @@ def test_analyze_org_policy_governed_containers_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_org_policy_governed_containers(**mock_args)
 
@@ -12664,6 +12747,7 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.analyze_org_policy_governed_assets(request)
 
@@ -12714,6 +12798,7 @@ def test_analyze_org_policy_governed_assets_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.analyze_org_policy_governed_assets(**mock_args)
 
@@ -14109,6 +14194,7 @@ def test_export_assets_rest_bad_request(request_type=asset_service.ExportAssetsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.export_assets(request)
 
 
@@ -14137,6 +14223,7 @@ def test_export_assets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.export_assets(request)
 
     # Establish that the response is the type that we expect.
@@ -14155,9 +14242,11 @@ def test_export_assets_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_export_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_export_assets_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_export_assets") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.ExportAssetsRequest.pb(asset_service.ExportAssetsRequest())
         transcode.return_value = {
             "method": "post",
@@ -14168,6 +14257,7 @@ def test_export_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -14178,11 +14268,13 @@ def test_export_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.export_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_assets_rest_bad_request(request_type=asset_service.ListAssetsRequest):
@@ -14203,6 +14295,7 @@ def test_list_assets_rest_bad_request(request_type=asset_service.ListAssetsReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_assets(request)
 
 
@@ -14236,6 +14329,7 @@ def test_list_assets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_assets(request)
 
     # Establish that the response is the type that we expect.
@@ -14254,9 +14348,11 @@ def test_list_assets_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_assets_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_assets") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.ListAssetsRequest.pb(asset_service.ListAssetsRequest())
         transcode.return_value = {
             "method": "post",
@@ -14267,6 +14363,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.ListAssetsResponse.to_json(asset_service.ListAssetsResponse())
         req.return_value.content = return_value
 
@@ -14277,11 +14374,13 @@ def test_list_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.ListAssetsResponse()
+        post_with_metadata.return_value = asset_service.ListAssetsResponse(), metadata
 
         client.list_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_batch_get_assets_history_rest_bad_request(request_type=asset_service.BatchGetAssetsHistoryRequest):
@@ -14302,6 +14401,7 @@ def test_batch_get_assets_history_rest_bad_request(request_type=asset_service.Ba
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_get_assets_history(request)
 
 
@@ -14334,6 +14434,7 @@ def test_batch_get_assets_history_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_get_assets_history(request)
 
     # Establish that the response is the type that we expect.
@@ -14351,9 +14452,11 @@ def test_batch_get_assets_history_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_assets_history") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_assets_history_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_assets_history") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.BatchGetAssetsHistoryRequest.pb(asset_service.BatchGetAssetsHistoryRequest())
         transcode.return_value = {
             "method": "post",
@@ -14364,6 +14467,7 @@ def test_batch_get_assets_history_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.BatchGetAssetsHistoryResponse.to_json(asset_service.BatchGetAssetsHistoryResponse())
         req.return_value.content = return_value
 
@@ -14374,11 +14478,13 @@ def test_batch_get_assets_history_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.BatchGetAssetsHistoryResponse()
+        post_with_metadata.return_value = asset_service.BatchGetAssetsHistoryResponse(), metadata
 
         client.batch_get_assets_history(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_feed_rest_bad_request(request_type=asset_service.CreateFeedRequest):
@@ -14399,6 +14505,7 @@ def test_create_feed_rest_bad_request(request_type=asset_service.CreateFeedReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_feed(request)
 
 
@@ -14436,6 +14543,7 @@ def test_create_feed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -14458,9 +14566,11 @@ def test_create_feed_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_feed") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_feed_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_feed") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.CreateFeedRequest.pb(asset_service.CreateFeedRequest())
         transcode.return_value = {
             "method": "post",
@@ -14471,6 +14581,7 @@ def test_create_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -14481,11 +14592,13 @@ def test_create_feed_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.Feed()
+        post_with_metadata.return_value = asset_service.Feed(), metadata
 
         client.create_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_feed_rest_bad_request(request_type=asset_service.GetFeedRequest):
@@ -14506,6 +14619,7 @@ def test_get_feed_rest_bad_request(request_type=asset_service.GetFeedRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_feed(request)
 
 
@@ -14543,6 +14657,7 @@ def test_get_feed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -14565,9 +14680,11 @@ def test_get_feed_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_feed") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_feed_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_feed") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.GetFeedRequest.pb(asset_service.GetFeedRequest())
         transcode.return_value = {
             "method": "post",
@@ -14578,6 +14695,7 @@ def test_get_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -14588,11 +14706,13 @@ def test_get_feed_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.Feed()
+        post_with_metadata.return_value = asset_service.Feed(), metadata
 
         client.get_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_feeds_rest_bad_request(request_type=asset_service.ListFeedsRequest):
@@ -14613,6 +14733,7 @@ def test_list_feeds_rest_bad_request(request_type=asset_service.ListFeedsRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_feeds(request)
 
 
@@ -14645,6 +14766,7 @@ def test_list_feeds_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_feeds(request)
 
     # Establish that the response is the type that we expect.
@@ -14662,9 +14784,11 @@ def test_list_feeds_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_feeds") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_feeds_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_feeds") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.ListFeedsRequest.pb(asset_service.ListFeedsRequest())
         transcode.return_value = {
             "method": "post",
@@ -14675,6 +14799,7 @@ def test_list_feeds_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.ListFeedsResponse.to_json(asset_service.ListFeedsResponse())
         req.return_value.content = return_value
 
@@ -14685,11 +14810,13 @@ def test_list_feeds_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.ListFeedsResponse()
+        post_with_metadata.return_value = asset_service.ListFeedsResponse(), metadata
 
         client.list_feeds(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_feed_rest_bad_request(request_type=asset_service.UpdateFeedRequest):
@@ -14710,6 +14837,7 @@ def test_update_feed_rest_bad_request(request_type=asset_service.UpdateFeedReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_feed(request)
 
 
@@ -14747,6 +14875,7 @@ def test_update_feed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -14769,9 +14898,11 @@ def test_update_feed_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_feed") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_feed_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_feed") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.UpdateFeedRequest.pb(asset_service.UpdateFeedRequest())
         transcode.return_value = {
             "method": "post",
@@ -14782,6 +14913,7 @@ def test_update_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -14792,11 +14924,13 @@ def test_update_feed_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.Feed()
+        post_with_metadata.return_value = asset_service.Feed(), metadata
 
         client.update_feed(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_feed_rest_bad_request(request_type=asset_service.DeleteFeedRequest):
@@ -14817,6 +14951,7 @@ def test_delete_feed_rest_bad_request(request_type=asset_service.DeleteFeedReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_feed(request)
 
 
@@ -14845,6 +14980,7 @@ def test_delete_feed_rest_call_success(request_type):
         json_return_value = ''
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -14873,6 +15009,7 @@ def test_delete_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = asset_service.DeleteFeedRequest()
         metadata =[
@@ -14904,6 +15041,7 @@ def test_search_all_resources_rest_bad_request(request_type=asset_service.Search
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_all_resources(request)
 
 
@@ -14937,6 +15075,7 @@ def test_search_all_resources_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_all_resources(request)
 
     # Establish that the response is the type that we expect.
@@ -14955,9 +15094,11 @@ def test_search_all_resources_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_resources") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_resources_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_search_all_resources") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.SearchAllResourcesRequest.pb(asset_service.SearchAllResourcesRequest())
         transcode.return_value = {
             "method": "post",
@@ -14968,6 +15109,7 @@ def test_search_all_resources_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.SearchAllResourcesResponse.to_json(asset_service.SearchAllResourcesResponse())
         req.return_value.content = return_value
 
@@ -14978,11 +15120,13 @@ def test_search_all_resources_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.SearchAllResourcesResponse()
+        post_with_metadata.return_value = asset_service.SearchAllResourcesResponse(), metadata
 
         client.search_all_resources(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_search_all_iam_policies_rest_bad_request(request_type=asset_service.SearchAllIamPoliciesRequest):
@@ -15003,6 +15147,7 @@ def test_search_all_iam_policies_rest_bad_request(request_type=asset_service.Sea
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_all_iam_policies(request)
 
 
@@ -15036,6 +15181,7 @@ def test_search_all_iam_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_all_iam_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -15054,9 +15200,11 @@ def test_search_all_iam_policies_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_iam_policies") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_search_all_iam_policies_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_search_all_iam_policies") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.SearchAllIamPoliciesRequest.pb(asset_service.SearchAllIamPoliciesRequest())
         transcode.return_value = {
             "method": "post",
@@ -15067,6 +15215,7 @@ def test_search_all_iam_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.SearchAllIamPoliciesResponse.to_json(asset_service.SearchAllIamPoliciesResponse())
         req.return_value.content = return_value
 
@@ -15077,11 +15226,13 @@ def test_search_all_iam_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.SearchAllIamPoliciesResponse()
+        post_with_metadata.return_value = asset_service.SearchAllIamPoliciesResponse(), metadata
 
         client.search_all_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_iam_policy_rest_bad_request(request_type=asset_service.AnalyzeIamPolicyRequest):
@@ -15102,6 +15253,7 @@ def test_analyze_iam_policy_rest_bad_request(request_type=asset_service.AnalyzeI
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_iam_policy(request)
 
 
@@ -15135,6 +15287,7 @@ def test_analyze_iam_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_iam_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -15153,9 +15306,11 @@ def test_analyze_iam_policy_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeIamPolicyRequest.pb(asset_service.AnalyzeIamPolicyRequest())
         transcode.return_value = {
             "method": "post",
@@ -15166,6 +15321,7 @@ def test_analyze_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.AnalyzeIamPolicyResponse.to_json(asset_service.AnalyzeIamPolicyResponse())
         req.return_value.content = return_value
 
@@ -15176,11 +15332,13 @@ def test_analyze_iam_policy_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.AnalyzeIamPolicyResponse()
+        post_with_metadata.return_value = asset_service.AnalyzeIamPolicyResponse(), metadata
 
         client.analyze_iam_policy(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_iam_policy_longrunning_rest_bad_request(request_type=asset_service.AnalyzeIamPolicyLongrunningRequest):
@@ -15201,6 +15359,7 @@ def test_analyze_iam_policy_longrunning_rest_bad_request(request_type=asset_serv
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_iam_policy_longrunning(request)
 
 
@@ -15229,6 +15388,7 @@ def test_analyze_iam_policy_longrunning_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_iam_policy_longrunning(request)
 
     # Establish that the response is the type that we expect.
@@ -15247,9 +15407,11 @@ def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy_longrunning") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_iam_policy_longrunning_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_iam_policy_longrunning") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeIamPolicyLongrunningRequest.pb(asset_service.AnalyzeIamPolicyLongrunningRequest())
         transcode.return_value = {
             "method": "post",
@@ -15260,6 +15422,7 @@ def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15270,11 +15433,13 @@ def test_analyze_iam_policy_longrunning_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
         client.analyze_iam_policy_longrunning(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_move_rest_bad_request(request_type=asset_service.AnalyzeMoveRequest):
@@ -15295,6 +15460,7 @@ def test_analyze_move_rest_bad_request(request_type=asset_service.AnalyzeMoveReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_move(request)
 
 
@@ -15327,6 +15493,7 @@ def test_analyze_move_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_move(request)
 
     # Establish that the response is the type that we expect.
@@ -15344,9 +15511,11 @@ def test_analyze_move_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_move") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_move_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_move") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeMoveRequest.pb(asset_service.AnalyzeMoveRequest())
         transcode.return_value = {
             "method": "post",
@@ -15357,6 +15526,7 @@ def test_analyze_move_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.AnalyzeMoveResponse.to_json(asset_service.AnalyzeMoveResponse())
         req.return_value.content = return_value
 
@@ -15367,11 +15537,13 @@ def test_analyze_move_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.AnalyzeMoveResponse()
+        post_with_metadata.return_value = asset_service.AnalyzeMoveResponse(), metadata
 
         client.analyze_move(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_query_assets_rest_bad_request(request_type=asset_service.QueryAssetsRequest):
@@ -15392,6 +15564,7 @@ def test_query_assets_rest_bad_request(request_type=asset_service.QueryAssetsReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.query_assets(request)
 
 
@@ -15426,6 +15599,7 @@ def test_query_assets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.query_assets(request)
 
     # Establish that the response is the type that we expect.
@@ -15445,9 +15619,11 @@ def test_query_assets_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_query_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_query_assets_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_query_assets") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.QueryAssetsRequest.pb(asset_service.QueryAssetsRequest())
         transcode.return_value = {
             "method": "post",
@@ -15458,6 +15634,7 @@ def test_query_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.QueryAssetsResponse.to_json(asset_service.QueryAssetsResponse())
         req.return_value.content = return_value
 
@@ -15468,11 +15645,13 @@ def test_query_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.QueryAssetsResponse()
+        post_with_metadata.return_value = asset_service.QueryAssetsResponse(), metadata
 
         client.query_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_saved_query_rest_bad_request(request_type=asset_service.CreateSavedQueryRequest):
@@ -15493,6 +15672,7 @@ def test_create_saved_query_rest_bad_request(request_type=asset_service.CreateSa
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_saved_query(request)
 
 
@@ -15593,6 +15773,7 @@ def test_create_saved_query_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_saved_query(request)
 
     # Establish that the response is the type that we expect.
@@ -15614,9 +15795,11 @@ def test_create_saved_query_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_saved_query") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_saved_query_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_saved_query") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.CreateSavedQueryRequest.pb(asset_service.CreateSavedQueryRequest())
         transcode.return_value = {
             "method": "post",
@@ -15627,6 +15810,7 @@ def test_create_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
         req.return_value.content = return_value
 
@@ -15637,11 +15821,13 @@ def test_create_saved_query_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.SavedQuery()
+        post_with_metadata.return_value = asset_service.SavedQuery(), metadata
 
         client.create_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_saved_query_rest_bad_request(request_type=asset_service.GetSavedQueryRequest):
@@ -15662,6 +15848,7 @@ def test_get_saved_query_rest_bad_request(request_type=asset_service.GetSavedQue
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_saved_query(request)
 
 
@@ -15698,6 +15885,7 @@ def test_get_saved_query_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_saved_query(request)
 
     # Establish that the response is the type that we expect.
@@ -15719,9 +15907,11 @@ def test_get_saved_query_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_saved_query") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_saved_query_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_saved_query") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.GetSavedQueryRequest.pb(asset_service.GetSavedQueryRequest())
         transcode.return_value = {
             "method": "post",
@@ -15732,6 +15922,7 @@ def test_get_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
         req.return_value.content = return_value
 
@@ -15742,11 +15933,13 @@ def test_get_saved_query_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.SavedQuery()
+        post_with_metadata.return_value = asset_service.SavedQuery(), metadata
 
         client.get_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_list_saved_queries_rest_bad_request(request_type=asset_service.ListSavedQueriesRequest):
@@ -15767,6 +15960,7 @@ def test_list_saved_queries_rest_bad_request(request_type=asset_service.ListSave
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_saved_queries(request)
 
 
@@ -15800,6 +15994,7 @@ def test_list_saved_queries_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_saved_queries(request)
 
     # Establish that the response is the type that we expect.
@@ -15818,9 +16013,11 @@ def test_list_saved_queries_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_saved_queries") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_saved_queries_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_saved_queries") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.ListSavedQueriesRequest.pb(asset_service.ListSavedQueriesRequest())
         transcode.return_value = {
             "method": "post",
@@ -15831,6 +16028,7 @@ def test_list_saved_queries_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.ListSavedQueriesResponse.to_json(asset_service.ListSavedQueriesResponse())
         req.return_value.content = return_value
 
@@ -15841,11 +16039,13 @@ def test_list_saved_queries_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.ListSavedQueriesResponse()
+        post_with_metadata.return_value = asset_service.ListSavedQueriesResponse(), metadata
 
         client.list_saved_queries(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_update_saved_query_rest_bad_request(request_type=asset_service.UpdateSavedQueryRequest):
@@ -15866,6 +16066,7 @@ def test_update_saved_query_rest_bad_request(request_type=asset_service.UpdateSa
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_saved_query(request)
 
 
@@ -15966,6 +16167,7 @@ def test_update_saved_query_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_saved_query(request)
 
     # Establish that the response is the type that we expect.
@@ -15987,9 +16189,11 @@ def test_update_saved_query_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_saved_query") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_saved_query_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_saved_query") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.UpdateSavedQueryRequest.pb(asset_service.UpdateSavedQueryRequest())
         transcode.return_value = {
             "method": "post",
@@ -16000,6 +16204,7 @@ def test_update_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
         req.return_value.content = return_value
 
@@ -16010,11 +16215,13 @@ def test_update_saved_query_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.SavedQuery()
+        post_with_metadata.return_value = asset_service.SavedQuery(), metadata
 
         client.update_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_delete_saved_query_rest_bad_request(request_type=asset_service.DeleteSavedQueryRequest):
@@ -16035,6 +16242,7 @@ def test_delete_saved_query_rest_bad_request(request_type=asset_service.DeleteSa
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_saved_query(request)
 
 
@@ -16063,6 +16271,7 @@ def test_delete_saved_query_rest_call_success(request_type):
         json_return_value = ''
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_saved_query(request)
 
     # Establish that the response is the type that we expect.
@@ -16091,6 +16300,7 @@ def test_delete_saved_query_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = asset_service.DeleteSavedQueryRequest()
         metadata =[
@@ -16122,6 +16332,7 @@ def test_batch_get_effective_iam_policies_rest_bad_request(request_type=asset_se
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_get_effective_iam_policies(request)
 
 
@@ -16154,6 +16365,7 @@ def test_batch_get_effective_iam_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_get_effective_iam_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -16171,9 +16383,11 @@ def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_effective_iam_policies") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_effective_iam_policies_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_effective_iam_policies") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.BatchGetEffectiveIamPoliciesRequest.pb(asset_service.BatchGetEffectiveIamPoliciesRequest())
         transcode.return_value = {
             "method": "post",
@@ -16184,6 +16398,7 @@ def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(asset_service.BatchGetEffectiveIamPoliciesResponse())
         req.return_value.content = return_value
 
@@ -16194,11 +16409,13 @@ def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+        post_with_metadata.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse(), metadata
 
         client.batch_get_effective_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_org_policies_rest_bad_request(request_type=asset_service.AnalyzeOrgPoliciesRequest):
@@ -16219,6 +16436,7 @@ def test_analyze_org_policies_rest_bad_request(request_type=asset_service.Analyz
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_org_policies(request)
 
 
@@ -16252,6 +16470,7 @@ def test_analyze_org_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_org_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -16270,9 +16489,11 @@ def test_analyze_org_policies_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policies") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policies_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policies") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeOrgPoliciesRequest.pb(asset_service.AnalyzeOrgPoliciesRequest())
         transcode.return_value = {
             "method": "post",
@@ -16283,6 +16504,7 @@ def test_analyze_org_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.AnalyzeOrgPoliciesResponse.to_json(asset_service.AnalyzeOrgPoliciesResponse())
         req.return_value.content = return_value
 
@@ -16293,11 +16515,13 @@ def test_analyze_org_policies_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+        post_with_metadata.return_value = asset_service.AnalyzeOrgPoliciesResponse(), metadata
 
         client.analyze_org_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_org_policy_governed_containers_rest_bad_request(request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
@@ -16318,6 +16542,7 @@ def test_analyze_org_policy_governed_containers_rest_bad_request(request_type=as
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_org_policy_governed_containers(request)
 
 
@@ -16351,6 +16576,7 @@ def test_analyze_org_policy_governed_containers_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_org_policy_governed_containers(request)
 
     # Establish that the response is the type that we expect.
@@ -16369,9 +16595,11 @@ def test_analyze_org_policy_governed_containers_rest_interceptors(null_intercept
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_containers") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_containers_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_containers") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeOrgPolicyGovernedContainersRequest.pb(asset_service.AnalyzeOrgPolicyGovernedContainersRequest())
         transcode.return_value = {
             "method": "post",
@@ -16382,6 +16610,7 @@ def test_analyze_org_policy_governed_containers_rest_interceptors(null_intercept
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
         req.return_value.content = return_value
 
@@ -16392,11 +16621,13 @@ def test_analyze_org_policy_governed_containers_rest_interceptors(null_intercept
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        post_with_metadata.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(), metadata
 
         client.analyze_org_policy_governed_containers(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_analyze_org_policy_governed_assets_rest_bad_request(request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
@@ -16417,6 +16648,7 @@ def test_analyze_org_policy_governed_assets_rest_bad_request(request_type=asset_
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.analyze_org_policy_governed_assets(request)
 
 
@@ -16450,6 +16682,7 @@ def test_analyze_org_policy_governed_assets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.analyze_org_policy_governed_assets(request)
 
     # Establish that the response is the type that we expect.
@@ -16468,9 +16701,11 @@ def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
     with mock.patch.object(type(client.transport._session), "request") as req, \
         mock.patch.object(path_template, "transcode")  as transcode, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_assets") as post, \
+        mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_assets_with_metadata") as post_with_metadata, \
         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_assets") as pre:
         pre.assert_not_called()
         post.assert_not_called()
+        post_with_metadata.assert_not_called()
         pb_message = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.pb(asset_service.AnalyzeOrgPolicyGovernedAssetsRequest())
         transcode.return_value = {
             "method": "post",
@@ -16481,6 +16716,7 @@ def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
         req.return_value.content = return_value
 
@@ -16491,11 +16727,13 @@ def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        post_with_metadata.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(), metadata
 
         client.analyze_org_policy_governed_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
 
         pre.assert_called_once()
         post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
@@ -16515,6 +16753,7 @@ def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperation
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -16542,6 +16781,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode('UTF-8')
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
