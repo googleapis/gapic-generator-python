@@ -258,17 +258,20 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_{{ method.name|snake_case }}_with_metadata(resp, response_metadata)
-            {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2279): Add logging support for rest streaming. #}
-            {% if not method.server_streaming %}
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                {# Logging of response iterator is in google-api-core #}
+                {% if not method.server_streaming %}
                 try:
                     response_payload = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(response){% else %}json_format.MessageToJson(resp){% endif %}
 
                 except:
                     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2283): Remove try/except once unit tests are updated. #}
                     response_payload = None
+                {% endif %}{# if not method.server_streaming #}
                 http_response = {
+                {% if not method.server_streaming %}
                 "payload": response_payload,
+                {% endif %}{# if not method.server_streaming #}
                 "headers":  dict(response.headers),
                 "status": response.status_code,
                 }
@@ -282,7 +285,6 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                         "httpResponse": http_response,
                     },
                 )
-            {% endif %}{# if not method.server_streaming #}
             return resp
 
             {% endif %}{# method.void #}
