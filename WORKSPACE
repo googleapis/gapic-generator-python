@@ -73,16 +73,16 @@ http_archive(
 # instantiated in grpc_deps().
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "008a11cc56f9b96679b4c285fd05f46d317d685be3ab524b2a310be0fbad987e",
-    strip_prefix = "protobuf-29.3",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v29.3.tar.gz"],
+    sha256 = "9df0e9e8ebe39f4fbbb9cf7db3d811287fe3616b2f191eb2bf5eaa12539c881f",
+    strip_prefix = "protobuf-30.0",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v30.0.tar.gz"],
 )
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
 
 # Pin the version of rules_cc to the version that is present in
-# https://github.com/protocolbuffers/protobuf/blob/29.x/protobuf_deps.bzl#L92-L98
+# https://github.com/protocolbuffers/protobuf/blob/30.x/protobuf_deps.bzl#L103-L109
 http_archive(
     name = "rules_cc",
     urls = ["https://github.com/bazelbuild/rules_cc/releases/download/0.0.16/rules_cc-0.0.16.tar.gz"],
