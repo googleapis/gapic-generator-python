@@ -1,6 +1,34 @@
 # Changelog
 
 
+## [1.23.5](https://github.com/googleapis/gapic-generator-python/compare/v1.23.4...v1.23.5) (2025-03-06)
+
+
+### Bug Fixes
+
+* Allow Protobuf 6.x ([#2352](https://github.com/googleapis/gapic-generator-python/issues/2352)) ([bb2d557](https://github.com/googleapis/gapic-generator-python/commit/bb2d557bf266599669c15efd81d8e900d48e7c3e))
+
+## [1.23.4](https://github.com/googleapis/gapic-generator-python/compare/v1.23.3...v1.23.4) (2025-03-04)
+
+
+### Bug Fixes
+
+* Allow proto files to be included in the output of py_gapic_assembly_pkg ([#2349](https://github.com/googleapis/gapic-generator-python/issues/2349)) ([b301bef](https://github.com/googleapis/gapic-generator-python/commit/b301befcda29ae1f9c204e0836656c03c2d74a2a))
+
+## [1.23.3](https://github.com/googleapis/gapic-generator-python/compare/v1.23.2...v1.23.3) (2025-03-03)
+
+
+### Bug Fixes
+
+* Resolve issue where pre-release versions of dependencies are installed ([#2347](https://github.com/googleapis/gapic-generator-python/issues/2347)) ([aea00b2](https://github.com/googleapis/gapic-generator-python/commit/aea00b2137ac926bdc527eb9c4666eb8b1ca70e1))
+
+## [1.23.2](https://github.com/googleapis/gapic-generator-python/compare/v1.23.1...v1.23.2) (2025-02-28)
+
+
+### Bug Fixes
+
+* Resolve rare issue where ValueError is not raised when both request and flattened param are set ([#2258](https://github.com/googleapis/gapic-generator-python/issues/2258)) ([4ecfbeb](https://github.com/googleapis/gapic-generator-python/commit/4ecfbeb7028dc1856692f5cda95a8767e4cb69e4))
+
 ## [1.23.1](https://github.com/googleapis/gapic-generator-python/compare/v1.23.0...v1.23.1) (2025-02-14)
 
 
