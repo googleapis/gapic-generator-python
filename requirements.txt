@@ -317,13 +317,9 @@ google-auth==2.38.0 \
     --hash=sha256:8285113607d3b80a3f1543b75962447ba8a09fe85783432a784fdeef6ac094c4 \
     --hash=sha256:e7dae6694313f434a2727bf2906f27ad259bae090d7aa896590d86feec3d9d4a
     # via google-api-core
-googleapis-common-protos[grpc]==1.67.0 \
-    --hash=sha256:21398025365f138be356d5923e9168737d94d46a72aefee4a6110a1f23463c86 \
-    --hash=sha256:579de760800d13616f51cf8be00c876f00a9f146d3e6510e19d1f4111758b741
-    # via
-    #   -r requirements.in
-    #   google-api-core
-    #   grpc-google-iam-v1
+
+googleapis-common-protos @ file://localhost/usr/local/google/home/chalmerlowe/titan-src/git/google/google-cloud-python#subdirectory=packages/googleapis-common-protos
+
 grpc-google-iam-v1==0.14.0 \
     --hash=sha256:c66e07aa642e39bb37950f9e7f491f70dad150ac9801263b42b2814307c2df99 \
     --hash=sha256:fb4a084b30099ba3ab07d61d620a0d4429570b13ff53bd37bac75235f98b7da4
