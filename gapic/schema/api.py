@@ -975,6 +975,7 @@ class API:
                 selector=method_setting.selector,
                 long_running=method_setting.long_running,
                 auto_populated_fields=method_setting.auto_populated_fields,
+                paging_field_protobuf_wrapper=method_settings.paging_field_protobuf_wrapper,
             )
             for method_setting in self.service_yaml_config.publishing.method_settings
         }
