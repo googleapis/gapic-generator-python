@@ -309,9 +309,7 @@ frozenlist==1.5.0 \
     # via
     #   aiohttp
     #   aiosignal
-google-api-core==2.24.1 \
-    --hash=sha256:bc78d608f5a5bf853b80bd70a795f703294de656c096c0968320830a4bc280f1 \
-    --hash=sha256:f8b36f5456ab0dd99a1b693a40a31d1e7757beea380ad1b38faaf8941eae9d8a
+google-api-core @ git+https://github.com/googleapis/python-api-core.git@postpone_sleep_generation \
     # via -r requirements.in
 google-auth==2.38.0 \
     --hash=sha256:8285113607d3b80a3f1543b75962447ba8a09fe85783432a784fdeef6ac094c4 \
