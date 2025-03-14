@@ -385,6 +385,14 @@ def showcase(
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("pytest", "pytest-asyncio")
+
+        # For prototyping purposes only.
+        # Remove once https://github.com/googleapis/python-api-core/pull/810 is released
+        session.install(
+            "google-api-core @ git+https://github.com/googleapis/python-api-core.git@fix-lro-no-result",
+            "--ignore-installed",
+        )
+
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
@@ -415,6 +423,12 @@ def showcase_w_rest_async(
         session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
     ):
         session.install("pytest", "pytest-asyncio")
+        # For prototyping purposes only.
+        # Remove once https://github.com/googleapis/python-api-core/pull/810 is released
+        session.install(
+            "google-api-core @ git+https://github.com/googleapis/python-api-core.git@fix-lro-no-result",
+            "--ignore-installed",
+        )
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
         pytest_command = [
