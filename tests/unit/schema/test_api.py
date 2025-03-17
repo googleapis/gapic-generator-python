@@ -4130,7 +4130,9 @@ def test_selective_gapic_api_build_generate_omitted_as_internal():
         == "BaseServiceOneAsyncClient"
     )
     assert (
-        api_schema.all_methods["google.example.v1.ServiceOne.InternalMethod"].client_method_name
+        api_schema.all_methods[
+            "google.example.v1.ServiceOne.InternalMethod"
+        ].client_method_name
         == "_InternalMethod"
     )
 
