@@ -1,4 +1,5 @@
-# This constraints file is used to check that the latest
+# We use the constraints file for the latest Python version
+# (currently this file) to check that the latest
 # major versions of dependencies are supported in setup.py.
 # List all library dependencies and extras in this file.
 # Require the latest major version be installed for each dependency.
