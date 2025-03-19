@@ -1,6 +1,20 @@
 # Changelog
 
 
+## [1.23.6](https://github.com/googleapis/gapic-generator-python/compare/v1.23.5...v1.23.6) (2025-03-17)
+
+
+### Documentation
+
+* Update copyright year ([#2363](https://github.com/googleapis/gapic-generator-python/issues/2363)) ([745ce7a](https://github.com/googleapis/gapic-generator-python/commit/745ce7af2978eff293e9abbad9a622fdfe7c782a))
+
+## [1.23.5](https://github.com/googleapis/gapic-generator-python/compare/v1.23.4...v1.23.5) (2025-03-06)
+
+
+### Bug Fixes
+
+* Allow Protobuf 6.x ([#2352](https://github.com/googleapis/gapic-generator-python/issues/2352)) ([bb2d557](https://github.com/googleapis/gapic-generator-python/commit/bb2d557bf266599669c15efd81d8e900d48e7c3e))
+
 ## [1.23.4](https://github.com/googleapis/gapic-generator-python/compare/v1.23.3...v1.23.4) (2025-03-04)
 
 
