@@ -68,13 +68,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    gapic_version=f"{BASE_DEFAULT_CLIENT_INFO.gapic_version}--protobuf-{google.protobuf.__version__}",
     grpc_version=None,
     rest_version=f"google-auth@{google.auth.__version__}",
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AsyncCloudRedisRestInterceptor:

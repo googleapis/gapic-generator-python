@@ -53,13 +53,10 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    gapic_version=f"{BASE_DEFAULT_CLIENT_INFO.gapic_version}--protobuf-{google.protobuf.__version__}",
     grpc_version=None,
     rest_version=f"requests@{requests_version}",
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class IAMCredentialsRestInterceptor:
