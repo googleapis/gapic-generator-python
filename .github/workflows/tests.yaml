@@ -16,6 +16,7 @@ concurrency:
 env:
   SHOWCASE_VERSION: 0.35.0
   PROTOC_VERSION: 3.20.2
+  ALL_PYTHON: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
 jobs:
   docs:
@@ -38,7 +39,10 @@ jobs:
       matrix:
         # Run mypy on all of the supported python versions listed in setup.py
         # https://github.com/python/mypy/blob/master/setup.py
-        python: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python: ${ALL_PYTHON}
+        exclude:
+          # Remove once https://github.com/googleapis/gapic-generator-python/issues/2303 is fixed
+          - python: 3.7
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,7 +60,7 @@ jobs:
       # Run showcase tests on the lowest and highest supported runtimes
       matrix:
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `showcase_w_rest_async` target when async rest is GA.
-        python: ["3.7", "3.13"]
+        python: ["${ALL_PYTHON}[0]", "${ALL_PYTHON}[-1]"]
         target: [showcase, showcase_alternative_templates, showcase_w_rest_async]
         logging_scope: ["", "google"]
 
@@ -147,7 +151,7 @@ jobs:
   showcase-unit:
     strategy:
       matrix:
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python: ${ALL_PYTHON}
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121) Remove `_w_rest_async` variant when async rest is GA.
         variant: ['', _alternative_templates, _mixins, _alternative_templates_mixins, _w_rest_async]
         logging_scope: ["", "google"]
