@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import (Callable, Iterable, List, Optional, Tuple, TypeVar)
+from typing import Callable, Iterable, List, Optional, Tuple, TypeVar
 import itertools
 
 
@@ -22,15 +22,17 @@ def empty(content: str) -> bool:
     Args:
         content (str): A string containing Python code (or a lack thereof).
     """
-    return not any([i.lstrip() and not i.lstrip().startswith('#')
-                    for i in content.split('\n')])
+    return not any(
+        [i.lstrip() and not i.lstrip().startswith("#") for i in content.split("\n")]
+    )
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
-def partition(predicate: Callable[[T], bool],
-              iterator: Iterable[T]) -> Tuple[List[T], List[T]]:
+def partition(
+    predicate: Callable[[T], bool], iterator: Iterable[T]
+) -> Tuple[List[T], List[T]]:
     """Partitions an iterable into two lists based on a predicate
 
     Args:
@@ -63,3 +65,20 @@ def nth(iterable: Iterable[T], n: int, default: Optional[T] = None) -> Optional[
                                  fewer than n elements.
     """
     return next(itertools.islice(iterable, n, None), default)
+
+
+def make_private(object_name: str) -> str:
+    """Labels the object name like a private object (i.e. prefixes it with underscore)
+
+    If the object name already starts with underscore, returns the original name instead.
+    This is to avoid adding name manging to an object.
+
+    This is provided to templates as the ``make_private`` filter.
+
+    Args:
+        object_name (str): The name of the object to be made private.
+
+    Returns:
+        str: The final name of the privated object.
+    """
+    return object_name if object_name.startswith("_") else f"_{object_name}"
