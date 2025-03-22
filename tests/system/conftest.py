@@ -251,7 +251,28 @@ def messaging(use_mtls, request):
     return construct_client(MessagingClient, use_mtls, transport_name=request.param)
 
 
-class MetadataClienGrpcInterceptor(
+class EchoMetadataClientRestInterceptor(EchoRestInterceptor):
+    request_metadata: Sequence[Tuple[str, str]] = []
+    response_metadata: Sequence[Tuple[str, str]] = []
+
+    def pre_echo(self, request, metadata):
+        self.request_metadata = metadata
+        return request, metadata
+
+    def post_echo_with_metadata(self, request, metadata):
+        self.response_metadata = metadata
+        return request, metadata
+
+    def pre_expand(self, request, metadata):
+        self.request_metadata = metadata
+        return request, metadata
+
+    def post_expand_with_metadata(self, request, metadata):
+        self.response_metadata = metadata
+        return request, metadata
+
+
+class EchoMetadataClientGrpcInterceptor(
     grpc.UnaryUnaryClientInterceptor,
     grpc.UnaryStreamClientInterceptor,
     grpc.StreamUnaryClientInterceptor,
@@ -295,7 +316,7 @@ class MetadataClienGrpcInterceptor(
         return response_it
 
 
-class MetadataClientGrpcAsyncInterceptor(
+class EchoMetadataClientGrpcAsyncInterceptor(
     grpc.aio.UnaryUnaryClientInterceptor,
     grpc.aio.UnaryStreamClientInterceptor,
     grpc.aio.StreamUnaryClientInterceptor,
@@ -339,33 +360,12 @@ class MetadataClientGrpcAsyncInterceptor(
         return response_it
 
 
-class EchoMetadataClientRestInterceptor(EchoRestInterceptor):
-    request_metadata: Sequence[Tuple[str, str]] = []
-    response_metadata: Sequence[Tuple[str, str]] = []
-
-    def pre_echo(self, request, metadata):
-        self.request_metadata = metadata
-        return request, metadata
-
-    def post_echo_with_metadata(self, request, metadata):
-        self.response_metadata = metadata
-        return request, metadata
-
-    def pre_expand(self, request, metadata):
-        self.request_metadata = metadata
-        return request, metadata
-
-    def post_expand_with_metadata(self, request, metadata):
-        self.response_metadata = metadata
-        return request, metadata
-
-
 @pytest.fixture
 def intercepted_echo_grpc(use_mtls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echos any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
-    interceptor = MetadataClienGrpcInterceptor(
+    interceptor = EchoMetadataClientGrpcInterceptor(
         "showcase-trailer",
         "intercepted",
     )
@@ -384,6 +384,24 @@ def intercepted_echo_grpc(use_mtls):
 
 
 @pytest.fixture
+def intercepted_echo_grpc_async():
+    # The interceptor adds 'showcase-trailer' client metadata. Showcase server
+    # echos any metadata with key 'showcase-trailer', so the same metadata
+    # should appear as trailing metadata in the response.
+    interceptor = EchoMetadataClientGrpcAsyncInterceptor(
+        "showcase-trailer",
+        "intercepted",
+    )
+    host = "localhost:7469"
+    channel = grpc.aio.insecure_channel(host, interceptors=[interceptor])
+    # intercept_channel = grpc.aio.intercept_channel(channel, interceptor)
+    transport = EchoAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=ga_credentials.AnonymousCredentials(),
+        channel=channel,
+    )
+    return EchoAsyncClient(transport=transport), interceptor
+
+@pytest.fixture
 def intercepted_echo_rest():
     transport_name = "rest"
     transport_cls = EchoClient.get_transport_class(transport_name)
@@ -397,22 +415,3 @@ def intercepted_echo_rest():
         interceptor=interceptor,
     )
     return EchoClient(transport=transport), interceptor
-
-
-@pytest.fixture
-def intercepted_echo_grpc_async():
-    # The interceptor adds 'showcase-trailer' client metadata. Showcase server
-    # echos any metadata with key 'showcase-trailer', so the same metadata
-    # should appear as trailing metadata in the response.
-    interceptor = MetadataClientGrpcAsyncInterceptor(
-        "showcase-trailer",
-        "intercepted",
-    )
-    host = "localhost:7469"
-    channel = grpc.aio.insecure_channel(host, interceptors=[interceptor])
-    # intercept_channel = grpc.aio.intercept_channel(channel, interceptor)
-    transport = EchoAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=ga_credentials.AnonymousCredentials(),
-        channel=channel,
-    )
-    return EchoAsyncClient(transport=transport), interceptor
