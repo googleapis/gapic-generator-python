@@ -339,7 +339,7 @@ class MetadataClientGrpcAsyncInterceptor(
         return response_it
 
 
-class MetadataClienRestInterceptor(EchoRestInterceptor):
+class EchoMetadataClientRestInterceptor(EchoRestInterceptor):
     request_metadata: Sequence[Tuple[str, str]] = []
     response_metadata: Sequence[Tuple[str, str]] = []
 
@@ -387,7 +387,7 @@ def intercepted_echo_grpc(use_mtls):
 def intercepted_echo_rest():
     transport_name = "rest"
     transport_cls = EchoClient.get_transport_class(transport_name)
-    interceptor = MetadataClienRestInterceptor()
+    interceptor = EchoMetadataClientRestInterceptor()
 
     # The custom host explicitly bypasses https.
     transport = transport_cls(
