@@ -263,34 +263,34 @@ class MetadataClienGrpcInterceptor(
         self.request_metadata = []
         self.response_metadata = []
 
-    def _add_metadata(self, client_call_details):
+    def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
             client_call_details.metadata.append((self._key, self._value))
             self.request_metadata = client_call_details.metadata
 
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
         response = continuation(client_call_details, request)
         metadata = [(k, str(v)) for k, v in response.trailing_metadata()]
         self.response_metadata = metadata
         return response
 
     def intercept_unary_stream(self, continuation, client_call_details, request):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request)
         return response_it
 
     def intercept_stream_unary(
         self, continuation, client_call_details, request_iterator
     ):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
         response = continuation(client_call_details, request_iterator)
         return response
 
     def intercept_stream_stream(
         self, continuation, client_call_details, request_iterator
     ):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request_iterator)
         return response_it
 
@@ -307,34 +307,34 @@ class MetadataClientGrpcAsyncInterceptor(
         self.request_metadata = []
         self.response_metadata = []
 
-    async def _add_metadata(self, client_call_details):
+    async def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
             client_call_details.metadata.append((self._key, self._value))
             self.request_metadata = client_call_details.metadata
 
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        await self._add_metadata(client_call_details)
+        await self._add_request_metadata(client_call_details)
         response = await continuation(client_call_details, request)
         metadata = [(k, str(v)) for k, v in await response.trailing_metadata()]
         self.response_metadata = metadata
         return response
 
     async def intercept_unary_stream(self, continuation, client_call_details, request):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request)
         return response_it
 
     async def intercept_stream_unary(
         self, continuation, client_call_details, request_iterator
     ):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
         response = continuation(client_call_details, request_iterator)
         return response
 
     async def intercept_stream_stream(
         self, continuation, client_call_details, request_iterator
     ):
-        self._add_metadata(client_call_details)
+        self._add_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request_iterator)
         return response_it
 
