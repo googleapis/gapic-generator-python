@@ -274,6 +274,7 @@ class EchoMetadataClientRestInterceptor(EchoRestInterceptor):
 
 
 if HAS_ASYNC_REST_ECHO_TRANSPORT:
+
     class EchoMetadataClientRestAsyncInterceptor(AsyncEchoRestInterceptor):
         request_metadata: Sequence[Tuple[str, str]] = []
         response_metadata: Sequence[Tuple[str, str]] = []
