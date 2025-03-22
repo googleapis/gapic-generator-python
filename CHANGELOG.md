@@ -1,6 +1,72 @@
 # Changelog
 
 
+## [1.23.6](https://github.com/googleapis/gapic-generator-python/compare/v1.23.5...v1.23.6) (2025-03-17)
+
+
+### Documentation
+
+* Update copyright year ([#2363](https://github.com/googleapis/gapic-generator-python/issues/2363)) ([745ce7a](https://github.com/googleapis/gapic-generator-python/commit/745ce7af2978eff293e9abbad9a622fdfe7c782a))
+
+## [1.23.5](https://github.com/googleapis/gapic-generator-python/compare/v1.23.4...v1.23.5) (2025-03-06)
+
+
+### Bug Fixes
+
+* Allow Protobuf 6.x ([#2352](https://github.com/googleapis/gapic-generator-python/issues/2352)) ([bb2d557](https://github.com/googleapis/gapic-generator-python/commit/bb2d557bf266599669c15efd81d8e900d48e7c3e))
+
+## [1.23.4](https://github.com/googleapis/gapic-generator-python/compare/v1.23.3...v1.23.4) (2025-03-04)
+
+
+### Bug Fixes
+
+* Allow proto files to be included in the output of py_gapic_assembly_pkg ([#2349](https://github.com/googleapis/gapic-generator-python/issues/2349)) ([b301bef](https://github.com/googleapis/gapic-generator-python/commit/b301befcda29ae1f9c204e0836656c03c2d74a2a))
+
+## [1.23.3](https://github.com/googleapis/gapic-generator-python/compare/v1.23.2...v1.23.3) (2025-03-03)
+
+
+### Bug Fixes
+
+* Resolve issue where pre-release versions of dependencies are installed ([#2347](https://github.com/googleapis/gapic-generator-python/issues/2347)) ([aea00b2](https://github.com/googleapis/gapic-generator-python/commit/aea00b2137ac926bdc527eb9c4666eb8b1ca70e1))
+
+## [1.23.2](https://github.com/googleapis/gapic-generator-python/compare/v1.23.1...v1.23.2) (2025-02-28)
+
+
+### Bug Fixes
+
+* Resolve rare issue where ValueError is not raised when both request and flattened param are set ([#2258](https://github.com/googleapis/gapic-generator-python/issues/2258)) ([4ecfbeb](https://github.com/googleapis/gapic-generator-python/commit/4ecfbeb7028dc1856692f5cda95a8767e4cb69e4))
+
+## [1.23.1](https://github.com/googleapis/gapic-generator-python/compare/v1.23.0...v1.23.1) (2025-02-14)
+
+
+### Documentation
+
+* Fix minor typos ([#2318](https://github.com/googleapis/gapic-generator-python/issues/2318)) ([7be3a55](https://github.com/googleapis/gapic-generator-python/commit/7be3a559d59b778c5733e21b4c0169b17bd05c4a))
+
+## [1.23.0](https://github.com/googleapis/gapic-generator-python/compare/v1.22.1...v1.23.0) (2025-02-14)
+
+
+### Features
+
+* Add ability to remove unversioned modules ([#2329](https://github.com/googleapis/gapic-generator-python/issues/2329)) ([ccd619f](https://github.com/googleapis/gapic-generator-python/commit/ccd619f0461f6b1aa22cdd6fbcc37039bcdc541a))
+* Added support for internal methods in selective GAPIC generation ([#2325](https://github.com/googleapis/gapic-generator-python/issues/2325)) ([eb8a69e](https://github.com/googleapis/gapic-generator-python/commit/eb8a69e3141f865903716b9c5013e2c7650c60da))
+
+## [1.22.1](https://github.com/googleapis/gapic-generator-python/compare/v1.22.0...v1.22.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* **deps:** Require grpc-google-iam-v1&gt;=0.14.0 ([#2327](https://github.com/googleapis/gapic-generator-python/issues/2327)) ([d4236c8](https://github.com/googleapis/gapic-generator-python/commit/d4236c8a823d78350015c97c0d10e505771da564))
+
+## [1.22.0](https://github.com/googleapis/gapic-generator-python/compare/v1.21.0...v1.22.0) (2025-01-30)
+
+
+### Features
+
+* Add cred info to auth related errors ([#2115](https://github.com/googleapis/gapic-generator-python/issues/2115)) ([a694ceb](https://github.com/googleapis/gapic-generator-python/commit/a694cebf386aace80aab36ef9cc2d1102078d3d0))
+* Add REST Interceptors to support reading metadata ([#2299](https://github.com/googleapis/gapic-generator-python/issues/2299)) ([e050f4e](https://github.com/googleapis/gapic-generator-python/commit/e050f4eb3eddfe150f028a2a2bd901899afb965a))
+* Add support for reading selective GAPIC generation methods from service YAML ([#2272](https://github.com/googleapis/gapic-generator-python/issues/2272)) ([3a1a91c](https://github.com/googleapis/gapic-generator-python/commit/3a1a91cadf4438d7b5bf0edaf93ffa3f966eb7e2))
+
 ## [1.21.0](https://github.com/googleapis/gapic-generator-python/compare/v1.20.2...v1.21.0) (2024-12-11)
 
 

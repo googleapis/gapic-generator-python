@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -244,18 +244,28 @@ class EventarcRestInterceptor:
     def post_create_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_channel` interceptor runs
+        before the `post_create_channel_with_metadata` interceptor.
         """
         return response
 
     def post_create_channel_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_channel
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_create_channel_with_metadata`
+        interceptor in new development instead of the `post_create_channel` interceptor.
+        When both interceptors are used, this `post_create_channel_with_metadata` interceptor runs after the
+        `post_create_channel` interceptor. The (possibly modified) response returned by
+        `post_create_channel` will be passed to
+        `post_create_channel_with_metadata`.
         """
         return response, metadata
 
@@ -270,18 +280,28 @@ class EventarcRestInterceptor:
     def post_create_channel_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_channel_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_channel_connection` interceptor runs
+        before the `post_create_channel_connection_with_metadata` interceptor.
         """
         return response
 
     def post_create_channel_connection_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_channel_connection
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_create_channel_connection_with_metadata`
+        interceptor in new development instead of the `post_create_channel_connection` interceptor.
+        When both interceptors are used, this `post_create_channel_connection_with_metadata` interceptor runs after the
+        `post_create_channel_connection` interceptor. The (possibly modified) response returned by
+        `post_create_channel_connection` will be passed to
+        `post_create_channel_connection_with_metadata`.
         """
         return response, metadata
 
@@ -296,18 +316,28 @@ class EventarcRestInterceptor:
     def post_create_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_trigger
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_trigger_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_trigger` interceptor runs
+        before the `post_create_trigger_with_metadata` interceptor.
         """
         return response
 
     def post_create_trigger_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_trigger
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_create_trigger_with_metadata`
+        interceptor in new development instead of the `post_create_trigger` interceptor.
+        When both interceptors are used, this `post_create_trigger_with_metadata` interceptor runs after the
+        `post_create_trigger` interceptor. The (possibly modified) response returned by
+        `post_create_trigger` will be passed to
+        `post_create_trigger_with_metadata`.
         """
         return response, metadata
 
@@ -322,18 +352,28 @@ class EventarcRestInterceptor:
     def post_delete_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_channel` interceptor runs
+        before the `post_delete_channel_with_metadata` interceptor.
         """
         return response
 
     def post_delete_channel_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_channel
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_delete_channel_with_metadata`
+        interceptor in new development instead of the `post_delete_channel` interceptor.
+        When both interceptors are used, this `post_delete_channel_with_metadata` interceptor runs after the
+        `post_delete_channel` interceptor. The (possibly modified) response returned by
+        `post_delete_channel` will be passed to
+        `post_delete_channel_with_metadata`.
         """
         return response, metadata
 
@@ -348,18 +388,28 @@ class EventarcRestInterceptor:
     def post_delete_channel_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_channel_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_channel_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_channel_connection` interceptor runs
+        before the `post_delete_channel_connection_with_metadata` interceptor.
         """
         return response
 
     def post_delete_channel_connection_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_channel_connection
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_delete_channel_connection_with_metadata`
+        interceptor in new development instead of the `post_delete_channel_connection` interceptor.
+        When both interceptors are used, this `post_delete_channel_connection_with_metadata` interceptor runs after the
+        `post_delete_channel_connection` interceptor. The (possibly modified) response returned by
+        `post_delete_channel_connection` will be passed to
+        `post_delete_channel_connection_with_metadata`.
         """
         return response, metadata
 
@@ -374,18 +424,28 @@ class EventarcRestInterceptor:
     def post_delete_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_trigger
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_delete_trigger_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_delete_trigger` interceptor runs
+        before the `post_delete_trigger_with_metadata` interceptor.
         """
         return response
 
     def post_delete_trigger_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_trigger
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_delete_trigger_with_metadata`
+        interceptor in new development instead of the `post_delete_trigger` interceptor.
+        When both interceptors are used, this `post_delete_trigger_with_metadata` interceptor runs after the
+        `post_delete_trigger` interceptor. The (possibly modified) response returned by
+        `post_delete_trigger` will be passed to
+        `post_delete_trigger_with_metadata`.
         """
         return response, metadata
 
@@ -400,18 +460,28 @@ class EventarcRestInterceptor:
     def post_get_channel(self, response: channel.Channel) -> channel.Channel:
         """Post-rpc interceptor for get_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_channel` interceptor runs
+        before the `post_get_channel_with_metadata` interceptor.
         """
         return response
 
     def post_get_channel_with_metadata(self, response: channel.Channel, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[channel.Channel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_channel
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_get_channel_with_metadata`
+        interceptor in new development instead of the `post_get_channel` interceptor.
+        When both interceptors are used, this `post_get_channel_with_metadata` interceptor runs after the
+        `post_get_channel` interceptor. The (possibly modified) response returned by
+        `post_get_channel` will be passed to
+        `post_get_channel_with_metadata`.
         """
         return response, metadata
 
@@ -426,18 +496,28 @@ class EventarcRestInterceptor:
     def post_get_channel_connection(self, response: channel_connection.ChannelConnection) -> channel_connection.ChannelConnection:
         """Post-rpc interceptor for get_channel_connection
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_channel_connection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_channel_connection` interceptor runs
+        before the `post_get_channel_connection_with_metadata` interceptor.
         """
         return response
 
     def post_get_channel_connection_with_metadata(self, response: channel_connection.ChannelConnection, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[channel_connection.ChannelConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_channel_connection
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_get_channel_connection_with_metadata`
+        interceptor in new development instead of the `post_get_channel_connection` interceptor.
+        When both interceptors are used, this `post_get_channel_connection_with_metadata` interceptor runs after the
+        `post_get_channel_connection` interceptor. The (possibly modified) response returned by
+        `post_get_channel_connection` will be passed to
+        `post_get_channel_connection_with_metadata`.
         """
         return response, metadata
 
@@ -452,18 +532,28 @@ class EventarcRestInterceptor:
     def post_get_google_channel_config(self, response: google_channel_config.GoogleChannelConfig) -> google_channel_config.GoogleChannelConfig:
         """Post-rpc interceptor for get_google_channel_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_google_channel_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_google_channel_config` interceptor runs
+        before the `post_get_google_channel_config_with_metadata` interceptor.
         """
         return response
 
     def post_get_google_channel_config_with_metadata(self, response: google_channel_config.GoogleChannelConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[google_channel_config.GoogleChannelConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_google_channel_config
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_get_google_channel_config_with_metadata`
+        interceptor in new development instead of the `post_get_google_channel_config` interceptor.
+        When both interceptors are used, this `post_get_google_channel_config_with_metadata` interceptor runs after the
+        `post_get_google_channel_config` interceptor. The (possibly modified) response returned by
+        `post_get_google_channel_config` will be passed to
+        `post_get_google_channel_config_with_metadata`.
         """
         return response, metadata
 
@@ -478,18 +568,28 @@ class EventarcRestInterceptor:
     def post_get_provider(self, response: discovery.Provider) -> discovery.Provider:
         """Post-rpc interceptor for get_provider
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_provider_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_provider` interceptor runs
+        before the `post_get_provider_with_metadata` interceptor.
         """
         return response
 
     def post_get_provider_with_metadata(self, response: discovery.Provider, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[discovery.Provider, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_provider
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_get_provider_with_metadata`
+        interceptor in new development instead of the `post_get_provider` interceptor.
+        When both interceptors are used, this `post_get_provider_with_metadata` interceptor runs after the
+        `post_get_provider` interceptor. The (possibly modified) response returned by
+        `post_get_provider` will be passed to
+        `post_get_provider_with_metadata`.
         """
         return response, metadata
 
@@ -504,18 +604,28 @@ class EventarcRestInterceptor:
     def post_get_trigger(self, response: trigger.Trigger) -> trigger.Trigger:
         """Post-rpc interceptor for get_trigger
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_trigger_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_trigger` interceptor runs
+        before the `post_get_trigger_with_metadata` interceptor.
         """
         return response
 
     def post_get_trigger_with_metadata(self, response: trigger.Trigger, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[trigger.Trigger, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_trigger
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_get_trigger_with_metadata`
+        interceptor in new development instead of the `post_get_trigger` interceptor.
+        When both interceptors are used, this `post_get_trigger_with_metadata` interceptor runs after the
+        `post_get_trigger` interceptor. The (possibly modified) response returned by
+        `post_get_trigger` will be passed to
+        `post_get_trigger_with_metadata`.
         """
         return response, metadata
 
@@ -530,18 +640,28 @@ class EventarcRestInterceptor:
     def post_list_channel_connections(self, response: eventarc.ListChannelConnectionsResponse) -> eventarc.ListChannelConnectionsResponse:
         """Post-rpc interceptor for list_channel_connections
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_channel_connections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_channel_connections` interceptor runs
+        before the `post_list_channel_connections_with_metadata` interceptor.
         """
         return response
 
     def post_list_channel_connections_with_metadata(self, response: eventarc.ListChannelConnectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListChannelConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_channel_connections
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_list_channel_connections_with_metadata`
+        interceptor in new development instead of the `post_list_channel_connections` interceptor.
+        When both interceptors are used, this `post_list_channel_connections_with_metadata` interceptor runs after the
+        `post_list_channel_connections` interceptor. The (possibly modified) response returned by
+        `post_list_channel_connections` will be passed to
+        `post_list_channel_connections_with_metadata`.
         """
         return response, metadata
 
@@ -556,18 +676,28 @@ class EventarcRestInterceptor:
     def post_list_channels(self, response: eventarc.ListChannelsResponse) -> eventarc.ListChannelsResponse:
         """Post-rpc interceptor for list_channels
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_channels_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_channels` interceptor runs
+        before the `post_list_channels_with_metadata` interceptor.
         """
         return response
 
     def post_list_channels_with_metadata(self, response: eventarc.ListChannelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListChannelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_channels
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_list_channels_with_metadata`
+        interceptor in new development instead of the `post_list_channels` interceptor.
+        When both interceptors are used, this `post_list_channels_with_metadata` interceptor runs after the
+        `post_list_channels` interceptor. The (possibly modified) response returned by
+        `post_list_channels` will be passed to
+        `post_list_channels_with_metadata`.
         """
         return response, metadata
 
@@ -582,18 +712,28 @@ class EventarcRestInterceptor:
     def post_list_providers(self, response: eventarc.ListProvidersResponse) -> eventarc.ListProvidersResponse:
         """Post-rpc interceptor for list_providers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_providers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_providers` interceptor runs
+        before the `post_list_providers_with_metadata` interceptor.
         """
         return response
 
     def post_list_providers_with_metadata(self, response: eventarc.ListProvidersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListProvidersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_providers
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_list_providers_with_metadata`
+        interceptor in new development instead of the `post_list_providers` interceptor.
+        When both interceptors are used, this `post_list_providers_with_metadata` interceptor runs after the
+        `post_list_providers` interceptor. The (possibly modified) response returned by
+        `post_list_providers` will be passed to
+        `post_list_providers_with_metadata`.
         """
         return response, metadata
 
@@ -608,18 +748,28 @@ class EventarcRestInterceptor:
     def post_list_triggers(self, response: eventarc.ListTriggersResponse) -> eventarc.ListTriggersResponse:
         """Post-rpc interceptor for list_triggers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_triggers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_triggers` interceptor runs
+        before the `post_list_triggers_with_metadata` interceptor.
         """
         return response
 
     def post_list_triggers_with_metadata(self, response: eventarc.ListTriggersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListTriggersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_triggers
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_list_triggers_with_metadata`
+        interceptor in new development instead of the `post_list_triggers` interceptor.
+        When both interceptors are used, this `post_list_triggers_with_metadata` interceptor runs after the
+        `post_list_triggers` interceptor. The (possibly modified) response returned by
+        `post_list_triggers` will be passed to
+        `post_list_triggers_with_metadata`.
         """
         return response, metadata
 
@@ -634,18 +784,28 @@ class EventarcRestInterceptor:
     def post_update_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_channel
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_channel_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_channel` interceptor runs
+        before the `post_update_channel_with_metadata` interceptor.
         """
         return response
 
     def post_update_channel_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_channel
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_update_channel_with_metadata`
+        interceptor in new development instead of the `post_update_channel` interceptor.
+        When both interceptors are used, this `post_update_channel_with_metadata` interceptor runs after the
+        `post_update_channel` interceptor. The (possibly modified) response returned by
+        `post_update_channel` will be passed to
+        `post_update_channel_with_metadata`.
         """
         return response, metadata
 
@@ -660,18 +820,28 @@ class EventarcRestInterceptor:
     def post_update_google_channel_config(self, response: gce_google_channel_config.GoogleChannelConfig) -> gce_google_channel_config.GoogleChannelConfig:
         """Post-rpc interceptor for update_google_channel_config
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_google_channel_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_google_channel_config` interceptor runs
+        before the `post_update_google_channel_config_with_metadata` interceptor.
         """
         return response
 
     def post_update_google_channel_config_with_metadata(self, response: gce_google_channel_config.GoogleChannelConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[gce_google_channel_config.GoogleChannelConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_google_channel_config
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_update_google_channel_config_with_metadata`
+        interceptor in new development instead of the `post_update_google_channel_config` interceptor.
+        When both interceptors are used, this `post_update_google_channel_config_with_metadata` interceptor runs after the
+        `post_update_google_channel_config` interceptor. The (possibly modified) response returned by
+        `post_update_google_channel_config` will be passed to
+        `post_update_google_channel_config_with_metadata`.
         """
         return response, metadata
 
@@ -686,18 +856,28 @@ class EventarcRestInterceptor:
     def post_update_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_trigger
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_trigger_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the Eventarc server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_trigger` interceptor runs
+        before the `post_update_trigger_with_metadata` interceptor.
         """
         return response
 
     def post_update_trigger_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_trigger
 
-        Override in a subclass to either manipulate or read, either the response
-        or metadata after it is returned by the Eventarc server but before
-        it is returned to user code.
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Eventarc server but before it is returned to user code.
+
+        We recommend only using this `post_update_trigger_with_metadata`
+        interceptor in new development instead of the `post_update_trigger` interceptor.
+        When both interceptors are used, this `post_update_trigger_with_metadata` interceptor runs after the
+        `post_update_trigger` interceptor. The (possibly modified) response returned by
+        `post_update_trigger` will be passed to
+        `post_update_trigger_with_metadata`.
         """
         return response, metadata
 

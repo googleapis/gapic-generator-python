@@ -87,9 +87,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             EchoAsyncClient,
             use_mtls,
             transport_name=transport,
-            channel_creator=aio.insecure_channel
-            if request.param == "grpc_asyncio"
-            else None,
+            channel_creator=(
+                aio.insecure_channel if request.param == "grpc_asyncio" else None
+            ),
             credentials=async_anonymous_credentials(),
         )
 
@@ -102,9 +102,9 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             IdentityAsyncClient,
             use_mtls,
             transport_name=transport,
-            channel_creator=aio.insecure_channel
-            if request.param == "grpc_asyncio"
-            else None,
+            channel_creator=(
+                aio.insecure_channel if request.param == "grpc_asyncio" else None
+            ),
             credentials=async_anonymous_credentials(),
         )
 
