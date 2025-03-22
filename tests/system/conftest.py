@@ -45,6 +45,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     try:
         from google.showcase_v1beta1.services.echo.transports import (
             AsyncEchoRestTransport,
+            AsyncEchoRestInterceptor,
         )
 
         HAS_ASYNC_REST_ECHO_TRANSPORT = True
@@ -272,6 +273,28 @@ class EchoMetadataClientRestInterceptor(EchoRestInterceptor):
         return request, metadata
 
 
+if HAS_ASYNC_REST_ECHO_TRANSPORT:
+    class EchoMetadataClientRestAsyncInterceptor(AsyncEchoRestInterceptor):
+        request_metadata: Sequence[Tuple[str, str]] = []
+        response_metadata: Sequence[Tuple[str, str]] = []
+
+        async def pre_echo(self, request, metadata):
+            self.request_metadata = metadata
+            return request, metadata
+
+        async def post_echo_with_metadata(self, request, metadata):
+            self.response_metadata = metadata
+            return request, metadata
+
+        async def pre_expand(self, request, metadata):
+            self.request_metadata = metadata
+            return request, metadata
+
+        async def post_expand_with_metadata(self, request, metadata):
+            self.response_metadata = metadata
+            return request, metadata
+
+
 class EchoMetadataClientGrpcInterceptor(
     grpc.UnaryUnaryClientInterceptor,
     grpc.UnaryStreamClientInterceptor,
@@ -401,6 +424,7 @@ def intercepted_echo_grpc_async():
     )
     return EchoAsyncClient(transport=transport), interceptor
 
+
 @pytest.fixture
 def intercepted_echo_rest():
     transport_name = "rest"
@@ -415,3 +439,22 @@ def intercepted_echo_rest():
         interceptor=interceptor,
     )
     return EchoClient(transport=transport), interceptor
+
+
+@pytest.fixture
+def intercepted_echo_rest_async():
+    if not HAS_ASYNC_REST_ECHO_TRANSPORT:
+        pytest.skip("Skipping test with async rest.")
+
+    transport_name = "rest_asyncio"
+    transport_cls = EchoAsyncClient.get_transport_class(transport_name)
+    interceptor = EchoMetadataClientRestAsyncInterceptor()
+
+    # The custom host explicitly bypasses https.
+    transport = transport_cls(
+        credentials=async_anonymous_credentials(),
+        host="localhost:7469",
+        url_scheme="http",
+        interceptor=interceptor,
+    )
+    return EchoAsyncClient(transport=transport), interceptor

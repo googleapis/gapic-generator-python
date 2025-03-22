@@ -62,15 +62,45 @@ def test_metadata_response_rest_streams(intercepted_echo_rest):
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
-    async def test_metadata_response_grpc_unary_async(intercepted_echo_grpc_async):
+    async def test_metadata_response_rest_streams_async(intercepted_echo_rest_async):
+        request_content = "The hail in Wales falls mainly on the snails."
+        request_metadata = ("something2", "something_value2")
+        response_metadata = ("X-Showcase-Request-Something2", "something_value2")
+        client, interceptor = intercepted_echo_rest_async
+        await client.expand(
+            {
+                "content": request_content,
+            },
+            metadata=(request_metadata,),
+        )
+
+        assert request_metadata in interceptor.request_metadata
+        assert response_metadata in interceptor.response_metadata
+
+    @pytest.mark.parametrize(
+        "transport,response_metadata",
+        [
+            ("grpc_asyncio", ("something3", "something_value3")),
+            ("rest_asyncio", ("X-Showcase-Request-Something3", "something_value3")),
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_metadata_response_unary_async(
+        intercepted_echo_grpc_async,
+        intercepted_echo_rest_async,
+        transport,
+        response_metadata,
+    ):
         request_content = "The hail in Wales falls mainly on the snails."
         request_metadata = ("something3", "something_value3")
-        response_metadata = ("something3", "something_value3")
 
-        client, interceptor = intercepted_echo_grpc_async
+        if transport == "grpc_asyncio":
+            client, interceptor = intercepted_echo_grpc_async
+        else:
+            client, interceptor = intercepted_echo_rest_async
         response = await client.echo(
             request=showcase.EchoRequest(content=request_content),
-            metadata=(("something3", "something_value3"),),
+            metadata=(request_metadata,),
         )
         assert response.content == request_content
         assert request_metadata in interceptor.request_metadata

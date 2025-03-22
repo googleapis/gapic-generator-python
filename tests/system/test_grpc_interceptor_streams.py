@@ -23,14 +23,14 @@ intercepted_metadata = (("showcase-trailer", "intercepted"),)
 
 def test_unary_stream(intercepted_echo_grpc):
     client, interceptor = intercepted_echo_grpc
-    content = 'The hail in Wales falls mainly on the snails.'
+    content = "The hail in Wales falls mainly on the snails."
     responses = client.expand(
         {
             "content": content,
         }
     )
 
-    for ground_truth, response in zip(content.split(' '), responses):
+    for ground_truth, response in zip(content.split(" "), responses):
         assert response.content == ground_truth
     assert ground_truth == "snails."
 
