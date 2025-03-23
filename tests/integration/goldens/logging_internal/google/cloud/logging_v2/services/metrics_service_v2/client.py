@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -604,7 +604,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers._ListLogMetricsPager:
+            ) -> pagers.ListLogMetricsPager:
         r"""Lists logs-based metrics.
 
         .. code-block:: python
@@ -618,7 +618,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__list_log_metrics():
+            def sample_list_log_metrics():
                 # Create a client
                 client = logging_v2.BaseMetricsServiceV2Client()
 
@@ -657,7 +657,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.logging_v2.services.metrics_service_v2.pagers._ListLogMetricsPager:
+            google.cloud.logging_v2.services.metrics_service_v2.pagers.ListLogMetricsPager:
                 Result returned from ListLogMetrics.
 
                 Iterating over this object will yield
@@ -668,7 +668,8 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -684,7 +685,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._list_log_metrics]
+        rpc = self._transport._wrapped_methods[self._transport.list_log_metrics]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -707,7 +708,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers._ListLogMetricsPager(
+        response = pagers.ListLogMetricsPager(
             method=rpc,
             request=request,
             response=response,
@@ -740,7 +741,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__get_log_metric():
+            def sample_get_log_metric():
                 # Create a client
                 client = logging_v2.BaseMetricsServiceV2Client()
 
@@ -795,7 +796,8 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([metric_name])
+        flattened_params = [metric_name]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -811,7 +813,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._get_log_metric]
+        rpc = self._transport._wrapped_methods[self._transport.get_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -857,7 +859,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__create_log_metric():
+            def sample_create_log_metric():
                 # Create a client
                 client = logging_v2.BaseMetricsServiceV2Client()
 
@@ -928,7 +930,8 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, metric])
+        flattened_params = [parent, metric]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -946,7 +949,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._create_log_metric]
+        rpc = self._transport._wrapped_methods[self._transport.create_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -992,7 +995,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__update_log_metric():
+            def sample_update_log_metric():
                 # Create a client
                 client = logging_v2.BaseMetricsServiceV2Client()
 
@@ -1062,7 +1065,8 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([metric_name, metric])
+        flattened_params = [metric_name, metric]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -1080,7 +1084,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._update_log_metric]
+        rpc = self._transport._wrapped_methods[self._transport.update_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1125,7 +1129,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            def sample__delete_log_metric():
+            def sample_delete_log_metric():
                 # Create a client
                 client = logging_v2.BaseMetricsServiceV2Client()
 
@@ -1161,7 +1165,8 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([metric_name])
+        flattened_params = [metric_name]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -1177,7 +1182,7 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport._delete_log_metric]
+        rpc = self._transport._wrapped_methods[self._transport.delete_log_metric]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
