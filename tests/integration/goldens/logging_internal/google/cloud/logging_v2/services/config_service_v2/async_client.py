@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -342,7 +342,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -1021,7 +1022,7 @@ class BaseConfigServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers._ListViewsAsyncPager:
+            ) -> pagers.ListViewsAsyncPager:
         r"""Lists views on a log bucket.
 
         .. code-block:: python
@@ -1035,7 +1036,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__list_views():
+            async def sample_list_views():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -1073,7 +1074,7 @@ class BaseConfigServiceV2AsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.logging_v2.services.config_service_v2.pagers._ListViewsAsyncPager:
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListViewsAsyncPager:
                 The response from ListViews.
 
                 Iterating over this object will yield
@@ -1084,7 +1085,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -1101,7 +1103,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._list_views]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_views]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1124,7 +1126,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers._ListViewsAsyncPager(
+        response = pagers.ListViewsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -1156,7 +1158,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__get_view():
+            async def sample_get_view():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -1196,7 +1198,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._get_view]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1241,7 +1243,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__create_view():
+            async def sample_create_view():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -1282,7 +1284,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._create_view]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1330,7 +1332,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__update_view():
+            async def sample_update_view():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -1370,7 +1372,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._update_view]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1417,7 +1419,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__delete_view():
+            async def sample_delete_view():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -1448,7 +1450,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._delete_view]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1476,7 +1478,7 @@ class BaseConfigServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers._ListSinksAsyncPager:
+            ) -> pagers.ListSinksAsyncPager:
         r"""Lists sinks.
 
         .. code-block:: python
@@ -1490,7 +1492,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__list_sinks():
+            async def sample_list_sinks():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -1532,7 +1534,7 @@ class BaseConfigServiceV2AsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.logging_v2.services.config_service_v2.pagers._ListSinksAsyncPager:
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListSinksAsyncPager:
                 Result returned from ListSinks.
 
                 Iterating over this object will yield results and
@@ -1542,7 +1544,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -1559,7 +1562,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._list_sinks]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_sinks]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1582,7 +1585,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers._ListSinksAsyncPager(
+        response = pagers.ListSinksAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -1615,7 +1618,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__get_sink():
+            async def sample_get_sink():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -1674,7 +1677,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([sink_name])
+        flattened_params = [sink_name]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -1691,7 +1695,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._get_sink]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1741,7 +1745,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__create_sink():
+            async def sample_create_sink():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -1812,7 +1816,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, sink])
+        flattened_params = [parent, sink]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -1831,7 +1836,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._create_sink]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1883,7 +1888,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__update_sink():
+            async def sample_update_sink():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -1977,7 +1982,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([sink_name, sink, update_mask])
+        flattened_params = [sink_name, sink, update_mask]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -1998,7 +2004,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._update_sink]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2044,7 +2050,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__delete_sink():
+            async def sample_delete_sink():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -2088,7 +2094,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([sink_name])
+        flattened_params = [sink_name]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -2105,7 +2112,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._delete_sink]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_sink]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2152,7 +2159,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__create_link():
+            async def sample_create_link():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -2222,7 +2229,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, link, link_id])
+        flattened_params = [parent, link, link_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -2243,7 +2251,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._create_link]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2297,7 +2305,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__delete_link():
+            async def sample_delete_link():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -2357,7 +2365,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -2374,7 +2383,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._delete_link]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2413,7 +2422,7 @@ class BaseConfigServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers._ListLinksAsyncPager:
+            ) -> pagers.ListLinksAsyncPager:
         r"""Lists links.
 
         .. code-block:: python
@@ -2427,7 +2436,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__list_links():
+            async def sample_list_links():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -2467,7 +2476,7 @@ class BaseConfigServiceV2AsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.logging_v2.services.config_service_v2.pagers._ListLinksAsyncPager:
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListLinksAsyncPager:
                 The response from ListLinks.
 
                 Iterating over this object will yield
@@ -2478,7 +2487,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -2495,7 +2505,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._list_links]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2518,7 +2528,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers._ListLinksAsyncPager(
+        response = pagers.ListLinksAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -2551,7 +2561,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__get_link():
+            async def sample_get_link():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -2597,7 +2607,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -2614,7 +2625,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._get_link]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2645,7 +2656,7 @@ class BaseConfigServiceV2AsyncClient:
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers._ListExclusionsAsyncPager:
+            ) -> pagers.ListExclusionsAsyncPager:
         r"""Lists all the exclusions on the \_Default sink in a parent
         resource.
 
@@ -2660,7 +2671,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__list_exclusions():
+            async def sample_list_exclusions():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -2702,7 +2713,7 @@ class BaseConfigServiceV2AsyncClient:
                 be of type `bytes`.
 
         Returns:
-            google.cloud.logging_v2.services.config_service_v2.pagers._ListExclusionsAsyncPager:
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListExclusionsAsyncPager:
                 Result returned from ListExclusions.
 
                 Iterating over this object will yield results and
@@ -2712,7 +2723,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent])
+        flattened_params = [parent]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -2729,7 +2741,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._list_exclusions]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_exclusions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2752,7 +2764,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers._ListExclusionsAsyncPager(
+        response = pagers.ListExclusionsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -2785,7 +2797,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__get_exclusion():
+            async def sample_get_exclusion():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -2842,7 +2854,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -2859,7 +2872,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._get_exclusion]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2907,7 +2920,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__create_exclusion():
+            async def sample_create_exclusion():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -2979,7 +2992,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, exclusion])
+        flattened_params = [parent, exclusion]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -2998,7 +3012,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._create_exclusion]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3046,7 +3060,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__update_exclusion():
+            async def sample_update_exclusion():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -3130,7 +3144,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name, exclusion, update_mask])
+        flattened_params = [name, exclusion, update_mask]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -3151,7 +3166,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._update_exclusion]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3196,7 +3211,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__delete_exclusion():
+            async def sample_delete_exclusion():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -3240,7 +3255,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -3257,7 +3273,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._delete_exclusion]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_exclusion]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3307,7 +3323,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__get_cmek_settings():
+            async def sample_get_cmek_settings():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -3362,7 +3378,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._get_cmek_settings]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_cmek_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3420,7 +3436,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__update_cmek_settings():
+            async def sample_update_cmek_settings():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -3475,7 +3491,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._update_cmek_settings]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_cmek_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3530,7 +3546,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__get_settings():
+            async def sample_get_settings():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -3595,7 +3611,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        flattened_params = [name]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -3612,7 +3629,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._get_settings]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3675,7 +3692,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__update_settings():
+            async def sample_update_settings():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -3740,7 +3757,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([settings, update_mask])
+        flattened_params = [settings, update_mask]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
@@ -3759,7 +3777,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._update_settings]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3804,7 +3822,7 @@ class BaseConfigServiceV2AsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import logging_v2
 
-            async def sample__copy_log_entries():
+            async def sample_copy_log_entries():
                 # Create a client
                 client = logging_v2.BaseConfigServiceV2AsyncClient()
 
@@ -3853,7 +3871,7 @@ class BaseConfigServiceV2AsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[self._client._transport._copy_log_entries]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.copy_log_entries]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

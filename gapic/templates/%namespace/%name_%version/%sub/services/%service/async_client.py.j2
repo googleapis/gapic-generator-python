@@ -266,7 +266,7 @@ class {{ service.async_client_name }}:
             )
 
     {% for method in service.methods.values() %}
-      {% with method_name = method.safe_name|snake_case + "_unary" if method.operation_service else method.safe_name|snake_case %}
+      {% with method_name = method.client_method_name|snake_case + "_unary" if method.operation_service else method.client_method_name|snake_case %}
     {%+ if not method.server_streaming %}async {% endif %}def {{ method_name }}(self,
       {% endwith %}
             {% if not method.client_streaming %}
@@ -339,7 +339,8 @@ class {{ service.async_client_name }}:
         {% if method.flattened_fields %}
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        has_flattened_params = any([{{ method.flattened_fields.values()|join(", ", attribute="name") }}])
+        flattened_params = [{{ method.flattened_fields.values()|join(", ", attribute="name") }}]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError("If the `request` argument is set, then none of "
                              "the individual field arguments should be set.")
