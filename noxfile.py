@@ -644,7 +644,7 @@ def snippetgen(session):
 
 @nox.session(python="3.10")
 def docs(session):
-    """Build the docs for this library."""
+    """Build the docs for this generator."""
 
     session.install("-e", ".")
 
