@@ -1478,6 +1478,10 @@ class MixinHttpRule(HttpRule):
         req[self.body] = {}  # just an empty json.
         return req
 
+ENABLE_WRAPPER_TYPES_FOR_PAGE_SIZE = {
+    'google.cloud.bigquery.v2': True,
+    'google.cloud.bigquery.connection.v1beta1': False,
+}
 
 @dataclasses.dataclass(frozen=True)
 class Method:
@@ -1838,6 +1842,7 @@ class Method:
 
         # The request must have page_token and response must have next_page_token fields
         # because those fields keep track of pagination progress.
+        
         for source, source_type, name in (
             (self.input, str, "page_token"),
             (self.output, str, "next_page_token"),
@@ -1855,18 +1860,26 @@ class Method:
         if not page_field_size:
             return None
         
-        # The datatype for page_size/max_results must be one of the following:
-        # int (page_size) or UInt32Value, Int32Value (max_results)
+        # If the field is max_results and uses the UInt32Value and Int32Value wrappers,
+        # the package must be in the allowlist.
+        wrappers_allowed = ENABLE_WRAPPER_TYPES_FOR_PAGE_SIZE.get(self.input.meta.address.proto_package, False)
+        
+        # ALTERNATIVE:
+        # As opposed to using a dictionary with package names as keys and True/False as values, we could
+        # Use a set and check to see if the package name is in the list
+        # WRAPPERS_ALLOWED_PACKAGE_LIST = {"google.cloud.bigquery.v2"}
+        # self.input.meta.address.proto_package in WRAPPERS_ALLOWED_PACKAGE_LIST
+
         if page_field_size.type == int or (
             # The following additional checks are for several members of the BQ family of
             # APIs, which use legacy wrapper types: "UInt32Value" and "Int32Value"}
             # for max_results.
             # NOTE:
             #   bigquery_v2 should be paginated
-            #   but bigquery_connection_v1beta1 should NOT be paginated
-            isinstance(page_field_size.type, MessageType)
+            #   but bigquery_connection_v1beta1 should NOT be paginated            
+            wrappers_allowed
+            and isinstance(page_field_size.type, MessageType)
             and page_field_size.type.message_pb.name in {"UInt32Value", "Int32Value"}
-            and self.input.message_pb.name not in {"ListConnectionsRequest"}
         ):
             pass
         else:
