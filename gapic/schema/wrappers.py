@@ -1836,7 +1836,8 @@ class Method:
         # If the request field lacks any of the expected pagination fields,
         # then the method is not paginated.
 
-        # The request must have page_token and next_page_token as they keep track of pages
+        # The request must have page_token and response must have next_page_token fields
+        # because those fields keep track of pagination progress.
         for source, source_type, name in (
             (self.input, str, "page_token"),
             (self.output, str, "next_page_token"),
@@ -1851,7 +1852,24 @@ class Method:
             self.input.fields.get("page_size", None),
         )
         page_field_size = next((field for field in page_fields if field), None)
-        if not page_field_size or page_field_size.type != int:
+        if not page_field_size:
+            return None
+        
+        # The datatype for page_size/max_results must be one of the following:
+        # int (page_size) or UInt32Value, Int32Value (max_results)
+        if page_field_size.type == int or (
+            # The following additional checks are for several members of the BQ family of
+            # APIs, which use legacy wrapper types: "UInt32Value" and "Int32Value"}
+            # for max_results.
+            # NOTE:
+            #   bigquery_v2 should be paginated
+            #   but bigquery_connection_v1beta1 should NOT be paginated
+            isinstance(page_field_size.type, MessageType)
+            and page_field_size.type.message_pb.name in {"UInt32Value", "Int32Value"}
+            and self.input.message_pb.name not in {"ListConnectionsRequest"}
+        ):
+            pass
+        else:
             return None
 
         # Return the first repeated field.
