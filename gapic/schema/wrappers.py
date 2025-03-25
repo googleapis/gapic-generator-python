@@ -1479,12 +1479,6 @@ class MixinHttpRule(HttpRule):
         return req
 
 
-ENABLE_WRAPPER_TYPES_FOR_PAGE_SIZE = {
-    "google.cloud.bigquery.v2": True,
-    "google.cloud.bigquery.connection.v1beta1": False,
-}
-
-
 @dataclasses.dataclass(frozen=True)
 class Method:
     """Description of a method (defined with the ``rpc`` keyword)."""
@@ -1867,8 +1861,8 @@ class Method:
         if not page_field_size:
             return None
 
-        # If the field is max_results and uses the UInt32Value and Int32Value wrappers,
-        # the package must be in the allowlist.
+        # If the a legacy API uses the UInt32Value and Int32Value wrappers,
+        # the service package must be in the allowlist.
         package_name = self.input.meta.address.proto_package
 
         if page_field_size.type == int or (
