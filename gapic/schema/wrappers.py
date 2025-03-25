@@ -1478,10 +1478,12 @@ class MixinHttpRule(HttpRule):
         req[self.body] = {}  # just an empty json.
         return req
 
+
 ENABLE_WRAPPER_TYPES_FOR_PAGE_SIZE = {
-    'google.cloud.bigquery.v2': True,
-    'google.cloud.bigquery.connection.v1beta1': False,
+    "google.cloud.bigquery.v2": True,
+    "google.cloud.bigquery.connection.v1beta1": False,
 }
+
 
 @dataclasses.dataclass(frozen=True)
 class Method:
@@ -1498,6 +1500,8 @@ class Method:
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
+
+    PACKAGES_WITH_ALLOWED_WRAPPERS = {"google.cloud.bigquery.v2"}
 
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
@@ -1836,13 +1840,16 @@ class Method:
 
     @utils.cached_property
     def paged_result_field(self) -> Optional[Field]:
-        """Return the response pagination field if the method is paginated."""
-        # If the request field lacks any of the expected pagination fields,
-        # then the method is not paginated.
+        """Return the response pagination field if the method is paginated.
 
-        # The request must have page_token and response must have next_page_token fields
-        # because those fields keep track of pagination progress.
-        
+        The request field must have a page_token field and a page_size field (or
+        for legacy APIs, a max_results field) and the response field
+        must have a next_token_field and a repeated field.
+
+        For the purposes of supporting legacy APIs, additional wrapper types are
+        allowed.
+        """
+
         for source, source_type, name in (
             (self.input, str, "page_token"),
             (self.output, str, "next_page_token"),
@@ -1851,7 +1858,7 @@ class Method:
             if not field or field.type != source_type:
                 return None
 
-        # The request must have max_results or page_size
+        # The request must have page_size (or max_results if legacy API)
         page_fields = (
             self.input.fields.get("max_results", None),
             self.input.fields.get("page_size", None),
@@ -1859,27 +1866,21 @@ class Method:
         page_field_size = next((field for field in page_fields if field), None)
         if not page_field_size:
             return None
-        
+
         # If the field is max_results and uses the UInt32Value and Int32Value wrappers,
         # the package must be in the allowlist.
-        wrappers_allowed = ENABLE_WRAPPER_TYPES_FOR_PAGE_SIZE.get(self.input.meta.address.proto_package, False)
-        
-        # ALTERNATIVE:
-        # As opposed to using a dictionary with package names as keys and True/False as values, we could
-        # Use a set and check to see if the package name is in the list
-        # WRAPPERS_ALLOWED_PACKAGE_LIST = {"google.cloud.bigquery.v2"}
-        # self.input.meta.address.proto_package in WRAPPERS_ALLOWED_PACKAGE_LIST
+        package_name = self.input.meta.address.proto_package
 
         if page_field_size.type == int or (
-            # The following additional checks are for several members of the BQ family of
-            # APIs, which use legacy wrapper types: "UInt32Value" and "Int32Value"}
+            # The following additional checks are related to several members of the BQ family of
+            # APIs, which use the legacy wrapper types: "UInt32Value" and "Int32Value"}
             # for max_results.
             # NOTE:
             #   bigquery_v2 should be paginated
-            #   but bigquery_connection_v1beta1 should NOT be paginated            
-            wrappers_allowed
-            and isinstance(page_field_size.type, MessageType)
+            #   but bigquery_connection_v1beta1 should NOT be paginated
+            isinstance(page_field_size.type, MessageType)
             and page_field_size.type.message_pb.name in {"UInt32Value", "Int32Value"}
+            and package_name in self.PACKAGES_WITH_ALLOWED_WRAPPERS
         ):
             pass
         else:
