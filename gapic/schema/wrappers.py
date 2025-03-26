@@ -1495,8 +1495,6 @@ class Method:
         default_factory=metadata.Metadata,
     )
 
-    PACKAGES_WITH_ALLOWED_WRAPPERS = {"google.cloud.bigquery.v2"}
-
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
 
@@ -1832,6 +1830,21 @@ class Method:
         """Return the identifier data to be used in templates."""
         return self.meta.address
 
+    def _validate_paged_field_size_type(value):
+        """Validates allowed paged_field_size type(s).
+
+        Confirms whether the paged_field_size.type is an allowed wrapper type:
+        The norm is for type to be int, but an additional check is included to
+        account for BigQuery legacy APIs which allowed UInt32Value and
+        Int32Value.
+        """
+
+        if page_field_size.type == int or (
+            isinstance(value.type, MessageType)
+            and value.type.message_pb.name in {"UInt32Value", "Int32Value"}
+        ):
+            return True
+
     @utils.cached_property
     def paged_result_field(self) -> Optional[Field]:
         """Return the response pagination field if the method is paginated.
@@ -1861,23 +1874,8 @@ class Method:
         if not page_field_size:
             return None
 
-        # If the a legacy API uses the UInt32Value and Int32Value wrappers,
-        # the service package must be in the allowlist.
-        package_name = self.input.meta.address.proto_package
-
-        if page_field_size.type == int or (
-            # The following additional checks are related to several members of the BQ family of
-            # APIs, which use the legacy wrapper types: "UInt32Value" and "Int32Value"}
-            # for max_results.
-            # NOTE:
-            #   bigquery_v2 should be paginated
-            #   but bigquery_connection_v1beta1 should NOT be paginated
-            isinstance(page_field_size.type, MessageType)
-            and page_field_size.type.message_pb.name in {"UInt32Value", "Int32Value"}
-            and package_name in self.PACKAGES_WITH_ALLOWED_WRAPPERS
-        ):
-            pass
-        else:
+        # Confirm whether the paged_field_size is an allowed type.
+        if not _validate_paged_field_size_type(value):
             return None
 
         # Return the first repeated field.
