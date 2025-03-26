@@ -1015,12 +1015,12 @@ def test_mixin_rule():
 @pytest.mark.parametrize(
     "field_type, _type, expected",
     [
-        (int, 5, True), # int, 5 = int
-        (float, 1, None), # float, 1 = float
-        (wrappers_pb2.UInt32Value, 11, True), # wrappers_pb2.UInt32Value, 11 = MessageType
-        (wrappers_pb2.Int32Value, 11, True), # wrappers_pb2.UInt32Value, 11 = MessageType
-        (wrappers_pb2.Int32Value, 1, None), # wrappers_pb2.UInt32Value, 1 = float
-        (wrappers_pb2.Int32Value, 1, None), # wrappers_pb2.UInt32Value, 1 = float
+        (int, 5, True), # 5 = int
+        (float, 1, None), # 1 = float
+        (wrappers_pb2.UInt32Value, 11, True), # 11 = MessageType
+        (wrappers_pb2.Int32Value, 11, True), # 11 = MessageType
+        (wrappers_pb2.UInt32Value, 1, None), # 1 = float
+        (wrappers_pb2.Int32Value, 1, None), # 1 = float
     ],
 )
 def test__validate_paged_field_size_type(field_type, _type, expected):
