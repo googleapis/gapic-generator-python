@@ -233,7 +233,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Set env
         run: |
-          export PYTHON_NEWEST_VERSION=$(echo '${{ matrix.python-version }}' |  | jq -Rc 'split(",")'[-1])
+          export PYTHON_NEWEST_VERSION=$(echo '${{ needs.all_python_setup.outputs.all_python }}' | jq -Rc 'split(",")'[-1])
           echo "PYTHON_NEWEST_VERSION=${PYTHON_NEWEST_VERSION}" >> $GITHUB_ENV 
       - name: Set up Newest Stable Python
         uses: actions/setup-python@v5
