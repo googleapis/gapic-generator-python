@@ -1830,7 +1830,7 @@ class Method:
         """Return the identifier data to be used in templates."""
         return self.meta.address
 
-    def _validate_paged_field_size_type(page_field_size):
+    def _validate_paged_field_size_type(self, page_field_size):
         """Validates allowed paged_field_size type(s).
 
         Confirms whether the paged_field_size.type is an allowed wrapper type:
