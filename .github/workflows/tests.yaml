@@ -231,10 +231,14 @@ jobs:
         variant: ['', _alternative_templates]
     steps:
       - uses: actions/checkout@v4
+      - name: Set env
+        run: |
+          export PYTHON_NEWEST_VERSION=$(echo '${{ matrix.python-version }}' |  | jq -Rc 'split(",")'[-1])
+          echo "PYTHON_NEWEST_VERSION=${PYTHON_NEWEST_VERSION}" >> $GITHUB_ENV 
       - name: Set up Newest Stable Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ needs.all_python_setup.outputs.all_python && fromJSON(needs.all_python_setup.outputs.all_python) }}[-1]
+          python-version: ${{ env.PYTHON_NEWEST_VERSION }}
           cache: 'pip'
       - name: Install system dependencies.
         run: |
