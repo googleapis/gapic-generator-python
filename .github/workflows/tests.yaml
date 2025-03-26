@@ -231,7 +231,7 @@ jobs:
         variant: ['', _alternative_templates]
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}[-1]
+      - name: Set up Newest Stable Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}[-1]
