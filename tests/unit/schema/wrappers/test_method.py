@@ -1002,24 +1002,14 @@ def test_mixin_rule():
     assert e == m.sample_request
 
 
-# @pytest.mark.parametrize(
-#     "page_field_size",
-#     [
-#         (True),
-#         (False),
-#     ]
-# )
-
-
-
 @pytest.mark.parametrize(
     "field_type, _type, expected",
     [
-        # valid paged_result_field candidate
+        # valid paged_result_field candidates
         (int, 5, True), # 5 = int
         (wrappers_pb2.UInt32Value, 11, True), # 11 = MessageType
         (wrappers_pb2.Int32Value, 11, True), # 11 = MessageType
-        # invalid paged_result_field candidate
+        # invalid paged_result_field candidates
         (float, 1, None), # 1 = float
         (wrappers_pb2.UInt32Value, 1, None), # 1 = float
         (wrappers_pb2.Int32Value, 1, None), # 1 = float
@@ -1035,7 +1025,8 @@ def test__validate_paged_field_size_type(field_type, _type, expected):
     else: 
         # _type 11 is MESSAGETYPE
         # See: https://github.com/googleapis/gapic-generator-python/blob/c8b7229ba2865d6a2f5966aa151be121de81f92d/gapic/schema/wrappers.py#L378C1-L411C10
-        # and is only associated with *Int32Value in legacy APIs such as BigQuery.
+        # and in this context is associated with *Int32Value in legacy APIs
+        # such as BigQuery.
         page_size = make_field(
             name="max_results",
             type=_type,
