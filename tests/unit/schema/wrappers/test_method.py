@@ -1061,13 +1061,13 @@ def test_mixin_rule():
     "field_type, _type, expected",
     [
         # valid paged_result_field candidates
-        (int, 5, True), # 5 = int
-        (wrappers_pb2.UInt32Value, 11, True), # 11 = MessageType
-        (wrappers_pb2.Int32Value, 11, True), # 11 = MessageType
+        (int, 5, True),  # 5 = int
+        (wrappers_pb2.UInt32Value, 11, True),  # 11 = MessageType
+        (wrappers_pb2.Int32Value, 11, True),  # 11 = MessageType
         # invalid paged_result_field candidates
-        (float, 1, None), # 1 = float
-        (wrappers_pb2.UInt32Value, 1, None), # 1 = float
-        (wrappers_pb2.Int32Value, 1, None), # 1 = float
+        (float, 1, None),  # 1 = float
+        (wrappers_pb2.UInt32Value, 1, None),  # 1 = float
+        (wrappers_pb2.Int32Value, 1, None),  # 1 = float
     ],
 )
 def test__validate_paged_field_size_type(field_type, _type, expected):
@@ -1075,9 +1075,9 @@ def test__validate_paged_field_size_type(field_type, _type, expected):
 
     # Setup
     if _type in {5, 1}:
-        # The _type values represent int (5) and float (1) 
+        # The _type values represent int (5) and float (1)
         page_size = make_field(name="page_size", type=_type)
-    else: 
+    else:
         # _type 11 is MESSAGETYPE
         # See: https://github.com/googleapis/gapic-generator-python/blob/c8b7229ba2865d6a2f5966aa151be121de81f92d/gapic/schema/wrappers.py#L378C1-L411C10
         # and in this context is associated with *Int32Value in legacy APIs
@@ -1085,7 +1085,7 @@ def test__validate_paged_field_size_type(field_type, _type, expected):
         page_size = make_field(
             name="max_results",
             type=_type,
-            message=make_message(name=field_type.DESCRIPTOR.name)
+            message=make_message(name=field_type.DESCRIPTOR.name),
         )
 
     parent = make_field(name="parent", type=9)  # str
@@ -1100,7 +1100,7 @@ def test__validate_paged_field_size_type(field_type, _type, expected):
             page_token,
         ),
     )
-    
+
     output_msg = make_message(
         name="ListFoosResponse",
         fields=(
