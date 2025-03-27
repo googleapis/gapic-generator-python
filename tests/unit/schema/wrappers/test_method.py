@@ -190,6 +190,61 @@ def test_method_paged_result_field_no_page_field():
     assert method.paged_result_field is None
 
 
+def test_method_paged_result_field_invalid_wrapper_type():
+    """Validate paged_result_field() returns None if page_size/max_results wrappertypes
+    are not allowed types.
+    """
+
+    # page_size is not allowed wrappertype
+    parent = make_field(name="parent", type=9)  # str
+    page_size = make_field(name="page_size", type=1)  # float, not allowed type
+    page_token = make_field(name="page_token", type=9)  # str
+    foos = make_field(name="foos", message=make_message("Foo"), repeated=True)
+    next_page_token = make_field(name="next_page_token", type=9)  # str
+
+    input_msg = make_message(
+        name="ListFoosRequest",
+        fields=(
+            parent,
+            page_size,
+            page_token,
+        ),
+    )
+    output_msg = make_message(
+        name="ListFoosResponse",
+        fields=(
+            foos,
+            next_page_token,
+        ),
+    )
+    method = make_method(
+        "ListFoos",
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+    assert method.paged_result_field is None
+
+    # max_results is not allowed wrappertype
+    max_results = make_field(name="max_results", type=9)  # str, not allowed type
+
+    input_msg = make_message(
+        name="ListFoosRequest",
+        fields=(
+            parent,
+            max_results,
+            page_token,
+        ),
+    )
+
+    method = make_method(
+        "ListFoos",
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+
+    assert method.paged_result_field is None
+
+
 def test_method_paged_result_ref_types():
     input_msg = make_message(
         name="ListSquidsRequest",
