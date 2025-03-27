@@ -23,6 +23,7 @@ from google.api import http_pb2
 from google.api import routing_pb2
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
+from google.protobuf import wrappers_pb2
 
 from gapic.schema import metadata
 from gapic.schema import wrappers
@@ -186,6 +187,61 @@ def test_method_paged_result_field_no_page_field():
             fields=(make_field(name="next_page_token", type=9),),  # str
         ),
     )
+    assert method.paged_result_field is None
+
+
+def test_method_paged_result_field_invalid_wrapper_type():
+    """Validate paged_result_field() returns None if page_size/max_results wrappertypes
+    are not allowed types.
+    """
+
+    # page_size is not allowed wrappertype
+    parent = make_field(name="parent", type=9)  # str
+    page_size = make_field(name="page_size", type=1)  # float, not allowed type
+    page_token = make_field(name="page_token", type=9)  # str
+    foos = make_field(name="foos", message=make_message("Foo"), repeated=True)
+    next_page_token = make_field(name="next_page_token", type=9)  # str
+
+    input_msg = make_message(
+        name="ListFoosRequest",
+        fields=(
+            parent,
+            page_size,
+            page_token,
+        ),
+    )
+    output_msg = make_message(
+        name="ListFoosResponse",
+        fields=(
+            foos,
+            next_page_token,
+        ),
+    )
+    method = make_method(
+        "ListFoos",
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+    assert method.paged_result_field is None
+
+    # max_results is not allowed wrappertype
+    max_results = make_field(name="max_results", type=9)  # str, not allowed type
+
+    input_msg = make_message(
+        name="ListFoosRequest",
+        fields=(
+            parent,
+            max_results,
+            page_token,
+        ),
+    )
+
+    method = make_method(
+        "ListFoos",
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+
     assert method.paged_result_field is None
 
 
@@ -985,3 +1041,65 @@ def test_mixin_rule():
         "city": {},
     }
     assert e == m.sample_request
+
+
+@pytest.mark.parametrize(
+    "field_type, _type, expected",
+    [
+        # valid paged_result_field candidates
+        (int, 5, True),  # 5 = int
+        (wrappers_pb2.UInt32Value, 11, True),  # 11 = MessageType
+        (wrappers_pb2.Int32Value, 11, True),  # 11 = MessageType
+        # invalid paged_result_field candidates
+        (float, 1, None),  # 1 = float
+        (wrappers_pb2.UInt32Value, 1, None),  # 1 = float
+        (wrappers_pb2.Int32Value, 1, None),  # 1 = float
+    ],
+)
+def test__validate_paged_field_size_type(field_type, _type, expected):
+    """Test _validate_paged_field_size_type with wrapper types and type indicators."""
+
+    # Setup
+    if _type in {5, 1}:
+        # The _type values represent int (5) and float (1)
+        page_size = make_field(name="page_size", type=_type)
+    else:
+        # _type 11 is MESSAGETYPE
+        # See: https://github.com/googleapis/gapic-generator-python/blob/c8b7229ba2865d6a2f5966aa151be121de81f92d/gapic/schema/wrappers.py#L378C1-L411C10
+        # and in this context is associated with *Int32Value in legacy APIs
+        # such as BigQuery.
+        page_size = make_field(
+            name="max_results",
+            type=_type,
+            message=make_message(name=field_type.DESCRIPTOR.name),
+        )
+
+    parent = make_field(name="parent", type=9)  # str
+    page_token = make_field(name="page_token", type=9)  # str
+    next_page_token = make_field(name="next_page_token", type=9)  # str
+
+    input_msg = make_message(
+        name="ListFoosRequest",
+        fields=(
+            parent,
+            page_size,
+            page_token,
+        ),
+    )
+
+    output_msg = make_message(
+        name="ListFoosResponse",
+        fields=(
+            make_field(name="foos", message=make_message("Foo"), repeated=True),
+            next_page_token,
+        ),
+    )
+
+    method = make_method(
+        "ListFoos",
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+
+    actual = method._validate_paged_field_size_type(page_field_size=page_size)
+    assert actual == expected
