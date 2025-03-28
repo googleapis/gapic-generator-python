@@ -387,7 +387,7 @@ class EchoMetadataClientGrpcAsyncInterceptor(
 @pytest.fixture
 def intercepted_echo_grpc(use_mtls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
-    # echos any metadata with key 'showcase-trailer', so the same metadata
+    # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
     interceptor = EchoMetadataClientGrpcInterceptor(
         "showcase-trailer",
@@ -410,7 +410,7 @@ def intercepted_echo_grpc(use_mtls):
 @pytest.fixture
 def intercepted_echo_grpc_async():
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
-    # echos any metadata with key 'showcase-trailer', so the same metadata
+    # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
     interceptor = EchoMetadataClientGrpcAsyncInterceptor(
         "showcase-trailer",
