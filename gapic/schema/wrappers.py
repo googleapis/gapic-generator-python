@@ -1830,7 +1830,7 @@ class Method:
         """Return the identifier data to be used in templates."""
         return self.meta.address
 
-    def _validate_paged_field_size_type(self, page_field_size):
+    def _validate_paged_field_size_type(self, page_field_size) -> bool:
         """Validates allowed paged_field_size type(s).
 
         Confirms whether the paged_field_size.type is an allowed wrapper type:
@@ -1839,11 +1839,11 @@ class Method:
         Int32Value.
         """
 
-        _type = page_field_size.type
+        pb_type = page_field_size.type
 
-        if _type == int or (
-            isinstance(_type, MessageType)
-            and _type.message_pb.name in {"UInt32Value", "Int32Value"}
+        if pb_type == int or (
+            isinstance(pb_type, MessageType)
+            and pb_type.message_pb.name in {"UInt32Value", "Int32Value"}
         ):
             return True
 

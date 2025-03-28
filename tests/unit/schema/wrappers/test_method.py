@@ -196,11 +196,11 @@ def test_method_paged_result_field_invalid_wrapper_type():
     """
 
     # page_size is not allowed wrappertype
-    parent = make_field(name="parent", type=9)  # str
-    page_size = make_field(name="page_size", type=1)  # float, not allowed type
-    page_token = make_field(name="page_token", type=9)  # str
+    parent = make_field(name="parent", type="TYPE_STRING")
+    page_size = make_field(name="page_size", type="TYPE_DOUBLE")  # not an allowed type
+    page_token = make_field(name="page_token", type="TYPE_STRING")
     foos = make_field(name="foos", message=make_message("Foo"), repeated=True)
-    next_page_token = make_field(name="next_page_token", type=9)  # str
+    next_page_token = make_field(name="next_page_token", type="TYPE_STRING")
 
     input_msg = make_message(
         name="ListFoosRequest",
@@ -225,7 +225,9 @@ def test_method_paged_result_field_invalid_wrapper_type():
     assert method.paged_result_field is None
 
     # max_results is not allowed wrappertype
-    max_results = make_field(name="max_results", type=9)  # str, not allowed type
+    max_results = make_field(
+        name="max_results", type="TYPE_STRING"
+    )  # not an allowed type
 
     input_msg = make_message(
         name="ListFoosRequest",
@@ -1058,39 +1060,37 @@ def test_mixin_rule():
 
 
 @pytest.mark.parametrize(
-    "field_type, _type, expected",
+    "field_type, pb_type, expected",
     [
         # valid paged_result_field candidates
-        (int, 5, True),  # 5 = int
-        (wrappers_pb2.UInt32Value, 11, True),  # 11 = MessageType
-        (wrappers_pb2.Int32Value, 11, True),  # 11 = MessageType
+        (int, "TYPE_INT32", True),
+        (wrappers_pb2.UInt32Value, "TYPE_MESSAGE", True),
+        (wrappers_pb2.Int32Value, "TYPE_MESSAGE", True),
         # invalid paged_result_field candidates
-        (float, 1, None),  # 1 = float
-        (wrappers_pb2.UInt32Value, 1, None),  # 1 = float
-        (wrappers_pb2.Int32Value, 1, None),  # 1 = float
+        (float, "TYPE_DOUBLE", None),
+        (wrappers_pb2.UInt32Value, "TYPE_DOUBLE", None),
+        (wrappers_pb2.Int32Value, "TYPE_DOUBLE", None),
     ],
 )
-def test__validate_paged_field_size_type(field_type, _type, expected):
+def test__validate_paged_field_size_type(field_type, pb_type, expected):
     """Test _validate_paged_field_size_type with wrapper types and type indicators."""
 
     # Setup
-    if _type in {5, 1}:
-        # The _type values represent int (5) and float (1)
-        page_size = make_field(name="page_size", type=_type)
+    if pb_type in {"TYPE_INT32", "TYPE_DOUBLE"}:
+        page_size = make_field(name="page_size", type=pb_type)
     else:
-        # _type 11 is MESSAGETYPE
+        # expecting TYPE_MESSAGE which in this context is associated with
+        # *Int32Value in legacy APIs such as BigQuery.
         # See: https://github.com/googleapis/gapic-generator-python/blob/c8b7229ba2865d6a2f5966aa151be121de81f92d/gapic/schema/wrappers.py#L378C1-L411C10
-        # and in this context is associated with *Int32Value in legacy APIs
-        # such as BigQuery.
         page_size = make_field(
             name="max_results",
-            type=_type,
+            type=pb_type,
             message=make_message(name=field_type.DESCRIPTOR.name),
         )
 
-    parent = make_field(name="parent", type=9)  # str
-    page_token = make_field(name="page_token", type=9)  # str
-    next_page_token = make_field(name="next_page_token", type=9)  # str
+    parent = make_field(name="parent", type="TYPE_STRING")
+    page_token = make_field(name="page_token", type="TYPE_STRING")
+    next_page_token = make_field(name="next_page_token", type="TYPE_STRING")
 
     input_msg = make_message(
         name="ListFoosRequest",
