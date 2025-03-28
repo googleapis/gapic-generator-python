@@ -67,7 +67,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
                 f"Sending request for {client_call_details.method}",
                 extra = {
                     "serviceName": "google.iam.credentials.v1.IAMCredentials",
-                    "rpcName": client_call_details.method,
+                    "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
                 },
