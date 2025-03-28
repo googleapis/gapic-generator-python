@@ -1067,9 +1067,9 @@ def test_mixin_rule():
         (wrappers_pb2.UInt32Value, "TYPE_MESSAGE", True),
         (wrappers_pb2.Int32Value, "TYPE_MESSAGE", True),
         # invalid paged_result_field candidates
-        (float, "TYPE_DOUBLE", None),
-        (wrappers_pb2.UInt32Value, "TYPE_DOUBLE", None),
-        (wrappers_pb2.Int32Value, "TYPE_DOUBLE", None),
+        (float, "TYPE_DOUBLE", False),
+        (wrappers_pb2.UInt32Value, "TYPE_DOUBLE", False),
+        (wrappers_pb2.Int32Value, "TYPE_DOUBLE", False),
     ],
 )
 def test__validate_paged_field_size_type(field_type, pb_type, expected):
