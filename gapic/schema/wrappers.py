@@ -1846,6 +1846,7 @@ class Method:
             and pb_type.message_pb.name in {"UInt32Value", "Int32Value"}
         ):
             return True
+        return False
 
     @utils.cached_property
     def paged_result_field(self) -> Optional[Field]:
