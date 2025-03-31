@@ -220,7 +220,9 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = await self._interceptor.post_{{ method.name|snake_case }}_with_metadata(resp, response_metadata)
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-            {# Logging of response iterator is in google-api-core #}
+            {# Logging of the streaming response payload is in `google-api-core` because the response #}
+            {# type `rest_streaming_async.AsyncResponseIterator` is an iterator. #}
+            {# Each response 'item' is logged at the time that it is fetched which happens in google-api-core. #}
             {% if not method.server_streaming %}
                 try:
                     response_payload = {% if method.output.ident.is_proto_plus_type %}{{ method.output.ident }}.to_json(response){% else %}json_format.MessageToJson(resp){% endif %}
@@ -230,6 +232,9 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                     response_payload = None
             {% endif %}{# if not method.server_streaming #}
                 http_response = {
+                {# Logging of the streaming response payload is in `google-api-core` because the response #}
+                {# type `rest_streaming_async.AsyncResponseIterator` is an iterator. #}
+                {# Each response 'item' is logged at the time that it is fetched which happens in google-api-core. #}
                 {% if not method.server_streaming %}
                     "payload": response_payload,
                 {% endif %}{# if not method.server_streaming #}
