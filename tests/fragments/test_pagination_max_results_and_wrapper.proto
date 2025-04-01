@@ -19,68 +19,18 @@ package google.fragment;
 import "google/api/client.proto";
 import "google/protobuf/wrappers.proto";
 
-service MyDatasetService {
+service MaxResultsDatasetService {
   option (google.api.default_host) = "my.example.com";
-  rpc ListMyDataset(ListDatasetRequest) returns (ListDatasetResponse) {
+  rpc ListMaxResultsDataset(ListMaxResultsDatasetRequest) returns (ListMaxResultsDatasetResponse) {
   }
 }
 
-message ListDatasetRequest {
+message ListMaxResultsDatasetRequest {
   google.protobuf.UInt32Value max_results = 2;
   string page_token = 3;
 }
 
-message ListDatasetResponse {
+message ListMaxResultsDatasetResponse {
   string next_page_token = 3;
   repeated string datasets = 4;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// service MyDatasetService {
-//   // option (google.api.default_host) = "my.example.com";
-//   rpc MyListDatasets(MyListDatasetsRequest) returns (MyListDatasetsResponse) {}
-// }
-
-// message MyListDatasetsRequest {
-//   string project_id = 1;
-//   google.protobuf.UInt32Value max_results = 2;
-//   string page_token = 3;
-//   bool all = 4;
-//   string filter = 5;
-//   bool show_deleted = 6;
-//   repeated string debug = 200;
-// }
-
-// // message ListFormatDataset {
-// //   string kind = 1;
-// //   string id = 2;
-// //   // DatasetReference dataset_reference = 3;
-// //   map<string, string> labels = 4;
-// //   google.protobuf.StringValue friendly_name = 5;
-// //   string location = 6;
-// //   string type = 7;
-// // }
-
-// message MyListDatasetsResponse {
-//   string kind = 1;
-//   string etag = 2;
-//   string next_page_token = 3;
-//   repeated string datasets = 4;
-//   // repeated ListFormatDataset datasets = 4;
-//   repeated string unreachable = 5;
-
-// }
