@@ -18,6 +18,10 @@ from google.rpc.status_pb2 import Status
 from datetime import timedelta
 from google.api_core import retry as retries
 from google.api_core import exceptions as core_exceptions
+from google.api_core.version import __version__ as api_core_version
+
+if [int(n) for n in api_core_version.split(".")] < [2, 16, 0]:
+    pytest.skip("streaming retries requires api_core v2.16.0+", allow_module_level=True)
 
 
 def _code_from_exc(exc):
