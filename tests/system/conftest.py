@@ -261,9 +261,7 @@ def identity(use_mtls, request):
 @pytest.fixture(params=["grpc", "rest"])
 def sequence(use_mtls, request):
     return construct_client(
-        SequenceServiceClient,
-        use_mtls,
-        transport_name=request.param
+        SequenceServiceClient, use_mtls, transport_name=request.param
     )
 
 

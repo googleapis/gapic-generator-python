@@ -28,9 +28,7 @@ async def test_async_streaming_retry_success(async_sequence):
     """
     Test a stream with a sigle success response
     """
-    retry = retries_async.AsyncStreamingRetry(
-        predicate=retries.if_exception_type()
-    )
+    retry = retries_async.AsyncStreamingRetry(predicate=retries.if_exception_type())
     content = ["hello", "world"]
     seq = await async_sequence.create_streaming_sequence(
         streaming_sequence={
@@ -56,9 +54,7 @@ async def test_async_streaming_non_retryable_error(async_sequence):
     """
     Test a retryable stream failing with non-retryable error
     """
-    retry = retries_async.AsyncStreamingRetry(
-        predicate=retries.if_exception_type()
-    )
+    retry = retries_async.AsyncStreamingRetry(predicate=retries.if_exception_type())
     content = ["hello", "world"]
     error = Status(
         code=_code_from_exc(core_exceptions.ServiceUnavailable),
