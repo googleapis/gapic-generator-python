@@ -111,13 +111,17 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             credentials=async_anonymous_credentials(),
         )
 
-    @pytest.fixture
-    def async_sequence(use_mtls, event_loop):
+    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    def async_sequence(use_mtls, request, event_loop):
+        transport = request.param
         return construct_client(
             SequenceServiceAsyncClient,
             use_mtls,
-            transport_name="grpc_asyncio",
-            channel_creator=aio.insecure_channel,
+            transport_name=transport,
+            channel_creator=(
+                aio.insecure_channel if request.param == "grpc_asyncio" else None
+            ),
+            credentials=async_anonymous_credentials(),
         )
 
 
