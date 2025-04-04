@@ -136,13 +136,13 @@ def test_streaming_transient_retryable_partial_data(sequence):
         initial=0,
         maximum=0,
     )
-    content = ["hello", ",", "world"]
+    content = ["hello", "world"]
     error = Status(
         code=_code_from_exc(core_exceptions.ServiceUnavailable),
         message="transient error",
     )
     transient_error_list = [
-        {"status": error, "response_index": 3, "delay": Duration(seconds=30)}
+        {"status": error, "response_index": 1, "delay": Duration(seconds=30)}
     ] * 3
 
     responses = transient_error_list + [
