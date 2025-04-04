@@ -17,7 +17,7 @@ from unittest import mock
 from google.rpc.status_pb2 import Status
 from datetime import timedelta
 from google.api_core import retry as retries
-from google.api_core import retry_async as retries_async
+from google.api_core import retry_streaming_async as retries_async
 from google.api_core import exceptions as core_exceptions
 
 from test_retry_streaming import _code_from_exc
