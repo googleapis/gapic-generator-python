@@ -17,23 +17,23 @@ from gapic.utils import code
 
 
 def test_empty_empty():
-    assert code.empty('')
+    assert code.empty("")
 
 
 def test_empty_comments():
-    assert code.empty('# The rain in Wales...\n# falls mainly...')
+    assert code.empty("# The rain in Wales...\n# falls mainly...")
 
 
 def test_empty_whitespace():
-    assert code.empty('    ')
+    assert code.empty("    ")
 
 
 def test_empty_whitespace_comments():
-    assert code.empty('    # The rain in Wales...')
+    assert code.empty("    # The rain in Wales...")
 
 
 def test_empty_code():
-    assert not code.empty('import this')
+    assert not code.empty("import this")
 
 
 def test_nth():
@@ -43,3 +43,11 @@ def test_nth():
     assert code.nth((i * i for i in range(20)), 4) == 16
     # default
     assert code.nth((i * i for i in range(20)), 30, 2112) == 2112
+
+
+def test_make_private():
+    # Regular case
+    assert code.make_private("private_func") == "_private_func"
+
+    # Starts with underscore
+    assert code.make_private("_no_dunder_plz") == "_no_dunder_plz"

@@ -14,6 +14,7 @@
 
 from gapic.schema import wrappers
 
+import json
 import proto
 import pytest
 
@@ -23,36 +24,10 @@ class RoutingTestRequest(proto.Message):
     app_profile_id = proto.Field(proto.STRING, number=2)
 
 
-def resolve(rule, request):
-    """This function performs dynamic header resolution, identical to what's in client.py.j2."""
-
-    def _get_field(request, field_path: str):
-        segments = field_path.split(".")
-        cur = request
-        for x in segments:
-            cur = getattr(cur, x)
-        return cur
-
-    header_params = {}
-    for routing_param in rule.routing_parameters:
-        # This may raise exception (which we show to clients).
-        request_field_value = _get_field(request, routing_param.field)
-        if routing_param.path_template:
-            routing_param_regex = routing_param.to_regex()
-            regex_match = routing_param_regex.match(request_field_value)
-            if regex_match:
-                header_params[routing_param.key] = regex_match.group(
-                    routing_param.key)
-        else:  # No need to match
-            header_params[routing_param.key] = request_field_value
-    return header_params
-
-
 @pytest.mark.parametrize(
     "req, expected",
     [
-        (RoutingTestRequest(app_profile_id="foo.123"),
-         {"app_profile_id": "foo.123"}),
+        (RoutingTestRequest(app_profile_id="foo.123"), {"app_profile_id": "foo.123"}),
         (
             RoutingTestRequest(app_profile_id="projects/100"),
             {"app_profile_id": "projects/100"},
@@ -61,16 +36,16 @@ def resolve(rule, request):
     ],
 )
 def test_routing_rule_resolve_simple_extraction(req, expected):
-    rule = wrappers.RoutingRule(
-        [wrappers.RoutingParameter("app_profile_id", "")])
-    assert resolve(rule, req) == expected
+    rule = wrappers.RoutingRule([wrappers.RoutingParameter("app_profile_id", "")])
+    assert (
+        wrappers.RoutingRule.resolve(rule, RoutingTestRequest.to_dict(req)) == expected
+    )
 
 
 @pytest.mark.parametrize(
     "req, expected",
     [
-        (RoutingTestRequest(app_profile_id="foo.123"),
-         {"routing_id": "foo.123"}),
+        (RoutingTestRequest(app_profile_id="foo.123"), {"routing_id": "foo.123"}),
         (
             RoutingTestRequest(app_profile_id="projects/100"),
             {"routing_id": "projects/100"},
@@ -82,7 +57,9 @@ def test_routing_rule_resolve_rename_extraction(req, expected):
     rule = wrappers.RoutingRule(
         [wrappers.RoutingParameter("app_profile_id", "{routing_id=**}")]
     )
-    assert resolve(rule, req) == expected
+    assert (
+        wrappers.RoutingRule.resolve(rule, RoutingTestRequest.to_dict(req)) == expected
+    )
 
 
 @pytest.mark.parametrize(
@@ -93,8 +70,7 @@ def test_routing_rule_resolve_rename_extraction(req, expected):
             {"table_name": "projects/100/instances/200"},
         ),
         (
-            RoutingTestRequest(
-                table_name="projects/100/instances/200/whatever"),
+            RoutingTestRequest(table_name="projects/100/instances/200/whatever"),
             {"table_name": "projects/100/instances/200/whatever"},
         ),
         (RoutingTestRequest(table_name="foo"), {}),
@@ -111,7 +87,9 @@ def test_routing_rule_resolve_field_match(req, expected):
             ),
         ]
     )
-    assert resolve(rule, req) == expected
+    assert (
+        wrappers.RoutingRule.resolve(rule, RoutingTestRequest.to_dict(req)) == expected
+    )
 
 
 @pytest.mark.parametrize(
@@ -123,8 +101,7 @@ def test_routing_rule_resolve_field_match(req, expected):
                     "table_name", "{project_id=projects/*}/instances/*/**"
                 )
             ],
-            RoutingTestRequest(
-                table_name="projects/100/instances/200/tables/300"),
+            RoutingTestRequest(table_name="projects/100/instances/200/tables/300"),
             {"project_id": "projects/100"},
         ),
         (
@@ -135,16 +112,24 @@ def test_routing_rule_resolve_field_match(req, expected):
                 wrappers.RoutingParameter(
                     "table_name", "projects/*/{instance_id=instances/*}/**"
                 ),
+                wrappers.RoutingParameter(
+                    "doesnotexist", "projects/*/{instance_id=instances/*}/**"
+                ),
             ],
-            RoutingTestRequest(
-                table_name="projects/100/instances/200/tables/300"),
+            RoutingTestRequest(table_name="projects/100/instances/200/tables/300"),
             {"project_id": "projects/100", "instance_id": "instances/200"},
         ),
     ],
 )
 def test_routing_rule_resolve(routing_parameters, req, expected):
     rule = wrappers.RoutingRule(routing_parameters)
-    got = resolve(rule, req)
+    got = wrappers.RoutingRule.resolve(rule, RoutingTestRequest.to_dict(req))
+    assert got == expected
+
+    rule = wrappers.RoutingRule(routing_parameters)
+    got = wrappers.RoutingRule.resolve(
+        rule, json.dumps(RoutingTestRequest.to_dict(req))
+    )
     assert got == expected
 
 
@@ -152,8 +137,7 @@ def test_routing_rule_resolve(routing_parameters, req, expected):
     "field, path_template, expected",
     [
         ("table_name", "{project_id=projects/*}/instances/*/**", "project_id"),
-        ("table_name",
-         "projects/*/{instance_id=instances/*}/**", "instance_id"),
+        ("table_name", "projects/*/{instance_id=instances/*}/**", "instance_id"),
         ("table_name", "projects/*/{instance_id}/**", "instance_id"),
     ],
 )

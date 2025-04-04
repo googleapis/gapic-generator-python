@@ -31,7 +31,10 @@ nox.options.error_on_missing_interpreters = True
 
 showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
-
+BLACK_VERSION = "black==25.1.0"
+BLACK_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
+# exclude golden files and generated protobuf code
+BLACK_EXCLUDES = "|".join([".*golden.*", ".*pb2.py"])
 
 ALL_PYTHON = (
     "3.7",
@@ -40,6 +43,7 @@ ALL_PYTHON = (
     "3.10",
     "3.11",
     "3.12",
+    "3.13",
 )
 
 NEWEST_PYTHON = ALL_PYTHON[-1]
@@ -49,7 +53,13 @@ NEWEST_PYTHON = ALL_PYTHON[-1]
 def unit(session):
     """Run the unit test suite."""
     session.install(
-        "coverage", "pytest-cov", "pytest", "pytest-xdist", "pyfakefs", "grpcio-status", "proto-plus",
+        "coverage",
+        "pytest-cov",
+        "pytest",
+        "pytest-xdist",
+        "pyfakefs",
+        "grpcio-status",
+        "proto-plus",
     )
     session.install("-e", ".")
     session.run(
@@ -76,6 +86,7 @@ FRAGMENT_FILES = tuple(
     for f in files
     if os.path.splitext(f)[1] == ".proto" and f.startswith("test_")
 )
+
 
 # Note: this class lives outside 'fragment'
 # so that, if necessary, it can be pickled for a ProcessPoolExecutor
@@ -107,7 +118,12 @@ class FragTester:
             ]
 
             outputs.append(
-                self.session.run(*session_args, str(frag), external=True, silent=True,)
+                self.session.run(
+                    *session_args,
+                    str(frag),
+                    external=True,
+                    silent=True,
+                )
             )
 
             # Install the generated fragment library.
@@ -121,7 +137,7 @@ class FragTester:
                 # https://github.com/googleapis/gapic-generator-python/issues/1748
                 # The ads templates do not have constraints files.
                 constraints_path = str(
-                f"{tmp_dir}/testing/constraints-{self.session.python}.txt"
+                    f"{tmp_dir}/testing/constraints-{self.session.python}.txt"
                 )
                 self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
 
@@ -156,7 +172,9 @@ def fragment(session, use_ads_templates=False):
     )
     session.install("-e", ".")
 
-    frag_files = [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
+    frag_files = (
+        [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
+    )
 
     if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
         with ThreadPoolExecutor() as p:
@@ -175,11 +193,34 @@ def fragment_alternative_templates(session):
     fragment(session, use_ads_templates=True)
 
 
+# `_add_python_settings` consumes a path to a temporary directory (str; i.e. tmp_dir) and
+# python settings (Dict; i.e. python settings) and modifies the service yaml within
+# tmp_dir to include python settings. The primary purpose of this function is to modify
+# the service yaml and include `rest_async_io_enabled=True` to test the async rest
+# optional feature.
+def _add_python_settings(tmp_dir, python_settings):
+    return f"""
+import yaml
+from pathlib import Path
+temp_file_path = Path(f"{tmp_dir}/showcase_v1beta1.yaml")
+with temp_file_path.open('r') as file:
+    data = yaml.safe_load(file)
+    data['publishing']['library_settings'] = {python_settings}
+
+with temp_file_path.open('w') as file:
+    yaml.safe_dump(data, file, default_flow_style=False, sort_keys=False)
+"""
+
+
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): `rest_async_io_enabled` must be removed once async rest is GA.
 @contextmanager
 def showcase_library(
-    session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
     include_service_yaml=True,
     retry_config=True,
+    rest_async_io_enabled=False,
 ):
     """Install the generated library into the session for showcase tests."""
 
@@ -220,6 +261,23 @@ def showcase_library(
                 external=True,
                 silent=True,
             )
+            # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): The section below updates the showcase service yaml
+            # to test experimental async rest transport. It must be removed once support for async rest is GA.
+            if rest_async_io_enabled:
+                # Install pyYAML for yaml.
+                session.install("pyYAML")
+
+                python_settings = [
+                    {
+                        "version": "google.showcase.v1beta1",
+                        "python_settings": {
+                            "experimental_features": {"rest_async_io_enabled": True}
+                        },
+                    }
+                ]
+                update_service_yaml = _add_python_settings(tmp_dir, python_settings)
+                session.run("python", "-c" f"{update_service_yaml}")
+            # END TODO section to remove.
         if retry_config:
             session.run(
                 "curl",
@@ -236,9 +294,23 @@ def showcase_library(
         template_opt = f"python-gapic-templates={templates}"
         opts = "--python_gapic_opt="
         if include_service_yaml and retry_config:
-            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/showcase_v1beta1.yaml", f"retry-config={tmp_dir}/showcase_grpc_service_config.json"))
+            opts += ",".join(
+                other_opts
+                + (
+                    f"{template_opt}",
+                    "transport=grpc+rest",
+                    f"service-yaml={tmp_dir}/showcase_v1beta1.yaml",
+                    f"retry-config={tmp_dir}/showcase_grpc_service_config.json",
+                )
+            )
         else:
-            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest",))            
+            opts += ",".join(
+                other_opts
+                + (
+                    f"{template_opt}",
+                    "transport=grpc+rest",
+                )
+            )
         cmd_tup = (
             "python",
             "-m",
@@ -253,7 +325,8 @@ def showcase_library(
             f"google/showcase/v1beta1/sequence.proto",
         )
         session.run(
-            *cmd_tup, external=True,
+            *cmd_tup,
+            external=True,
         )
 
         # Install the generated showcase library.
@@ -264,18 +337,41 @@ def showcase_library(
             # This is needed to recreate the issue reported in
             # https://github.com/googleapis/google-cloud-python/issues/12254
             constraints_path = str(
-            f"{tmp_dir}/testing/constraints-{session.python}.txt"
+                f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
             # Install the library with a constraints file.
-            session.install("-e", tmp_dir, "-r", constraints_path)
+            if session.python == "3.7":
+                session.install("-e", tmp_dir, "-r", constraints_path)
+                if rest_async_io_enabled:
+                    # NOTE: We re-install `google-api-core` and `google-auth` to override the respective
+                    # versions for each specified in constraints-3.7.txt. This is needed because async REST
+                    # is not supported with the minimum version of `google-api-core` and `google-auth`.
+                    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2211): Remove hardcoded dependencies
+                    # from here and add a new constraints file for testing the minimum supported versions for async REST feature.
+                    session.install(
+                        "--no-cache-dir",
+                        "--force-reinstall",
+                        "google-api-core[grpc, async_rest]==2.21.0",
+                    )
+                    # session.install('--no-cache-dir', '--force-reinstall', "google-api-core==2.20.0")
+                    session.install(
+                        "--no-cache-dir",
+                        "--force-reinstall",
+                        "google-auth[aiohttp]==2.35.0",
+                    )
+            else:
+                session.install(
+                    "-e",
+                    tmp_dir + ("[async_rest]" if rest_async_io_enabled else ""),
+                    "-r",
+                    constraints_path,
+                )
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
             # Install the library without a constraints file.
             session.install("-e", tmp_dir)
 
-        # Remove once https://github.com/googleapis/python-api-core/pull/650 is merged
-        session.install("google-api-core>=2.19.1rc0")
         yield tmp_dir
 
 
@@ -289,6 +385,36 @@ def showcase(
     """Run the Showcase test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
+        session.install("pytest", "pytest-asyncio")
+        test_directory = Path("tests", "system")
+        ignore_file = env.get("IGNORE_FILE")
+        pytest_command = [
+            "py.test",
+            "--quiet",
+            *(session.posargs or [str(test_directory)]),
+        ]
+        if ignore_file:
+            ignore_path = test_directory / ignore_file
+            pytest_command.extend(["--ignore", str(ignore_path)])
+
+        session.run(
+            *pytest_command,
+            env=env,
+        )
+
+
+@nox.session(python=ALL_PYTHON)
+def showcase_w_rest_async(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = {},
+):
+    """Run the Showcase test suite."""
+
+    with showcase_library(
+        session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
+    ):
         session.install("pytest", "pytest-asyncio")
         test_directory = Path("tests", "system")
         ignore_file = env.get("IGNORE_FILE")
@@ -336,29 +462,7 @@ def showcase_mtls(
         )
 
 
-@nox.session(python=ALL_PYTHON)
-def showcase_alternative_templates(session):
-    templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
-    showcase(
-        session,
-        templates=templates,
-        other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
-    )
-
-
-@nox.session(python=NEWEST_PYTHON)
-def showcase_mtls_alternative_templates(session):
-    templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
-    showcase_mtls(
-        session,
-        templates=templates,
-        other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
-    )
-
-
-def run_showcase_unit_tests(session, fail_under=100):
+def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
     session.install(
         "coverage",
         "pytest",
@@ -367,32 +471,67 @@ def run_showcase_unit_tests(session, fail_under=100):
         "asyncmock; python_version < '3.8'",
         "pytest-asyncio",
     )
-
     # Run the tests.
-    session.run(
-        "py.test",
-        *(
-            session.posargs
-            or [
-                "-n=auto",
-                "--quiet",
-                "--cov=google",
-                "--cov-append",
-                f"--cov-fail-under={str(fail_under)}",
-                path.join("tests", "unit"),
-            ]
-        ),
-    )
+    # NOTE: async rest is not supported against the minimum supported version of google-api-core.
+    # Therefore, we ignore the coverage requirement in this case.
+    if session.python == "3.7" and rest_async_io_enabled:
+        session.run(
+            "py.test",
+            *(
+                session.posargs
+                or [
+                    "-n=auto",
+                    "--quiet",
+                    "--cov=google",
+                    "--cov-append",
+                    path.join("tests", "unit"),
+                ]
+            ),
+        )
+    else:
+        session.run(
+            "py.test",
+            *(
+                session.posargs
+                or [
+                    "-n=auto",
+                    "--quiet",
+                    "--cov=google",
+                    "--cov-append",
+                    f"--cov-fail-under={str(fail_under)}",
+                    path.join("tests", "unit"),
+                ]
+            ),
+        )
 
 
 @nox.session(python=ALL_PYTHON)
 def showcase_unit(
-    session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
 ):
     """Run the generated unit tests against the Showcase library."""
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
         run_showcase_unit_tests(session)
+
+
+# TODO: `showcase_unit_w_rest_async` nox session runs showcase unit tests with the
+# experimental async rest transport and must be removed once support for async rest is GA.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2121.
+@nox.session(python=ALL_PYTHON)
+def showcase_unit_w_rest_async(
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+):
+    """Run the generated unit tests with async rest transport against the Showcase library."""
+    with showcase_library(
+        session, templates=templates, other_opts=other_opts, rest_async_io_enabled=True
+    ) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session, rest_async_io_enabled=True)
 
 
 @nox.session(python=ALL_PYTHON)
@@ -421,8 +560,10 @@ def showcase_unit_mixins(session):
 @nox.session(python=ALL_PYTHON)
 def showcase_unit_alternative_templates_mixins(session):
     with showcase_library(
-        session, templates=ADS_TEMPLATES, other_opts=("old-naming",),
-        include_service_yaml=True
+        session,
+        templates=ADS_TEMPLATES,
+        other_opts=("old-naming",),
+        include_service_yaml=True,
     ) as lib:
         session.chdir(lib)
         run_showcase_unit_tests(session)
@@ -430,12 +571,19 @@ def showcase_unit_alternative_templates_mixins(session):
 
 @nox.session(python=NEWEST_PYTHON)
 def showcase_mypy(
-    session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
 ):
     """Perform typecheck analysis on the generated Showcase library."""
 
-    # Install pytest and gapic-generator-python
-    session.install("mypy", "types-pkg-resources", "types-protobuf", "types-requests", "types-dataclasses")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+        "types-dataclasses",
+    )
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
@@ -488,7 +636,7 @@ def docs(session):
         "sphinxcontrib-qthelp==1.0.3",
         "sphinxcontrib-serializinghtml==1.1.5",
         "sphinx==4.5.0",
-        "sphinx_rtd_theme"
+        "sphinx_rtd_theme",
     )
     session.install(".")
 
@@ -519,3 +667,37 @@ def mypy(session):
     )
     session.install(".")
     session.run("mypy", "-p", "gapic")
+
+
+@nox.session(python=NEWEST_PYTHON)
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install("flake8", BLACK_VERSION)
+    session.run(
+        "black",
+        "--check",
+        *BLACK_PATHS,
+        "--extend-exclude",
+        BLACK_EXCLUDES,
+    )
+    session.run(
+        "flake8",
+        "gapic",
+        "tests",
+    )
+
+
+@nox.session(python="3.10")
+def blacken(session):
+    """Run black. Format code to uniform standard."""
+    session.install(BLACK_VERSION)
+    session.run(
+        "black",
+        *BLACK_PATHS,
+        "--extend-exclude",
+        BLACK_EXCLUDES,
+    )

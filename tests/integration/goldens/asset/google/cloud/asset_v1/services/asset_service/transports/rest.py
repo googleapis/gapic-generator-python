@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,44 +13,51 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import logging
+import json  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
 from google.api_core import rest_streaming
-from google.api_core import path_template
 from google.api_core import gapic_v1
 
 from google.protobuf import json_format
 from google.api_core import operations_v1
+
 from requests import __version__ as requests_version
 import dataclasses
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
 from google.cloud.asset_v1.types import asset_service
 from google.protobuf import empty_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
-from .base import AssetServiceTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
+from .rest_base import _BaseAssetServiceRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
+try:
+    from google.api_core import client_logging  # type: ignore
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
     grpc_version=None,
-    rest_version=requests_version,
+    rest_version=f"requests@{requests_version}",
 )
 
 
@@ -250,7 +257,7 @@ class AssetServiceRestInterceptor:
 
 
     """
-    def pre_analyze_iam_policy(self, request: asset_service.AnalyzeIamPolicyRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeIamPolicyRequest, Sequence[Tuple[str, str]]]:
+    def pre_analyze_iam_policy(self, request: asset_service.AnalyzeIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -261,12 +268,32 @@ class AssetServiceRestInterceptor:
     def post_analyze_iam_policy(self, response: asset_service.AnalyzeIamPolicyResponse) -> asset_service.AnalyzeIamPolicyResponse:
         """Post-rpc interceptor for analyze_iam_policy
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_analyze_iam_policy_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_iam_policy` interceptor runs
+        before the `post_analyze_iam_policy_with_metadata` interceptor.
         """
         return response
-    def pre_analyze_iam_policy_longrunning(self, request: asset_service.AnalyzeIamPolicyLongrunningRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeIamPolicyLongrunningRequest, Sequence[Tuple[str, str]]]:
+
+    def post_analyze_iam_policy_with_metadata(self, response: asset_service.AnalyzeIamPolicyResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeIamPolicyResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for analyze_iam_policy
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_analyze_iam_policy_with_metadata`
+        interceptor in new development instead of the `post_analyze_iam_policy` interceptor.
+        When both interceptors are used, this `post_analyze_iam_policy_with_metadata` interceptor runs after the
+        `post_analyze_iam_policy` interceptor. The (possibly modified) response returned by
+        `post_analyze_iam_policy` will be passed to
+        `post_analyze_iam_policy_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_analyze_iam_policy_longrunning(self, request: asset_service.AnalyzeIamPolicyLongrunningRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeIamPolicyLongrunningRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_iam_policy_longrunning
 
         Override in a subclass to manipulate the request or metadata
@@ -277,12 +304,32 @@ class AssetServiceRestInterceptor:
     def post_analyze_iam_policy_longrunning(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for analyze_iam_policy_longrunning
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_analyze_iam_policy_longrunning_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_iam_policy_longrunning` interceptor runs
+        before the `post_analyze_iam_policy_longrunning_with_metadata` interceptor.
         """
         return response
-    def pre_analyze_move(self, request: asset_service.AnalyzeMoveRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeMoveRequest, Sequence[Tuple[str, str]]]:
+
+    def post_analyze_iam_policy_longrunning_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for analyze_iam_policy_longrunning
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_analyze_iam_policy_longrunning_with_metadata`
+        interceptor in new development instead of the `post_analyze_iam_policy_longrunning` interceptor.
+        When both interceptors are used, this `post_analyze_iam_policy_longrunning_with_metadata` interceptor runs after the
+        `post_analyze_iam_policy_longrunning` interceptor. The (possibly modified) response returned by
+        `post_analyze_iam_policy_longrunning` will be passed to
+        `post_analyze_iam_policy_longrunning_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_analyze_move(self, request: asset_service.AnalyzeMoveRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeMoveRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_move
 
         Override in a subclass to manipulate the request or metadata
@@ -293,12 +340,32 @@ class AssetServiceRestInterceptor:
     def post_analyze_move(self, response: asset_service.AnalyzeMoveResponse) -> asset_service.AnalyzeMoveResponse:
         """Post-rpc interceptor for analyze_move
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_analyze_move_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_move` interceptor runs
+        before the `post_analyze_move_with_metadata` interceptor.
         """
         return response
-    def pre_analyze_org_policies(self, request: asset_service.AnalyzeOrgPoliciesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeOrgPoliciesRequest, Sequence[Tuple[str, str]]]:
+
+    def post_analyze_move_with_metadata(self, response: asset_service.AnalyzeMoveResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeMoveResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for analyze_move
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_analyze_move_with_metadata`
+        interceptor in new development instead of the `post_analyze_move` interceptor.
+        When both interceptors are used, this `post_analyze_move_with_metadata` interceptor runs after the
+        `post_analyze_move` interceptor. The (possibly modified) response returned by
+        `post_analyze_move` will be passed to
+        `post_analyze_move_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_analyze_org_policies(self, request: asset_service.AnalyzeOrgPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_org_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -309,12 +376,32 @@ class AssetServiceRestInterceptor:
     def post_analyze_org_policies(self, response: asset_service.AnalyzeOrgPoliciesResponse) -> asset_service.AnalyzeOrgPoliciesResponse:
         """Post-rpc interceptor for analyze_org_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_analyze_org_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_org_policies` interceptor runs
+        before the `post_analyze_org_policies_with_metadata` interceptor.
         """
         return response
-    def pre_analyze_org_policy_governed_assets(self, request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, Sequence[Tuple[str, str]]]:
+
+    def post_analyze_org_policies_with_metadata(self, response: asset_service.AnalyzeOrgPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for analyze_org_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_analyze_org_policies_with_metadata`
+        interceptor in new development instead of the `post_analyze_org_policies` interceptor.
+        When both interceptors are used, this `post_analyze_org_policies_with_metadata` interceptor runs after the
+        `post_analyze_org_policies` interceptor. The (possibly modified) response returned by
+        `post_analyze_org_policies` will be passed to
+        `post_analyze_org_policies_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_analyze_org_policy_governed_assets(self, request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_org_policy_governed_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -325,12 +412,32 @@ class AssetServiceRestInterceptor:
     def post_analyze_org_policy_governed_assets(self, response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse) -> asset_service.AnalyzeOrgPolicyGovernedAssetsResponse:
         """Post-rpc interceptor for analyze_org_policy_governed_assets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_analyze_org_policy_governed_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_org_policy_governed_assets` interceptor runs
+        before the `post_analyze_org_policy_governed_assets_with_metadata` interceptor.
         """
         return response
-    def pre_analyze_org_policy_governed_containers(self, request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, Sequence[Tuple[str, str]]]:
+
+    def post_analyze_org_policy_governed_assets_with_metadata(self, response: asset_service.AnalyzeOrgPolicyGovernedAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for analyze_org_policy_governed_assets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_analyze_org_policy_governed_assets_with_metadata`
+        interceptor in new development instead of the `post_analyze_org_policy_governed_assets` interceptor.
+        When both interceptors are used, this `post_analyze_org_policy_governed_assets_with_metadata` interceptor runs after the
+        `post_analyze_org_policy_governed_assets` interceptor. The (possibly modified) response returned by
+        `post_analyze_org_policy_governed_assets` will be passed to
+        `post_analyze_org_policy_governed_assets_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_analyze_org_policy_governed_containers(self, request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_org_policy_governed_containers
 
         Override in a subclass to manipulate the request or metadata
@@ -341,12 +448,32 @@ class AssetServiceRestInterceptor:
     def post_analyze_org_policy_governed_containers(self, response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse) -> asset_service.AnalyzeOrgPolicyGovernedContainersResponse:
         """Post-rpc interceptor for analyze_org_policy_governed_containers
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_analyze_org_policy_governed_containers_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_analyze_org_policy_governed_containers` interceptor runs
+        before the `post_analyze_org_policy_governed_containers_with_metadata` interceptor.
         """
         return response
-    def pre_batch_get_assets_history(self, request: asset_service.BatchGetAssetsHistoryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.BatchGetAssetsHistoryRequest, Sequence[Tuple[str, str]]]:
+
+    def post_analyze_org_policy_governed_containers_with_metadata(self, response: asset_service.AnalyzeOrgPolicyGovernedContainersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.AnalyzeOrgPolicyGovernedContainersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for analyze_org_policy_governed_containers
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_analyze_org_policy_governed_containers_with_metadata`
+        interceptor in new development instead of the `post_analyze_org_policy_governed_containers` interceptor.
+        When both interceptors are used, this `post_analyze_org_policy_governed_containers_with_metadata` interceptor runs after the
+        `post_analyze_org_policy_governed_containers` interceptor. The (possibly modified) response returned by
+        `post_analyze_org_policy_governed_containers` will be passed to
+        `post_analyze_org_policy_governed_containers_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_get_assets_history(self, request: asset_service.BatchGetAssetsHistoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.BatchGetAssetsHistoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_get_assets_history
 
         Override in a subclass to manipulate the request or metadata
@@ -357,12 +484,32 @@ class AssetServiceRestInterceptor:
     def post_batch_get_assets_history(self, response: asset_service.BatchGetAssetsHistoryResponse) -> asset_service.BatchGetAssetsHistoryResponse:
         """Post-rpc interceptor for batch_get_assets_history
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_get_assets_history_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_get_assets_history` interceptor runs
+        before the `post_batch_get_assets_history_with_metadata` interceptor.
         """
         return response
-    def pre_batch_get_effective_iam_policies(self, request: asset_service.BatchGetEffectiveIamPoliciesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.BatchGetEffectiveIamPoliciesRequest, Sequence[Tuple[str, str]]]:
+
+    def post_batch_get_assets_history_with_metadata(self, response: asset_service.BatchGetAssetsHistoryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.BatchGetAssetsHistoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_get_assets_history
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_get_assets_history_with_metadata`
+        interceptor in new development instead of the `post_batch_get_assets_history` interceptor.
+        When both interceptors are used, this `post_batch_get_assets_history_with_metadata` interceptor runs after the
+        `post_batch_get_assets_history` interceptor. The (possibly modified) response returned by
+        `post_batch_get_assets_history` will be passed to
+        `post_batch_get_assets_history_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_get_effective_iam_policies(self, request: asset_service.BatchGetEffectiveIamPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.BatchGetEffectiveIamPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_get_effective_iam_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -373,12 +520,32 @@ class AssetServiceRestInterceptor:
     def post_batch_get_effective_iam_policies(self, response: asset_service.BatchGetEffectiveIamPoliciesResponse) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
         """Post-rpc interceptor for batch_get_effective_iam_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_batch_get_effective_iam_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_batch_get_effective_iam_policies` interceptor runs
+        before the `post_batch_get_effective_iam_policies_with_metadata` interceptor.
         """
         return response
-    def pre_create_feed(self, request: asset_service.CreateFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.CreateFeedRequest, Sequence[Tuple[str, str]]]:
+
+    def post_batch_get_effective_iam_policies_with_metadata(self, response: asset_service.BatchGetEffectiveIamPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.BatchGetEffectiveIamPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_get_effective_iam_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_get_effective_iam_policies_with_metadata`
+        interceptor in new development instead of the `post_batch_get_effective_iam_policies` interceptor.
+        When both interceptors are used, this `post_batch_get_effective_iam_policies_with_metadata` interceptor runs after the
+        `post_batch_get_effective_iam_policies` interceptor. The (possibly modified) response returned by
+        `post_batch_get_effective_iam_policies` will be passed to
+        `post_batch_get_effective_iam_policies_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_feed(self, request: asset_service.CreateFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.CreateFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -389,12 +556,32 @@ class AssetServiceRestInterceptor:
     def post_create_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for create_feed
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_feed` interceptor runs
+        before the `post_create_feed_with_metadata` interceptor.
         """
         return response
-    def pre_create_saved_query(self, request: asset_service.CreateSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.CreateSavedQueryRequest, Sequence[Tuple[str, str]]]:
+
+    def post_create_feed_with_metadata(self, response: asset_service.Feed, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_feed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_create_feed_with_metadata`
+        interceptor in new development instead of the `post_create_feed` interceptor.
+        When both interceptors are used, this `post_create_feed_with_metadata` interceptor runs after the
+        `post_create_feed` interceptor. The (possibly modified) response returned by
+        `post_create_feed` will be passed to
+        `post_create_feed_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_saved_query(self, request: asset_service.CreateSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.CreateSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -405,12 +592,32 @@ class AssetServiceRestInterceptor:
     def post_create_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for create_saved_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_create_saved_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_create_saved_query` interceptor runs
+        before the `post_create_saved_query_with_metadata` interceptor.
         """
         return response
-    def pre_delete_feed(self, request: asset_service.DeleteFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.DeleteFeedRequest, Sequence[Tuple[str, str]]]:
+
+    def post_create_saved_query_with_metadata(self, response: asset_service.SavedQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SavedQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_saved_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_create_saved_query_with_metadata`
+        interceptor in new development instead of the `post_create_saved_query` interceptor.
+        When both interceptors are used, this `post_create_saved_query_with_metadata` interceptor runs after the
+        `post_create_saved_query` interceptor. The (possibly modified) response returned by
+        `post_create_saved_query` will be passed to
+        `post_create_saved_query_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_feed(self, request: asset_service.DeleteFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.DeleteFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -418,7 +625,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def pre_delete_saved_query(self, request: asset_service.DeleteSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.DeleteSavedQueryRequest, Sequence[Tuple[str, str]]]:
+    def pre_delete_saved_query(self, request: asset_service.DeleteSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.DeleteSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -426,7 +633,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def pre_export_assets(self, request: asset_service.ExportAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ExportAssetsRequest, Sequence[Tuple[str, str]]]:
+    def pre_export_assets(self, request: asset_service.ExportAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ExportAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -437,12 +644,32 @@ class AssetServiceRestInterceptor:
     def post_export_assets(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_assets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_export_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_export_assets` interceptor runs
+        before the `post_export_assets_with_metadata` interceptor.
         """
         return response
-    def pre_get_feed(self, request: asset_service.GetFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.GetFeedRequest, Sequence[Tuple[str, str]]]:
+
+    def post_export_assets_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_assets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_export_assets_with_metadata`
+        interceptor in new development instead of the `post_export_assets` interceptor.
+        When both interceptors are used, this `post_export_assets_with_metadata` interceptor runs after the
+        `post_export_assets` interceptor. The (possibly modified) response returned by
+        `post_export_assets` will be passed to
+        `post_export_assets_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_feed(self, request: asset_service.GetFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.GetFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -453,12 +680,32 @@ class AssetServiceRestInterceptor:
     def post_get_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for get_feed
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_feed` interceptor runs
+        before the `post_get_feed_with_metadata` interceptor.
         """
         return response
-    def pre_get_saved_query(self, request: asset_service.GetSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.GetSavedQueryRequest, Sequence[Tuple[str, str]]]:
+
+    def post_get_feed_with_metadata(self, response: asset_service.Feed, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_feed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_get_feed_with_metadata`
+        interceptor in new development instead of the `post_get_feed` interceptor.
+        When both interceptors are used, this `post_get_feed_with_metadata` interceptor runs after the
+        `post_get_feed` interceptor. The (possibly modified) response returned by
+        `post_get_feed` will be passed to
+        `post_get_feed_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_saved_query(self, request: asset_service.GetSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.GetSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -469,12 +716,32 @@ class AssetServiceRestInterceptor:
     def post_get_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for get_saved_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_get_saved_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_get_saved_query` interceptor runs
+        before the `post_get_saved_query_with_metadata` interceptor.
         """
         return response
-    def pre_list_assets(self, request: asset_service.ListAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ListAssetsRequest, Sequence[Tuple[str, str]]]:
+
+    def post_get_saved_query_with_metadata(self, response: asset_service.SavedQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SavedQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_saved_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_get_saved_query_with_metadata`
+        interceptor in new development instead of the `post_get_saved_query` interceptor.
+        When both interceptors are used, this `post_get_saved_query_with_metadata` interceptor runs after the
+        `post_get_saved_query` interceptor. The (possibly modified) response returned by
+        `post_get_saved_query` will be passed to
+        `post_get_saved_query_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_assets(self, request: asset_service.ListAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -485,12 +752,32 @@ class AssetServiceRestInterceptor:
     def post_list_assets(self, response: asset_service.ListAssetsResponse) -> asset_service.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_assets` interceptor runs
+        before the `post_list_assets_with_metadata` interceptor.
         """
         return response
-    def pre_list_feeds(self, request: asset_service.ListFeedsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ListFeedsRequest, Sequence[Tuple[str, str]]]:
+
+    def post_list_assets_with_metadata(self, response: asset_service.ListAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_assets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_list_assets_with_metadata`
+        interceptor in new development instead of the `post_list_assets` interceptor.
+        When both interceptors are used, this `post_list_assets_with_metadata` interceptor runs after the
+        `post_list_assets` interceptor. The (possibly modified) response returned by
+        `post_list_assets` will be passed to
+        `post_list_assets_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_feeds(self, request: asset_service.ListFeedsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListFeedsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_feeds
 
         Override in a subclass to manipulate the request or metadata
@@ -501,12 +788,32 @@ class AssetServiceRestInterceptor:
     def post_list_feeds(self, response: asset_service.ListFeedsResponse) -> asset_service.ListFeedsResponse:
         """Post-rpc interceptor for list_feeds
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_feeds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_feeds` interceptor runs
+        before the `post_list_feeds_with_metadata` interceptor.
         """
         return response
-    def pre_list_saved_queries(self, request: asset_service.ListSavedQueriesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.ListSavedQueriesRequest, Sequence[Tuple[str, str]]]:
+
+    def post_list_feeds_with_metadata(self, response: asset_service.ListFeedsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListFeedsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_feeds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_list_feeds_with_metadata`
+        interceptor in new development instead of the `post_list_feeds` interceptor.
+        When both interceptors are used, this `post_list_feeds_with_metadata` interceptor runs after the
+        `post_list_feeds` interceptor. The (possibly modified) response returned by
+        `post_list_feeds` will be passed to
+        `post_list_feeds_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_saved_queries(self, request: asset_service.ListSavedQueriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListSavedQueriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_saved_queries
 
         Override in a subclass to manipulate the request or metadata
@@ -517,12 +824,32 @@ class AssetServiceRestInterceptor:
     def post_list_saved_queries(self, response: asset_service.ListSavedQueriesResponse) -> asset_service.ListSavedQueriesResponse:
         """Post-rpc interceptor for list_saved_queries
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_list_saved_queries_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_list_saved_queries` interceptor runs
+        before the `post_list_saved_queries_with_metadata` interceptor.
         """
         return response
-    def pre_query_assets(self, request: asset_service.QueryAssetsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.QueryAssetsRequest, Sequence[Tuple[str, str]]]:
+
+    def post_list_saved_queries_with_metadata(self, response: asset_service.ListSavedQueriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.ListSavedQueriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for list_saved_queries
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_list_saved_queries_with_metadata`
+        interceptor in new development instead of the `post_list_saved_queries` interceptor.
+        When both interceptors are used, this `post_list_saved_queries_with_metadata` interceptor runs after the
+        `post_list_saved_queries` interceptor. The (possibly modified) response returned by
+        `post_list_saved_queries` will be passed to
+        `post_list_saved_queries_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_query_assets(self, request: asset_service.QueryAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.QueryAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -533,12 +860,32 @@ class AssetServiceRestInterceptor:
     def post_query_assets(self, response: asset_service.QueryAssetsResponse) -> asset_service.QueryAssetsResponse:
         """Post-rpc interceptor for query_assets
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_query_assets_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_query_assets` interceptor runs
+        before the `post_query_assets_with_metadata` interceptor.
         """
         return response
-    def pre_search_all_iam_policies(self, request: asset_service.SearchAllIamPoliciesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.SearchAllIamPoliciesRequest, Sequence[Tuple[str, str]]]:
+
+    def post_query_assets_with_metadata(self, response: asset_service.QueryAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.QueryAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for query_assets
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_query_assets_with_metadata`
+        interceptor in new development instead of the `post_query_assets` interceptor.
+        When both interceptors are used, this `post_query_assets_with_metadata` interceptor runs after the
+        `post_query_assets` interceptor. The (possibly modified) response returned by
+        `post_query_assets` will be passed to
+        `post_query_assets_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_search_all_iam_policies(self, request: asset_service.SearchAllIamPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SearchAllIamPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_all_iam_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -549,12 +896,32 @@ class AssetServiceRestInterceptor:
     def post_search_all_iam_policies(self, response: asset_service.SearchAllIamPoliciesResponse) -> asset_service.SearchAllIamPoliciesResponse:
         """Post-rpc interceptor for search_all_iam_policies
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_all_iam_policies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_all_iam_policies` interceptor runs
+        before the `post_search_all_iam_policies_with_metadata` interceptor.
         """
         return response
-    def pre_search_all_resources(self, request: asset_service.SearchAllResourcesRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.SearchAllResourcesRequest, Sequence[Tuple[str, str]]]:
+
+    def post_search_all_iam_policies_with_metadata(self, response: asset_service.SearchAllIamPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SearchAllIamPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for search_all_iam_policies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_search_all_iam_policies_with_metadata`
+        interceptor in new development instead of the `post_search_all_iam_policies` interceptor.
+        When both interceptors are used, this `post_search_all_iam_policies_with_metadata` interceptor runs after the
+        `post_search_all_iam_policies` interceptor. The (possibly modified) response returned by
+        `post_search_all_iam_policies` will be passed to
+        `post_search_all_iam_policies_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_search_all_resources(self, request: asset_service.SearchAllResourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SearchAllResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_all_resources
 
         Override in a subclass to manipulate the request or metadata
@@ -565,12 +932,32 @@ class AssetServiceRestInterceptor:
     def post_search_all_resources(self, response: asset_service.SearchAllResourcesResponse) -> asset_service.SearchAllResourcesResponse:
         """Post-rpc interceptor for search_all_resources
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_search_all_resources_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_search_all_resources` interceptor runs
+        before the `post_search_all_resources_with_metadata` interceptor.
         """
         return response
-    def pre_update_feed(self, request: asset_service.UpdateFeedRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.UpdateFeedRequest, Sequence[Tuple[str, str]]]:
+
+    def post_search_all_resources_with_metadata(self, response: asset_service.SearchAllResourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SearchAllResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for search_all_resources
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_search_all_resources_with_metadata`
+        interceptor in new development instead of the `post_search_all_resources` interceptor.
+        When both interceptors are used, this `post_search_all_resources_with_metadata` interceptor runs after the
+        `post_search_all_resources` interceptor. The (possibly modified) response returned by
+        `post_search_all_resources` will be passed to
+        `post_search_all_resources_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_feed(self, request: asset_service.UpdateFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.UpdateFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_feed
 
         Override in a subclass to manipulate the request or metadata
@@ -581,12 +968,32 @@ class AssetServiceRestInterceptor:
     def post_update_feed(self, response: asset_service.Feed) -> asset_service.Feed:
         """Post-rpc interceptor for update_feed
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_feed_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_feed` interceptor runs
+        before the `post_update_feed_with_metadata` interceptor.
         """
         return response
-    def pre_update_saved_query(self, request: asset_service.UpdateSavedQueryRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[asset_service.UpdateSavedQueryRequest, Sequence[Tuple[str, str]]]:
+
+    def post_update_feed_with_metadata(self, response: asset_service.Feed, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.Feed, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_feed
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_update_feed_with_metadata`
+        interceptor in new development instead of the `post_update_feed` interceptor.
+        When both interceptors are used, this `post_update_feed_with_metadata` interceptor runs after the
+        `post_update_feed` interceptor. The (possibly modified) response returned by
+        `post_update_feed` will be passed to
+        `post_update_feed_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_saved_query(self, request: asset_service.UpdateSavedQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.UpdateSavedQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_saved_query
 
         Override in a subclass to manipulate the request or metadata
@@ -597,15 +1004,34 @@ class AssetServiceRestInterceptor:
     def post_update_saved_query(self, response: asset_service.SavedQuery) -> asset_service.SavedQuery:
         """Post-rpc interceptor for update_saved_query
 
-        Override in a subclass to manipulate the response
+        DEPRECATED. Please use the `post_update_saved_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
         after it is returned by the AssetService server but before
-        it is returned to user code.
+        it is returned to user code. This `post_update_saved_query` interceptor runs
+        before the `post_update_saved_query_with_metadata` interceptor.
         """
         return response
 
+    def post_update_saved_query_with_metadata(self, response: asset_service.SavedQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[asset_service.SavedQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_saved_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AssetService server but before it is returned to user code.
+
+        We recommend only using this `post_update_saved_query_with_metadata`
+        interceptor in new development instead of the `post_update_saved_query` interceptor.
+        When both interceptors are used, this `post_update_saved_query_with_metadata` interceptor runs after the
+        `post_update_saved_query` interceptor. The (possibly modified) response returned by
+        `post_update_saved_query` will be passed to
+        `post_update_saved_query_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_operation(
-        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -632,8 +1058,8 @@ class AssetServiceRestStub:
     _interceptor: AssetServiceRestInterceptor
 
 
-class AssetServiceRestTransport(AssetServiceTransport):
-    """REST backend transport for AssetService.
+class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
+    """REST backend synchronous transport for AssetService.
 
     Asset service definition.
 
@@ -642,10 +1068,6 @@ class AssetServiceRestTransport(AssetServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
     """
 
     def __init__(self, *,
@@ -702,19 +1124,12 @@ class AssetServiceRestTransport(AssetServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience
         )
         self._session = AuthorizedSession(
@@ -756,22 +1171,37 @@ class AssetServiceRestTransport(AssetServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _AnalyzeIamPolicy(AssetServiceRestStub):
+    class _AnalyzeIamPolicy(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy, AssetServiceRestStub):
         def __hash__(self):
-            return hash("AnalyzeIamPolicy")
+            return hash("AssetServiceRestTransport.AnalyzeIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "analysisQuery" : {},        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeIamPolicyRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.AnalyzeIamPolicyResponse:
             r"""Call the analyze iam policy method over HTTP.
 
@@ -782,8 +1212,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.AnalyzeIamPolicyResponse:
@@ -792,34 +1224,39 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{analysis_query.scope=*/*}:analyzeIamPolicy',
-            },
-            ]
-            request, metadata = self._interceptor.pre_analyze_iam_policy(request, metadata)
-            pb_request = asset_service.AnalyzeIamPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_analyze_iam_policy(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeIamPolicy",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._AnalyzeIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -831,25 +1268,63 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.AnalyzeIamPolicyResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_iam_policy(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_analyze_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.AnalyzeIamPolicyResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_iam_policy",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _AnalyzeIamPolicyLongrunning(AssetServiceRestStub):
+    class _AnalyzeIamPolicyLongrunning(_BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning, AssetServiceRestStub):
         def __hash__(self):
-            return hash("AnalyzeIamPolicyLongrunning")
+            return hash("AssetServiceRestTransport.AnalyzeIamPolicyLongrunning")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeIamPolicyLongrunningRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the analyze iam policy
         longrunning method over HTTP.
@@ -861,8 +1336,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -872,42 +1349,41 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{analysis_query.scope=*/*}:analyzeIamPolicyLongrunning',
-                'body': '*',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_http_options()
+
             request, metadata = self._interceptor.pre_analyze_iam_policy_longrunning(request, metadata)
-            pb_request = asset_service.AnalyzeIamPolicyLongrunningRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeIamPolicyLongrunning",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeIamPolicyLongrunning",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._AnalyzeIamPolicyLongrunning._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -917,25 +1393,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_iam_policy_longrunning(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_analyze_iam_policy_longrunning_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_iam_policy_longrunning",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeIamPolicyLongrunning",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _AnalyzeMove(AssetServiceRestStub):
+    class _AnalyzeMove(_BaseAssetServiceRestTransport._BaseAnalyzeMove, AssetServiceRestStub):
         def __hash__(self):
-            return hash("AnalyzeMove")
+            return hash("AssetServiceRestTransport.AnalyzeMove")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "destinationParent" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeMoveRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.AnalyzeMoveResponse:
             r"""Call the analyze move method over HTTP.
 
@@ -946,8 +1459,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.AnalyzeMoveResponse:
@@ -956,34 +1471,39 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{resource=*/*}:analyzeMove',
-            },
-            ]
-            request, metadata = self._interceptor.pre_analyze_move(request, metadata)
-            pb_request = asset_service.AnalyzeMoveRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_analyze_move(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeMove",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeMove",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._AnalyzeMove._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -995,25 +1515,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.AnalyzeMoveResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_move(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_analyze_move_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.AnalyzeMoveResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_move",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeMove",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _AnalyzeOrgPolicies(AssetServiceRestStub):
+    class _AnalyzeOrgPolicies(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies, AssetServiceRestStub):
         def __hash__(self):
-            return hash("AnalyzeOrgPolicies")
+            return hash("AssetServiceRestTransport.AnalyzeOrgPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "constraint" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeOrgPoliciesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.AnalyzeOrgPoliciesResponse:
             r"""Call the analyze org policies method over HTTP.
 
@@ -1024,8 +1581,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.AnalyzeOrgPoliciesResponse:
@@ -1034,34 +1593,39 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}:analyzeOrgPolicies',
-            },
-            ]
-            request, metadata = self._interceptor.pre_analyze_org_policies(request, metadata)
-            pb_request = asset_service.AnalyzeOrgPoliciesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_analyze_org_policies(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._AnalyzeOrgPolicies._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1073,25 +1637,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.AnalyzeOrgPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_org_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_analyze_org_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.AnalyzeOrgPoliciesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _AnalyzeOrgPolicyGovernedAssets(AssetServiceRestStub):
+    class _AnalyzeOrgPolicyGovernedAssets(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets, AssetServiceRestStub):
         def __hash__(self):
-            return hash("AnalyzeOrgPolicyGovernedAssets")
+            return hash("AssetServiceRestTransport.AnalyzeOrgPolicyGovernedAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "constraint" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.AnalyzeOrgPolicyGovernedAssetsResponse:
             r"""Call the analyze org policy
         governed assets method over HTTP.
@@ -1103,8 +1704,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.AnalyzeOrgPolicyGovernedAssetsResponse:
@@ -1113,34 +1716,39 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}:analyzeOrgPolicyGovernedAssets',
-            },
-            ]
-            request, metadata = self._interceptor.pre_analyze_org_policy_governed_assets(request, metadata)
-            pb_request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_analyze_org_policy_governed_assets(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicyGovernedAssets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicyGovernedAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._AnalyzeOrgPolicyGovernedAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1152,25 +1760,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_analyze_org_policy_governed_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policy_governed_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicyGovernedAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _AnalyzeOrgPolicyGovernedContainers(AssetServiceRestStub):
+    class _AnalyzeOrgPolicyGovernedContainers(_BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers, AssetServiceRestStub):
         def __hash__(self):
-            return hash("AnalyzeOrgPolicyGovernedContainers")
+            return hash("AssetServiceRestTransport.AnalyzeOrgPolicyGovernedContainers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "constraint" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.AnalyzeOrgPolicyGovernedContainersRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.AnalyzeOrgPolicyGovernedContainersResponse:
             r"""Call the analyze org policy
         governed containers method over HTTP.
@@ -1182,8 +1827,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.AnalyzeOrgPolicyGovernedContainersResponse:
@@ -1192,34 +1839,39 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}:analyzeOrgPolicyGovernedContainers',
-            },
-            ]
-            request, metadata = self._interceptor.pre_analyze_org_policy_governed_containers(request, metadata)
-            pb_request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_analyze_org_policy_governed_containers(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.AnalyzeOrgPolicyGovernedContainers",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicyGovernedContainers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._AnalyzeOrgPolicyGovernedContainers._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1231,25 +1883,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_analyze_org_policy_governed_containers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.analyze_org_policy_governed_containers",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "AnalyzeOrgPolicyGovernedContainers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _BatchGetAssetsHistory(AssetServiceRestStub):
+    class _BatchGetAssetsHistory(_BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory, AssetServiceRestStub):
         def __hash__(self):
-            return hash("BatchGetAssetsHistory")
+            return hash("AssetServiceRestTransport.BatchGetAssetsHistory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.BatchGetAssetsHistoryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.BatchGetAssetsHistoryResponse:
             r"""Call the batch get assets history method over HTTP.
 
@@ -1259,42 +1948,49 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.BatchGetAssetsHistoryResponse:
                     Batch get assets history response.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=*/*}:batchGetAssetsHistory',
-            },
-            ]
-            request, metadata = self._interceptor.pre_batch_get_assets_history(request, metadata)
-            pb_request = asset_service.BatchGetAssetsHistoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_batch_get_assets_history(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.BatchGetAssetsHistory",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "BatchGetAssetsHistory",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._BatchGetAssetsHistory._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1306,25 +2002,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.BatchGetAssetsHistoryResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_get_assets_history(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_get_assets_history_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.BatchGetAssetsHistoryResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.batch_get_assets_history",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "BatchGetAssetsHistory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _BatchGetEffectiveIamPolicies(AssetServiceRestStub):
+    class _BatchGetEffectiveIamPolicies(_BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies, AssetServiceRestStub):
         def __hash__(self):
-            return hash("BatchGetEffectiveIamPolicies")
+            return hash("AssetServiceRestTransport.BatchGetEffectiveIamPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "names" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.BatchGetEffectiveIamPoliciesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
             r"""Call the batch get effective iam
         policies method over HTTP.
@@ -1336,8 +2069,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.BatchGetEffectiveIamPoliciesResponse:
@@ -1346,34 +2081,39 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}/effectiveIamPolicies:batchGet',
-            },
-            ]
-            request, metadata = self._interceptor.pre_batch_get_effective_iam_policies(request, metadata)
-            pb_request = asset_service.BatchGetEffectiveIamPoliciesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_batch_get_effective_iam_policies(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.BatchGetEffectiveIamPolicies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "BatchGetEffectiveIamPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._BatchGetEffectiveIamPolicies._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1385,25 +2125,63 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_get_effective_iam_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.batch_get_effective_iam_policies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "BatchGetEffectiveIamPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _CreateFeed(AssetServiceRestStub):
+    class _CreateFeed(_BaseAssetServiceRestTransport._BaseCreateFeed, AssetServiceRestStub):
         def __hash__(self):
-            return hash("CreateFeed")
+            return hash("AssetServiceRestTransport.CreateFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.CreateFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.Feed:
             r"""Call the create feed method over HTTP.
 
@@ -1413,8 +2191,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.Feed:
@@ -1429,42 +2209,41 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=*/*}/feeds',
-                'body': '*',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseCreateFeed._get_http_options()
+
             request, metadata = self._interceptor.pre_create_feed(request, metadata)
-            pb_request = asset_service.CreateFeedRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseCreateFeed._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseCreateFeed._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseCreateFeed._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.CreateFeed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "CreateFeed",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._CreateFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1476,25 +2255,63 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.Feed.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_feed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_feed_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.Feed.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.create_feed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "CreateFeed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _CreateSavedQuery(AssetServiceRestStub):
+    class _CreateSavedQuery(_BaseAssetServiceRestTransport._BaseCreateSavedQuery, AssetServiceRestStub):
         def __hash__(self):
-            return hash("CreateSavedQuery")
+            return hash("AssetServiceRestTransport.CreateSavedQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "savedQueryId" : "",        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.CreateSavedQueryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.SavedQuery:
             r"""Call the create saved query method over HTTP.
 
@@ -1504,8 +2321,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.SavedQuery:
@@ -1514,42 +2333,41 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=*/*}/savedQueries',
-                'body': 'saved_query',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_http_options()
+
             request, metadata = self._interceptor.pre_create_saved_query(request, metadata)
-            pb_request = asset_service.CreateSavedQueryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.CreateSavedQuery",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "CreateSavedQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._CreateSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1561,25 +2379,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.SavedQuery.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_saved_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_saved_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.SavedQuery.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.create_saved_query",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "CreateSavedQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _DeleteFeed(AssetServiceRestStub):
+    class _DeleteFeed(_BaseAssetServiceRestTransport._BaseDeleteFeed, AssetServiceRestStub):
         def __hash__(self):
-            return hash("DeleteFeed")
+            return hash("AssetServiceRestTransport.DeleteFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.DeleteFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ):
             r"""Call the delete feed method over HTTP.
 
@@ -1589,60 +2444,82 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=*/*/feeds/*}',
-            },
-            ]
-            request, metadata = self._interceptor.pre_delete_feed(request, metadata)
-            pb_request = asset_service.DeleteFeedRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_delete_feed(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.DeleteFeed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "DeleteFeed",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._DeleteFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSavedQuery(AssetServiceRestStub):
+    class _DeleteSavedQuery(_BaseAssetServiceRestTransport._BaseDeleteSavedQuery, AssetServiceRestStub):
         def __hash__(self):
-            return hash("DeleteSavedQuery")
+            return hash("AssetServiceRestTransport.DeleteSavedQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.DeleteSavedQueryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ):
             r"""Call the delete saved query method over HTTP.
 
@@ -1652,60 +2529,83 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'delete',
-                'uri': '/v1/{name=*/*/savedQueries/*}',
-            },
-            ]
-            request, metadata = self._interceptor.pre_delete_saved_query(request, metadata)
-            pb_request = asset_service.DeleteSavedQueryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_delete_saved_query(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.DeleteSavedQuery",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "DeleteSavedQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._DeleteSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ExportAssets(AssetServiceRestStub):
+    class _ExportAssets(_BaseAssetServiceRestTransport._BaseExportAssets, AssetServiceRestStub):
         def __hash__(self):
-            return hash("ExportAssets")
+            return hash("AssetServiceRestTransport.ExportAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.ExportAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> operations_pb2.Operation:
             r"""Call the export assets method over HTTP.
 
@@ -1715,8 +2615,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1726,42 +2628,41 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=*/*}:exportAssets',
-                'body': '*',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseExportAssets._get_http_options()
+
             request, metadata = self._interceptor.pre_export_assets(request, metadata)
-            pb_request = asset_service.ExportAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseExportAssets._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseExportAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseExportAssets._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.ExportAssets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ExportAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._ExportAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1771,25 +2672,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_assets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.export_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ExportAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _GetFeed(AssetServiceRestStub):
+    class _GetFeed(_BaseAssetServiceRestTransport._BaseGetFeed, AssetServiceRestStub):
         def __hash__(self):
-            return hash("GetFeed")
+            return hash("AssetServiceRestTransport.GetFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.GetFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.Feed:
             r"""Call the get feed method over HTTP.
 
@@ -1799,8 +2737,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.Feed:
@@ -1815,34 +2755,39 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=*/*/feeds/*}',
-            },
-            ]
-            request, metadata = self._interceptor.pre_get_feed(request, metadata)
-            pb_request = asset_service.GetFeedRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseGetFeed._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_get_feed(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetFeed._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseGetFeed._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.GetFeed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetFeed",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._GetFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1854,25 +2799,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.Feed.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_feed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_feed_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.Feed.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.get_feed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetFeed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _GetSavedQuery(AssetServiceRestStub):
+    class _GetSavedQuery(_BaseAssetServiceRestTransport._BaseGetSavedQuery, AssetServiceRestStub):
         def __hash__(self):
-            return hash("GetSavedQuery")
+            return hash("AssetServiceRestTransport.GetSavedQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.GetSavedQueryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.SavedQuery:
             r"""Call the get saved query method over HTTP.
 
@@ -1882,8 +2864,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.SavedQuery:
@@ -1892,34 +2876,39 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=*/*/savedQueries/*}',
-            },
-            ]
-            request, metadata = self._interceptor.pre_get_saved_query(request, metadata)
-            pb_request = asset_service.GetSavedQueryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_get_saved_query(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.GetSavedQuery",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetSavedQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._GetSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1931,25 +2920,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.SavedQuery.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_saved_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_saved_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.SavedQuery.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.get_saved_query",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetSavedQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _ListAssets(AssetServiceRestStub):
+    class _ListAssets(_BaseAssetServiceRestTransport._BaseListAssets, AssetServiceRestStub):
         def __hash__(self):
-            return hash("ListAssets")
+            return hash("AssetServiceRestTransport.ListAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.ListAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.ListAssetsResponse:
             r"""Call the list assets method over HTTP.
 
@@ -1959,42 +2985,49 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.ListAssetsResponse:
                     ListAssets response.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=*/*}/assets',
-            },
-            ]
-            request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            pb_request = asset_service.ListAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseListAssets._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_list_assets(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.ListAssets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._ListAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2006,25 +3039,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.ListAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_assets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.ListAssetsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.list_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _ListFeeds(AssetServiceRestStub):
+    class _ListFeeds(_BaseAssetServiceRestTransport._BaseListFeeds, AssetServiceRestStub):
         def __hash__(self):
-            return hash("ListFeeds")
+            return hash("AssetServiceRestTransport.ListFeeds")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.ListFeedsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.ListFeedsResponse:
             r"""Call the list feeds method over HTTP.
 
@@ -2034,42 +3104,49 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.ListFeedsResponse:
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=*/*}/feeds',
-            },
-            ]
-            request, metadata = self._interceptor.pre_list_feeds(request, metadata)
-            pb_request = asset_service.ListFeedsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseListFeeds._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_list_feeds(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListFeeds._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseListFeeds._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.ListFeeds",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListFeeds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._ListFeeds._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2081,25 +3158,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.ListFeedsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_feeds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_feeds_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.ListFeedsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.list_feeds",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListFeeds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _ListSavedQueries(AssetServiceRestStub):
+    class _ListSavedQueries(_BaseAssetServiceRestTransport._BaseListSavedQueries, AssetServiceRestStub):
         def __hash__(self):
-            return hash("ListSavedQueries")
+            return hash("AssetServiceRestTransport.ListSavedQueries")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.ListSavedQueriesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.ListSavedQueriesResponse:
             r"""Call the list saved queries method over HTTP.
 
@@ -2109,42 +3223,49 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.ListSavedQueriesResponse:
                     Response of listing saved queries.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{parent=*/*}/savedQueries',
-            },
-            ]
-            request, metadata = self._interceptor.pre_list_saved_queries(request, metadata)
-            pb_request = asset_service.ListSavedQueriesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_list_saved_queries(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.ListSavedQueries",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListSavedQueries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._ListSavedQueries._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2156,25 +3277,63 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.ListSavedQueriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_saved_queries(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_saved_queries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.ListSavedQueriesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.list_saved_queries",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "ListSavedQueries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _QueryAssets(AssetServiceRestStub):
+    class _QueryAssets(_BaseAssetServiceRestTransport._BaseQueryAssets, AssetServiceRestStub):
         def __hash__(self):
-            return hash("QueryAssets")
+            return hash("AssetServiceRestTransport.QueryAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.QueryAssetsRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.QueryAssetsResponse:
             r"""Call the query assets method over HTTP.
 
@@ -2184,50 +3343,51 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.QueryAssetsResponse:
                     QueryAssets response.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{parent=*/*}:queryAssets',
-                'body': '*',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseQueryAssets._get_http_options()
+
             request, metadata = self._interceptor.pre_query_assets(request, metadata)
-            pb_request = asset_service.QueryAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseQueryAssets._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseQueryAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseQueryAssets._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.QueryAssets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "QueryAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._QueryAssets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2239,25 +3399,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.QueryAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_query_assets(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_query_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.QueryAssetsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.query_assets",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "QueryAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _SearchAllIamPolicies(AssetServiceRestStub):
+    class _SearchAllIamPolicies(_BaseAssetServiceRestTransport._BaseSearchAllIamPolicies, AssetServiceRestStub):
         def __hash__(self):
-            return hash("SearchAllIamPolicies")
+            return hash("AssetServiceRestTransport.SearchAllIamPolicies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.SearchAllIamPoliciesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.SearchAllIamPoliciesResponse:
             r"""Call the search all iam policies method over HTTP.
 
@@ -2267,42 +3464,49 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.SearchAllIamPoliciesResponse:
                     Search all IAM policies response.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}:searchAllIamPolicies',
-            },
-            ]
-            request, metadata = self._interceptor.pre_search_all_iam_policies(request, metadata)
-            pb_request = asset_service.SearchAllIamPoliciesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_search_all_iam_policies(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.SearchAllIamPolicies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "SearchAllIamPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._SearchAllIamPolicies._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2314,25 +3518,62 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.SearchAllIamPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_all_iam_policies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_all_iam_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.SearchAllIamPoliciesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.search_all_iam_policies",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "SearchAllIamPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _SearchAllResources(AssetServiceRestStub):
+    class _SearchAllResources(_BaseAssetServiceRestTransport._BaseSearchAllResources, AssetServiceRestStub):
         def __hash__(self):
-            return hash("SearchAllResources")
+            return hash("AssetServiceRestTransport.SearchAllResources")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.SearchAllResourcesRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.SearchAllResourcesResponse:
             r"""Call the search all resources method over HTTP.
 
@@ -2342,42 +3583,49 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.SearchAllResourcesResponse:
                     Search all resources response.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{scope=*/*}:searchAllResources',
-            },
-            ]
-            request, metadata = self._interceptor.pre_search_all_resources(request, metadata)
-            pb_request = asset_service.SearchAllResourcesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            http_options = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            request, metadata = self._interceptor.pre_search_all_resources(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.SearchAllResources",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "SearchAllResources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            response = AssetServiceRestTransport._SearchAllResources._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2389,25 +3637,63 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.SearchAllResourcesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_all_resources(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_all_resources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.SearchAllResourcesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.search_all_resources",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "SearchAllResources",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _UpdateFeed(AssetServiceRestStub):
+    class _UpdateFeed(_BaseAssetServiceRestTransport._BaseUpdateFeed, AssetServiceRestStub):
         def __hash__(self):
-            return hash("UpdateFeed")
+            return hash("AssetServiceRestTransport.UpdateFeed")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.UpdateFeedRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.Feed:
             r"""Call the update feed method over HTTP.
 
@@ -2417,8 +3703,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.Feed:
@@ -2433,42 +3721,41 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{feed.name=*/*/feeds/*}',
-                'body': '*',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_http_options()
+
             request, metadata = self._interceptor.pre_update_feed(request, metadata)
-            pb_request = asset_service.UpdateFeedRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.UpdateFeed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "UpdateFeed",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._UpdateFeed._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2480,25 +3767,63 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.Feed.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_feed(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_feed_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.Feed.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.update_feed",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "UpdateFeed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
-    class _UpdateSavedQuery(AssetServiceRestStub):
+    class _UpdateSavedQuery(_BaseAssetServiceRestTransport._BaseUpdateSavedQuery, AssetServiceRestStub):
         def __hash__(self):
-            return hash("UpdateSavedQuery")
+            return hash("AssetServiceRestTransport.UpdateSavedQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
-            "updateMask" : {},        }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
 
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+            return response
 
         def __call__(self,
                 request: asset_service.UpdateSavedQueryRequest, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
                 ) -> asset_service.SavedQuery:
             r"""Call the update saved query method over HTTP.
 
@@ -2508,8 +3833,10 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.asset_service.SavedQuery:
@@ -2518,42 +3845,41 @@ class AssetServiceRestTransport(AssetServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{saved_query.name=*/*/savedQueries/*}',
-                'body': 'saved_query',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_http_options()
+
             request, metadata = self._interceptor.pre_update_saved_query(request, metadata)
-            pb_request = asset_service.UpdateSavedQueryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_transcoded_request(http_options, request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
-            query_params.update(self._get_unset_required_fields(query_params))
+            query_params = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.UpdateSavedQuery",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "UpdateSavedQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-                )
+            response = AssetServiceRestTransport._UpdateSavedQuery._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2565,7 +3891,29 @@ class AssetServiceRestTransport(AssetServiceTransport):
             pb_resp = asset_service.SavedQuery.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_saved_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_saved_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = asset_service.SavedQuery.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceClient.update_saved_query",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "UpdateSavedQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2756,12 +4104,37 @@ class AssetServiceRestTransport(AssetServiceTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
-    class _GetOperation(AssetServiceRestStub):
+    class _GetOperation(_BaseAssetServiceRestTransport._BaseGetOperation, AssetServiceRestStub):
+        def __hash__(self):
+            return hash("AssetServiceRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+            return response
+
         def __call__(self,
             request: operations_pb2.GetOperationRequest, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, str]]=(),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
             ) -> operations_pb2.Operation:
 
             r"""Call the get operation method over HTTP.
@@ -2772,49 +4145,77 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=*/*/operations/*/**}',
-            },
-            ]
+            http_options = _BaseAssetServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            transcoded_request = _BaseAssetServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = _BaseAssetServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.asset_v1.AssetServiceClient.GetOperation",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
-            headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-            )
+            response = AssetServiceRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers":  dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.asset_v1.AssetServiceAsyncClient.GetOperation",
+                    extra = {
+                        "serviceName": "google.cloud.asset.v1.AssetService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

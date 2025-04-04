@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ ALL_PYTHON = [
     "3.9",
     "3.10",
     "3.11",
-    "3.12"
+    "3.12",
+    "3.13",
 ]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -39,7 +40,7 @@ PACKAGE_NAME = 'google-iam-credentials'
 
 BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
-DEFAULT_PYTHON_VERSION = "3.12"
+DEFAULT_PYTHON_VERSION = ALL_PYTHON[-1]
 
 nox.sessions = [
     "unit",
@@ -61,7 +62,7 @@ nox.sessions = [
 def unit(session, protobuf_implementation):
     """Run the unit test suite."""
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+    if protobuf_implementation == "cpp" and float(session.python) > 3.10:
         session.skip("cpp implementation is not supported in python 3.11+")
 
     session.install('coverage', 'pytest', 'pytest-cov', 'pytest-asyncio', 'asyncmock; python_version < "3.8"')
@@ -94,7 +95,7 @@ def unit(session, protobuf_implementation):
 def prerelease_deps(session, protobuf_implementation):
     """Run the unit test suite against pre-release versions of dependencies."""
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+    if protobuf_implementation == "cpp" and float(session.python) > 3.10:
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install test environment dependencies
@@ -192,8 +193,6 @@ def mypy(session):
         'types-protobuf'
     )
     session.install('.')
-    # Remove once https://github.com/googleapis/python-api-core/pull/650 is merged
-    session.install("google-api-core>=2.19.1rc0")
     session.run(
         'mypy',
         '-p',

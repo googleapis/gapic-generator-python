@@ -345,7 +345,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% if method.operation_service %}{# Extended Operations LRO #}
     def {{ method.name|snake_case }}_unary(self,
     {% else %}
-    def {{ method.name|snake_case }}(self,
+    def {{ method.client_method_name|snake_case }}(self,
     {% endif %}{# Extended Operations LRO #}
             {% if not method.client_streaming %}
             request: Optional[Union[{{ method.input.ident }}, dict]] = None,
@@ -410,7 +410,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         {% if method.flattened_fields %}
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([{{ method.flattened_fields.values()|join(", ", attribute="name") }}])
+        flattened_params = [{{ method.flattened_fields.values()|join(", ", attribute="name") }}]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
@@ -509,6 +510,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
         {% endif %}

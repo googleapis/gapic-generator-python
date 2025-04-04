@@ -1,3 +1,5 @@
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the following variable (and the condition later in this file) for async rest transport once support for it is GA. #}
+{% set rest_async_io_enabled = api.all_library_settings[api.naming.proto_package].python_settings.experimental_features.rest_async_io_enabled %}
 {% extends "_base.py.j2" %}
 
 {% block content %}
@@ -18,26 +20,45 @@ except ImportError:  # pragma: NO COVER
 import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
-from collections.abc import Iterable
+from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
-import json
 {% endif %}
+import json
 import math
 import pytest
 from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 {% if 'rest' in opts.transport %}
+{% if rest_async_io_enabled %}
+try:
+    import aiohttp  # type: ignore
+    from google.auth.aio.transport.sessions import AsyncAuthorizedSession
+    from google.api_core.operations_v1 import AsyncOperationsRestClient
+    HAS_ASYNC_REST_EXTRA = True
+{# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
+except ImportError: # pragma: NO COVER
+    HAS_ASYNC_REST_EXTRA = False
+{% endif %}{# if rest_async_io_enabled #}
 from requests import Response
 from requests import Request, PreparedRequest
 from requests.sessions import Session
 from google.protobuf import json_format
 {% endif %}
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+    HAS_GOOGLE_AUTH_AIO = True
+{# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
+except ImportError: # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 {# Import the service itself as well as every proto module that it imports. #}
 {% filter sort_lines %}
 import google.auth
 from google.auth import credentials as ga_credentials
+
+
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
@@ -51,6 +72,7 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
+from google.api_core import retry as retries
 {% if service.has_lro or service.has_extended_lro %}
 from google.api_core import future
 {% endif %}
@@ -80,8 +102,29 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endfilter %}
 {{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 
+
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 {#TODO(https://github.com/googleapis/gapic-generator-python/issues/1894): Remove this function as part of cleanup when DEFAULT_ENDPOINT is no longer used.#}
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -184,7 +227,7 @@ def test__get_api_endpoint():
 {% for mode in ["", "async"] %}
 {% if mode == "async" %}
 async def test_{{ method_name }}_api_version_header_async(transport_name="grpc"):
-    client = {{ service.async_client_name }}(credentials=ga_credentials.AnonymousCredentials(), transport=transport_name)
+    client = {{ service.async_client_name }}(credentials=async_anonymous_credentials(), transport=transport_name)
 {% else %}
 @pytest.mark.parametrize("transport_name", [
     {% if 'grpc' in opts.transport %}
@@ -234,71 +277,43 @@ def test__get_universe_domain():
         {{ service.client_name }}._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
-@pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    {% if 'grpc' in opts.transport %}
-    ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
-    {% endif %}
-    {% if 'rest' in opts.transport %}
-    ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
-    {% endif %}
+@pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
+    (401, CRED_INFO_JSON, True),
+    (403, CRED_INFO_JSON, True),
+    (404, CRED_INFO_JSON, True),
+    (500, CRED_INFO_JSON, False),
+    (401, None, False),
+    (403, None, False),
+    (404, None, False),
+    (500, None, False)
 ])
-def test__validate_universe_domain(client_class, transport_class, transport_name):
-    client = client_class(
-        transport=transport_class(
-            credentials=ga_credentials.AnonymousCredentials()
-        )
-    )
-    assert client._validate_universe_domain() == True
-    
-    # Test the case when universe is already validated.
-    assert client._validate_universe_domain() == True
-    
-    if transport_name == "grpc":
-        # Test the case where credentials are provided by the
-        # `local_channel_credentials`. The default universes in both match.
-        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-        client = client_class(transport=transport_class(channel=channel))
-        assert client._validate_universe_domain() == True
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = {{ service.client_name }}(credentials=cred)
+    client._transport._credentials = cred
 
-        # Test the case where credentials do not exist: e.g. a transport is provided
-        # with no credentials. Validation should still succeed because there is no
-        # mismatch with non-existent credentials.
-        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-        transport=transport_class(channel=channel)
-        transport._credentials = None
-        client = client_class(transport=transport)
-        assert client._validate_universe_domain() == True
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
 
-    # TODO: This is needed to cater for older versions of google-auth
-    # Make this test unconditional once the minimum supported version of
-    # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor = [int(part) for part in google.auth.__version__.split(".")[0:2]]
-    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
-        credentials = ga_credentials.AnonymousCredentials()
-        credentials._universe_domain = "foo.com"
-        # Test the case when there is a universe mismatch from the credentials.
-        client = client_class(
-            transport=transport_class(credentials=credentials)
-        )
-        with pytest.raises(ValueError) as excinfo:
-            client._validate_universe_domain()
-        assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
 
-        # Test the case when there is a universe mismatch from the client.
-        #
-        # TODO: Make this test unconditional once the minimum supported version of
-        # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
-        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-            client = client_class(client_options={"universe_domain": "bar.com"}, transport=transport_class(credentials=ga_credentials.AnonymousCredentials(),))
-            with pytest.raises(ValueError) as excinfo:
-                client._validate_universe_domain()
-            assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+@pytest.mark.parametrize("error_code", [401,403,404,500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = {{ service.client_name }}(credentials=cred)
+    client._transport._credentials = cred
 
-    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None 
-    with pytest.raises(ValueError):
-        client._compare_universes("foo.bar", None)
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
 
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 @pytest.mark.parametrize("client_class,transport_name", [
     {% if 'grpc' in opts.transport %}
@@ -912,7 +927,7 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
 {% endfor -%} {#- method in methods for rest #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport and
-    not method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
+    not method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.client_method_name|snake_case %}
 def test_{{ method_name }}_rest_error():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1025,20 +1040,28 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
-@pytest.mark.parametrize("transport_name", [
-    {% if "grpc" in opts.transport %}
-    "grpc",
-    {% endif %}
-    {% if "rest" in opts.transport %}
-    "rest",
-    {% endif %}
-])
-def test_transport_kind(transport_name):
-    transport = {{ service.client_name }}.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    assert transport.kind == transport_name
+{% set configs = [] %}
+{% for transport in opts.transport %}
+    {% do configs.append({'service':service, 'api':api, 'transport':transport, 'is_async':false}) %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
+{% if 'grpc' in transport or rest_async_io_enabled %}
+    {% do configs.append({'service':service, 'api':api, 'transport':transport, 'is_async':true}) %}
+{% endif %}
+{% endfor %}
+{% for conf in configs %}
+{{ test_macros.transport_kind_test(**conf) }}
+{{ test_macros.run_transport_tests_for_config(**conf) }}
+{{ test_macros.empty_call_test(**conf) }}
 
+{{ test_macros.routing_parameter_test(**conf) }}
+{% if service.has_lro %}
+{{ test_macros.lro_client_test(**conf) }}
+{% endif %}{# service.has_lro #}
+{% endfor %}
+{% if rest_async_io_enabled %}
+{# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove the below macro when async rest is GA and supports all required parameters. #}
+{{ test_macros.async_rest_unsupported_params_test(service) }}
+{% endif %}
 {% if 'grpc' in opts.transport %}
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
@@ -1342,26 +1365,6 @@ def test_{{ service.name|snake_case }}_http_transport_client_cert_source_for_mtl
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
-
-{% if service.has_lro -%}
-def test_{{ service.name|snake_case }}_rest_lro_client():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
-{%- endif %}
-
-
 {% endif %} {# rest #}
 
 @pytest.mark.parametrize("transport_name", [
@@ -1652,40 +1655,11 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-{% if 'grpc' in opts.transport %}
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = {{ service.async_client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-{% endif %}
-
 {% include 'tests/unit/gapic/%name_%version/%sub/_test_mixins.py.j2' %}
 
-def test_transport_close():
-    transports = {
-        {% if 'rest' in opts.transport %}
-        "rest": "_session",
-        {% endif %}
-        {% if 'grpc' in opts.transport %}
-        "grpc": "_grpc_channel",
-        {% endif %}
-    }
-
-    for transport, close_name in transports.items():
-        client = {{ service.client_name }}(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport
-        )
-        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+{% for conf in configs %}
+{{ test_macros.transport_close_test(**conf) }}
+{% endfor %}
 
 def test_client_ctx():
     transports = [

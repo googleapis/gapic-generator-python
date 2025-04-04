@@ -20,31 +20,32 @@ from google import showcase
 
 
 def test_lro(echo):
-    if isinstance(echo.transport, type(echo).get_transport_class("rest")):
-        # (TODO: dovs) Temporarily disabling rest
-        return
-
-    future = echo.wait({
-        'end_time': datetime.now(tz=timezone.utc) + timedelta(seconds=1),
-        'success': {
-            'content': 'The hail in Wales falls mainly on the snails...eventually.'
-        }}
+    future = echo.wait(
+        {
+            "end_time": datetime.now(tz=timezone.utc) + timedelta(seconds=1),
+            "success": {
+                "content": "The hail in Wales falls mainly on the snails...eventually."
+            },
+        }
     )
     response = future.result()
     assert isinstance(response, showcase.WaitResponse)
-    assert response.content.endswith('the snails...eventually.')
+    assert response.content.endswith("the snails...eventually.")
 
 
 if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_lro_async(async_echo):
-        future = await async_echo.wait({
-            'end_time': datetime.now(tz=timezone.utc) + timedelta(seconds=1),
-            'success': {
-                'content': 'The hail in Wales falls mainly on the snails...eventually.'
-            }}
+
+        future = await async_echo.wait(
+            {
+                "end_time": datetime.now(tz=timezone.utc) + timedelta(seconds=1),
+                "success": {
+                    "content": "The hail in Wales falls mainly on the snails...eventually."
+                },
+            }
         )
         response = await future.result()
         assert isinstance(response, showcase.WaitResponse)
-        assert response.content.endswith('the snails...eventually.')
+        assert response.content.endswith("the snails...eventually.")

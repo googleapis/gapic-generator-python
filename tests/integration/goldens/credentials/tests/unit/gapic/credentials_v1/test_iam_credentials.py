@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
-from collections.abc import Iterable
+from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
 import json
 import math
@@ -36,12 +36,19 @@ from requests import Request, PreparedRequest
 from requests.sessions import Session
 from google.protobuf import json_format
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError: # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.iam.credentials_v1.services.iam_credentials import IAMCredentialsAsyncClient
@@ -54,8 +61,29 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
 
 
+
+CRED_INFO_JSON = {
+    "credential_source": "/path/to/file",
+    "credential_type": "service account credentials",
+    "principal": "service-account@example.com",
+}
+CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint so the client can produce a different
@@ -163,67 +191,43 @@ def test__get_universe_domain():
         IAMCredentialsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
-@pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    (IAMCredentialsClient, transports.IAMCredentialsGrpcTransport, "grpc"),
-    (IAMCredentialsClient, transports.IAMCredentialsRestTransport, "rest"),
+@pytest.mark.parametrize("error_code,cred_info_json,show_cred_info", [
+    (401, CRED_INFO_JSON, True),
+    (403, CRED_INFO_JSON, True),
+    (404, CRED_INFO_JSON, True),
+    (500, CRED_INFO_JSON, False),
+    (401, None, False),
+    (403, None, False),
+    (404, None, False),
+    (500, None, False)
 ])
-def test__validate_universe_domain(client_class, transport_class, transport_name):
-    client = client_class(
-        transport=transport_class(
-            credentials=ga_credentials.AnonymousCredentials()
-        )
-    )
-    assert client._validate_universe_domain() == True
+def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
+    cred = mock.Mock(["get_cred_info"])
+    cred.get_cred_info = mock.Mock(return_value=cred_info_json)
+    client = IAMCredentialsClient(credentials=cred)
+    client._transport._credentials = cred
 
-    # Test the case when universe is already validated.
-    assert client._validate_universe_domain() == True
+    error = core_exceptions.GoogleAPICallError("message", details=["foo"])
+    error.code = error_code
 
-    if transport_name == "grpc":
-        # Test the case where credentials are provided by the
-        # `local_channel_credentials`. The default universes in both match.
-        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-        client = client_class(transport=transport_class(channel=channel))
-        assert client._validate_universe_domain() == True
+    client._add_cred_info_for_auth_errors(error)
+    if show_cred_info:
+        assert error.details == ["foo", CRED_INFO_STRING]
+    else:
+        assert error.details == ["foo"]
 
-        # Test the case where credentials do not exist: e.g. a transport is provided
-        # with no credentials. Validation should still succeed because there is no
-        # mismatch with non-existent credentials.
-        channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
-        transport=transport_class(channel=channel)
-        transport._credentials = None
-        client = client_class(transport=transport)
-        assert client._validate_universe_domain() == True
+@pytest.mark.parametrize("error_code", [401,403,404,500])
+def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
+    cred = mock.Mock([])
+    assert not hasattr(cred, "get_cred_info")
+    client = IAMCredentialsClient(credentials=cred)
+    client._transport._credentials = cred
 
-    # TODO: This is needed to cater for older versions of google-auth
-    # Make this test unconditional once the minimum supported version of
-    # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor = [int(part) for part in google.auth.__version__.split(".")[0:2]]
-    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
-        credentials = ga_credentials.AnonymousCredentials()
-        credentials._universe_domain = "foo.com"
-        # Test the case when there is a universe mismatch from the credentials.
-        client = client_class(
-            transport=transport_class(credentials=credentials)
-        )
-        with pytest.raises(ValueError) as excinfo:
-            client._validate_universe_domain()
-        assert str(excinfo.value) == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+    error = core_exceptions.GoogleAPICallError("message", details=[])
+    error.code = error_code
 
-        # Test the case when there is a universe mismatch from the client.
-        #
-        # TODO: Make this test unconditional once the minimum supported version of
-        # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor = [int(part) for part in api_core_version.__version__.split(".")[0:2]]
-        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-            client = client_class(client_options={"universe_domain": "bar.com"}, transport=transport_class(credentials=ga_credentials.AnonymousCredentials(),))
-            with pytest.raises(ValueError) as excinfo:
-                client._validate_universe_domain()
-            assert str(excinfo.value) == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-
-    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
-    with pytest.raises(ValueError):
-        client._compare_universes("foo.bar", None)
-
+    client._add_cred_info_for_auth_errors(error)
+    assert error.details == []
 
 @pytest.mark.parametrize("client_class,transport_name", [
     (IAMCredentialsClient, "grpc"),
@@ -794,25 +798,6 @@ def test_generate_access_token(request_type, transport: str = 'grpc'):
     assert response.access_token == 'access_token_value'
 
 
-def test_generate_access_token_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.generate_access_token),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.generate_access_token()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateAccessTokenRequest()
-
-
 def test_generate_access_token_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -873,34 +858,12 @@ def test_generate_access_token_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_generate_access_token_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.generate_access_token),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateAccessTokenResponse(
-            access_token='access_token_value',
-        ))
-        response = await client.generate_access_token()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateAccessTokenRequest()
-
-@pytest.mark.asyncio
 async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = IAMCredentialsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -912,25 +875,26 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str
         assert client._client._transport.generate_access_token in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.generate_access_token] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.generate_access_token] = mock_rpc
 
         request = {}
         await client.generate_access_token(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.generate_access_token(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_generate_access_token_async(transport: str = 'grpc_asyncio', request_type=common.GenerateAccessTokenRequest):
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -962,7 +926,6 @@ async def test_generate_access_token_async(transport: str = 'grpc_asyncio', requ
 @pytest.mark.asyncio
 async def test_generate_access_token_async_from_dict():
     await test_generate_access_token_async(request_type=dict)
-
 
 def test_generate_access_token_field_headers():
     client = IAMCredentialsClient(
@@ -998,7 +961,7 @@ def test_generate_access_token_field_headers():
 @pytest.mark.asyncio
 async def test_generate_access_token_field_headers_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1082,7 +1045,7 @@ def test_generate_access_token_flattened_error():
 @pytest.mark.asyncio
 async def test_generate_access_token_flattened_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1120,7 +1083,7 @@ async def test_generate_access_token_flattened_async():
 @pytest.mark.asyncio
 async def test_generate_access_token_flattened_error_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1168,25 +1131,6 @@ def test_generate_id_token(request_type, transport: str = 'grpc'):
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
     assert response.token == 'token_value'
-
-
-def test_generate_id_token_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.generate_id_token),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.generate_id_token()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateIdTokenRequest()
 
 
 def test_generate_id_token_non_empty_request_with_auto_populated_field():
@@ -1251,34 +1195,12 @@ def test_generate_id_token_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_generate_id_token_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.generate_id_token),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse(
-            token='token_value',
-        ))
-        response = await client.generate_id_token()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.GenerateIdTokenRequest()
-
-@pytest.mark.asyncio
 async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = IAMCredentialsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1290,25 +1212,26 @@ async def test_generate_id_token_async_use_cached_wrapped_rpc(transport: str = "
         assert client._client._transport.generate_id_token in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.generate_id_token] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.generate_id_token] = mock_rpc
 
         request = {}
         await client.generate_id_token(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.generate_id_token(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_type=common.GenerateIdTokenRequest):
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1340,7 +1263,6 @@ async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_
 @pytest.mark.asyncio
 async def test_generate_id_token_async_from_dict():
     await test_generate_id_token_async(request_type=dict)
-
 
 def test_generate_id_token_field_headers():
     client = IAMCredentialsClient(
@@ -1376,7 +1298,7 @@ def test_generate_id_token_field_headers():
 @pytest.mark.asyncio
 async def test_generate_id_token_field_headers_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1462,7 +1384,7 @@ def test_generate_id_token_flattened_error():
 @pytest.mark.asyncio
 async def test_generate_id_token_flattened_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1502,7 +1424,7 @@ async def test_generate_id_token_flattened_async():
 @pytest.mark.asyncio
 async def test_generate_id_token_flattened_error_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1552,25 +1474,6 @@ def test_sign_blob(request_type, transport: str = 'grpc'):
     assert isinstance(response, common.SignBlobResponse)
     assert response.key_id == 'key_id_value'
     assert response.signed_blob == b'signed_blob_blob'
-
-
-def test_sign_blob_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.sign_blob),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.sign_blob()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignBlobRequest()
 
 
 def test_sign_blob_non_empty_request_with_auto_populated_field():
@@ -1633,35 +1536,12 @@ def test_sign_blob_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_sign_blob_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.sign_blob),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SignBlobResponse(
-            key_id='key_id_value',
-            signed_blob=b'signed_blob_blob',
-        ))
-        response = await client.sign_blob()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignBlobRequest()
-
-@pytest.mark.asyncio
 async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = IAMCredentialsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1673,25 +1553,26 @@ async def test_sign_blob_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
         assert client._client._transport.sign_blob in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.sign_blob] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.sign_blob] = mock_rpc
 
         request = {}
         await client.sign_blob(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.sign_blob(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=common.SignBlobRequest):
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1725,7 +1606,6 @@ async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=com
 @pytest.mark.asyncio
 async def test_sign_blob_async_from_dict():
     await test_sign_blob_async(request_type=dict)
-
 
 def test_sign_blob_field_headers():
     client = IAMCredentialsClient(
@@ -1761,7 +1641,7 @@ def test_sign_blob_field_headers():
 @pytest.mark.asyncio
 async def test_sign_blob_field_headers_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1842,7 +1722,7 @@ def test_sign_blob_flattened_error():
 @pytest.mark.asyncio
 async def test_sign_blob_flattened_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1878,7 +1758,7 @@ async def test_sign_blob_flattened_async():
 @pytest.mark.asyncio
 async def test_sign_blob_flattened_error_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1927,25 +1807,6 @@ def test_sign_jwt(request_type, transport: str = 'grpc'):
     assert isinstance(response, common.SignJwtResponse)
     assert response.key_id == 'key_id_value'
     assert response.signed_jwt == 'signed_jwt_value'
-
-
-def test_sign_jwt_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.sign_jwt),
-            '__call__') as call:
-        call.return_value.name = "foo" # operation_request.operation in compute client(s) expect a string.
-        client.sign_jwt()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignJwtRequest()
 
 
 def test_sign_jwt_non_empty_request_with_auto_populated_field():
@@ -2010,35 +1871,12 @@ def test_sign_jwt_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
-async def test_sign_jwt_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='grpc_asyncio',
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-            type(client.transport.sign_jwt),
-            '__call__') as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SignJwtResponse(
-            key_id='key_id_value',
-            signed_jwt='signed_jwt_value',
-        ))
-        response = await client.sign_jwt()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == common.SignJwtRequest()
-
-@pytest.mark.asyncio
 async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = IAMCredentialsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2050,25 +1888,26 @@ async def test_sign_jwt_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
         assert client._client._transport.sign_jwt in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
-        mock_object = mock.AsyncMock()
-        client._client._transport._wrapped_methods[client._client._transport.sign_jwt] = mock_object
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[client._client._transport.sign_jwt] = mock_rpc
 
         request = {}
         await client.sign_jwt(request)
 
         # Establish that the underlying gRPC stub method was called.
-        assert mock_object.call_count == 1
+        assert mock_rpc.call_count == 1
 
         await client.sign_jwt(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
-        assert mock_object.call_count == 2
+        assert mock_rpc.call_count == 2
 
 @pytest.mark.asyncio
 async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=common.SignJwtRequest):
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2102,7 +1941,6 @@ async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=comm
 @pytest.mark.asyncio
 async def test_sign_jwt_async_from_dict():
     await test_sign_jwt_async(request_type=dict)
-
 
 def test_sign_jwt_field_headers():
     client = IAMCredentialsClient(
@@ -2138,7 +1976,7 @@ def test_sign_jwt_field_headers():
 @pytest.mark.asyncio
 async def test_sign_jwt_field_headers_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2219,7 +2057,7 @@ def test_sign_jwt_flattened_error():
 @pytest.mark.asyncio
 async def test_sign_jwt_flattened_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2255,7 +2093,7 @@ async def test_sign_jwt_flattened_async():
 @pytest.mark.asyncio
 async def test_sign_jwt_flattened_error_async():
     client = IAMCredentialsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2268,42 +2106,6 @@ async def test_sign_jwt_flattened_error_async():
             payload='payload_value',
         )
 
-
-@pytest.mark.parametrize("request_type", [
-    common.GenerateAccessTokenRequest,
-    dict,
-])
-def test_generate_access_token_rest(request_type):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common.GenerateAccessTokenResponse(
-              access_token='access_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common.GenerateAccessTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.generate_access_token(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common.GenerateAccessTokenResponse)
-    assert response.access_token == 'access_token_value'
 
 def test_generate_access_token_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2405,6 +2207,7 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_access_token(request)
 
@@ -2419,66 +2222,6 @@ def test_generate_access_token_rest_unset_required_fields():
 
     unset_fields = transport.generate_access_token._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "scope", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_access_token_rest_interceptors(null_interceptor):
-    transport = transports.IAMCredentialsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
-        )
-    client = IAMCredentialsClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_access_token") as post, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_generate_access_token") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = common.GenerateAccessTokenRequest.pb(common.GenerateAccessTokenRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.GenerateAccessTokenResponse.to_json(common.GenerateAccessTokenResponse())
-
-        request = common.GenerateAccessTokenRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.GenerateAccessTokenResponse()
-
-        client.generate_access_token(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_generate_access_token_rest_bad_request(transport: str = 'rest', request_type=common.GenerateAccessTokenRequest):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_access_token(request)
 
 
 def test_generate_access_token_rest_flattened():
@@ -2512,6 +2255,7 @@ def test_generate_access_token_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.generate_access_token(**mock_args)
 
@@ -2539,49 +2283,6 @@ def test_generate_access_token_rest_flattened_error(transport: str = 'rest'):
             lifetime=duration_pb2.Duration(seconds=751),
         )
 
-
-def test_generate_access_token_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    common.GenerateIdTokenRequest,
-    dict,
-])
-def test_generate_id_token_rest(request_type):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common.GenerateIdTokenResponse(
-              token='token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common.GenerateIdTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.generate_id_token(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common.GenerateIdTokenResponse)
-    assert response.token == 'token_value'
 
 def test_generate_id_token_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2683,6 +2384,7 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_id_token(request)
 
@@ -2697,66 +2399,6 @@ def test_generate_id_token_rest_unset_required_fields():
 
     unset_fields = transport.generate_id_token._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "audience", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_id_token_rest_interceptors(null_interceptor):
-    transport = transports.IAMCredentialsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
-        )
-    client = IAMCredentialsClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_id_token") as post, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_generate_id_token") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = common.GenerateIdTokenRequest.pb(common.GenerateIdTokenRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.GenerateIdTokenResponse.to_json(common.GenerateIdTokenResponse())
-
-        request = common.GenerateIdTokenRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.GenerateIdTokenResponse()
-
-        client.generate_id_token(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_generate_id_token_rest_bad_request(transport: str = 'rest', request_type=common.GenerateIdTokenRequest):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_id_token(request)
 
 
 def test_generate_id_token_rest_flattened():
@@ -2790,6 +2432,7 @@ def test_generate_id_token_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.generate_id_token(**mock_args)
 
@@ -2817,51 +2460,6 @@ def test_generate_id_token_rest_flattened_error(transport: str = 'rest'):
             include_email=True,
         )
 
-
-def test_generate_id_token_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    common.SignBlobRequest,
-    dict,
-])
-def test_sign_blob_rest(request_type):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common.SignBlobResponse(
-              key_id='key_id_value',
-              signed_blob=b'signed_blob_blob',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common.SignBlobResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.sign_blob(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common.SignBlobResponse)
-    assert response.key_id == 'key_id_value'
-    assert response.signed_blob == b'signed_blob_blob'
 
 def test_sign_blob_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -2963,6 +2561,7 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.sign_blob(request)
 
@@ -2977,66 +2576,6 @@ def test_sign_blob_rest_unset_required_fields():
 
     unset_fields = transport.sign_blob._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "payload", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_sign_blob_rest_interceptors(null_interceptor):
-    transport = transports.IAMCredentialsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
-        )
-    client = IAMCredentialsClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_blob") as post, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_sign_blob") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = common.SignBlobRequest.pb(common.SignBlobRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.SignBlobResponse.to_json(common.SignBlobResponse())
-
-        request = common.SignBlobRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.SignBlobResponse()
-
-        client.sign_blob(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_sign_blob_rest_bad_request(transport: str = 'rest', request_type=common.SignBlobRequest):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.sign_blob(request)
 
 
 def test_sign_blob_rest_flattened():
@@ -3069,6 +2608,7 @@ def test_sign_blob_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.sign_blob(**mock_args)
 
@@ -3095,51 +2635,6 @@ def test_sign_blob_rest_flattened_error(transport: str = 'rest'):
             payload=b'payload_blob',
         )
 
-
-def test_sign_blob_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    common.SignJwtRequest,
-    dict,
-])
-def test_sign_jwt_rest(request_type):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common.SignJwtResponse(
-              key_id='key_id_value',
-              signed_jwt='signed_jwt_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common.SignJwtResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.sign_jwt(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common.SignJwtResponse)
-    assert response.key_id == 'key_id_value'
-    assert response.signed_jwt == 'signed_jwt_value'
 
 def test_sign_jwt_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
@@ -3241,6 +2736,7 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
 
             response_value._content = json_return_value.encode('UTF-8')
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.sign_jwt(request)
 
@@ -3255,66 +2751,6 @@ def test_sign_jwt_rest_unset_required_fields():
 
     unset_fields = transport.sign_jwt._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name", "payload", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_sign_jwt_rest_interceptors(null_interceptor):
-    transport = transports.IAMCredentialsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
-        )
-    client = IAMCredentialsClient(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_jwt") as post, \
-         mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_sign_jwt") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = common.SignJwtRequest.pb(common.SignJwtRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.SignJwtResponse.to_json(common.SignJwtResponse())
-
-        request = common.SignJwtRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.SignJwtResponse()
-
-        client.sign_jwt(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_sign_jwt_rest_bad_request(transport: str = 'rest', request_type=common.SignJwtRequest):
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.sign_jwt(request)
 
 
 def test_sign_jwt_rest_flattened():
@@ -3347,6 +2783,7 @@ def test_sign_jwt_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.sign_jwt(**mock_args)
 
@@ -3372,13 +2809,6 @@ def test_sign_jwt_rest_flattened_error(transport: str = 'rest'):
             delegates=['delegates_value'],
             payload='payload_value',
         )
-
-
-def test_sign_jwt_rest_error():
-    client = IAMCredentialsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
 
 
 def test_credentials_transport_error():
@@ -3468,15 +2898,767 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
-@pytest.mark.parametrize("transport_name", [
-    "grpc",
-    "rest",
-])
-def test_transport_kind(transport_name):
-    transport = IAMCredentialsClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = IAMCredentialsClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_access_token_empty_call_grpc():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_access_token),
+            '__call__') as call:
+        call.return_value = common.GenerateAccessTokenResponse()
+        client.generate_access_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.GenerateAccessTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_id_token_empty_call_grpc():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_id_token),
+            '__call__') as call:
+        call.return_value = common.GenerateIdTokenResponse()
+        client.generate_id_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.GenerateIdTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_sign_blob_empty_call_grpc():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_blob),
+            '__call__') as call:
+        call.return_value = common.SignBlobResponse()
+        client.sign_blob(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.SignBlobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_sign_jwt_empty_call_grpc():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_jwt),
+            '__call__') as call:
+        call.return_value = common.SignJwtResponse()
+        client.sign_jwt(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.SignJwtRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = IAMCredentialsAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_generate_access_token_empty_call_grpc_asyncio():
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_access_token),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateAccessTokenResponse(
+            access_token='access_token_value',
+        ))
+        await client.generate_access_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.GenerateAccessTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_generate_id_token_empty_call_grpc_asyncio():
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_id_token),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse(
+            token='token_value',
+        ))
+        await client.generate_id_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.GenerateIdTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_sign_blob_empty_call_grpc_asyncio():
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_blob),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SignBlobResponse(
+            key_id='key_id_value',
+            signed_blob=b'signed_blob_blob',
+        ))
+        await client.sign_blob(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.SignBlobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_sign_jwt_empty_call_grpc_asyncio():
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_jwt),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SignJwtResponse(
+            key_id='key_id_value',
+            signed_jwt='signed_jwt_value',
+        ))
+        await client.sign_jwt(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.SignJwtRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = IAMCredentialsClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_generate_access_token_rest_bad_request(request_type=common.GenerateAccessTokenRequest):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.generate_access_token(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  common.GenerateAccessTokenRequest,
+  dict,
+])
+def test_generate_access_token_rest_call_success(request_type):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.GenerateAccessTokenResponse(
+              access_token='access_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common.GenerateAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.generate_access_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.GenerateAccessTokenResponse)
+    assert response.access_token == 'access_token_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_access_token_rest_interceptors(null_interceptor):
+    transport = transports.IAMCredentialsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
+        )
+    client = IAMCredentialsClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_access_token") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_access_token_with_metadata") as post_with_metadata, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_generate_access_token") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = common.GenerateAccessTokenRequest.pb(common.GenerateAccessTokenRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = common.GenerateAccessTokenResponse.to_json(common.GenerateAccessTokenResponse())
+        req.return_value.content = return_value
+
+        request = common.GenerateAccessTokenRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.GenerateAccessTokenResponse()
+        post_with_metadata.return_value = common.GenerateAccessTokenResponse(), metadata
+
+        client.generate_access_token(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_generate_id_token_rest_bad_request(request_type=common.GenerateIdTokenRequest):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.generate_id_token(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  common.GenerateIdTokenRequest,
+  dict,
+])
+def test_generate_id_token_rest_call_success(request_type):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.GenerateIdTokenResponse(
+              token='token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common.GenerateIdTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.generate_id_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.GenerateIdTokenResponse)
+    assert response.token == 'token_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_id_token_rest_interceptors(null_interceptor):
+    transport = transports.IAMCredentialsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
+        )
+    client = IAMCredentialsClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_id_token") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_generate_id_token_with_metadata") as post_with_metadata, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_generate_id_token") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = common.GenerateIdTokenRequest.pb(common.GenerateIdTokenRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = common.GenerateIdTokenResponse.to_json(common.GenerateIdTokenResponse())
+        req.return_value.content = return_value
+
+        request = common.GenerateIdTokenRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.GenerateIdTokenResponse()
+        post_with_metadata.return_value = common.GenerateIdTokenResponse(), metadata
+
+        client.generate_id_token(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_sign_blob_rest_bad_request(request_type=common.SignBlobRequest):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.sign_blob(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  common.SignBlobRequest,
+  dict,
+])
+def test_sign_blob_rest_call_success(request_type):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.SignBlobResponse(
+              key_id='key_id_value',
+              signed_blob=b'signed_blob_blob',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common.SignBlobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.sign_blob(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.SignBlobResponse)
+    assert response.key_id == 'key_id_value'
+    assert response.signed_blob == b'signed_blob_blob'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_sign_blob_rest_interceptors(null_interceptor):
+    transport = transports.IAMCredentialsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
+        )
+    client = IAMCredentialsClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_blob") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_blob_with_metadata") as post_with_metadata, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_sign_blob") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = common.SignBlobRequest.pb(common.SignBlobRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = common.SignBlobResponse.to_json(common.SignBlobResponse())
+        req.return_value.content = return_value
+
+        request = common.SignBlobRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.SignBlobResponse()
+        post_with_metadata.return_value = common.SignBlobResponse(), metadata
+
+        client.sign_blob(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_sign_jwt_rest_bad_request(request_type=common.SignJwtRequest):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ''
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.sign_jwt(request)
+
+
+@pytest.mark.parametrize("request_type", [
+  common.SignJwtRequest,
+  dict,
+])
+def test_sign_jwt_rest_call_success(request_type):
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/serviceAccounts/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.SignJwtResponse(
+              key_id='key_id_value',
+              signed_jwt='signed_jwt_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common.SignJwtResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.sign_jwt(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.SignJwtResponse)
+    assert response.key_id == 'key_id_value'
+    assert response.signed_jwt == 'signed_jwt_value'
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_sign_jwt_rest_interceptors(null_interceptor):
+    transport = transports.IAMCredentialsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.IAMCredentialsRestInterceptor(),
+        )
+    client = IAMCredentialsClient(transport=transport)
+
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+        mock.patch.object(path_template, "transcode")  as transcode, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_jwt") as post, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "post_sign_jwt_with_metadata") as post_with_metadata, \
+        mock.patch.object(transports.IAMCredentialsRestInterceptor, "pre_sign_jwt") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = common.SignJwtRequest.pb(common.SignJwtRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = common.SignJwtResponse.to_json(common.SignJwtResponse())
+        req.return_value.content = return_value
+
+        request = common.SignJwtRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.SignJwtResponse()
+        post_with_metadata.return_value = common.SignJwtResponse(), metadata
+
+        client.sign_jwt(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+def test_initialize_client_w_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_access_token_empty_call_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_access_token),
+            '__call__') as call:
+        client.generate_access_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.GenerateAccessTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_id_token_empty_call_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.generate_id_token),
+            '__call__') as call:
+        client.generate_id_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.GenerateIdTokenRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_sign_blob_empty_call_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_blob),
+            '__call__') as call:
+        client.sign_blob(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.SignBlobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_sign_jwt_empty_call_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+            type(client.transport.sign_jwt),
+            '__call__') as call:
+        client.sign_jwt(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = common.SignJwtRequest()
+
+        assert args[0] == request_msg
+
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
@@ -3997,33 +4179,40 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = IAMCredentialsAsyncClient(
+
+def test_transport_close_grpc():
+    client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+        transport="grpc"
     )
-    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = IAMCredentialsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_rest():
+    client = IAMCredentialsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest"
+    )
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = IAMCredentialsClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport
-        )
-        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
 
 def test_client_ctx():
     transports = [
