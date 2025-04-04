@@ -31,7 +31,7 @@ def test_streaming_retry_success(sequence):
     """
     Test a stream with a sigle success response
     """
-    retry = retries.Retry(predicate=retries.if_exception_type(), is_stream=True)
+    retry = retries.StreamingRetry(predicate=retries.if_exception_type())
     content = ["hello", "world"]
     seq = sequence.create_streaming_sequence(
         streaming_sequence={
@@ -56,7 +56,7 @@ def test_streaming_non_retryable_error(sequence):
     """
     Test a retryable stream failing with non-retryable error
     """
-    retry = retries.Retry(predicate=retries.if_exception_type(), is_stream=True)
+    retry = retries.StreamingRetry(predicate=retries.if_exception_type())
     content = ["hello", "world"]
     error = Status(
         code=_code_from_exc(core_exceptions.ServiceUnavailable),
@@ -85,12 +85,11 @@ def test_streaming_transient_retryable(sequence):
     Server returns a retryable error a number of times before success.
     Retryable errors should not be presented to the end user.
     """
-    retry = retries.Retry(
+    retry = retries.StreamingRetry(
         predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
         initial=0,
         maximum=0,
         timeout=1,
-        is_stream=True,
     )
     content = ["hello", "world"]
     error = Status(
@@ -128,11 +127,10 @@ def test_streaming_transient_retryable_partial_data(sequence):
     """
     from google.protobuf.duration_pb2 import Duration
 
-    retry = retries.Retry(
+    retry = retries.StreamingRetry(
         predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
         initial=0,
         maximum=0,
-        is_stream=True,
     )
     content = ["hello", ",", "world"]
     error = Status(
@@ -172,12 +170,11 @@ def test_streaming_retryable_eventual_timeout(sequence):
     Server returns a retryable error a number of times before reaching timeout.
     Should raise a retry error.
     """
-    retry = retries.Retry(
+    retry = retries.StreamingRetry(
         predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
         initial=0,
         maximum=0,
         timeout=0.35,
-        is_stream=True,
     )
     content = ["hello", "world"]
     error = Status(
@@ -221,14 +218,13 @@ def test_streaming_retry_on_error(sequence):
     def on_error(exc):
         encountered_excs.append(exc)
 
-    retry = retries.Retry(
+    retry = retries.StreamingRetry(
         predicate=retries.if_exception_type(
             core_exceptions.ServiceUnavailable, core_exceptions.GatewayTimeout
         ),
         initial=0,
         maximum=0,
         on_error=on_error,
-        is_stream=True,
     )
     content = ["hello", "world"]
     errors = [
@@ -272,12 +268,11 @@ def test_streaming_retry_sleep_generator(
     """
     should be able to pass in sleep generator to control backoff
     """
-    retry = retries.Retry(
+    retry = retries.StreamingRetry(
         predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
         initial=initial,
         maximum=maximum,
         multiplier=multiplier,
-        is_stream=True,
     )
     content = ["hello", "world"]
     error = Status(
