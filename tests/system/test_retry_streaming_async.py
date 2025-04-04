@@ -17,7 +17,6 @@ from unittest import mock
 from google.rpc.status_pb2 import Status
 from datetime import timedelta
 from google.api_core import retry as retries
-from google.api_core import retry_streaming_async as retries_async
 from google.api_core import exceptions as core_exceptions
 
 from test_retry_streaming import _code_from_exc
@@ -28,7 +27,7 @@ async def test_async_streaming_retry_success(async_sequence):
     """
     Test a stream with a sigle success response
     """
-    retry = retries_async.AsyncStreamingRetry(predicate=retries.if_exception_type())
+    retry = retries.AsyncStreamingRetry(predicate=retries.if_exception_type())
     content = ["hello", "world"]
     seq = await async_sequence.create_streaming_sequence(
         streaming_sequence={
@@ -54,7 +53,7 @@ async def test_async_streaming_non_retryable_error(async_sequence):
     """
     Test a retryable stream failing with non-retryable error
     """
-    retry = retries_async.AsyncStreamingRetry(predicate=retries.if_exception_type())
+    retry = retries.AsyncStreamingRetry(predicate=retries.if_exception_type())
     content = ["hello", "world"]
     error = Status(
         code=_code_from_exc(core_exceptions.ServiceUnavailable),
@@ -84,7 +83,7 @@ async def test_async_streaming_transient_retryable(async_sequence):
     Server returns a retryable error a number of times before success.
     Retryable errors should not be presented to the end user.
     """
-    retry = retries_async.AsyncStreamingRetry(
+    retry = retries.AsyncStreamingRetry(
         predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
         initial=0,
         maximum=0,
@@ -125,7 +124,7 @@ async def test_async_streaming_transient_retryable_partial_data(async_sequence):
     Server stream yields some data before failing with a retryable error a number of times before success.
     Wrapped stream should contain data from all attempts
     """
-    retry = retries_async.AsyncStreamingRetry(
+    retry = retries.AsyncStreamingRetry(
         predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
         initial=0,
         maximum=0,
@@ -166,7 +165,7 @@ async def test_async_streaming_retryable_eventual_timeout(async_sequence):
     Server returns a retryable error a number of times before reaching timeout.
     Should raise a retry error.
     """
-    retry = retries_async.AsyncStreamingRetry(
+    retry = retries.AsyncStreamingRetry(
         predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
         initial=0,
         maximum=0,
@@ -215,7 +214,7 @@ async def test_async_streaming_retry_on_error(async_sequence):
     def on_error(exc):
         encountered_excs.append(exc)
 
-    retry = retries_async.AsyncStreamingRetry(
+    retry = retries.AsyncStreamingRetry(
         predicate=retries.if_exception_type(
             core_exceptions.ServiceUnavailable, core_exceptions.GatewayTimeout
         ),
@@ -266,7 +265,7 @@ async def test_async_streaming_retry_sleep_generator(
     """
     should be able to pass in sleep generator to control backoff
     """
-    retry = retries_async.AsyncStreamingRetry(
+    retry = retries.AsyncStreamingRetry(
         predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
         initial=initial,
         maximum=maximum,
