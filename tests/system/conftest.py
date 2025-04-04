@@ -117,7 +117,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             SequenceServiceAsyncClient,
             use_mtls,
             transport_name="grpc_asyncio",
-            channel_creator=aio.insecure_channel
+            channel_creator=aio.insecure_channel,
         )
 
 
