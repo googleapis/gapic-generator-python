@@ -131,7 +131,7 @@ def test_streaming_transient_retryable_partial_data(sequence):
 
     TODO:
     Test is currently skipped for rest clients due to known issue:
-    https://github.com/googleapis/gapic-showcase/issues/1377
+    https://github.com/googleapis/gapic-generator-python/issues/2375
     """
     from google.protobuf.duration_pb2 import Duration
 
