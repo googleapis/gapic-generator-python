@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pytest
+import sys
 from unittest import mock
 from google.rpc.status_pb2 import Status
 from datetime import timedelta
@@ -263,6 +264,7 @@ async def test_async_streaming_retry_on_error(async_sequence):
     ],
 )
 @pytest.mark.asyncio
+@pytest.mark.skipif(sys.version_info < (3, 8), reason="AsyncMock requires 3.8")
 async def test_async_streaming_retry_sleep_generator(
     async_sequence, initial, multiplier, maximum, expected
 ):
@@ -294,7 +296,7 @@ async def test_async_streaming_retry_sleep_generator(
     with mock.patch("random.uniform") as mock_uniform:
         # make sleep generator deterministic
         mock_uniform.side_effect = lambda a, b: b
-        with mock.patch("asyncio.sleep") as mock_sleep:
+        with mock.patch("asyncio.sleep", mock.AsyncMock) as mock_sleep:
             it = await async_sequence.attempt_streaming_sequence(
                 name=seq.name, retry=retry
             )

@@ -135,7 +135,7 @@ def test_streaming_transient_retryable_partial_data(sequence):
     """
     from google.protobuf.duration_pb2 import Duration
 
-    if type(sequence.transport) == type(sequence).get_transport_class("rest"):
+    if isinstance(sequence.transport, type(sequence).get_transport_class("rest")):
         pytest.skip("Skipping due to known streaming issue in rest client")
 
     retry = retries.StreamingRetry(
