@@ -61,6 +61,14 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = True
     except:
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = False
+    try:
+        from google.showcase_v1beta1.services.seuence.transports import (
+            AsyncSequenceServiceRestTransport,
+        )
+
+        HAS_ASYNC_REST_SEQUENCE_TRANSPORT = True
+    except:
+        HAS_ASYNC_REST_SEQUENCE_TRANSPORT = False
 
     # TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
     # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
@@ -114,6 +122,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
     def async_sequence(use_mtls, request, event_loop):
         transport = request.param
+        if transport == "rest_asyncio" and not HAS_ASYNC_REST_SEQUENCE_TRANSPORT:
+            pytest.skip("Skipping test with async rest.")
         return construct_client(
             SequenceServiceAsyncClient,
             use_mtls,
