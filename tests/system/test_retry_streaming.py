@@ -128,8 +128,13 @@ def test_streaming_transient_retryable_partial_data(sequence):
     """
     Server stream yields some data before failing with a retryable error a number of times before success.
     Wrapped stream should contain data from all attempts
+
+    TODO: implement fix for rest client: https://github.com/googleapis/gapic-showcase/issues/1377
     """
     from google.protobuf.duration_pb2 import Duration
+
+    if sequence.transport == type(sequence).get_transport_class("rest"):
+        pytest.skip("Skipping due to known streaming issue in rest client")
 
     retry = retries.StreamingRetry(
         predicate=retries.if_exception_type(core_exceptions.ServiceUnavailable),
