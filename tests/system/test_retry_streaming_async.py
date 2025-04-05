@@ -296,7 +296,7 @@ async def test_async_streaming_retry_sleep_generator(
     with mock.patch("random.uniform") as mock_uniform:
         # make sleep generator deterministic
         mock_uniform.side_effect = lambda a, b: b
-        with mock.patch("asyncio.sleep", mock.AsyncMock) as mock_sleep:
+        with mock.patch("asyncio.sleep", mock.AsyncMock()) as mock_sleep:
             it = await async_sequence.attempt_streaming_sequence(
                 name=seq.name, retry=retry
             )
