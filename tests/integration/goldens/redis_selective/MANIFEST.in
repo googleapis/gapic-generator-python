@@ -14,8 +14,7 @@
 # limitations under the License.
 #
 include README.rst LICENSE
-recursive-include google/cloud/redis *.py *.pyi *.json *.proto py.typed
-recursive-include google/cloud/redis_v1 *.py *.pyi *.json *.proto py.typed
+recursive-include google *.py *.pyi *.json *.proto py.typed
 recursive-include tests *
 global-exclude *.py[co]
 global-exclude __pycache__
