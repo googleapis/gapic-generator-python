@@ -1841,12 +1841,10 @@ class Method:
 
         pb_type = page_field_size.type
 
-        if pb_type == int or (
+        return pb_type == int or (
             isinstance(pb_type, MessageType)
             and pb_type.message_pb.name in {"UInt32Value", "Int32Value"}
-        ):
-            return True
-        return False
+        )
 
     @utils.cached_property
     def paged_result_field(self) -> Optional[Field]:
