@@ -45,6 +45,11 @@ class Naming(abc.ABC):
     proto_package: str = ""
     _warehouse_package_name: str = ""
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
+    api_description: str = ""
+    _documentation_name: str = ""
+    documentation_uri: str = ""
+    release_level: str = ""
+    title: str = ""
 
     def __post_init__(self):
         if not self.product_name:
@@ -154,6 +159,30 @@ class Naming(abc.ABC):
             package_info = dataclasses.replace(
                 package_info, _warehouse_package_name=opts.warehouse_package_name
             )
+
+        if opts.api_description:
+            package_info = dataclasses.replace(
+                package_info, api_description=opts.api_description
+            )
+
+        if opts.documentation_name:
+            package_info = dataclasses.replace(
+                package_info, _documentation_name=opts.documentation_name
+            )
+
+        if opts.documentation_uri:
+            package_info = dataclasses.replace(
+                package_info, documentation_uri=opts.documentation_uri
+            )
+
+        if opts.release_level:
+            package_info = dataclasses.replace(
+                package_info, release_level=opts.release_level
+            )
+
+        if opts.title:
+            package_info = dataclasses.replace(package_info, title=opts.title)
+
         if opts.proto_plus_deps:
             package_info = dataclasses.replace(
                 package_info,
@@ -211,6 +240,15 @@ class Naming(abc.ABC):
         # up with the proper package name.
         answer = list(self.namespace) + self.name.split(" ")
         return "-".join(answer).lower()
+
+    @property
+    def documentation_name(self) -> str:
+        """Return the appropriate name for documentation."""
+        # If a custom name has been set, use it
+        if self._documentation_name:
+            return self._documentation_name
+        # Otherwise use `name` for backwards compatibility
+        return self.name.lower()
 
 
 class NewNaming(Naming):
