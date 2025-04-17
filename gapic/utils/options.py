@@ -50,6 +50,15 @@ class Options:
     service_yaml_config: Dict[str, Any] = dataclasses.field(default_factory=dict)
     rest_numeric_enums: bool = False
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=("",))
+    reference_doc_includes: Tuple[str, ...] = dataclasses.field(default=("",))
+    api_description: str = ""
+    default_proto_package: str = ""
+    documentation_name: str = ""
+    documentation_uri: str = ""
+    release_level: str = ""
+    title: str = ""
+    include_upgrading_doc: bool = False
+    gapic_version: str = ""
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = "python-gapic-"
@@ -71,6 +80,14 @@ class Options:
             # proto plus dependencies delineated by '+'
             # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
             "proto-plus-deps",
+            "reference-doc-includes",
+            "release-level",  # One of ["preview", "stable"]
+            "default-proto-package",
+            "documentation-name",
+            "documentation-uri",
+            "include-upgrading-doc",
+            "gapic-version",
+            "api-description",
         )
     )
 
@@ -152,6 +169,14 @@ class Options:
         # but it is not a field in the gogle.api.Service proto.
         service_yaml_config.pop("type", None)
 
+        api_description = service_yaml_config.get("documentation", {}).get(
+            "summary", opts.pop("api-description", [""])[0].replace("|", ",")
+        )
+
+        documentation_uri = service_yaml_config.get("publishing", {}).get(
+            "documentation_uri", opts.pop("documentation-uri", [""])[0]
+        )
+
         # Build the options instance.
         sample_paths = opts.pop("samples", [])
 
@@ -171,6 +196,10 @@ class Options:
         old_naming = bool(opts.pop("old-naming", False))
         if old_naming:
             autogen_snippets = False
+
+        reference_doc_includes = tuple(opts.pop("reference-doc-includes", ""))
+        if len(reference_doc_includes):
+            reference_doc_includes = tuple(reference_doc_includes[0].split("+"))
 
         proto_plus_deps = tuple(opts.pop("proto-plus-deps", ""))
         if len(proto_plus_deps):
@@ -196,7 +225,18 @@ class Options:
             transport=opts.pop("transport", ["grpc"])[0].split("+"),
             service_yaml_config=service_yaml_config,
             rest_numeric_enums=bool(opts.pop("rest-numeric-enums", False)),
+            reference_doc_includes=reference_doc_includes,
+            default_proto_package=opts.pop("default-proto-package", [""]).pop(),
+            documentation_name=opts.pop("documentation-name", [""]).pop(),
+            documentation_uri=documentation_uri,
+            api_description=api_description,
             proto_plus_deps=proto_plus_deps,
+            release_level=opts.pop(
+                "release-level", ["preview"]
+            ).pop(),  # Default to "preview" unless explicitly set to "stable"
+            title=service_yaml_config.get("title", ""),
+            include_upgrading_doc=bool(opts.pop("include-upgrading-doc", False)),
+            gapic_version=opts.pop("gapic-version", [""]).pop(),
         )
 
         # Note: if we ever need to recursively check directories for sample
