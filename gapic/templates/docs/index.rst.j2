@@ -1,3 +1,5 @@
+.. include:: README.rst
+
 .. include:: multiprocessing.rst
 
 
@@ -8,3 +10,21 @@ API Reference
     
     {{ api.naming.versioned_module_name }}/services_
     {{ api.naming.versioned_module_name }}/types_
+
+
+Changelog
+---------
+
+For a list of all ``{{ api.naming.warehouse_package_name }}`` releases:
+
+.. toctree::
+    :maxdepth: 2
+
+    CHANGELOG
+
+.. toctree::
+  :hidden:
+{% if api.naming.module_namespace|length >= 2 and api.naming.module_namespace[0] == "google" and api.naming.module_namespace[1] == "cloud" %}
+
+  summary_overview.md
+{% endif %}
