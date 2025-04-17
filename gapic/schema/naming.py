@@ -45,6 +45,15 @@ class Naming(abc.ABC):
     proto_package: str = ""
     _warehouse_package_name: str = ""
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
+    reference_doc_includes: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
+    api_description: str = ""
+    default_proto_package: str = ""
+    _documentation_name: str = ""
+    documentation_uri: str = ""
+    release_level: str = ""
+    title: str = ""
+    include_upgrading_doc: bool = False
+    gapic_version: str = ""
 
     def __post_init__(self):
         if not self.product_name:
@@ -154,10 +163,56 @@ class Naming(abc.ABC):
             package_info = dataclasses.replace(
                 package_info, _warehouse_package_name=opts.warehouse_package_name
             )
+
+        if opts.reference_doc_includes:
+            package_info = dataclasses.replace(
+                package_info, reference_doc_includes=opts.reference_doc_includes
+            )
+
+        if opts.api_description:
+            package_info = dataclasses.replace(
+                package_info, api_description=opts.api_description
+            )
+
+        if opts.default_proto_package:
+            package_info = dataclasses.replace(
+                package_info, default_proto_package=opts.default_proto_package
+            )
+
+        if opts.documentation_name:
+            package_info = dataclasses.replace(
+                package_info, _documentation_name=opts.documentation_name
+            )
+
+        if opts.documentation_uri:
+            package_info = dataclasses.replace(
+                package_info, documentation_uri=opts.documentation_uri
+            )
+
+        if opts.release_level:
+            package_info = dataclasses.replace(
+                package_info, release_level=opts.release_level
+            )
+
+        if opts.title:
+            package_info = dataclasses.replace(package_info, title=opts.title)
+
         if opts.proto_plus_deps:
             package_info = dataclasses.replace(
                 package_info,
                 proto_plus_deps=opts.proto_plus_deps,
+            )
+
+        if opts.include_upgrading_doc:
+            package_info = dataclasses.replace(
+                package_info,
+                include_upgrading_doc=opts.include_upgrading_doc,
+            )
+
+        if opts.gapic_version:
+            package_info = dataclasses.replace(
+                package_info,
+                gapic_version=opts.gapic_version,
             )
 
         # Done; return the naming information.
@@ -211,6 +266,15 @@ class Naming(abc.ABC):
         # up with the proper package name.
         answer = list(self.namespace) + self.name.split(" ")
         return "-".join(answer).lower()
+
+    @property
+    def documentation_name(self) -> str:
+        """Return the appropriate name for documentation."""
+        # If a custom name has been set, use it
+        if self._documentation_name:
+            return self._documentation_name
+        # Otherwise use `name` for backwards compatibility
+        return self.name.lower().replace(" ", "")
 
 
 class NewNaming(Naming):

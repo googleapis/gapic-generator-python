@@ -27,6 +27,16 @@ def test_long_name():
     assert n.long_name == "Agrabah Lamp Genie"
 
 
+def test_title():
+    n = make_naming(title="Test Title")
+    n.title == "Test Title"
+
+
+def test_api_descriptin():
+    n = make_naming(api_description="Test Description")
+    n.api_description == "Test Description"
+
+
 def test_module_name():
     n = make_naming(
         name="Genie",
@@ -237,6 +247,66 @@ def test_cli_override_proto_plus_deps():
         opts=Options(proto_plus_deps=("google.dep1", "google.dep2")),
     )
     assert n.proto_plus_deps == ("google.dep1", "google.dep2")
+
+
+def test_cli_override_title():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package="google.translation")
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(title="Test Title Override"),
+    )
+    assert n.title == "Test Title Override"
+
+
+def test_cli_documentation_name():
+    n = naming.Naming.build(
+        descriptor_pb2.FileDescriptorProto(package="google.translation")
+    )
+    assert n.documentation_name == ("translation")
+
+
+def test_cli_override_documentation_name():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package="google.translation")
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(
+            documentation_name="testingapi", warehouse_package_name="google-testing-api"
+        ),
+    )
+    assert n.documentation_name == ("testingapi")
+
+
+def test_cli_override_api_description():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package="google.translation")
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(api_description="Test Api Description Override"),
+    )
+    assert n.api_description == "Test Api Description Override"
+
+
+def test_cli_override_documentation_uri():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package="google.translation")
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(documentation_uri="https://cloud.google.com/testoverride"),
+    )
+    assert n.documentation_uri == "https://cloud.google.com/testoverride"
+
+
+def test_cli_override_default_proto_package():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package="google.translation.v1")
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(default_proto_package="google.translation.v2"),
+    )
+    assert n.default_proto_package != "google.translation.v1"
+
 
 
 def test_build_factory():

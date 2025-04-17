@@ -225,6 +225,35 @@ def test_options_autogen_snippets_false_for_old_naming():
     assert not options.autogen_snippets
 
 
+def test_options_reference_doc_includes():
+    opts = Options.build("reference-doc-includes=")
+    assert opts.reference_doc_includes == ("",)
+
+    opts = Options.build("reference-doc-includes=google.apps.script.type.calendar")
+    assert opts.reference_doc_includes == ("google.apps.script.type.calendar",)
+
+    opts = Options.build(
+        "reference-doc-includes=\
+google.apps.script.type.calendar+\
+google.apps.script.type.docs+\
+google.apps.script.type.drive+\
+google.apps.script.type.gmail+\
+google.apps.script.type.sheets+\
+google.apps.script.type.slides+\
+google.apps.script.type"
+    )
+
+    assert opts.reference_doc_includes == (
+        "google.apps.script.type.calendar",
+        "google.apps.script.type.docs",
+        "google.apps.script.type.drive",
+        "google.apps.script.type.gmail",
+        "google.apps.script.type.sheets",
+        "google.apps.script.type.slides",
+        "google.apps.script.type",
+    )
+
+
 def test_options_proto_plus_deps():
     opts = Options.build("proto-plus-deps=")
     assert opts.proto_plus_deps == ("",)
@@ -251,3 +280,60 @@ google.apps.script.type"
         "google.apps.script.type.slides",
         "google.apps.script.type",
     )
+
+
+def test_read_documentation_name():
+    opts = Options.build("documentation-name=testapi")
+    assert opts.documentation_name == "testapi"
+    opts = Options.build("documentation-name=")
+    assert opts.documentation_name == ""
+
+
+def test_read_documentation_uri(fs):
+    service_yaml_fpath = "testapi.yaml"
+    fs.create_file(
+        service_yaml_fpath,
+        contents=(
+            "config_version: 3\n"
+            "name: testapi.googleapis.com\n"
+            "publishing:\n"
+            "  documentation_uri: https://cloud.google.com/test\n"
+        ),
+    )
+    opt_string = f"service-yaml={service_yaml_fpath}"
+    opts = Options.build(opt_string)
+    assert opts.documentation_uri == "https://cloud.google.com/test"
+
+
+def test_read_api_description(fs):
+    service_yaml_fpath = "testapi.yaml"
+    fs.create_file(
+        service_yaml_fpath,
+        contents=(
+            "config_version: 3\n"
+            "name: testapi.googleapis.com\n"
+            "documentation:\n"
+            "  summary: |-\n"
+            "    The Google VMware Engine API lets you programmatically manage VMware\n"
+            "    environments."
+        ),
+    )
+    opt_string = f"service-yaml={service_yaml_fpath}"
+    opts = Options.build(opt_string)
+    assert (
+        opts.api_description.replace("\n", " ")
+        == "The Google VMware Engine API lets you programmatically manage VMware environments."
+    )
+
+
+def test_read_title(fs):
+    service_yaml_fpath = "testapi.yaml"
+    fs.create_file(
+        service_yaml_fpath,
+        contents=(
+            "config_version: 3\n" "name: testapi.googleapis.com\n" "title: Test Title"
+        ),
+    )
+    opt_string = f"service-yaml={service_yaml_fpath}"
+    opts = Options.build(opt_string)
+    assert opts.title == "Test Title"
