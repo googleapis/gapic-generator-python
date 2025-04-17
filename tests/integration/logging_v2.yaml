@@ -217,5 +217,14 @@ authentication:
         https://www.googleapis.com/auth/cloud-platform.read-only,
         https://www.googleapis.com/auth/logging.admin,
         https://www.googleapis.com/auth/logging.read
+  
 publishing:
   documentation_uri: https://cloud.google.com/logging/docs/
+  organization: CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED
+  new_issue_uri: ''
+  documentation_uri: 'https://cloud.google.com/logging/docs'
+  api_short_name: ''
+  github_label: ''
+  doc_tag_prefix: ''
+  codeowner_github_teams:
+  library_settings:

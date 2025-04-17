@@ -72,10 +72,17 @@ authentication:
       canonical_scopes: |-
         https://www.googleapis.com/auth/cloud-platform
 
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this section
-# when async rest is GA.
 publishing:
+  organization: CLIENT_LIBRARY_ORGANIZATION_UNSPECIFIED
+  new_issue_uri: ''
+  documentation_uri: 'https://cloud.google.com/memorystore/docs/redis/'
+  api_short_name: ''
+  github_label: ''
+  doc_tag_prefix: ''
+  codeowner_github_teams:
   library_settings:
+  # TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this section
+  # when async rest is GA.
   - version: 'google.cloud.redis.v1'
     python_settings:
       experimental_features:

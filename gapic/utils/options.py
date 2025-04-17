@@ -50,6 +50,11 @@ class Options:
     service_yaml_config: Dict[str, Any] = dataclasses.field(default_factory=dict)
     rest_numeric_enums: bool = False
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=("",))
+    api_description: str = ""
+    documentation_name: str = ""
+    documentation_uri: str = ""
+    release_level: str = ""
+    title: str = ""
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = "python-gapic-"
@@ -71,6 +76,8 @@ class Options:
             # proto plus dependencies delineated by '+'
             # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
             "proto-plus-deps",
+            "release-level",  # One of ["preview", "stable"]
+            "documentation-name",
         )
     )
 
@@ -152,6 +159,14 @@ class Options:
         # but it is not a field in the gogle.api.Service proto.
         service_yaml_config.pop("type", None)
 
+        api_description = service_yaml_config.get("documentation", {}).get(
+            "summary", ""
+        )
+
+        documentation_uri = service_yaml_config.get("publishing", {}).get(
+            "documentation_uri", ""
+        )
+
         # Build the options instance.
         sample_paths = opts.pop("samples", [])
 
@@ -196,7 +211,14 @@ class Options:
             transport=opts.pop("transport", ["grpc"])[0].split("+"),
             service_yaml_config=service_yaml_config,
             rest_numeric_enums=bool(opts.pop("rest-numeric-enums", False)),
+            title=service_yaml_config.get("title", ""),
+            documentation_name=opts.pop("documentation-name", [""]).pop(),
+            documentation_uri=documentation_uri,
+            api_description=api_description,
             proto_plus_deps=proto_plus_deps,
+            release_level=opts.pop(
+                "release-level", ["preview"]
+            ).pop(),  # Default to "preview" unless explicitly set to "stable"
         )
 
         # Note: if we ever need to recursively check directories for sample
