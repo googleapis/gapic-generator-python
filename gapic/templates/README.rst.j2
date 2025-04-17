@@ -1,5 +1,28 @@
-Python Client for {{ api.naming.long_name }} API
-=================================================
+Python Client for {{ api.naming.title }}
+=================={% for i in range( api.naming.title | length ) %}={% endfor %}
+
+
+|{{ api.naming.release_level }}| |pypi| |versions|
+
+`{{ api.naming.title }}`_: {% if api.naming.api_description %}{{ api.naming.api_description.replace("\n", " ") }}{% endif %}
+
+
+- `Client Library Documentation`_
+- `Product Documentation`_
+
+.. |{{ api.naming.release_level }}| image:: https://img.shields.io/badge/support-{{ api.naming.release_level }}-{% if api.naming.release_level == "stable" %}gold{% else %}orange{% endif %}.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
+.. |pypi| image:: https://img.shields.io/pypi/v/{{ api.naming.warehouse_package_name }}.svg
+   :target: https://pypi.org/project/{{ api.naming.warehouse_package_name }}/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/{{ api.naming.warehouse_package_name }}.svg
+   :target: https://pypi.org/project/{{ api.naming.warehouse_package_name }}/
+.. _{{ api.naming.title }}: {{ api.naming.documentation_uri }}
+{% if api.naming.module_namespace|length >= 2 and api.naming.module_namespace[0] == "google" and api.naming.module_namespace[1] == "cloud" %}
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/{{ api.naming.documentation_name }}/latest/summary_overview
+{% else %}
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/{{ api.naming.documentation_name }}/latest
+{% endif %}
+.. _Product Documentation:  {{ api.naming.documentation_uri }}
 
 Quick Start
 -----------
@@ -8,26 +31,55 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. Enable the {{ api.naming.long_name }} API.
-4. `Setup Authentication.`_
+3. `Enable the {{ api.naming.title }}.`_
+4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
+.. _Enable the {{ api.naming.title }}.:  {{ api.naming.documentation_uri }}
+.. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
 
-Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
-create isolated Python environments. The basic problem it addresses is one of
-dependencies and versions, and indirectly permissions.
+Install this library in a virtual environment using `venv`_. `venv`_ is a tool that
+creates isolated Python environments. These isolated environments can have separate
+versions of Python packages, which allows you to isolate one project's dependencies
+from the dependencies of other projects.
 
-With `virtualenv`_, it's possible to install this library without needing system
+With `venv`_, it's possible to install this library without needing system
 install permissions, and without clashing with the installed system
 dependencies.
 
-.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+.. _`venv`: https://docs.python.org/3/library/venv.html
 
+
+Code samples and snippets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code samples and snippets live in the `samples/`_ folder.
+
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/{{ api.naming.warehouse_package_name }}/samples
+
+
+Supported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
+Python.
+
+Python >= 3.7
+
+.. _active: https://devguide.python.org/devcycle/#in-development-main-branch
+.. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
+
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python <= 3.6
+
+If you are using an `end-of-life`_
+version of Python, we recommend that you update as soon as possible to an actively supported version.
+
+.. _end-of-life: https://devguide.python.org/devcycle/#end-of-life-branches
 
 Mac/Linux
 ^^^^^^^^^
@@ -36,7 +88,7 @@ Mac/Linux
 
     python3 -m venv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install /path/to/library
+    pip install {{ api.naming.warehouse_package_name }}
 
 
 Windows
@@ -44,10 +96,22 @@ Windows
 
 .. code-block:: console
 
-    python3 -m venv <your-env>
-    <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install \path\to\library
+    py -m venv <your-env>
+    .\<your-env>\Scripts\activate
+    pip install {{ api.naming.warehouse_package_name }}
 
+Next Steps
+~~~~~~~~~~
+
+-  Read the `Client Library Documentation`_ for {{ api.naming.title }}
+   to see other available methods on the client.
+-  Read the `{{ api.naming.title }} Product documentation`_ to learn
+   more about the product and see How-to Guides.
+-  View this `README`_ to see the full list of Cloud
+   APIs that we cover.
+
+.. _{{ api.naming.title }} Product documentation:  {{ api.naming.documentation_uri }}
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
 -------
@@ -58,7 +122,6 @@ Note the following:
 #. Logs may contain sensitive information. Take care to **restrict access to the logs** if they are saved, whether it be on local storage or on Google Cloud Logging.
 #. Google may refine the occurrence, level, and content of various log messages in this library without flagging such changes as breaking. **Do not depend on immutability of the logging events**.
 #. By default, the logging events from this library are not handled. You must **explicitly configure log handling** using one of the mechanisms below.
-
 
 Simple, environment-based configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,9 +138,8 @@ A logging scope is a period-separated namespace that begins with :code:`google`,
 
 **NOTE**: If the logging scope is invalid, the library does not set up any logging handlers.
 
-
-Examples
-^^^^^^^^
+Environment-Based Examples
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - Enabling the default handler for all Google-based loggers
 
@@ -97,18 +159,17 @@ Advanced, code-based configuration
 
 You can also configure a valid logging scope using Python's standard `logging` mechanism.
 
-
-Examples
-^^^^^^^^
+Code-Based Examples
+^^^^^^^^^^^^^^^^^^^
 
 - Configuring a handler for all Google-based loggers
 
 .. code-block:: python
 
     import logging
-    
-    from google.cloud.translate_v3 import translate
-    
+
+    from google.cloud import library_v1
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -118,13 +179,12 @@ Examples
 .. code-block:: python
 
     import logging
-    
-    from google.cloud.translate_v3 import translate
-    
+
+    from google.cloud import library_v1
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
-
 
 Logging details
 ~~~~~~~~~~~~~~~
