@@ -50,7 +50,9 @@ class Options:
     service_yaml_config: Dict[str, Any] = dataclasses.field(default_factory=dict)
     rest_numeric_enums: bool = False
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=("",))
+    non_default_versions: Tuple[str, ...] = dataclasses.field(default=("",))
     api_description: str = ""
+    default_version: str = ""
     documentation_name: str = ""
     documentation_uri: str = ""
     release_level: str = ""
@@ -75,6 +77,7 @@ class Options:
             "rest-numeric-enums",
             # proto plus dependencies delineated by '+'
             # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
+            "non-default-versions",
             "proto-plus-deps",
             "release-level",  # One of ["preview", "stable"]
             "documentation-name",
@@ -187,6 +190,10 @@ class Options:
         if old_naming:
             autogen_snippets = False
 
+        non_default_versions = tuple(opts.pop("non-default-versions", ""))
+        if len(non_default_versions):
+            non_default_versions = tuple(non_default_versions[0].split("+"))
+
         proto_plus_deps = tuple(opts.pop("proto-plus-deps", ""))
         if len(proto_plus_deps):
             proto_plus_deps = tuple(proto_plus_deps[0].split("+"))
@@ -211,7 +218,8 @@ class Options:
             transport=opts.pop("transport", ["grpc"])[0].split("+"),
             service_yaml_config=service_yaml_config,
             rest_numeric_enums=bool(opts.pop("rest-numeric-enums", False)),
-            title=service_yaml_config.get("title", ""),
+            non_default_versions=non_default_versions,
+            default_version=opts.pop("default-version", [""]).pop(),
             documentation_name=opts.pop("documentation-name", [""]).pop(),
             documentation_uri=documentation_uri,
             api_description=api_description,
@@ -219,6 +227,7 @@ class Options:
             release_level=opts.pop(
                 "release-level", ["preview"]
             ).pop(),  # Default to "preview" unless explicitly set to "stable"
+            title=service_yaml_config.get("title", ""),
         )
 
         # Note: if we ever need to recursively check directories for sample

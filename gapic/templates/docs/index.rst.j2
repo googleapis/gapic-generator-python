@@ -10,7 +10,15 @@ API Reference
     
     {{ api.naming.versioned_module_name }}/services_
     {{ api.naming.versioned_module_name }}/types_
-
+{% for api_version in api.naming.non_default_versions %}
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+    
+    {{ api_version }}/services_
+    {{ api_version }}/types_
+{% endfor %}
 
 Changelog
 ---------

@@ -45,7 +45,9 @@ class Naming(abc.ABC):
     proto_package: str = ""
     _warehouse_package_name: str = ""
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
+    non_default_versions: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
     api_description: str = ""
+    default_version: str = ""
     _documentation_name: str = ""
     documentation_uri: str = ""
     release_level: str = ""
@@ -160,9 +162,19 @@ class Naming(abc.ABC):
                 package_info, _warehouse_package_name=opts.warehouse_package_name
             )
 
+        if opts.non_default_versions:
+            package_info = dataclasses.replace(
+                package_info, non_default_versions=opts.non_default_versions
+            )
+
         if opts.api_description:
             package_info = dataclasses.replace(
                 package_info, api_description=opts.api_description
+            )
+
+        if opts.default_version:
+            package_info = dataclasses.replace(
+                package_info, default_version=opts.default_version
             )
 
         if opts.documentation_name:

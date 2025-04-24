@@ -269,11 +269,19 @@ class Generator:
         # library. This means that the module names will need to be versioned in
         # import statements. For example `import google.cloud.library_v2` instead
         # of `import google.cloud.library`.
+        # If default version is specified, and doesn't match the current version being generated or
+        # `python_settings.experimental_features.unversioned_package_disabled` is set
         if (
-            template_name.startswith("%namespace/%name/")
-            and api_schema.all_library_settings[
-                api_schema.naming.proto_package
-            ].python_settings.experimental_features.unversioned_package_disabled
+            (
+                template_name.startswith("%namespace/%name/")
+                and api_schema.all_library_settings[
+                    api_schema.naming.proto_package
+                ].python_settings.experimental_features.unversioned_package_disabled
+             ) or
+             (
+                 len(opts.default_version) > 0 and
+                 opts.default_version != api_schema.naming.version
+             )
         ):
             return answer
 
