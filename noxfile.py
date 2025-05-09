@@ -669,8 +669,10 @@ def docs(session):
         "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
-        "-b",  "html",  # builder
-        "-d",  os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        "-b",
+        "html",  # builder
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
         # paths to build:
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
@@ -714,8 +716,10 @@ def docfx(session):
             "sphinx.ext.viewcode,"
             "recommonmark"
         ),
-        "-b",  "html",  # builder
-        "-d",  os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        "-b",
+        "html",  # builder
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
         # paths to build:
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
