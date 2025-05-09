@@ -365,6 +365,14 @@ def showcase_library(
                     "-r",
                     constraints_path,
                 )
+                # Exclude `google-auth==2.40.0` which contains a regression
+                # https://github.com/googleapis/gapic-generator-python/issues/2385
+                session.install(
+                    "--no-cache-dir",
+                    "--force-reinstall",
+                    "--upgrade",
+                    "google-auth[aiohttp]!=2.40.0",
+                )
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
@@ -459,28 +467,6 @@ def showcase_mtls(
             *pytest_command,
             env=env,
         )
-
-
-@nox.session(python=ALL_PYTHON)
-def showcase_alternative_templates(session):
-    templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
-    showcase(
-        session,
-        templates=templates,
-        other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
-    )
-
-
-@nox.session(python=NEWEST_PYTHON)
-def showcase_mtls_alternative_templates(session):
-    templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
-    showcase_mtls(
-        session,
-        templates=templates,
-        other_opts=("old-naming",),
-        env={"GAPIC_PYTHON_ASYNC": "False", "IGNORE_FILE": "test_universe_domain.py"},
-    )
 
 
 def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False):
