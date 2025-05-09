@@ -271,9 +271,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
                     response_payload = None
                 {% endif %}{# if not method.server_streaming #}
                 http_response = {
-                {# Logging of the streaming response payload is in `google-api-core` because the response #}
-                {# type `rest_streaming.ResponseIterator` is an iterator. #}
-                {# Each response 'item' is logged at the time that it is fetched which happens in google-api-core. #}
+                {# Not logging server streaming here. See comment above. #}
                 {% if not method.server_streaming %}
                 "payload": response_payload,
                 {% endif %}{# if not method.server_streaming #}
