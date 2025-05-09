@@ -659,8 +659,7 @@ def docs(session):
         "sphinxcontrib-qthelp==1.0.3",
         "sphinxcontrib-serializinghtml==1.1.5",
         "sphinx==4.5.0",
-        "alabaster",
-        "recommonmark",
+        "sphinx-rtd-theme",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
@@ -695,8 +694,7 @@ def docfx(session):
         "sphinxcontrib-qthelp==1.0.3",
         "sphinxcontrib-serializinghtml==1.1.5",
         "gcp-sphinx-docfx-yaml",
-        "alabaster",
-        "recommonmark",
+        "sphinx-rtd-theme",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
