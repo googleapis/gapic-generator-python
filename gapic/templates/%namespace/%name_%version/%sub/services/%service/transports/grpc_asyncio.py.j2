@@ -65,6 +65,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor, grpc.aio.UnaryStreamClientInterceptor):  # pragma: NO COVER
+    {# Streaming responses will be logged in `google-api-core`, while all requests and unary responses are logged here. #}
+    {# The reason is that gRPC returns an iterator, which we provide directly as the response #}
     async def intercept_unary_stream(self, continuation, client_call_details, request):
 {{ shared_macros.unary_request_interceptor_common(service) }}
         response_it = await continuation(client_call_details, request)
