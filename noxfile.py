@@ -704,7 +704,7 @@ def docfx(session):
         "sphinx-build",
         "-T",  # show full traceback on exception
         "-N",  # no colors
-        "-D",
+        "-D",  # Override configuration values set in the conf.py file
         (
             "extensions=sphinx.ext.autodoc,"
             "sphinx.ext.autosummary,"
