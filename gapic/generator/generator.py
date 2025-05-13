@@ -269,12 +269,24 @@ class Generator:
         # library. This means that the module names will need to be versioned in
         # import statements. For example `import google.cloud.library_v2` instead
         # of `import google.cloud.library`.
-        if (
-            template_name.startswith("%namespace/%name/")
-            and api_schema.all_library_settings[
-                api_schema.naming.proto_package
-            ].python_settings.experimental_features.unversioned_package_disabled
-        ):
+        # If default version is specified, and doesn't match the current version being generated or
+        # `python_settings.experimental_features.unversioned_package_disabled` is set
+        if template_name.startswith("%namespace/%name/") and \
+            (
+                api_schema.all_library_settings[
+                    api_schema.naming.proto_package
+                ].python_settings.experimental_features.unversioned_package_disabled or
+                (
+                    len(opts.default_proto_package) > 0 and
+                    # same proto package, excluding version
+                    opts.default_proto_package.split(".")[0:-1] == api_schema.naming.proto_package.split(".")[0:-1]
+                    and opts.default_proto_package != api_schema.naming.proto_package
+                )
+            ):
+            return answer
+
+        # Don't generate docs/index.rst if `default_proto_package` is specified and the default proto package does not match
+        if template_name == "docs/index.rst.j2" and len(opts.default_proto_package) > 0 and opts.default_proto_package != api_schema.naming.proto_package:
             return answer
 
         # Quick check: Rendering per service and per proto would be a
