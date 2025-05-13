@@ -298,6 +298,17 @@ def test_cli_override_documentation_uri():
     assert n.documentation_uri == "https://cloud.google.com/testoverride"
 
 
+def test_cli_override_default_proto_package():
+    FileDesc = descriptor_pb2.FileDescriptorProto
+    proto1 = FileDesc(package="google.translation.v1")
+    n = naming.Naming.build(
+        proto1,
+        opts=Options(default_proto_package="google.translation.v2"),
+    )
+    assert n.default_proto_package != "google.translation.v1"
+
+
+
 def test_build_factory():
     proto = descriptor_pb2.FileDescriptorProto(package="google.mollusc.v1alpha1")
     old = naming.Naming.build(proto, opts=Options(old_naming=True))
