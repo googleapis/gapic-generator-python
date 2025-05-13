@@ -225,6 +225,35 @@ def test_options_autogen_snippets_false_for_old_naming():
     assert not options.autogen_snippets
 
 
+def test_options_reference_doc_includes():
+    opts = Options.build("reference-doc-includes=")
+    assert opts.reference_doc_includes == ("",)
+
+    opts = Options.build("reference-doc-includes=google.apps.script.type.calendar")
+    assert opts.reference_doc_includes == ("google.apps.script.type.calendar",)
+
+    opts = Options.build(
+        "reference-doc-includes=\
+google.apps.script.type.calendar+\
+google.apps.script.type.docs+\
+google.apps.script.type.drive+\
+google.apps.script.type.gmail+\
+google.apps.script.type.sheets+\
+google.apps.script.type.slides+\
+google.apps.script.type"
+    )
+
+    assert opts.reference_doc_includes == (
+        "google.apps.script.type.calendar",
+        "google.apps.script.type.docs",
+        "google.apps.script.type.drive",
+        "google.apps.script.type.gmail",
+        "google.apps.script.type.sheets",
+        "google.apps.script.type.slides",
+        "google.apps.script.type",
+    )
+
+
 def test_options_proto_plus_deps():
     opts = Options.build("proto-plus-deps=")
     assert opts.proto_plus_deps == ("",)

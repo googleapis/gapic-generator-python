@@ -50,7 +50,9 @@ class Options:
     service_yaml_config: Dict[str, Any] = dataclasses.field(default_factory=dict)
     rest_numeric_enums: bool = False
     proto_plus_deps: Tuple[str, ...] = dataclasses.field(default=("",))
+    reference_doc_includes: Tuple[str, ...] = dataclasses.field(default=("",))
     api_description: str = ""
+    default_proto_package: str = ""
     documentation_name: str = ""
     documentation_uri: str = ""
     release_level: str = ""
@@ -76,8 +78,11 @@ class Options:
             # proto plus dependencies delineated by '+'
             # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
             "proto-plus-deps",
+            "reference-doc-includes",
             "release-level",  # One of ["preview", "stable"]
+            "default-proto-package",
             "documentation-name",
+            "documentation-uri",
         )
     )
 
@@ -164,7 +169,7 @@ class Options:
         )
 
         documentation_uri = service_yaml_config.get("publishing", {}).get(
-            "documentation_uri", ""
+            "documentation_uri", opts.pop("documentation-uri", [""])[0]
         )
 
         # Build the options instance.
@@ -186,6 +191,10 @@ class Options:
         old_naming = bool(opts.pop("old-naming", False))
         if old_naming:
             autogen_snippets = False
+
+        reference_doc_includes = tuple(opts.pop("reference-doc-includes", ""))
+        if len(reference_doc_includes):
+            reference_doc_includes = tuple(reference_doc_includes[0].split("+"))
 
         proto_plus_deps = tuple(opts.pop("proto-plus-deps", ""))
         if len(proto_plus_deps):
@@ -211,7 +220,8 @@ class Options:
             transport=opts.pop("transport", ["grpc"])[0].split("+"),
             service_yaml_config=service_yaml_config,
             rest_numeric_enums=bool(opts.pop("rest-numeric-enums", False)),
-            title=service_yaml_config.get("title", ""),
+            reference_doc_includes=reference_doc_includes,
+            default_proto_package=opts.pop("default-proto-package", [""]).pop(),
             documentation_name=opts.pop("documentation-name", [""]).pop(),
             documentation_uri=documentation_uri,
             api_description=api_description,
@@ -219,6 +229,7 @@ class Options:
             release_level=opts.pop(
                 "release-level", ["preview"]
             ).pop(),  # Default to "preview" unless explicitly set to "stable"
+            title=service_yaml_config.get("title", ""),
         )
 
         # Note: if we ever need to recursively check directories for sample
