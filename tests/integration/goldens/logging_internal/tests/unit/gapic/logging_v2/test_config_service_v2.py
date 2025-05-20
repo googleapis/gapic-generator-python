@@ -504,11 +504,6 @@ def test_base_config_service_v2_client_mtls_env_auto(client_class, transport_cla
 @pytest.mark.parametrize("client_class", [
     BaseConfigServiceV2Client, BaseConfigServiceV2AsyncClient
 ])
-
-
-@pytest.mark.parametrize("client_class", [
-    BaseConfigServiceV2Client, BaseConfigServiceV2AsyncClient
-])
 @mock.patch.object(BaseConfigServiceV2Client, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(BaseConfigServiceV2Client))
 @mock.patch.object(BaseConfigServiceV2AsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(BaseConfigServiceV2AsyncClient))
 def test_base_config_service_v2_client_client_api_endpoint(client_class):

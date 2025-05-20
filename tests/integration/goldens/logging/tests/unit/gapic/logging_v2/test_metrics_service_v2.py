@@ -503,11 +503,6 @@ def test_metrics_service_v2_client_mtls_env_auto(client_class, transport_class, 
 @pytest.mark.parametrize("client_class", [
     MetricsServiceV2Client, MetricsServiceV2AsyncClient
 ])
-
-
-@pytest.mark.parametrize("client_class", [
-    MetricsServiceV2Client, MetricsServiceV2AsyncClient
-])
 @mock.patch.object(MetricsServiceV2Client, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2Client))
 @mock.patch.object(MetricsServiceV2AsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(MetricsServiceV2AsyncClient))
 def test_metrics_service_v2_client_client_api_endpoint(client_class):

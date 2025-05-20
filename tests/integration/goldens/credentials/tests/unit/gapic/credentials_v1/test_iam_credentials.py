@@ -516,11 +516,6 @@ def test_iam_credentials_client_mtls_env_auto(client_class, transport_class, tra
 @pytest.mark.parametrize("client_class", [
     IAMCredentialsClient, IAMCredentialsAsyncClient
 ])
-
-
-@pytest.mark.parametrize("client_class", [
-    IAMCredentialsClient, IAMCredentialsAsyncClient
-])
 @mock.patch.object(IAMCredentialsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsClient))
 @mock.patch.object(IAMCredentialsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(IAMCredentialsAsyncClient))
 def test_iam_credentials_client_client_api_endpoint(client_class):

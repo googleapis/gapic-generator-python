@@ -534,11 +534,6 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
 @pytest.mark.parametrize("client_class", [
     CloudRedisClient, CloudRedisAsyncClient
 ])
-
-
-@pytest.mark.parametrize("client_class", [
-    CloudRedisClient, CloudRedisAsyncClient
-])
 @mock.patch.object(CloudRedisClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisClient))
 @mock.patch.object(CloudRedisAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(CloudRedisAsyncClient))
 def test_cloud_redis_client_client_api_endpoint(client_class):

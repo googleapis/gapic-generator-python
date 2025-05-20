@@ -639,15 +639,6 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
     {{ service.client_name }}
     {% endif %}
 ])
-
-
-@pytest.mark.parametrize("client_class", [
-    {% if 'grpc' in opts.transport %}
-    {{ service.client_name }}, {{ service.async_client_name }}
-    {% elif 'rest' in opts.transport %}
-    {{ service.client_name }}
-    {% endif %}
-])
 @mock.patch.object({{ service.client_name }}, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template({{ service.client_name }}))
 {% if 'grpc' in opts.transport %}
 @mock.patch.object({{ service.async_client_name }}, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template({{ service.async_client_name }}))

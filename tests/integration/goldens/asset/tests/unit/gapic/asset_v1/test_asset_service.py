@@ -526,11 +526,6 @@ def test_asset_service_client_mtls_env_auto(client_class, transport_class, trans
 @pytest.mark.parametrize("client_class", [
     AssetServiceClient, AssetServiceAsyncClient
 ])
-
-
-@pytest.mark.parametrize("client_class", [
-    AssetServiceClient, AssetServiceAsyncClient
-])
 @mock.patch.object(AssetServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceClient))
 @mock.patch.object(AssetServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AssetServiceAsyncClient))
 def test_asset_service_client_client_api_endpoint(client_class):

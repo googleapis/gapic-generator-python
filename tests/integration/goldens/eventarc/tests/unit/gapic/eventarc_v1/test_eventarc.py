@@ -536,11 +536,6 @@ def test_eventarc_client_mtls_env_auto(client_class, transport_class, transport_
 @pytest.mark.parametrize("client_class", [
     EventarcClient, EventarcAsyncClient
 ])
-
-
-@pytest.mark.parametrize("client_class", [
-    EventarcClient, EventarcAsyncClient
-])
 @mock.patch.object(EventarcClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcClient))
 @mock.patch.object(EventarcAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(EventarcAsyncClient))
 def test_eventarc_client_client_api_endpoint(client_class):
