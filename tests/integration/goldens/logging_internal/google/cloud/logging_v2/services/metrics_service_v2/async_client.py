@@ -58,8 +58,6 @@ class BaseMetricsServiceV2AsyncClient:
     _client: BaseMetricsServiceV2Client
 
     # Copy defaults from the synchronous client for use here.
-    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = BaseMetricsServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = BaseMetricsServiceV2Client.DEFAULT_MTLS_ENDPOINT
     _DEFAULT_ENDPOINT_TEMPLATE = BaseMetricsServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = BaseMetricsServiceV2Client._DEFAULT_UNIVERSE

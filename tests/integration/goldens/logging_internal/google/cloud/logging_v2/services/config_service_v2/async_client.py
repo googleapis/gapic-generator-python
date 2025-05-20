@@ -60,8 +60,6 @@ class BaseConfigServiceV2AsyncClient:
     _client: BaseConfigServiceV2Client
 
     # Copy defaults from the synchronous client for use here.
-    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = BaseConfigServiceV2Client.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = BaseConfigServiceV2Client.DEFAULT_MTLS_ENDPOINT
     _DEFAULT_ENDPOINT_TEMPLATE = BaseConfigServiceV2Client._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = BaseConfigServiceV2Client._DEFAULT_UNIVERSE

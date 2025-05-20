@@ -62,8 +62,6 @@ class AssetServiceAsyncClient:
     _client: AssetServiceClient
 
     # Copy defaults from the synchronous client for use here.
-    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = AssetServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AssetServiceClient.DEFAULT_MTLS_ENDPOINT
     _DEFAULT_ENDPOINT_TEMPLATE = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = AssetServiceClient._DEFAULT_UNIVERSE

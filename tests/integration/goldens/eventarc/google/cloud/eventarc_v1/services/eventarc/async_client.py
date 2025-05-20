@@ -74,8 +74,6 @@ class EventarcAsyncClient:
     _client: EventarcClient
 
     # Copy defaults from the synchronous client for use here.
-    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = EventarcClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = EventarcClient.DEFAULT_MTLS_ENDPOINT
     _DEFAULT_ENDPOINT_TEMPLATE = EventarcClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = EventarcClient._DEFAULT_UNIVERSE

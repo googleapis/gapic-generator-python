@@ -87,12 +87,6 @@ def async_anonymous_credentials():
         return ga_credentials_async.AnonymousCredentials()
     return ga_credentials.AnonymousCredentials()
 
-# If default endpoint is localhost, then default mtls endpoint will be the same.
-# This method modifies the default endpoint so the client can produce a different
-# mtls endpoint for endpoint testing purposes.
-def modify_default_endpoint(client):
-    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
-
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
