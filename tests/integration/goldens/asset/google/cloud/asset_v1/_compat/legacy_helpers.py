@@ -1,4 +1,6 @@
 
+import os
+
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 
 def _read_environment_variables():
