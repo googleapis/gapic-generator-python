@@ -55,6 +55,7 @@ from google.api_core import path_template
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.asset_v1._compat import legacy_helpers
 from google.cloud.asset_v1.services.asset_service import AssetServiceAsyncClient
 from google.cloud.asset_v1.services.asset_service import AssetServiceClient
 from google.cloud.asset_v1.services.asset_service import pagers
@@ -117,35 +118,35 @@ def test__get_default_mtls_endpoint():
     assert AssetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 def test__read_environment_variables():
-    assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
+    assert legacy_helpers._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert AssetServiceClient._read_environment_variables() == (True, "auto", None)
+        assert legacy_helpers._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
+        assert legacy_helpers._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError) as excinfo:
-            AssetServiceClient._read_environment_variables()
+            legacy_helpers._read_environment_variables()
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert AssetServiceClient._read_environment_variables() == (False, "never", None)
+        assert legacy_helpers._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert AssetServiceClient._read_environment_variables() == (False, "always", None)
+        assert legacy_helpers._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert AssetServiceClient._read_environment_variables() == (False, "auto", None)
+        assert legacy_helpers._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
-            AssetServiceClient._read_environment_variables()
+            legacy_helpers._read_environment_variables()
     assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert AssetServiceClient._read_environment_variables() == (False, "auto", "foo.com")
+        assert legacy_helpers._read_environment_variables() == (False, "auto", "foo.com")
 
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
