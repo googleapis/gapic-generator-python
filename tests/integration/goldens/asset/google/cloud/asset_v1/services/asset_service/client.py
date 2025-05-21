@@ -63,7 +63,7 @@ from .transports.grpc import AssetServiceGrpcTransport
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
 from .transports.rest import AssetServiceRestTransport
 
-from ._compat import legacy_helpers
+from google.cloud.asset_v1._compat import legacy_helpers
 
 class AssetServiceClientMeta(type):
     """Metaclass for the AssetService client.

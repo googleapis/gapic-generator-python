@@ -89,7 +89,8 @@ except ImportError as e: # pragma: NO COVER
 {% endif %}{# if rest_async_io_enabled #}
 {% endif %}
 
-from ._compat import legacy_helpers
+from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif %}
+    {{- api.naming.versioned_module_name }}._compat import legacy_helpers
 
 class {{ service.client_name }}Meta(type):
     """Metaclass for the {{ service.name }} client.
