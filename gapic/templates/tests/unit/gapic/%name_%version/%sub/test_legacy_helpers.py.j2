@@ -13,6 +13,7 @@ except ImportError:  # pragma: NO COVER
 
 import pytest
 
+from google.auth.exceptions import MutualTLSChannelError
 
 from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif %}
     {{- api.naming.versioned_module_name }}._compat import legacy_helpers
