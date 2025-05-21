@@ -11,6 +11,8 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+import pytest
+
 
 from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif %}
     {{- api.naming.versioned_module_name }}._compat import legacy_helpers
