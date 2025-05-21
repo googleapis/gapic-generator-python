@@ -1,5 +1,14 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
 
 import os
+
+# try/except added for compatibility with python < 3.8
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO COVER
+    import mock
 
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 
@@ -24,3 +33,5 @@ def _read_environment_variables():
     if use_mtls_endpoint not in ("auto", "never", "always"):
         raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
     return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+
+{% endblock %}
