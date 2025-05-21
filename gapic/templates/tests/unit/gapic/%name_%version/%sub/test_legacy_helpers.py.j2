@@ -5,6 +5,13 @@
 
 import os
 
+# try/except added for compatibility with python < 3.8
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO COVER
+    import mock
+
+
 from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif %}
     {{- api.naming.versioned_module_name }}._compat import legacy_helpers
 

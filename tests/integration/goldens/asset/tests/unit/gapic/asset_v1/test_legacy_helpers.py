@@ -16,6 +16,13 @@
 
 import os
 
+# try/except added for compatibility with python < 3.8
+try:
+    from unittest import mock
+except ImportError:  # pragma: NO COVER
+    import mock
+
+
 from google.cloud.asset_v1._compat import legacy_helpers
 
 
