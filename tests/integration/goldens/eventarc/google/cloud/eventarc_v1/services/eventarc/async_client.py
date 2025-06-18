@@ -2637,10 +2637,11 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        if request is not None:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(
+                    (("name", request.name),)),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
