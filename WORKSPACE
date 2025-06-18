@@ -22,6 +22,8 @@ http_archive(
     ],
 )
 
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2407):
+# Update to the latest version of rules_python
 _rules_python_version = "1.0.0"
 
 _rules_python_sha256 = "4f7e2aa1eb9aa722d96498f5ef514f426c1f55161c3c9ae628c857a7128ceb07"
