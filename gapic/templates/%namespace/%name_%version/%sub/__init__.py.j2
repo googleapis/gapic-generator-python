@@ -7,6 +7,17 @@ from {{package_path}} import gapic_version as package_version
 
 __version__ = package_version.__version__
 
+
+import google.api_core
+
+{# How do we get the name of the PyPI path into this template? We
+   want the string arguments below to be something like
+   "google-cloud-foo (google.cloud.foo)", where the name outside the
+   parentheses is the PyPI package name, and the the name inside the
+   parentheses is the qualified Python package name installed. #}
+api_core.check_python_version("{package_path}")
+api_core.check_dependency_versions("{package_path}")
+
 {#  Import subpackages. -#}
 {% for subpackage, _ in api.subpackages|dictsort %}
 from . import {{ subpackage }}
