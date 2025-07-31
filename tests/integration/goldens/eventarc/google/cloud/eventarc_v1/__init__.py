@@ -18,6 +18,12 @@ from google.cloud.eventarc_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+import google.api_core as api_core
+
+api_core.check_python_version("google.cloud.eventarc_v1")
+api_core.check_dependency_versions("google.cloud.eventarc_v1")
+
+
 from .services.eventarc import EventarcClient
 from .services.eventarc import EventarcAsyncClient
 
