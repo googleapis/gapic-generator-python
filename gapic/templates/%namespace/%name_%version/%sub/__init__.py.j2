@@ -15,8 +15,8 @@ import google.api_core as api_core
    "google-cloud-foo (google.cloud.foo)", where the name outside the
    parentheses is the PyPI package name, and the the name inside the
    parentheses is the qualified Python package name installed. #}
-api_core.check_python_version("{package_path}")
-api_core.check_dependency_versions("{package_path}")
+api_core.check_python_version("{{package_path}}")
+api_core.check_dependency_versions("{{package_path}}")
 
 {#  Import subpackages. -#}
 {% for subpackage, _ in api.subpackages|dictsort %}
