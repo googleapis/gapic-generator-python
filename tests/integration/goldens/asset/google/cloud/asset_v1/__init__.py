@@ -18,6 +18,12 @@ from google.cloud.asset_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+import google.api_core as api_core
+
+api_core.check_python_version("google.cloud.asset_v1")
+api_core.check_dependency_versions("google.cloud.asset_v1")
+
+
 from .services.asset_service import AssetServiceClient
 from .services.asset_service import AssetServiceAsyncClient
 
