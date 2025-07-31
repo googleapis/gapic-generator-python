@@ -18,6 +18,12 @@ from google.cloud.logging_v2 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+import google.api_core as api_core
+
+api_core.check_python_version("google.cloud.logging_v2")
+api_core.check_dependency_versions("google.cloud.logging_v2")
+
+
 from .services.config_service_v2 import BaseConfigServiceV2Client
 from .services.config_service_v2 import BaseConfigServiceV2AsyncClient
 from .services.logging_service_v2 import LoggingServiceV2Client
