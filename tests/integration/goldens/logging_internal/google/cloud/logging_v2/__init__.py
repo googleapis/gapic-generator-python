@@ -46,31 +46,43 @@ except AttributeError:
             "least Python 3.10, before then, and " +
             f"then update {_package_label}.")
 
-  import pkg_resources
   from packaging.version import parse as parse_version
 
-  def _get_version(dependency_name):
-    version_string = pkg_resources.get_distribution(dependency_name).version
-    return parse_version(version_string)
+  if sys.version_info < (3, 8):
+    import pkg_resources
+    def _get_version(dependency_name):
+      try:
+        version_string = pkg_resources.get_distribution(dependency_name).version
+        return parse_version(version_string)
+      except pkg_resources.DistributionNotFound:
+        return None
+  else:
+    from importlib import metadata
 
-  try:
-    _dependency_package = "google.protobuf"
-    _version_used = _get_version(_dependency_package)
-    _next_supported_version = "4.25.8"
-    if _version_used < parse_version(_next_supported_version):
-      logging.warning(f"DEPRECATION: Package {_package_label} depends on " +
-              f"{_dependency_package}, currently installed at version " +
-              f"{_version_used.__str__}. Future updates to " +
-              f"{_package_label} will require {_dependency_package} at " +
-              f"version {_next_supported_version} or higher. Please ensure " +
-              "that either (a) your Python environment doesn't pin the " +
-              f"version of {_dependency_package}, so that updates to " +
-              f"{_package_label} can require the higher version, or " +
-              "(b) you manually update your Python environment to use at " +
-              f"least version {_next_supported_version} of " +
-              f"{_dependency_package}.")
-  except pkg_resources.DistributionNotFound:
-    pass
+    def _get_version(dependency_name):
+      try:
+        version_string = metadata.version("requests")
+        parsed_version = parse_version(version_string)
+        return parsed_version.release
+      except metadata.PackageNotFoundError:
+        return None
+
+  _dependency_package = "google.protobuf"
+  _next_supported_version = "4.25.8"
+  _next_supported_version_tuple = (4, 25, 8)
+  _version_used = _get_version(_dependency_package)
+  if _version_used and _version_used < _next_supported_version_tuple:
+    logging.warning(f"DEPRECATION: Package {_package_label} depends on " +
+            f"{_dependency_package}, currently installed at version " +
+            f"{_version_used.__str__}. Future updates to " +
+            f"{_package_label} will require {_dependency_package} at " +
+            f"version {_next_supported_version} or higher. Please ensure " +
+            "that either (a) your Python environment doesn't pin the " +
+            f"version of {_dependency_package}, so that updates to " +
+            f"{_package_label} can require the higher version, or " +
+            "(b) you manually update your Python environment to use at " +
+            f"least version {_next_supported_version} of " +
+            f"{_dependency_package}.")
 
 
 from .services.config_service_v2 import BaseConfigServiceV2Client
