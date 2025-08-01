@@ -19,11 +19,12 @@ except AttributeError:
 
     In the meantime, please ensure the functionality here mirrors the
     equivalent functionality in api_core, in those two functions above.  
--#}
+#}
   # An older version of api_core is installed, which does not define the
   # functions above. We do equivalent checks manually.
 
   import logging
+  import sys
 
   _py_version_str = sys.version.split()[0]
   _package_label = "{{package_path}}"
@@ -39,7 +40,7 @@ except AttributeError:
             "it reaches its end of life (October 2025). Please " +
             "upgrade to the latest Python version, or at " +
             "least Python 3.10, before then, and " +
-            f"then update {_package_label}. "
+            f"then update {_package_label}.")
 
   import pkg_resources
   from packaging.version import parse as parse_version
@@ -48,22 +49,24 @@ except AttributeError:
     version_string = pkg_resources.get_distribution(dependency_name).version
     return parse_version(version_string)
 
-  _dependency_package = "google.protobuf"
-  _version_used = _get_version(_dependency_package)
-  _next_supported_version = "4.25.8"
-  if _version_used < parse_version(_next_supported_version):
-    logging.warning(f"DEPRECATION: Package {_package_label} depends on " +
-            f"{_dependency_package}, currently installed at version " +
-            f"{_version_used.__str__}. Future updates to " +
-            f"{_package_label} will require {_dependency_package} at " +
-            f"version {_next_supported_version} or higher. Please ensure " +
-            "that either (a) your Python environment doesn't pin the " +
-            f"version of {_dependency_package}, so that updates to " +
-            f"{_package_label} can require the higher version, or " +
-            "(b) you manually update your Python environment to use at " +
-            f"least version {_next_supported_version} of " +
-            f"{_dependency_package}."
-      
+  try:
+    _dependency_package = "google.protobuf"
+    _version_used = _get_version(_dependency_package)
+    _next_supported_version = "4.25.8"
+    if _version_used < parse_version(_next_supported_version):
+      logging.warning(f"DEPRECATION: Package {_package_label} depends on " +
+              f"{_dependency_package}, currently installed at version " +
+              f"{_version_used.__str__}. Future updates to " +
+              f"{_package_label} will require {_dependency_package} at " +
+              f"version {_next_supported_version} or higher. Please ensure " +
+              "that either (a) your Python environment doesn't pin the " +
+              f"version of {_dependency_package}, so that updates to " +
+              f"{_package_label} can require the higher version, or " +
+              "(b) you manually update your Python environment to use at " +
+              f"least version {_next_supported_version} of " +
+              f"{_dependency_package}.")
+  except pkg_resources.DistributionNotFound:
+    pass
   
 {#  Import subpackages. -#}
 {% for subpackage, _ in api.subpackages|dictsort %}
