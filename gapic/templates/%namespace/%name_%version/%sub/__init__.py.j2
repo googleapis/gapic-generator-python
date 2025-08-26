@@ -29,9 +29,6 @@ from .services.{{ service.name|snake_case }} import {{ service.async_client_name
 -#}
 {% for proto in api.protos.values()|sort(attribute='name')
         if proto.meta.address.subpackage == api.subpackage_view %}
-{%if protobuf_pythonic_types_enabled %}
-from .types import {{ proto.module_name }}_pb2
-{% endif %}
 {% for message in proto.messages.values()|sort(attribute='name') %}
 from .types.{{ proto.module_name }}{%if protobuf_pythonic_types_enabled %}_pb2{% endif %} import {{ message.name }}
 {% endfor %}
