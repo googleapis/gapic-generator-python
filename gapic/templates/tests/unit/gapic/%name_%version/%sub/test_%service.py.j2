@@ -226,6 +226,7 @@ def test__get_api_endpoint():
 {% for method in service.methods.values() %}{% with method_name = method.name|snake_case %}
 {% for mode in ["", "async"] %}
 {% if mode == "async" %}
+@pytest.mark.asyncio
 async def test_{{ method_name }}_api_version_header_async(transport_name="grpc"):
     client = {{ service.async_client_name }}(credentials=async_anonymous_credentials(), transport=transport_name)
 {% else %}
@@ -247,7 +248,8 @@ def test_{{ method_name }}_api_version_header(transport_name):
         # Mock the actual call within the gRPC stub, and fake the request.
         with mock.patch.object(
                 type(client.transport.{{ method.transport_safe_name|snake_case }}),
-                '__call__'
+                '__call__'{% if mode == "async" %},
+                new_callable=AsyncMock{% endif %}
             ) as call:
             {% if mode == "async" %}
                 await client.{{ method_name }}()

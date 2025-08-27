@@ -167,7 +167,7 @@ def fragment(session, use_ads_templates=False):
         "pytest-cov",
         "pytest-xdist",
         "asyncmock; python_version < '3.8'",
-        "pytest-asyncio < '1.1.0'",
+        "pytest-asyncio<1.1.0",
         "grpcio-tools",
     )
     session.install("-e", ".")
@@ -480,7 +480,7 @@ def run_showcase_unit_tests(session, fail_under=100, rest_async_io_enabled=False
         "pytest-cov",
         "pytest-xdist",
         "asyncmock; python_version < '3.8'",
-        "pytest-asyncio < '1.1.0'",
+        "pytest-asyncio<1.1.0",
     )
     # Run the tests.
     # NOTE: async rest is not supported against the minimum supported version of google-api-core.
