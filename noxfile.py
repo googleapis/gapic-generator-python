@@ -589,7 +589,8 @@ def showcase_mypy(
     """Perform typecheck analysis on the generated Showcase library."""
 
     session.install(
-        "mypy",
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2410): Use the latest version of mypy
+        "mypy<1.16.0",
         "types-setuptools",
         "types-protobuf",
         "types-requests",
