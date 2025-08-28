@@ -249,8 +249,7 @@ def test_{{ method_name }}_api_version_header(transport_name):
         with mock.patch.object(
                 type(client.transport.{{ method.transport_safe_name|snake_case }}),
                 '__call__'{% if mode == "async" %},
-                new_callable=AsyncMock{% endif %}
-            ) as call:
+                new_callable=AsyncMock{% endif %}) as call:
             {% if mode == "async" %}
                 await client.{{ method_name }}()
             {% else %}
