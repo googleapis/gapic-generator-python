@@ -1,6 +1,47 @@
 # Changelog
 
 
+## [1.26.1](https://github.com/googleapis/gapic-generator-python/compare/v1.26.0...v1.26.1) (2025-08-28)
+
+
+### Bug Fixes
+
+* Temporarily disable `test_<service>_api_version_header_async` which is not marked as async ([9382ac3](https://github.com/googleapis/gapic-generator-python/commit/9382ac3546f335116665e10c4132369bc7637a67))
+
+## [1.26.0](https://github.com/googleapis/gapic-generator-python/compare/v1.25.0...v1.26.0) (2025-05-28)
+
+
+### Features
+
+* Add client debug logging support for server side streaming REST calls ([#2340](https://github.com/googleapis/gapic-generator-python/issues/2340)) ([8a705c5](https://github.com/googleapis/gapic-generator-python/commit/8a705c513fe63b025eca738feb64a1e414f9f4b6))
+
+## [1.25.0](https://github.com/googleapis/gapic-generator-python/compare/v1.24.1...v1.25.0) (2025-05-06)
+
+
+### Features
+
+* Add protobuf runtime version to `x-goog-api-client` header ([#2368](https://github.com/googleapis/gapic-generator-python/issues/2368)) ([9c05dbe](https://github.com/googleapis/gapic-generator-python/commit/9c05dbeb9285919f45924be09c445b707cb85b54))
+
+## [1.24.1](https://github.com/googleapis/gapic-generator-python/compare/v1.24.0...v1.24.1) (2025-04-17)
+
+
+### Bug Fixes
+
+* Update generated docs to match synthtool templates ([3f62f31](https://github.com/googleapis/gapic-generator-python/commit/3f62f31d5146147c4bc6393fbeef18ce1d9a1a42))
+
+## [1.24.0](https://github.com/googleapis/gapic-generator-python/compare/v1.23.6...v1.24.0) (2025-04-11)
+
+
+### Features
+
+* Adds augmented pagination to account for BQ family of APIs ([#2372](https://github.com/googleapis/gapic-generator-python/issues/2372)) ([30cd1a4](https://github.com/googleapis/gapic-generator-python/commit/30cd1a49353048fc190114cfb7a73e14ec2eff31))
+
+
+### Bug Fixes
+
+* Fixed internal method generation naming issues ([#2365](https://github.com/googleapis/gapic-generator-python/issues/2365)) ([868f201](https://github.com/googleapis/gapic-generator-python/commit/868f201957b271c9390bf41374897a2ce728a5e2))
+* Missing DEFAULT_HOST should still result in compiling code ([#2051](https://github.com/googleapis/gapic-generator-python/issues/2051)) ([dc6d4f7](https://github.com/googleapis/gapic-generator-python/commit/dc6d4f7ec0853557bb7c25a8276fbe262c5bda5d))
+
 ## [1.23.6](https://github.com/googleapis/gapic-generator-python/compare/v1.23.5...v1.23.6) (2025-03-17)
 
 
