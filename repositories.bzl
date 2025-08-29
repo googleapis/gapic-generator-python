@@ -41,16 +41,16 @@ def gapic_generator_python():
         http_archive,
         name = "pandoc_linux",
         build_file_content = _PANDOC_BUILD_FILE,
-        strip_prefix = "pandoc-2.2.1",
-        url = "https://github.com/jgm/pandoc/releases/download/2.2.1/pandoc-2.2.1-linux.tar.gz",
+        strip_prefix = "pandoc-3.7.0.2",
+        url = "https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-linux-amd64.tar.gz",
     )
 
     _maybe(
         http_archive,
         name = "pandoc_macOS",
         build_file_content = _PANDOC_BUILD_FILE,
-        strip_prefix = "pandoc-2.2.1",
-        url = "https://github.com/jgm/pandoc/releases/download/2.2.1/pandoc-2.2.1-macOS.zip",
+        strip_prefix = "pandoc-3.7.0.2",
+        url = "https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-arm64-macOS.zip",
     )
 
     _rules_gapic_version = "0.5.4"
