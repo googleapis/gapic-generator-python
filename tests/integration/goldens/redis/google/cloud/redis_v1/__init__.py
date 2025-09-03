@@ -20,10 +20,10 @@ __version__ = package_version.__version__
 
 import google.api_core as api_core
 
-if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: no coverage
+if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER
     api_core.check_python_version("google.cloud.redis_v1") # type: ignore
     api_core.check_dependency_versions("google.cloud.redis_v1") # type: ignore
-else:   # pragma: no coverage
+else:   # pragma: NO COVER
     # An older version of api_core is installed, which does not define the
     # functions above. We do equivalent checks manually.
 
