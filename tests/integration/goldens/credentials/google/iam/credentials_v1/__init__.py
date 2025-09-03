@@ -21,8 +21,8 @@ __version__ = package_version.__version__
 import google.api_core as api_core
 
 if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):
-    api_core.check_python_version("google.iam.credentials_v1")
-    api_core.check_dependency_versions("google.iam.credentials_v1")
+    api_core.check_python_version("google.iam.credentials_v1") # type: ignore
+    api_core.check_dependency_versions("google.iam.credentials_v1") # type: ignore
 else:
     # An older version of api_core is installed, which does not define the
     # functions above. We do equivalent checks manually.
