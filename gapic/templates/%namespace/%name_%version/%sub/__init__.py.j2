@@ -10,11 +10,11 @@ __version__ = package_version.__version__
 
 import google.api_core as api_core
 
-if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):
+if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: no coverage
     {# TODO(api_core): remove `type:ignore` below when minimum version of api_core makes the else clause unnecessary. #}
     api_core.check_python_version("{{package_path}}") # type: ignore
     api_core.check_dependency_versions("{{package_path}}") # type: ignore
-else:
+else:   # pragma: no coverage
 {# TODO(api_core): Remove this try-catch when we require api-core at a version that
    supports the changes in https://github.com/googleapis/python-api-core/pull/832
 
