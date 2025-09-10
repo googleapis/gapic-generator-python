@@ -33,18 +33,18 @@ else:   # pragma: NO COVER
     _py_version_str = sys.version.split()[0]
     _package_label = "google.cloud.eventarc_v1"
     if sys.version_info < (3, 9):
-        logging.warning("You are using a non-supported Python version " +
-                f"({_py_version_str}).  Google will not post any further " +
-                f"updates to {_package_label} supporting this Python version. " +
-                "Please upgrade to the latest Python version, or at " +
-                f"least to Python 3.9, and then update {_package_label}.")
+        warnings.warn("You are using a non-supported Python version " +
+                      f"({_py_version_str}).  Google will not post any further " +
+                      f"updates to {_package_label} supporting this Python version. " +
+                      "Please upgrade to the latest Python version, or at " +
+                      f"least to Python 3.9, and then update {_package_label}.")
     if sys.version_info[:2] == (3, 9):
-        logging.warning(f"You are using a Python version ({_py_version_str}) " +
-                f"which Google will stop supporting in {_package_label} when " +
-                "it reaches its end of life (October 2025). Please " +
-                "upgrade to the latest Python version, or at " +
-                "least Python 3.10, before then, and " +
-                f"then update {_package_label}.")
+        warnings.warn(f"You are using a Python version ({_py_version_str}) " +
+                      f"which Google will stop supporting in {_package_label} when " +
+                      "it reaches its end of life (October 2025). Please " +
+                      "upgrade to the latest Python version, or at " +
+                      "least Python 3.10, before then, and " +
+                      f"then update {_package_label}.")
 
     from packaging.version import parse as parse_version
 
@@ -73,17 +73,17 @@ else:   # pragma: NO COVER
     _next_supported_version_tuple = (4, 25, 8)
     _version_used = _get_version(_dependency_package)
     if _version_used and _version_used < _next_supported_version_tuple:
-        logging.warning(f"DEPRECATION: Package {_package_label} depends on " +
-                  f"{_dependency_package}, currently installed at version " +
-                  f"{_version_used.__str__}. Future updates to " +
-                  f"{_package_label} will require {_dependency_package} at " +
-                  f"version {_next_supported_version} or higher. Please ensure " +
-                  "that either (a) your Python environment doesn't pin the " +
-                  f"version of {_dependency_package}, so that updates to " +
-                  f"{_package_label} can require the higher version, or " +
-                  "(b) you manually update your Python environment to use at " +
-                  f"least version {_next_supported_version} of " +
-                  f"{_dependency_package}.")
+        warnings.warn(f"DEPRECATION: Package {_package_label} depends on " +
+                      f"{_dependency_package}, currently installed at version " +
+                      f"{_version_used.__str__}. Future updates to " +
+                      f"{_package_label} will require {_dependency_package} at " +
+                      f"version {_next_supported_version} or higher. Please ensure " +
+                      "that either (a) your Python environment doesn't pin the " +
+                      f"version of {_dependency_package}, so that updates to " +
+                      f"{_package_label} can require the higher version, or " +
+                      "(b) you manually update your Python environment to use at " +
+                      f"least version {_next_supported_version} of " +
+                      f"{_dependency_package}.")
 
 
 from .services.eventarc import EventarcClient
