@@ -37,14 +37,16 @@ else:   # pragma: NO COVER
                       f"({_py_version_str}).  Google will not post any further " +
                       f"updates to {_package_label} supporting this Python version. " +
                       "Please upgrade to the latest Python version, or at " +
-                      f"least to Python 3.9, and then update {_package_label}.")
+                      f"least to Python 3.9, and then update {_package_label}.",
+                      FutureWarning)
     if sys.version_info[:2] == (3, 9):
         warnings.warn(f"You are using a Python version ({_py_version_str}) " +
                       f"which Google will stop supporting in {_package_label} when " +
                       "it reaches its end of life (October 2025). Please " +
                       "upgrade to the latest Python version, or at " +
                       "least Python 3.10, before then, and " +
-                      f"then update {_package_label}.")
+                      f"then update {_package_label}.",
+                      FutureWarning)
 
     from packaging.version import parse as parse_version
 
@@ -83,7 +85,8 @@ else:   # pragma: NO COVER
                       f"{_package_label} can require the higher version, or " +
                       "(b) you manually update your Python environment to use at " +
                       f"least version {_next_supported_version} of " +
-                      f"{_dependency_package}.")
+                      f"{_dependency_package}.",
+                      FutureWarning)
 
 
 from .services.config_service_v2 import BaseConfigServiceV2Client
