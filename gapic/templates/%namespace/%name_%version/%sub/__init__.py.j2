@@ -24,7 +24,7 @@ else:   # pragma: NO COVER
     # An older version of api_core is installed, which does not define the
     # functions above. We do equivalent checks manually.
 
-    import logging
+    import warnings
     import sys
 
     _py_version_str = sys.version.split()[0]
