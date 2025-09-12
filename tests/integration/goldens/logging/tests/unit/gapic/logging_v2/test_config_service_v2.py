@@ -12919,7 +12919,7 @@ def test_config_service_v2_transport_channel_mtls_with_client_cert_source(
                         client_cert_source=client_cert_source_callback,
                     )
                     adc.assert_called_once()
-            assert len(record) == 2
+            assert len(record) == 7
 
             grpc_ssl_channel_cred.assert_called_once_with(
                 certificate_chain=b"cert bytes", private_key=b"key bytes"
