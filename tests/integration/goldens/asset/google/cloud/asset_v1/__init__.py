@@ -77,7 +77,7 @@ else:   # pragma: NO COVER
     if _version_used and _version_used < _next_supported_version_tuple:
         warnings.warn(f"DEPRECATION: Package {_package_label} depends on " +
                       f"{_dependency_package}, currently installed at version " +
-                      f"{_version_used.__str__}. Future updates to " +
+                      f"{_version_used.__str__()}. Future updates to " +
                       f"{_package_label} will require {_dependency_package} at " +
                       f"version {_next_supported_version} or higher. Please ensure " +
                       "that either (a) your Python environment doesn't pin the " +
