@@ -53,9 +53,9 @@ else:   # pragma: NO COVER
         def _get_version(dependency_name):
           try:
             version_string = pkg_resources.get_distribution(dependency_name).version
-            return parse_version(version_string)
+            return (parse_version(version_string), version_string)
           except pkg_resources.DistributionNotFound:
-            return None
+            return (None, "--")
     else:
         from importlib import metadata
 
@@ -63,18 +63,18 @@ else:   # pragma: NO COVER
             try:
                 version_string = metadata.version("requests")
                 parsed_version = parse_version(version_string)
-                return parsed_version.release
+                return (parsed_version.release, version_string)
             except metadata.PackageNotFoundError:
-                return None
+                return (None, "--")
 
     _dependency_package = "google.protobuf"
     _next_supported_version = "4.25.8"
     _next_supported_version_tuple = (4, 25, 8)
-    _version_used = _get_version(_dependency_package)
+    (_version_used, _version_used_string) = _get_version(_dependency_package)
     if _version_used and _version_used < _next_supported_version_tuple:
-        warnings.warn(f"DEPRECATION: Package {_package_label} depends on " +
+        warnings.warn(f"Package {_package_label} depends on " +
                       f"{_dependency_package}, currently installed at version " +
-                      f"{_version_used.__str__()}. Future updates to " +
+                      f"{_version_used_string}. Future updates to " +
                       f"{_package_label} will require {_dependency_package} at " +
                       f"version {_next_supported_version} or higher. Please ensure " +
                       "that either (a) your Python environment doesn't pin the " +
