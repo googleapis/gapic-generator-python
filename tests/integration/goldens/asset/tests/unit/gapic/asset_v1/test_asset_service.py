@@ -17726,7 +17726,7 @@ def test_asset_service_transport_channel_mtls_with_client_cert_source(
             grpc_create_channel.return_value = mock_grpc_channel
 
             cred = ga_credentials.AnonymousCredentials()
-            with pytest.warns(DeprecationWarning, match="mtls") as record:
+            with pytest.warns(DeprecationWarning, match="client_cert") as record:
                 with mock.patch.object(google.auth, 'default') as adc:
                     adc.return_value = (cred, None)
                     transport = transport_class(
