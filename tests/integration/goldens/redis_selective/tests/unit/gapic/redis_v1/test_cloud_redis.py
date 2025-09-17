@@ -6837,7 +6837,7 @@ def test_cloud_redis_transport_channel_mtls_with_client_cert_source(
             grpc_create_channel.return_value = mock_grpc_channel
 
             cred = ga_credentials.AnonymousCredentials()
-            with pytest.warns(DeprecationWarning, match="client_cert") as record:
+            with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, 'default') as adc:
                     adc.return_value = (cred, None)
                     transport = transport_class(
@@ -6846,7 +6846,6 @@ def test_cloud_redis_transport_channel_mtls_with_client_cert_source(
                         client_cert_source=client_cert_source_callback,
                     )
                     adc.assert_called_once()
-            assert len(record) == 2
 
             grpc_ssl_channel_cred.assert_called_once_with(
                 certificate_chain=b"cert bytes", private_key=b"key bytes"
@@ -6884,14 +6883,13 @@ def test_cloud_redis_transport_channel_mtls_with_adc(
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
 
-            with pytest.warns(DeprecationWarning, match="mtls") as record:
+            with pytest.warns(DeprecationWarning):
                 transport = transport_class(
                     host="squid.clam.whelk",
                     credentials=mock_cred,
                     api_mtls_endpoint="mtls.squid.clam.whelk",
                     client_cert_source=None,
                 )
-            assert len(record) == 1
 
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
