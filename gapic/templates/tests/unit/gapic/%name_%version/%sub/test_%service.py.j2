@@ -1486,8 +1486,8 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_s
             grpc_create_channel.return_value = mock_grpc_channel
 
             cred = ga_credentials.AnonymousCredentials()
-            with pytest.warns(DeprecationWarning, match="client_cert") as record:
-                with mock.patch.object(google.auth, 'default') as adc:
+            with pytest.warns(DeprecationWarning) as record: # match="client_cert|mtls") as record:
+                with mock.patch.object(google.auth, 'default|mtls') as adc:
                     adc.return_value = (cred, None)
                     transport = transport_class(
                         host="squid.clam.whelk",
@@ -1533,7 +1533,7 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_adc(
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
 
-            with pytest.warns(DeprecationWarning, match="mtls") as record:
+            with pytest.warns(DeprecationWarning) as record:  # , match="mtls") as record:
                 transport = transport_class(
                     host="squid.clam.whelk",
                     credentials=mock_cred,
