@@ -494,13 +494,16 @@ class API:
         ParseDict(
             opts.service_yaml_config, service_yaml_config, ignore_unknown_fields=True
         )
-        gapic_version=opts.gapic_version
+        gapic_version = opts.gapic_version
 
         # Third pass for various selective GAPIC settings; these require
         # settings in the service.yaml and so we build the API object
         # before doing another pass.
         api = cls(
-            naming=naming, all_protos=protos, service_yaml_config=service_yaml_config, gapic_version=gapic_version
+            naming=naming,
+            all_protos=protos,
+            service_yaml_config=service_yaml_config,
+            gapic_version=gapic_version,
         )
 
         if package in api.all_library_settings:

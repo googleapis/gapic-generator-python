@@ -72,7 +72,7 @@ class Options:
             # proto plus dependencies delineated by '+'
             # For example, 'google.cloud.api.v1+google.cloud.anotherapi.v2'
             "proto-plus-deps",
-            "gapic-version", # A version string following https://peps.python.org/pep-0440
+            "gapic-version",  # A version string following https://peps.python.org/pep-0440
         )
     )
 
