@@ -17,6 +17,7 @@ import grpc
 from unittest import mock
 import os
 import pytest
+import pytest_asyncio
 
 from typing import Sequence, Tuple
 
@@ -407,7 +408,7 @@ def intercepted_echo_grpc(use_mtls):
     return EchoClient(transport=transport), interceptor
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def intercepted_echo_grpc_async():
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echoes any metadata with key 'showcase-trailer', so the same metadata

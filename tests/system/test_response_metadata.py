@@ -95,7 +95,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         request_metadata = ("something3", "something_value3")
 
         if transport == "grpc_asyncio":
-            client, interceptor = await intercepted_echo_grpc_async
+            client, interceptor = intercepted_echo_grpc_async
         else:
             client, interceptor = intercepted_echo_rest_async
         response = await client.echo(
