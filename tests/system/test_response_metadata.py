@@ -103,5 +103,5 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             metadata=(request_metadata,),
         )
         assert response.content == request_content
-        #assert request_metadata in interceptor.request_metadata
+        assert request_metadata in interceptor.request_metadata
         assert response_metadata in interceptor.response_metadata
