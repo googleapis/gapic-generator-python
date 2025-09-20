@@ -129,7 +129,7 @@ DummyService.__new__.__defaults__ = (False,) * len(DummyService._fields)
 DummyApiSchema = namedtuple(
     "DummyApiSchema", ["services", "naming", "messages", "gapic_version"]
 )
-DummyApiSchema.__new__.__defaults__ = (False,) * len(DummyApiSchema._fields)
+DummyApiSchema.__new__.__defaults__ = (False, False, False, "0.0.0")
 
 DummyNaming = namedtuple(
     "DummyNaming",
