@@ -80,7 +80,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     def event_loop():
         return asyncio.get_event_loop()
 
-    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    @pytest_asyncio.fixture(params=["grpc_asyncio", "rest_asyncio"])
     def async_echo(use_mtls, request, event_loop):
         transport = request.param
         if transport == "rest_asyncio" and not HAS_ASYNC_REST_ECHO_TRANSPORT:
@@ -95,7 +95,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             credentials=async_anonymous_credentials(),
         )
 
-    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    @pytest_asyncio.fixture(params=["grpc_asyncio", "rest_asyncio"])
     def async_identity(use_mtls, request, event_loop):
         transport = request.param
         if transport == "rest_asyncio" and not HAS_ASYNC_REST_IDENTITY_TRANSPORT:
@@ -303,15 +303,12 @@ class EchoMetadataClientGrpcInterceptor(
     grpc.StreamUnaryClientInterceptor,
     grpc.StreamStreamClientInterceptor,
 ):
-    def __init__(self, key, value):
-        self._key = key
-        self._value = value
+    def __init__(self):
         self.request_metadata = []
         self.response_metadata = []
 
     def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
-            client_call_details.metadata.append((self._key, self._value))
             self.request_metadata = client_call_details.metadata
 
     def intercept_unary_unary(self, continuation, client_call_details, request):
@@ -347,15 +344,12 @@ class EchoMetadataClientGrpcAsyncInterceptor(
     grpc.aio.StreamUnaryClientInterceptor,
     grpc.aio.StreamStreamClientInterceptor,
 ):
-    def __init__(self, key, value):
-        self._key = key
-        self._value = value
+    def __init__(self):
         self.request_metadata = []
         self.response_metadata = []
 
     async def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
-            client_call_details.metadata.append((self._key, self._value))
             self.request_metadata = client_call_details.metadata
 
     async def intercept_unary_unary(self, continuation, client_call_details, request):
@@ -390,10 +384,7 @@ def intercepted_echo_grpc(use_mtls):
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
-    interceptor = EchoMetadataClientGrpcInterceptor(
-        "showcase-trailer",
-        "intercepted",
-    )
+    interceptor = EchoMetadataClientGrpcInterceptor()
     host = "localhost:7469"
     channel = (
         grpc.secure_channel(host, ssl_credentials)
@@ -413,10 +404,7 @@ async def intercepted_echo_grpc_async():
     # The interceptor adds 'showcase-trailer' client metadata. Showcase server
     # echoes any metadata with key 'showcase-trailer', so the same metadata
     # should appear as trailing metadata in the response.
-    interceptor = EchoMetadataClientGrpcAsyncInterceptor(
-        "showcase-trailer",
-        "intercepted",
-    )
+    interceptor = EchoMetadataClientGrpcAsyncInterceptor()
     host = "localhost:7469"
     channel = grpc.aio.insecure_channel(host, interceptors=[interceptor])
     # intercept_channel = grpc.aio.intercept_channel(channel, interceptor)

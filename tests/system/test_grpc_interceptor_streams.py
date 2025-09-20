@@ -27,7 +27,8 @@ def test_unary_stream(intercepted_echo_grpc):
     responses = client.expand(
         {
             "content": content,
-        }
+        },
+        metadata=intercepted_metadata,
     )
 
     for ground_truth, response in zip(content.split(" "), responses):
@@ -46,7 +47,7 @@ def test_stream_stream(intercepted_echo_grpc):
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
     requests.append(showcase.EchoRequest(content="world!"))
-    responses = client.chat(iter(requests))
+    responses = client.chat(iter(requests), metadata=intercepted_metadata)
 
     contents = [response.content for response in responses]
     assert contents == ["hello", "world!"]
