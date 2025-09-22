@@ -307,34 +307,42 @@ class EchoMetadataClientGrpcInterceptor(
         self.request_metadata = []
         self.response_metadata = []
 
-    def _add_request_metadata(self, client_call_details):
+    def _read_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
             self.request_metadata = client_call_details.metadata
 
+    def _read_response_metadata_stream(self):
+        # Access the metadata via the original stream object
+        if hasattr(self, "_original_stream"):
+            return self._original_stream.trailing_metadata()
+        return []
+
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        self._add_request_metadata(client_call_details)
+        self._read_request_metadata(client_call_details)
         response = continuation(client_call_details, request)
         metadata = [(k, str(v)) for k, v in response.trailing_metadata()]
         self.response_metadata = metadata
         return response
 
     def intercept_unary_stream(self, continuation, client_call_details, request):
-        self._add_request_metadata(client_call_details)
+        self._read_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request)
+        self._original_stream = response_it
         return response_it
 
     def intercept_stream_unary(
         self, continuation, client_call_details, request_iterator
     ):
-        self._add_request_metadata(client_call_details)
+        self._read_request_metadata(client_call_details)
         response = continuation(client_call_details, request_iterator)
         return response
 
     def intercept_stream_stream(
         self, continuation, client_call_details, request_iterator
     ):
-        self._add_request_metadata(client_call_details)
+        self._read_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request_iterator)
+        self._original_stream = response_it
         return response_it
 
 
@@ -348,33 +356,33 @@ class EchoMetadataClientGrpcAsyncInterceptor(
         self.request_metadata = []
         self.response_metadata = []
 
-    async def _add_request_metadata(self, client_call_details):
+    async def _read_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
             self.request_metadata = list(client_call_details.metadata)
 
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        await self._add_request_metadata(client_call_details)
+        await self._read_request_metadata(client_call_details)
         response = await continuation(client_call_details, request)
         metadata = [(k, str(v)) for k, v in await response.trailing_metadata()]
         self.response_metadata = metadata
         return response
 
     async def intercept_unary_stream(self, continuation, client_call_details, request):
-        self._add_request_metadata(client_call_details)
+        self._read_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request)
         return response_it
 
     async def intercept_stream_unary(
         self, continuation, client_call_details, request_iterator
     ):
-        self._add_request_metadata(client_call_details)
+        self._read_request_metadata(client_call_details)
         response = continuation(client_call_details, request_iterator)
         return response
 
     async def intercept_stream_stream(
         self, continuation, client_call_details, request_iterator
     ):
-        self._add_request_metadata(client_call_details)
+        self._read_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request_iterator)
         return response_it
 
