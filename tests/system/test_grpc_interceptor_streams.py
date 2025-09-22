@@ -15,10 +15,10 @@
 from google import showcase
 
 
-# intercetped_metadata will be added by the interceptor automatically, and
+# `_METADATA` will be sent as part of the request, and the
 # showcase server will echo it (since it has key 'showcase-trailer') as trailing
 # metadata.
-intercepted_metadata = (("showcase-trailer", "intercepted"),)
+_METADATA = (("showcase-trailer", "intercepted"),)
 
 
 def test_unary_stream(intercepted_echo_grpc):
@@ -28,7 +28,7 @@ def test_unary_stream(intercepted_echo_grpc):
         {
             "content": content,
         },
-        metadata=intercepted_metadata,
+        metadata=_METADATA,
     )
 
     for ground_truth, response in zip(content.split(" "), responses):
@@ -38,7 +38,7 @@ def test_unary_stream(intercepted_echo_grpc):
     response_metadata = [
         (metadata.key, metadata.value) for metadata in responses.trailing_metadata()
     ]
-    assert intercepted_metadata[0] in response_metadata
+    assert _METADATA[0] in response_metadata
     interceptor.response_metadata = response_metadata
 
 
@@ -47,7 +47,7 @@ def test_stream_stream(intercepted_echo_grpc):
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
     requests.append(showcase.EchoRequest(content="world!"))
-    responses = client.chat(iter(requests), metadata=intercepted_metadata)
+    responses = client.chat(iter(requests), metadata=_METADATA)
 
     contents = [response.content for response in responses]
     assert contents == ["hello", "world!"]
@@ -55,5 +55,5 @@ def test_stream_stream(intercepted_echo_grpc):
     response_metadata = [
         (metadata.key, metadata.value) for metadata in responses.trailing_metadata()
     ]
-    assert intercepted_metadata[0] in response_metadata
+    assert _METADATA[0] in response_metadata
     interceptor.response_metadata = response_metadata
