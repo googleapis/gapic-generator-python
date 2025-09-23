@@ -27,8 +27,7 @@ def test_unary_stream(intercepted_echo_grpc):
     responses = client.expand(
         {
             "content": content,
-        },
-        metadata=_METADATA,
+        }
     )
 
     for ground_truth, response in zip(content.split(" "), responses):
@@ -38,10 +37,10 @@ def test_unary_stream(intercepted_echo_grpc):
     response_metadata = [
         (metadata.key, metadata.value) for metadata in responses.trailing_metadata()
     ]
-    assert _METADATA[0] in interceptor.request_metadata
-    assert _METADATA[0] in response_metadata
+    assert intercepted_metadata[0] in interceptor.request_metadata
+    assert intercepted_metadata[0] in response_metadata
     interceptor._read_response_metadata_stream()
-    assert _METADATA[0] in interceptor.response_metadata
+    assert intercepted_metadata[0] in interceptor.response_metadata
 
 
 def test_stream_stream(intercepted_echo_grpc):
@@ -49,7 +48,7 @@ def test_stream_stream(intercepted_echo_grpc):
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
     requests.append(showcase.EchoRequest(content="world!"))
-    responses = client.chat(iter(requests), metadata=_METADATA)
+    responses = client.chat(iter(requests))
 
     contents = [response.content for response in responses]
     assert contents == ["hello", "world!"]
@@ -57,7 +56,7 @@ def test_stream_stream(intercepted_echo_grpc):
     response_metadata = [
         (metadata.key, metadata.value) for metadata in responses.trailing_metadata()
     ]
-    assert _METADATA[0] in interceptor.request_metadata
-    assert _METADATA[0] in response_metadata
+    assert intercepted_metadata[0] in interceptor.request_metadata
+    assert intercepted_metadata[0] in response_metadata
     interceptor._read_response_metadata_stream()
-    assert _METADATA[0] in interceptor.response_metadata
+    assert intercepted_metadata[0] in interceptor.response_metadata
