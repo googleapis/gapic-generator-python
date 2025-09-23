@@ -314,8 +314,7 @@ class EchoMetadataClientGrpcInterceptor(
     def _read_response_metadata_stream(self):
         # Access the metadata via the original stream object
         if hasattr(self, "_original_stream"):
-            return self._original_stream.trailing_metadata()
-        return []
+            self.response_metadata = self._original_stream.trailing_metadata()
 
     def intercept_unary_unary(self, continuation, client_call_details, request):
         self._read_request_metadata(client_call_details)
