@@ -15,10 +15,10 @@
 from google import showcase
 
 
-# `_METADATA` will be sent as part of the request, and the
+# intercetped_metadata will be added by the interceptor automatically, and
 # showcase server will echo it (since it has key 'showcase-trailer') as trailing
 # metadata.
-_METADATA = (("showcase-trailer", "intercepted"),)
+intercepted_metadata = (("showcase-trailer", "intercepted"),)
 
 
 def test_unary_stream(intercepted_echo_grpc):
