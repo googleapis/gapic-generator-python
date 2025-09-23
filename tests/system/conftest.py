@@ -311,7 +311,7 @@ class EchoMetadataClientGrpcInterceptor(
 
     def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
-            client_call_details.metadata[self._key] = self._value
+            client_call_details.metadata.append((self._key, self._value))
             self.request_metadata = client_call_details.metadata
 
     def _read_response_metadata_stream(self):
@@ -363,7 +363,7 @@ class EchoMetadataClientGrpcAsyncInterceptor(
     async def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
             client_call_details.metadata[self._key] = self._value
-            self.request_metadata = client_call_details.metadata
+            self.request_metadata = list(client_call_details.metadata)
 
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         await self._add_request_metadata(client_call_details)

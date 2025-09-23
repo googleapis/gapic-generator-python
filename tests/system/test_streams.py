@@ -80,7 +80,7 @@ def test_stream_stream(echo):
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
     requests.append(showcase.EchoRequest(content="world!"))
-    responses = echo.chat(iter(requests))
+    responses = echo.chat(iter(requests), metadata=_METADATA)
 
     contents = []
     for response in responses:
