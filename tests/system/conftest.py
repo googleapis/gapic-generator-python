@@ -311,6 +311,10 @@ class EchoMetadataClientGrpcInterceptor(
 
     def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
+            # https://grpc.github.io/grpc/python/glossary.html#term-metadata.
+            # For sync, `ClientCallDetails.metadata` is a list.
+            # Whereas for async, `ClientCallDetails.metadata` is a mapping.
+            # https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.Metadata
             client_call_details.metadata.append((self._key, self._value))
             self.request_metadata = client_call_details.metadata
 
@@ -362,6 +366,10 @@ class EchoMetadataClientGrpcAsyncInterceptor(
 
     async def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
+            # https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.Metadata
+            # Note that for async, `ClientCallDetails.metadata` is a mapping.
+            # Whereas for sync, `ClientCallDetails.metadata` is a list.
+            # https://grpc.github.io/grpc/python/glossary.html#term-metadata.
             client_call_details.metadata[self._key] = self._value
             self.request_metadata = list(client_call_details.metadata)
 
