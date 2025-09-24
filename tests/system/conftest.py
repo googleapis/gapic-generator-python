@@ -311,6 +311,37 @@ class EchoMetadataClientGrpcInterceptor(
         self.request_metadata = []
         self.response_metadata = []
 
+    class _StreamWrapper:
+        def __init__(self, stream, interceptor):
+            self._stream = stream
+            self._interceptor = interceptor
+
+        def __iter__(self):
+            return self._stream.__iter__()
+
+        def __next__(self):
+            return self._stream.__next__()
+
+        def cancel(self):
+            return self._stream.cancel()
+
+        def is_active(self):
+            return self._stream.is_active()
+
+        def time_remaining(self):
+            return self._stream.time_remaining()
+
+        def trailing_metadata(self):
+            metadata = self._stream.trailing_metadata()
+            self._interceptor.response_metadata = metadata
+            return metadata
+
+        def initial_metadata(self):
+            return self._stream.initial_metadata()
+
+        def add_callback(self, callback):
+            return self._stream.add_callback(callback)
+
     def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
             # https://grpc.github.io/grpc/python/glossary.html#term-metadata.
@@ -319,11 +350,6 @@ class EchoMetadataClientGrpcInterceptor(
             # https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.Metadata
             client_call_details.metadata.append((self._key, self._value))
             self.request_metadata = client_call_details.metadata
-
-    def _read_response_metadata_stream(self):
-        # Access the metadata via the original stream object
-        if hasattr(self, "_original_stream"):
-            self.response_metadata = self._original_stream.trailing_metadata()
 
     def intercept_unary_unary(self, continuation, client_call_details, request):
         self._add_request_metadata(client_call_details)
@@ -335,8 +361,7 @@ class EchoMetadataClientGrpcInterceptor(
     def intercept_unary_stream(self, continuation, client_call_details, request):
         self._add_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request)
-        self._original_stream = response_it
-        return response_it
+        return self._StreamWrapper(response_it, self)
 
     def intercept_stream_unary(
         self, continuation, client_call_details, request_iterator
@@ -350,8 +375,7 @@ class EchoMetadataClientGrpcInterceptor(
     ):
         self._add_request_metadata(client_call_details)
         response_it = continuation(client_call_details, request_iterator)
-        self._original_stream = response_it
-        return response_it
+        return self._StreamWrapper(response_it, self)
 
 
 class EchoMetadataClientGrpcAsyncInterceptor(
@@ -365,6 +389,37 @@ class EchoMetadataClientGrpcAsyncInterceptor(
         self._value = value
         self.request_metadata = []
         self.response_metadata = []
+
+    class _AsyncStreamWrapper:
+        def __init__(self, stream, interceptor):
+            self._stream = stream
+            self._interceptor = interceptor
+
+        def __aiter__(self):
+            return self._stream.__aiter__()
+
+        def __anext__(self):
+            return self._stream.__anext__()
+
+        def cancel(self):
+            return self._stream.cancel()
+
+        def done(self):
+            return self._stream.done()
+
+        def add_done_callback(self, callback):
+            return self._stream.add_done_callback(callback)
+
+        async def initial_metadata(self):
+            return await self._stream.initial_metadata()
+
+        async def trailing_metadata(self):
+            metadata = await self._stream.trailing_metadata()
+            self._interceptor.response_metadata = metadata
+            return metadata
+
+        async def debug_string(self):
+            return await self._stream.debug_string()
 
     async def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
@@ -393,22 +448,22 @@ class EchoMetadataClientGrpcAsyncInterceptor(
 
     async def intercept_unary_stream(self, continuation, client_call_details, request):
         self._add_request_metadata(client_call_details)
-        response_it = continuation(client_call_details, request)
-        return response_it
+        response_it = await continuation(client_call_details, request)
+        return self._AsyncStreamWrapper(response_it, self)
 
     async def intercept_stream_unary(
         self, continuation, client_call_details, request_iterator
     ):
         self._add_request_metadata(client_call_details)
-        response = continuation(client_call_details, request_iterator)
+        response = await continuation(client_call_details, request_iterator)
         return response
 
     async def intercept_stream_stream(
         self, continuation, client_call_details, request_iterator
     ):
         self._add_request_metadata(client_call_details)
-        response_it = continuation(client_call_details, request_iterator)
-        return response_it
+        response_it = await continuation(client_call_details, request_iterator)
+        return self._AsyncStreamWrapper(response_it, self)
 
 
 @pytest.fixture
