@@ -61,6 +61,8 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     except:
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = False
 
+    _GRPC_VERSION = grpc.__version__
+
     # TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
     # See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
     def async_anonymous_credentials():
@@ -366,11 +368,20 @@ class EchoMetadataClientGrpcAsyncInterceptor(
 
     async def _add_request_metadata(self, client_call_details):
         if client_call_details.metadata is not None:
+            # As of gRPC 1.75.0 and newer,
             # https://grpc.github.io/grpc/python/grpc_asyncio.html#grpc.aio.Metadata
             # Note that for async, `ClientCallDetails.metadata` is a mapping.
             # Whereas for sync, `ClientCallDetails.metadata` is a list.
             # https://grpc.github.io/grpc/python/glossary.html#term-metadata.
-            client_call_details.metadata[self._key] = self._value
+            # Prior to gRPC 1.75.0, `ClientCallDetails.metadata` is a list
+            # for both sync and async.
+            grpc_major, grpc_minor = [
+                int(part) for part in _GRPC_VERSION.split(".")[0:2]
+            ]
+            if grpc_major == 1 and grpc_minor < 75:
+                client_call_details.metadata.append((self._key, self._value))
+            else:
+                client_call_details.metadata[self._key] = self._value
             self.request_metadata = list(client_call_details.metadata)
 
     async def intercept_unary_unary(self, continuation, client_call_details, request):
