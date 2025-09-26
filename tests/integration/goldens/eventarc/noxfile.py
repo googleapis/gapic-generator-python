@@ -90,7 +90,8 @@ nox.options.error_on_missing_interpreters = True
 def mypy(session):
     """Run the type checker."""
     session.install(
-        "mypy",
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2410): Use the latest version of mypy
+        "mypy<1.16.0",
         "types-requests",
         "types-protobuf",
     )
@@ -368,10 +369,9 @@ def docs(session):
         "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
-        "-b",
-        "html",
-        "-d",
-        os.path.join("docs", "_build", "doctrees", ""),
+        "-b",  "html",  # builder
+        "-d",  os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        # paths to build:
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
