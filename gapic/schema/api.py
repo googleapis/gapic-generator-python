@@ -945,9 +945,9 @@ class API:
                 if method_name not in self.all_methods:
                     selective_gapic_errors[method_name] = "Method does not exist."
                 elif not method_name.startswith(library_settings.version):
-                    selective_gapic_errors[
-                        method_name
-                    ] = "Mismatched version for method."
+                    selective_gapic_errors[method_name] = (
+                        "Mismatched version for method."
+                    )
 
             if selective_gapic_errors:
                 all_errors[library_settings.version] = [
@@ -1032,9 +1032,9 @@ class API:
     def _has_iam_overrides(self) -> bool:
         if not self.has_iam_mixin:
             return False
-        iam_mixin_methods: Dict[
-            str, MethodDescriptorProto
-        ] = self._get_methods_from_service(iam_policy_pb2)
+        iam_mixin_methods: Dict[str, MethodDescriptorProto] = (
+            self._get_methods_from_service(iam_policy_pb2)
+        )
         for _, s in self.services.items():
             for m_name in iam_mixin_methods:
                 if m_name in s.methods:
