@@ -40,6 +40,8 @@ else:
 
 dependencies = [
     "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    "grpcio >= 1.33.2, < 2.0.0",
+    "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
