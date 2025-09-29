@@ -3,6 +3,6 @@
 # List all library dependencies and extras in this file.
 google-api-core
 google-auth
-grpc
+grpcio
 proto-plus
 protobuf
