@@ -73,13 +73,15 @@ else:   # pragma: NO COVER
     _dependency_package = "google.protobuf"
     _next_supported_version = "4.25.8"
     _next_supported_version_tuple = (4, 25, 8)
+    _recommendation = " (we recommend 6.x)"
     (_version_used, _version_used_string) = _get_version(_dependency_package)
     if _version_used and _version_used < _next_supported_version_tuple:
         warnings.warn(f"Package {_package_label} depends on " +
                       f"{_dependency_package}, currently installed at version " +
                       f"{_version_used_string}. Future updates to " +
                       f"{_package_label} will require {_dependency_package} at " +
-                      f"version {_next_supported_version} or higher. Please ensure " +
+                      f"version {_next_supported_version} or higher{recommendation}." +
+                      " Please ensure " +
                       "that either (a) your Python environment doesn't pin the " +
                       f"version of {_dependency_package}, so that updates to " +
                       f"{_package_label} can require the higher version, or " +
