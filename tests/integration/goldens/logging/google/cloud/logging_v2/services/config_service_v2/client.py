@@ -705,20 +705,18 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.ListBucketsRequest, dict]):
-                The request object. The parameters to ``ListBuckets``.
+                The request object. The parameters to `ListBuckets`.
             parent (str):
-                Required. The parent resource whose buckets are to be
-                listed:
+                Required. The parent resource whose
+                buckets are to be listed:
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
+                "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]"
+                "folders/[FOLDER_ID]/locations/[LOCATION_ID]"
 
-                ::
-
-                    "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
-                    "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]"
-                    "folders/[FOLDER_ID]/locations/[LOCATION_ID]"
-
-                Note: The locations portion of the resource must be
-                specified, but supplying the character ``-`` in place of
+                Note: The locations portion of the
+                resource must be specified, but
+                supplying the character `-` in place of
                 [LOCATION_ID] will return all buckets.
 
                 This corresponds to the ``parent`` field
@@ -833,7 +831,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.GetBucketRequest, dict]):
-                The request object. The parameters to ``GetBucket``.
+                The request object. The parameters to `GetBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -925,7 +923,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateBucketRequest, dict]):
-                The request object. The parameters to ``CreateBucket``.
+                The request object. The parameters to `CreateBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -936,11 +934,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
                 :class:`google.cloud.logging_v2.types.LogBucket`
-                Describes a repository in which log entries are stored.
+                Describes a repository in which log
+                entries are stored.
 
         """
         # Create or coerce a protobuf request object.
@@ -992,11 +992,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> operation.Operation:
         r"""Updates a log bucket asynchronously.
 
-        If the bucket has a ``lifecycle_state`` of ``DELETE_REQUESTED``,
-        then ``FAILED_PRECONDITION`` will be returned.
+        If the bucket has a `lifecycle_state` of
+        `DELETE_REQUESTED`, then `FAILED_PRECONDITION` will be
+        returned.
 
-        After a bucket has been created, the bucket's location cannot be
-        changed.
+        After a bucket has been created, the bucket's location
+        cannot be changed.
 
         .. code-block:: python
 
@@ -1030,7 +1031,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateBucketRequest, dict]):
-                The request object. The parameters to ``UpdateBucket``.
+                The request object. The parameters to `UpdateBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1041,11 +1042,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
                 :class:`google.cloud.logging_v2.types.LogBucket`
-                Describes a repository in which log entries are stored.
+                Describes a repository in which log
+                entries are stored.
 
         """
         # Create or coerce a protobuf request object.
@@ -1128,7 +1131,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateBucketRequest, dict]):
-                The request object. The parameters to ``CreateBucket``.
+                The request object. The parameters to `CreateBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1184,11 +1187,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogBucket:
         r"""Updates a log bucket.
 
-        If the bucket has a ``lifecycle_state`` of ``DELETE_REQUESTED``,
-        then ``FAILED_PRECONDITION`` will be returned.
+        If the bucket has a `lifecycle_state` of
+        `DELETE_REQUESTED`, then `FAILED_PRECONDITION` will be
+        returned.
 
-        After a bucket has been created, the bucket's location cannot be
-        changed.
+        After a bucket has been created, the bucket's location
+        cannot be changed.
 
         .. code-block:: python
 
@@ -1218,7 +1222,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateBucketRequest, dict]):
-                The request object. The parameters to ``UpdateBucket``.
+                The request object. The parameters to `UpdateBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1274,10 +1278,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> None:
         r"""Deletes a log bucket.
 
-        Changes the bucket's ``lifecycle_state`` to the
-        ``DELETE_REQUESTED`` state. After 7 days, the bucket will be
-        purged and all log entries in the bucket will be permanently
-        deleted.
+        Changes the bucket's `lifecycle_state` to the
+        `DELETE_REQUESTED` state. After 7 days, the bucket will
+        be purged and all log entries in the bucket will be
+        permanently deleted.
 
         .. code-block:: python
 
@@ -1304,7 +1308,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteBucketRequest, dict]):
-                The request object. The parameters to ``DeleteBucket``.
+                The request object. The parameters to `DeleteBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1378,7 +1382,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.UndeleteBucketRequest, dict]):
-                The request object. The parameters to ``UndeleteBucket``.
+                The request object. The parameters to `UndeleteBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1455,13 +1459,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.ListViewsRequest, dict]):
-                The request object. The parameters to ``ListViews``.
+                The request object. The parameters to `ListViews`.
             parent (str):
-                Required. The bucket whose views are to be listed:
-
-                ::
-
-                    "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                Required. The bucket whose views are
+                to be listed:
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1575,7 +1577,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.GetViewRequest, dict]):
-                The request object. The parameters to ``GetView``.
+                The request object. The parameters to `GetView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1661,7 +1663,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateViewRequest, dict]):
-                The request object. The parameters to ``CreateView``.
+                The request object. The parameters to `CreateView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1715,11 +1717,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> logging_config.LogView:
-        r"""Updates a view on a log bucket. This method replaces the
-        following fields in the existing view with values from the new
-        view: ``filter``. If an ``UNAVAILABLE`` error is returned, this
-        indicates that system is not in a state where it can update the
-        view. If this occurs, please try again in a few minutes.
+        r"""Updates a view on a log bucket. This method replaces
+        the following fields in the existing view with values
+        from the new view: `filter`. If an `UNAVAILABLE` error
+        is returned, this indicates that system is not in a
+        state where it can update the view. If this occurs,
+        please try again in a few minutes.
 
         .. code-block:: python
 
@@ -1749,7 +1752,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateViewRequest, dict]):
-                The request object. The parameters to ``UpdateView``.
+                The request object. The parameters to `UpdateView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1803,10 +1806,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> None:
-        r"""Deletes a view on a log bucket. If an ``UNAVAILABLE`` error is
-        returned, this indicates that system is not in a state where it
-        can delete the view. If this occurs, please try again in a few
-        minutes.
+        r"""Deletes a view on a log bucket.
+        If an `UNAVAILABLE` error is returned, this indicates
+        that system is not in a state where it can delete the
+        view. If this occurs, please try again in a few minutes.
 
         .. code-block:: python
 
@@ -1833,7 +1836,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteViewRequest, dict]):
-                The request object. The parameters to ``DeleteView``.
+                The request object. The parameters to `DeleteView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1910,17 +1913,14 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.ListSinksRequest, dict]):
-                The request object. The parameters to ``ListSinks``.
+                The request object. The parameters to `ListSinks`.
             parent (str):
-                Required. The parent resource whose sinks are to be
-                listed:
-
-                ::
-
+                Required. The parent resource whose
+                sinks are to be listed:
                     "projects/[PROJECT_ID]"
                     "organizations/[ORGANIZATION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]"
+                "folders/[FOLDER_ID]"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1935,10 +1935,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListSinksPager:
-                Result returned from ListSinks.
+                Result returned from `ListSinks`.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -2034,20 +2035,18 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.GetSinkRequest, dict]):
-                The request object. The parameters to ``GetSink``.
+                The request object. The parameters to `GetSink`.
             sink_name (str):
-                Required. The resource name of the sink:
-
-                ::
-
-                    "projects/[PROJECT_ID]/sinks/[SINK_ID]"
-                    "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
-                    "folders/[FOLDER_ID]/sinks/[SINK_ID]"
+                Required. The resource name of the
+                sink:
+                "projects/[PROJECT_ID]/sinks/[SINK_ID]"
+                "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
+                "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
                 For example:
 
-                ``"projects/my-project/sinks/my-sink"``
+                  `"projects/my-project/sinks/my-sink"`
 
                 This corresponds to the ``sink_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2126,11 +2125,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> logging_config.LogSink:
-        r"""Creates a sink that exports specified log entries to a
-        destination. The export of newly-ingested log entries begins
-        immediately, unless the sink's ``writer_identity`` is not
-        permitted to write to the destination. A sink can export log
-        entries only from the resource owning the sink.
+        r"""Creates a sink that exports specified log entries to
+        a destination. The export of newly-ingested log entries
+        begins immediately, unless the sink's `writer_identity`
+        is not permitted to write to the destination. A sink can
+        export log entries only from the resource owning the
+        sink.
 
         .. code-block:: python
 
@@ -2165,27 +2165,27 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateSinkRequest, dict]):
-                The request object. The parameters to ``CreateSink``.
+                The request object. The parameters to `CreateSink`.
             parent (str):
-                Required. The resource in which to create the sink:
-
-                ::
-
+                Required. The resource in which to
+                create the sink:
                     "projects/[PROJECT_ID]"
                     "organizations/[ORGANIZATION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]"
+                "folders/[FOLDER_ID]"
 
                 For examples:
 
-                ``"projects/my-project"`` ``"organizations/123456789"``
+                  `"projects/my-project"`
+                  `"organizations/123456789"`
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             sink (google.cloud.logging_v2.types.LogSink):
-                Required. The new sink, whose ``name`` parameter is a
-                sink identifier that is not already in use.
+                Required. The new sink, whose `name`
+                parameter is a sink identifier that is
+                not already in use.
 
                 This corresponds to the ``sink`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2267,12 +2267,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> logging_config.LogSink:
-        r"""Updates a sink. This method replaces the following fields in the
-        existing sink with values from the new sink: ``destination``,
-        and ``filter``.
+        r"""Updates a sink. This method replaces the following
+        fields in the existing sink with values from the new
+        sink: `destination`, and `filter`.
 
-        The updated sink might also have a new ``writer_identity``; see
-        the ``unique_writer_identity`` field.
+        The updated sink might also have a new
+        `writer_identity`; see the `unique_writer_identity`
+        field.
 
         .. code-block:: python
 
@@ -2307,50 +2308,55 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateSinkRequest, dict]):
-                The request object. The parameters to ``UpdateSink``.
+                The request object. The parameters to `UpdateSink`.
             sink_name (str):
-                Required. The full resource name of the sink to update,
-                including the parent resource and the sink identifier:
+                Required. The full resource name of
+                the sink to update, including the parent
+                resource and the sink identifier:
 
-                ::
-
-                    "projects/[PROJECT_ID]/sinks/[SINK_ID]"
-                    "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
-                    "folders/[FOLDER_ID]/sinks/[SINK_ID]"
+                "projects/[PROJECT_ID]/sinks/[SINK_ID]"
+                "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
+                "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
                 For example:
 
-                ``"projects/my-project/sinks/my-sink"``
+                  `"projects/my-project/sinks/my-sink"`
 
                 This corresponds to the ``sink_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             sink (google.cloud.logging_v2.types.LogSink):
-                Required. The updated sink, whose name is the same
-                identifier that appears as part of ``sink_name``.
+                Required. The updated sink, whose
+                name is the same identifier that appears
+                as part of `sink_name`.
 
                 This corresponds to the ``sink`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask that specifies the fields in
-                ``sink`` that need an update. A sink field will be
-                overwritten if, and only if, it is in the update mask.
-                ``name`` and output only fields cannot be updated.
+                Optional. Field mask that specifies
+                the fields in `sink` that need an
+                update. A sink field will be overwritten
+                if, and only if, it is in the update
+                mask. `name` and output only fields
+                cannot be updated.
 
-                An empty ``updateMask`` is temporarily treated as using
-                the following mask for backwards compatibility purposes:
+                An empty `updateMask` is temporarily
+                treated as using the following mask for
+                backwards compatibility purposes:
 
-                ``destination,filter,includeChildren``
+                  `destination,filter,includeChildren`
 
-                At some point in the future, behavior will be removed
-                and specifying an empty ``updateMask`` will be an error.
+                At some point in the future, behavior
+                will be removed and specifying an empty
+                `updateMask` will be an error.
 
-                For a detailed ``FieldMask`` definition, see
+                For a detailed `FieldMask` definition,
+                see
                 https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
 
-                For example: ``updateMask=filter``
+                For example: `updateMask=filter`
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2432,8 +2438,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> None:
-        r"""Deletes a sink. If the sink has a unique ``writer_identity``,
-        then that service account is also deleted.
+        r"""Deletes a sink. If the sink has a unique
+        `writer_identity`, then that service account is also
+        deleted.
 
         .. code-block:: python
 
@@ -2460,21 +2467,20 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteSinkRequest, dict]):
-                The request object. The parameters to ``DeleteSink``.
+                The request object. The parameters to `DeleteSink`.
             sink_name (str):
-                Required. The full resource name of the sink to delete,
-                including the parent resource and the sink identifier:
+                Required. The full resource name of
+                the sink to delete, including the parent
+                resource and the sink identifier:
 
-                ::
-
-                    "projects/[PROJECT_ID]/sinks/[SINK_ID]"
-                    "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
-                    "folders/[FOLDER_ID]/sinks/[SINK_ID]"
+                "projects/[PROJECT_ID]/sinks/[SINK_ID]"
+                "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
+                "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
                 For example:
 
-                ``"projects/my-project/sinks/my-sink"``
+                  `"projects/my-project/sinks/my-sink"`
 
                 This corresponds to the ``sink_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2578,15 +2584,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.CreateLinkRequest, dict]):
                 The request object. The parameters to CreateLink.
             parent (str):
-                Required. The full resource name of the bucket to create
-                a link for.
-
-                ::
-
-                    "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-                    "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-                    "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                Required. The full resource name of
+                the bucket to create a link for.
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2597,9 +2600,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             link_id (str):
-                Required. The ID to use for the link. The link_id can
-                have up to 100 characters. A valid link_id must only
-                have alphanumeric characters and underscores within it.
+                Required. The ID to use for the link.
+                The link_id can have up to 100
+                characters. A valid link_id must only
+                have alphanumeric characters and
+                underscores within it.
 
                 This corresponds to the ``link_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2614,11 +2619,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.logging_v2.types.Link` Describes a
-                link connected to an analytics enabled bucket.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.logging_v2.types.Link`
+                Describes a link connected to an
+                analytics enabled bucket.
 
         """
         # Create or coerce a protobuf request object.
@@ -2722,8 +2729,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.DeleteLinkRequest, dict]):
                 The request object. The parameters to DeleteLink.
             name (str):
-                Required. The full resource name of the link to delete.
-
+                Required. The full resource name of
+                the link to delete.
                 "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
                 "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
                 "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
@@ -2742,18 +2749,21 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -2849,9 +2859,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.ListLinksRequest, dict]):
                 The request object. The parameters to ListLinks.
             parent (str):
-                Required. The parent resource whose links are to be
-                listed:
-
+                Required. The parent resource whose
+                links are to be listed:
                 "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/"
                 "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/"
                 "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/"
@@ -2972,8 +2981,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.GetLinkRequest, dict]):
                 The request object. The parameters to GetLink.
             name (str):
-                Required. The resource name of the link:
-
+                Required. The resource name of the
+                link:
                 "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
                 "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
                 "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
@@ -3048,8 +3057,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.ListExclusionsPager:
-        r"""Lists all the exclusions on the \_Default sink in a parent
-        resource.
+        r"""Lists all the exclusions on the _Default sink in a
+        parent resource.
 
         .. code-block:: python
 
@@ -3080,17 +3089,14 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.ListExclusionsRequest, dict]):
-                The request object. The parameters to ``ListExclusions``.
+                The request object. The parameters to `ListExclusions`.
             parent (str):
-                Required. The parent resource whose exclusions are to be
-                listed.
-
-                ::
-
+                Required. The parent resource whose
+                exclusions are to be listed.
                     "projects/[PROJECT_ID]"
                     "organizations/[ORGANIZATION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]"
+                "folders/[FOLDER_ID]"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3105,10 +3111,11 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListExclusionsPager:
-                Result returned from ListExclusions.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Result returned from
+                `ListExclusions`.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -3174,7 +3181,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> logging_config.LogExclusion:
-        r"""Gets the description of an exclusion in the \_Default sink.
+        r"""Gets the description of an exclusion in the _Default
+        sink.
 
         .. code-block:: python
 
@@ -3204,20 +3212,18 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.GetExclusionRequest, dict]):
-                The request object. The parameters to ``GetExclusion``.
+                The request object. The parameters to `GetExclusion`.
             name (str):
-                Required. The resource name of an existing exclusion:
-
-                ::
-
-                    "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
-                    "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
-                    "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
+                Required. The resource name of an
+                existing exclusion:
+                "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
+                "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
+                "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
 
                 For example:
 
-                ``"projects/my-project/exclusions/my-exclusion"``
+                `"projects/my-project/exclusions/my-exclusion"`
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3232,13 +3238,16 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.cloud.logging_v2.types.LogExclusion:
-                Specifies a set of log entries that are filtered out by a sink. If
-                   your Google Cloud resource receives a large volume of
-                   log entries, you can use exclusions to reduce your
-                   chargeable logs. Note that exclusions on
-                   organization-level and folder-level sinks don't apply
-                   to child resources. Note also that you cannot modify
-                   the Required sink or exclude logs from it.
+                Specifies a set of log entries that
+                are filtered out by a sink. If your
+                Google Cloud resource receives a large
+                volume of log entries, you can use
+                exclusions to reduce your chargeable
+                logs. Note that exclusions on
+                organization-level and folder-level
+                sinks don't apply to child resources.
+                Note also that you cannot modify the
+                _Required sink or exclude logs from it.
 
         """
         # Create or coerce a protobuf request object.
@@ -3294,9 +3303,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> logging_config.LogExclusion:
-        r"""Creates a new exclusion in the \_Default sink in a specified
-        parent resource. Only log entries belonging to that resource can
-        be excluded. You can have up to 10 exclusions in a resource.
+        r"""Creates a new exclusion in the _Default sink in a
+        specified parent resource. Only log entries belonging to
+        that resource can be excluded. You can have up to 10
+        exclusions in a resource.
 
         .. code-block:: python
 
@@ -3331,29 +3341,27 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateExclusionRequest, dict]):
-                The request object. The parameters to ``CreateExclusion``.
+                The request object. The parameters to `CreateExclusion`.
             parent (str):
-                Required. The parent resource in which to create the
-                exclusion:
-
-                ::
-
+                Required. The parent resource in
+                which to create the exclusion:
                     "projects/[PROJECT_ID]"
                     "organizations/[ORGANIZATION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]"
+                "folders/[FOLDER_ID]"
 
                 For examples:
 
-                ``"projects/my-logging-project"``
-                ``"organizations/123456789"``
+                  `"projects/my-logging-project"`
+                  `"organizations/123456789"`
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             exclusion (google.cloud.logging_v2.types.LogExclusion):
-                Required. The new exclusion, whose ``name`` parameter is
-                an exclusion name that is not already used in the parent
+                Required. The new exclusion, whose
+                `name` parameter is an exclusion name
+                that is not already used in the parent
                 resource.
 
                 This corresponds to the ``exclusion`` field
@@ -3369,13 +3377,16 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.cloud.logging_v2.types.LogExclusion:
-                Specifies a set of log entries that are filtered out by a sink. If
-                   your Google Cloud resource receives a large volume of
-                   log entries, you can use exclusions to reduce your
-                   chargeable logs. Note that exclusions on
-                   organization-level and folder-level sinks don't apply
-                   to child resources. Note also that you cannot modify
-                   the Required sink or exclude logs from it.
+                Specifies a set of log entries that
+                are filtered out by a sink. If your
+                Google Cloud resource receives a large
+                volume of log entries, you can use
+                exclusions to reduce your chargeable
+                logs. Note that exclusions on
+                organization-level and folder-level
+                sinks don't apply to child resources.
+                Note also that you cannot modify the
+                _Required sink or exclude logs from it.
 
         """
         # Create or coerce a protobuf request object.
@@ -3434,8 +3445,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> logging_config.LogExclusion:
-        r"""Changes one or more properties of an existing exclusion in the
-        \_Default sink.
+        r"""Changes one or more properties of an existing
+        exclusion in the _Default sink.
 
         .. code-block:: python
 
@@ -3470,42 +3481,43 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateExclusionRequest, dict]):
-                The request object. The parameters to ``UpdateExclusion``.
+                The request object. The parameters to `UpdateExclusion`.
             name (str):
-                Required. The resource name of the exclusion to update:
-
-                ::
-
-                    "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
-                    "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
-                    "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
+                Required. The resource name of the
+                exclusion to update:
+                "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
+                "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
+                "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
 
                 For example:
 
-                ``"projects/my-project/exclusions/my-exclusion"``
+                `"projects/my-project/exclusions/my-exclusion"`
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             exclusion (google.cloud.logging_v2.types.LogExclusion):
-                Required. New values for the existing exclusion. Only
-                the fields specified in ``update_mask`` are relevant.
+                Required. New values for the existing
+                exclusion. Only the fields specified in
+                `update_mask` are relevant.
 
                 This corresponds to the ``exclusion`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. A non-empty list of fields to change in the
-                existing exclusion. New values for the fields are taken
-                from the corresponding fields in the
-                [LogExclusion][google.logging.v2.LogExclusion] included
-                in this request. Fields not mentioned in ``update_mask``
-                are not changed and are ignored in the request.
+                Required. A non-empty list of fields
+                to change in the existing exclusion. New
+                values for the fields are taken from the
+                corresponding fields in the
+                [LogExclusion][google.logging.v2.LogExclusion]
+                included in this request. Fields not
+                mentioned in `update_mask` are not
+                changed and are ignored in the request.
 
-                For example, to change the filter and description of an
-                exclusion, specify an ``update_mask`` of
-                ``"filter,description"``.
+                For example, to change the filter and
+                description of an exclusion, specify an
+                `update_mask` of `"filter,description"`.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3520,13 +3532,16 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.cloud.logging_v2.types.LogExclusion:
-                Specifies a set of log entries that are filtered out by a sink. If
-                   your Google Cloud resource receives a large volume of
-                   log entries, you can use exclusions to reduce your
-                   chargeable logs. Note that exclusions on
-                   organization-level and folder-level sinks don't apply
-                   to child resources. Note also that you cannot modify
-                   the Required sink or exclude logs from it.
+                Specifies a set of log entries that
+                are filtered out by a sink. If your
+                Google Cloud resource receives a large
+                volume of log entries, you can use
+                exclusions to reduce your chargeable
+                logs. Note that exclusions on
+                organization-level and folder-level
+                sinks don't apply to child resources.
+                Note also that you cannot modify the
+                _Required sink or exclude logs from it.
 
         """
         # Create or coerce a protobuf request object.
@@ -3585,7 +3600,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> None:
-        r"""Deletes an exclusion in the \_Default sink.
+        r"""Deletes an exclusion in the _Default sink.
 
         .. code-block:: python
 
@@ -3612,21 +3627,18 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteExclusionRequest, dict]):
-                The request object. The parameters to ``DeleteExclusion``.
+                The request object. The parameters to `DeleteExclusion`.
             name (str):
-                Required. The resource name of an existing exclusion to
-                delete:
-
-                ::
-
-                    "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
-                    "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
-                    "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
+                Required. The resource name of an
+                existing exclusion to delete:
+                "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
+                "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
+                "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
 
                 For example:
 
-                ``"projects/my-project/exclusions/my-exclusion"``
+                `"projects/my-project/exclusions/my-exclusion"`
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3687,15 +3699,16 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> logging_config.CmekSettings:
-        r"""Gets the Logging CMEK settings for the given resource.
+        r"""Gets the Logging CMEK settings for the given
+        resource.
+        Note: CMEK for the Log Router can be configured for
+        Google Cloud projects, folders, organizations and
+        billing accounts. Once configured for an organization,
+        it applies to all projects and folders in the Google
+        Cloud organization.
 
-        Note: CMEK for the Log Router can be configured for Google Cloud
-        projects, folders, organizations and billing accounts. Once
-        configured for an organization, it applies to all projects and
-        folders in the Google Cloud organization.
-
-        See `Enabling CMEK for Log
-        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        See [Enabling CMEK for Log
+        Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
         for more information.
 
         .. code-block:: python
@@ -3729,8 +3742,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 The request object. The parameters to
                 [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
 
-                See `Enabling CMEK for Log
-                Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+                See [Enabling CMEK for Log
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
                 for more information.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -3742,18 +3755,21 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.cloud.logging_v2.types.CmekSettings:
-                Describes the customer-managed encryption key (CMEK) settings associated with
-                   a project, folder, organization, billing account, or
-                   flexible resource.
+                Describes the customer-managed
+                encryption key (CMEK) settings
+                associated with a project, folder,
+                organization, billing account, or
+                flexible resource.
 
-                   Note: CMEK for the Log Router can currently only be
-                   configured for Google Cloud organizations. Once
-                   configured, it applies to all projects and folders in
-                   the Google Cloud organization.
+                Note: CMEK for the Log Router can
+                currently only be configured for Google
+                Cloud organizations. Once configured, it
+                applies to all projects and folders in
+                the Google Cloud organization.
 
-                   See [Enabling CMEK for Log
-                   Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
-                   for more information.
+                See [Enabling CMEK for Log
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+                for more information.
 
         """
         # Create or coerce a protobuf request object.
@@ -3795,20 +3811,22 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> logging_config.CmekSettings:
-        r"""Updates the Log Router CMEK settings for the given resource.
-
-        Note: CMEK for the Log Router can currently only be configured
-        for Google Cloud organizations. Once configured, it applies to
-        all projects and folders in the Google Cloud organization.
+        r"""Updates the Log Router CMEK settings for the given
+        resource.
+        Note: CMEK for the Log Router can currently only be
+        configured for Google Cloud organizations. Once
+        configured, it applies to all projects and folders in
+        the Google Cloud organization.
 
         [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings]
-        will fail if 1) ``kms_key_name`` is invalid, or 2) the
+        will fail if 1) `kms_key_name` is invalid, or 2) the
         associated service account does not have the required
-        ``roles/cloudkms.cryptoKeyEncrypterDecrypter`` role assigned for
-        the key, or 3) access to the key is disabled.
+        `roles/cloudkms.cryptoKeyEncrypterDecrypter` role
+        assigned for the key, or 3) access to the key is
+        disabled.
 
-        See `Enabling CMEK for Log
-        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        See [Enabling CMEK for Log
+        Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
         for more information.
 
         .. code-block:: python
@@ -3842,8 +3860,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 The request object. The parameters to
                 [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
 
-                See `Enabling CMEK for Log
-                Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+                See [Enabling CMEK for Log
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
                 for more information.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -3855,18 +3873,21 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.cloud.logging_v2.types.CmekSettings:
-                Describes the customer-managed encryption key (CMEK) settings associated with
-                   a project, folder, organization, billing account, or
-                   flexible resource.
+                Describes the customer-managed
+                encryption key (CMEK) settings
+                associated with a project, folder,
+                organization, billing account, or
+                flexible resource.
 
-                   Note: CMEK for the Log Router can currently only be
-                   configured for Google Cloud organizations. Once
-                   configured, it applies to all projects and folders in
-                   the Google Cloud organization.
+                Note: CMEK for the Log Router can
+                currently only be configured for Google
+                Cloud organizations. Once configured, it
+                applies to all projects and folders in
+                the Google Cloud organization.
 
-                   See [Enabling CMEK for Log
-                   Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
-                   for more information.
+                See [Enabling CMEK for Log
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+                for more information.
 
         """
         # Create or coerce a protobuf request object.
@@ -3911,14 +3932,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.Settings:
         r"""Gets the Log Router settings for the given resource.
 
-        Note: Settings for the Log Router can be get for Google Cloud
-        projects, folders, organizations and billing accounts. Currently
-        it can only be configured for organizations. Once configured for
-        an organization, it applies to all projects and folders in the
-        Google Cloud organization.
+        Note: Settings for the Log Router can be get for Google
+        Cloud projects, folders, organizations and billing
+        accounts. Currently it can only be configured for
+        organizations. Once configured for an organization, it
+        applies to all projects and folders in the Google Cloud
+        organization.
 
-        See `Enabling CMEK for Log
-        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        See [Enabling CMEK for Log
+        Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
         for more information.
 
         .. code-block:: python
@@ -3952,28 +3974,28 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 The request object. The parameters to
                 [GetSettings][google.logging.v2.ConfigServiceV2.GetSettings].
 
-                See `Enabling CMEK for Log
-                Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+                See [Enabling CMEK for Log
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
                 for more information.
             name (str):
-                Required. The resource for which to retrieve settings.
-
-                ::
-
+                Required. The resource for which to
+                retrieve settings.
                     "projects/[PROJECT_ID]/settings"
-                    "organizations/[ORGANIZATION_ID]/settings"
-                    "billingAccounts/[BILLING_ACCOUNT_ID]/settings"
-                    "folders/[FOLDER_ID]/settings"
+                "organizations/[ORGANIZATION_ID]/settings"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/settings"
+                "folders/[FOLDER_ID]/settings"
 
                 For example:
 
-                ``"organizations/12345/settings"``
+                  `"organizations/12345/settings"`
 
-                Note: Settings for the Log Router can be get for Google
-                Cloud projects, folders, organizations and billing
-                accounts. Currently it can only be configured for
-                organizations. Once configured for an organization, it
-                applies to all projects and folders in the Google Cloud
+                Note: Settings for the Log Router can be
+                get for Google Cloud projects, folders,
+                organizations and billing accounts.
+                Currently it can only be configured for
+                organizations. Once configured for an
+                organization, it applies to all projects
+                and folders in the Google Cloud
                 organization.
 
                 This corresponds to the ``name`` field
@@ -4047,23 +4069,23 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> logging_config.Settings:
-        r"""Updates the Log Router settings for the given resource.
-
+        r"""Updates the Log Router settings for the given
+        resource.
         Note: Settings for the Log Router can currently only be
-        configured for Google Cloud organizations. Once configured, it
-        applies to all projects and folders in the Google Cloud
-        organization.
+        configured for Google Cloud organizations. Once
+        configured, it applies to all projects and folders in
+        the Google Cloud organization.
 
         [UpdateSettings][google.logging.v2.ConfigServiceV2.UpdateSettings]
-        will fail if 1) ``kms_key_name`` is invalid, or 2) the
+        will fail if 1) `kms_key_name` is invalid, or 2) the
         associated service account does not have the required
-        ``roles/cloudkms.cryptoKeyEncrypterDecrypter`` role assigned for
-        the key, or 3) access to the key is disabled. 4) ``location_id``
-        is not supported by Logging. 5) ``location_id`` violate
-        OrgPolicy.
+        `roles/cloudkms.cryptoKeyEncrypterDecrypter` role
+        assigned for the key, or 3) access to the key is
+        disabled. 4) `location_id` is not supported by Logging.
+        5) `location_id` violate OrgPolicy.
 
-        See `Enabling CMEK for Log
-        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        See [Enabling CMEK for Log
+        Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
         for more information.
 
         .. code-block:: python
@@ -4097,29 +4119,31 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 The request object. The parameters to
                 [UpdateSettings][google.logging.v2.ConfigServiceV2.UpdateSettings].
 
-                See `Enabling CMEK for Log
-                Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+                See [Enabling CMEK for Log
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
                 for more information.
             settings (google.cloud.logging_v2.types.Settings):
                 Required. The settings to update.
 
-                See `Enabling CMEK for Log
-                Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+                See [Enabling CMEK for Log
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
                 for more information.
 
                 This corresponds to the ``settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask identifying which fields from
-                ``settings`` should be updated. A field will be
-                overwritten if and only if it is in the update mask.
+                Optional. Field mask identifying
+                which fields from `settings` should be
+                updated. A field will be overwritten if
+                and only if it is in the update mask.
                 Output only fields cannot be updated.
 
-                See [FieldMask][google.protobuf.FieldMask] for more
-                information.
+                See
+                [FieldMask][google.protobuf.FieldMask]
+                for more information.
 
-                For example: ``"updateMask=kmsKeyName"``
+                For example: `"updateMask=kmsKeyName"`
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4239,12 +4263,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
                 :class:`google.cloud.logging_v2.types.CopyLogEntriesResponse`
-                Response type for CopyLogEntries long running
-                operations.
+                Response type for CopyLogEntries long
+                running operations.
 
         """
         # Create or coerce a protobuf request object.

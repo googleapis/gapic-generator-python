@@ -4,7 +4,6 @@ googleapis-common-protos
 jinja2
 MarkupSafe
 protobuf
-pypandoc
 PyYAML
 grpc-google-iam-v1
 proto-plus

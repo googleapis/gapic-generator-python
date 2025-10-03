@@ -639,11 +639,8 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.ListLogMetricsRequest, dict]):
                 The request object. The parameters to ListLogMetrics.
             parent (str):
-                Required. The name of the project containing the
-                metrics:
-
-                ::
-
+                Required. The name of the project
+                containing the metrics:
                     "projects/[PROJECT_ID]"
 
                 This corresponds to the ``parent`` field
@@ -761,11 +758,9 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.GetLogMetricRequest, dict]):
                 The request object. The parameters to GetLogMetric.
             metric_name (str):
-                Required. The resource name of the desired metric:
-
-                ::
-
-                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+                Required. The resource name of the
+                desired metric:
+                "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
 
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -884,14 +879,12 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.CreateLogMetricRequest, dict]):
                 The request object. The parameters to CreateLogMetric.
             parent (str):
-                Required. The resource name of the project in which to
-                create the metric:
-
-                ::
-
+                Required. The resource name of the
+                project in which to create the metric:
                     "projects/[PROJECT_ID]"
 
-                The new metric must be provided in the request.
+                The new metric must be provided in the
+                request.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1020,16 +1013,15 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.UpdateLogMetricRequest, dict]):
                 The request object. The parameters to UpdateLogMetric.
             metric_name (str):
-                Required. The resource name of the metric to update:
+                Required. The resource name of the
+                metric to update:
+                "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
 
-                ::
-
-                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
-
-                The updated metric must be provided in the request and
-                it's ``name`` field must be the same as ``[METRIC_ID]``
-                If the metric does not exist in ``[PROJECT_ID]``, then a
-                new metric is created.
+                The updated metric must be provided in
+                the request and it's `name` field must
+                be the same as `[METRIC_ID]` If the
+                metric does not exist in `[PROJECT_ID]`,
+                then a new metric is created.
 
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1146,11 +1138,9 @@ class BaseMetricsServiceV2Client(metaclass=BaseMetricsServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.DeleteLogMetricRequest, dict]):
                 The request object. The parameters to DeleteLogMetric.
             metric_name (str):
-                Required. The resource name of the metric to delete:
-
-                ::
-
-                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+                Required. The resource name of the
+                metric to delete:
+                "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
 
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this

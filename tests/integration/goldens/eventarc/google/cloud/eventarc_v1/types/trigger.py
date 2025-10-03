@@ -43,9 +43,10 @@ class Trigger(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the trigger. Must be unique
-            within the location of the project and must be in
-            ``projects/{project}/locations/{location}/triggers/{trigger}``
+            Required. The resource name of the trigger.
+            Must be unique within the location of the
+            project and must be in
+            `projects/{project}/locations/{location}/triggers/{trigger}`
             format.
         uid (str):
             Output only. Server-assigned unique
@@ -62,23 +63,24 @@ class Trigger(proto.Message):
             that match all the provided filters are sent to
             the destination.
         service_account (str):
-            Optional. The IAM service account email associated with the
-            trigger. The service account represents the identity of the
-            trigger.
+            Optional. The IAM service account email
+            associated with the trigger. The service account
+            represents the identity of the trigger.
 
             The principal who calls this API must have the
-            ``iam.serviceAccounts.actAs`` permission in the service
-            account. See
+            `iam.serviceAccounts.actAs` permission in the
+            service account. See
             https://cloud.google.com/iam/docs/understanding-service-accounts?hl=en#sa_common
             for more information.
 
-            For Cloud Run destinations, this service account is used to
-            generate identity tokens when invoking the service. See
+            For Cloud Run destinations, this service account
+            is used to generate identity tokens when
+            invoking the service. See
             https://cloud.google.com/run/docs/triggering/pubsub-push#create-service-account
-            for information on how to invoke authenticated Cloud Run
-            services. To create Audit Log triggers, the service account
-            should also have the ``roles/eventarc.eventReceiver`` IAM
-            role.
+            for information on how to invoke authenticated
+            Cloud Run services. To create Audit Log
+            triggers, the service account should also have
+            the `roles/eventarc.eventReceiver` IAM role.
         destination (google.cloud.eventarc_v1.types.Destination):
             Required. Destination specifies where the
             events should be sent to.
@@ -92,11 +94,11 @@ class Trigger(proto.Message):
             Optional. User labels attached to the
             triggers that can be used to group resources.
         channel (str):
-            Optional. The name of the channel associated with the
-            trigger in
-            ``projects/{project}/locations/{location}/channels/{channel}``
-            format. You must provide a channel to receive events from
-            Eventarc SaaS partners.
+            Optional. The name of the channel associated
+            with the trigger in
+            `projects/{project}/locations/{location}/channels/{channel}`
+            format. You must provide a channel to receive
+            events from Eventarc SaaS partners.
         conditions (MutableMapping[str, google.cloud.eventarc_v1.types.StateCondition]):
             Output only. The reason(s) why a trigger is
             in FAILED state.
@@ -181,10 +183,12 @@ class EventFilter(proto.Message):
         value (str):
             Required. The value for the attribute.
         operator (str):
-            Optional. The operator used for matching the events with the
-            value of the filter. If not specified, only events that have
-            an exact key-value pair specified in the filter are matched.
-            The only allowed value is ``match-path-pattern``.
+            Optional. The operator used for matching the
+            events with the value of the filter. If not
+            specified, only events that have an exact
+            key-value pair specified in the filter are
+            matched. The only allowed value is
+            `match-path-pattern`.
     """
 
     attribute: str = proto.Field(
@@ -240,9 +244,9 @@ class Destination(proto.Message):
 
             This field is a member of `oneof`_ ``descriptor``.
         cloud_function (str):
-            The Cloud Function resource name. Only Cloud Functions V2 is
-            supported. Format:
-            ``projects/{project}/locations/{location}/functions/{function}``
+            The Cloud Function resource name. Only Cloud
+            Functions V2 is supported. Format:
+            `projects/{project}/locations/{location}/functions/{function}`
 
             This field is a member of `oneof`_ ``descriptor``.
         gke (google.cloud.eventarc_v1.types.GKE):
@@ -252,10 +256,12 @@ class Destination(proto.Message):
 
             This field is a member of `oneof`_ ``descriptor``.
         workflow (str):
-            The resource name of the Workflow whose Executions are
-            triggered by the events. The Workflow resource should be
-            deployed in the same project as the trigger. Format:
-            ``projects/{project}/locations/{location}/workflows/{workflow}``
+            The resource name of the Workflow whose
+            Executions are triggered by the events. The
+            Workflow resource should be deployed in the same
+            project as the trigger.
+            Format:
+            `projects/{project}/locations/{location}/workflows/{workflow}`
 
             This field is a member of `oneof`_ ``descriptor``.
     """
@@ -399,19 +405,23 @@ class Pubsub(proto.Message):
 
     Attributes:
         topic (str):
-            Optional. The name of the Pub/Sub topic created and managed
-            by Eventarc as a transport for the event delivery. Format:
-            ``projects/{PROJECT_ID}/topics/{TOPIC_NAME}``.
+            Optional. The name of the Pub/Sub topic
+            created and managed by Eventarc as a transport
+            for the event delivery. Format:
 
-            You can set an existing topic for triggers of the type
-            ``google.cloud.pubsub.topic.v1.messagePublished``. The topic
-            you provide here is not deleted by Eventarc at trigger
-            deletion.
+            `projects/{PROJECT_ID}/topics/{TOPIC_NAME}`.
+
+            You can set an existing topic for triggers of
+            the type
+            `google.cloud.pubsub.topic.v1.messagePublished`.
+            The topic you provide here is not deleted by
+            Eventarc at trigger deletion.
         subscription (str):
-            Output only. The name of the Pub/Sub subscription created
-            and managed by Eventarc as a transport for the event
-            delivery. Format:
-            ``projects/{PROJECT_ID}/subscriptions/{SUBSCRIPTION_NAME}``.
+            Output only. The name of the Pub/Sub
+            subscription created and managed by Eventarc as
+            a transport for the event delivery. Format:
+
+            `projects/{PROJECT_ID}/subscriptions/{SUBSCRIPTION_NAME}`.
     """
 
     topic: str = proto.Field(
