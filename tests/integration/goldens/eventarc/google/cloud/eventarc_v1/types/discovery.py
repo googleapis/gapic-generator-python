@@ -36,7 +36,7 @@ class Provider(proto.Message):
     Attributes:
         name (str):
             Output only. In
-            ``projects/{project}/locations/{location}/providers/{provider_id}``
+            `projects/{project}/locations/{location}/providers/{provider_id}`
             format.
         display_name (str):
             Output only. Human friendly name for the

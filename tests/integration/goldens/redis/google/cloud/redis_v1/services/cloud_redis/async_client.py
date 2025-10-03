@@ -60,23 +60,23 @@ class CloudRedisAsyncClient:
 
     Google Cloud Memorystore for Redis v1
 
-    The ``redis.googleapis.com`` service implements the Google Cloud
-    Memorystore for Redis API and defines the following resource model
-    for managing Redis instances:
+    The `redis.googleapis.com` service implements the Google Cloud
+    Memorystore for Redis API and defines the following resource
+    model for managing Redis instances:
 
-    - The service works with a collection of cloud projects, named:
-      ``/projects/*``
-    - Each project has a collection of available locations, named:
-      ``/locations/*``
-    - Each location has a collection of Redis instances, named:
-      ``/instances/*``
-    - As such, Redis instances are resources of the form:
-      ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+    * The service works with a collection of cloud projects, named:
+    `/projects/*` * Each project has a collection of available
+    locations, named: `/locations/*` * Each location has a
+    collection of Redis instances, named: `/instances/*` * As such,
+    Redis instances are resources of the form:
 
-    Note that location_id must be referring to a GCP ``region``; for
+    `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+
+    Note that location_id must be referring to a GCP `region`; for
     example:
 
-    - ``projects/redpepper-1290/locations/us-central1/instances/my-redis``
+    *
+    `projects/redpepper-1290/locations/us-central1/instances/my-redis`
     """
 
     _client: CloudRedisClient
@@ -286,16 +286,16 @@ class CloudRedisAsyncClient:
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.ListInstancesAsyncPager:
-        r"""Lists all Redis instances owned by a project in either the
-        specified location (region) or all locations.
+        r"""Lists all Redis instances owned by a project in
+        either the specified location (region) or all locations.
 
         The location should have the following format:
 
-        - ``projects/{project_id}/locations/{location_id}``
+        * `projects/{project_id}/locations/{location_id}`
 
-        If ``location_id`` is specified as ``-`` (wildcard), then all
-        regions available to the project are queried, and the results
-        are aggregated.
+        If `location_id` is specified as `-` (wildcard), then
+        all regions available to the project are queried, and
+        the results are aggregated.
 
         .. code-block:: python
 
@@ -329,10 +329,11 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
             parent (:class:`str`):
-                Required. The resource name of the instance location
-                using the form:
-                ``projects/{project_id}/locations/{location_id}`` where
-                ``location_id`` refers to a GCP region.
+                Required. The resource name of the
+                instance location using the form:
+                `projects/{project_id}/locations/{location_id}`
+                where `location_id` refers to a GCP
+                region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -349,9 +350,9 @@ class CloudRedisAsyncClient:
             google.cloud.redis_v1.services.cloud_redis.pagers.ListInstancesAsyncPager:
                 Response for
                 [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -451,9 +452,11 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
             name (:class:`str`):
-                Required. Redis instance resource name using the form:
-                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region.
+                Required. Redis instance resource
+                name using the form:
+                `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+                where `location_id` refers to a GCP
+                region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -559,9 +562,11 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
             name (:class:`str`):
-                Required. Redis instance resource name using the form:
-                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region.
+                Required. Redis instance resource
+                name using the form:
+                `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+                where `location_id` refers to a GCP
+                region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -633,20 +638,20 @@ class CloudRedisAsyncClient:
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation_async.AsyncOperation:
-        r"""Creates a Redis instance based on the specified tier and memory
-        size.
+        r"""Creates a Redis instance based on the specified tier
+        and memory size.
+        By default, the instance is accessible from the
+        project's [default
+        network](https://cloud.google.com/vpc/docs/vpc).
 
-        By default, the instance is accessible from the project's
-        `default network <https://cloud.google.com/vpc/docs/vpc>`__.
+        The creation is executed asynchronously and callers may
+        check the returned operation to track its progress. Once
+        the operation is completed the Redis instance will be
+        fully functional. Completed longrunning.Operation will
+        contain the new instance object in the response field.
 
-        The creation is executed asynchronously and callers may check
-        the returned operation to track its progress. Once the operation
-        is completed the Redis instance will be fully functional.
-        Completed longrunning.Operation will contain the new instance
-        object in the response field.
-
-        The returned operation is automatically deleted after a few
-        hours, so there is no need to call DeleteOperation.
+        The returned operation is automatically deleted after a
+        few hours, so there is no need to call DeleteOperation.
 
         .. code-block:: python
 
@@ -690,24 +695,27 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].
             parent (:class:`str`):
-                Required. The resource name of the instance location
-                using the form:
-                ``projects/{project_id}/locations/{location_id}`` where
-                ``location_id`` refers to a GCP region.
+                Required. The resource name of the
+                instance location using the form:
+                `projects/{project_id}/locations/{location_id}`
+                where `location_id` refers to a GCP
+                region.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance_id (:class:`str`):
-                Required. The logical name of the Redis instance in the
-                customer project with the following restrictions:
+                Required. The logical name of the
+                Redis instance in the customer project
+                with the following restrictions:
 
-                - Must contain only lowercase letters, numbers, and
-                  hyphens.
-                - Must start with a letter.
-                - Must be between 1-40 characters.
-                - Must end with a number or a letter.
-                - Must be unique within the customer project / location
+                * Must contain only lowercase letters,
+                numbers, and hyphens. * Must start with
+                a letter.
+                * Must be between 1-40 characters.
+                * Must end with a number or a letter.
+                * Must be unique within the customer
+                project / location
 
                 This corresponds to the ``instance_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -727,11 +735,12 @@ class CloudRedisAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
-                Memorystore for Redis instance.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.redis_v1.types.Instance`
+                A Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -847,23 +856,26 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance].
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Mask of fields to update. At least one path
-                must be supplied in this field. The elements of the
-                repeated paths field may only include these fields from
+                Required. Mask of fields to update.
+                At least one path must be supplied in
+                this field. The elements of the repeated
+                paths field may only include these
+                fields from
                 [Instance][google.cloud.redis.v1.Instance]:
 
-                - ``displayName``
-                - ``labels``
-                - ``memorySizeGb``
-                - ``redisConfig``
-                - ``replica_count``
+                 *   `displayName`
+                 *   `labels`
+                 *   `memorySizeGb`
+                 *   `redisConfig`
+                 *   `replica_count`
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance (:class:`google.cloud.redis_v1.types.Instance`):
-                Required. Update description. Only fields specified in
-                update_mask are updated.
+                Required. Update description.
+                Only fields specified in update_mask are
+                updated.
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -878,11 +890,12 @@ class CloudRedisAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
-                Memorystore for Redis instance.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.redis_v1.types.Instance`
+                A Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -988,9 +1001,11 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
             name (:class:`str`):
-                Required. Redis instance resource name using the form:
-                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region.
+                Required. Redis instance resource
+                name using the form:
+                `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+                where `location_id` refers to a GCP
+                region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1012,11 +1027,12 @@ class CloudRedisAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
-                Memorystore for Redis instance.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.redis_v1.types.Instance`
+                A Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1132,9 +1148,11 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
             name (:class:`str`):
-                Required. Redis instance resource name using the form:
-                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region.
+                Required. Redis instance resource
+                name using the form:
+                `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+                where `location_id` refers to a GCP
+                region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1156,11 +1174,12 @@ class CloudRedisAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
-                Memorystore for Redis instance.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.redis_v1.types.Instance`
+                A Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1273,9 +1292,11 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
             name (:class:`str`):
-                Required. Redis instance resource name using the form:
-                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region.
+                Required. Redis instance resource
+                name using the form:
+                `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+                where `location_id` refers to a GCP
+                region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1297,11 +1318,12 @@ class CloudRedisAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
-                Memorystore for Redis instance.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.redis_v1.types.Instance`
+                A Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1407,17 +1429,20 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
             name (:class:`str`):
-                Required. Redis instance resource name using the form:
-                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region.
+                Required. Redis instance resource
+                name using the form:
+                `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+                where `location_id` refers to a GCP
+                region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             data_protection_mode (:class:`google.cloud.redis_v1.types.FailoverInstanceRequest.DataProtectionMode`):
-                Optional. Available data protection modes that the user
-                can choose. If it's unspecified, data protection mode
-                will be LIMITED_DATA_LOSS by default.
+                Optional. Available data protection
+                modes that the user can choose. If it's
+                unspecified, data protection mode will
+                be LIMITED_DATA_LOSS by default.
 
                 This corresponds to the ``data_protection_mode`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1432,11 +1457,12 @@ class CloudRedisAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
-                Memorystore for Redis instance.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.redis_v1.types.Instance`
+                A Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1540,9 +1566,11 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
             name (:class:`str`):
-                Required. Redis instance resource name using the form:
-                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region.
+                Required. Redis instance resource
+                name using the form:
+                `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+                where `location_id` refers to a GCP
+                region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1557,18 +1585,21 @@ class CloudRedisAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1673,24 +1704,29 @@ class CloudRedisAsyncClient:
                 The request object. Request for
                 [RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance].
             name (:class:`str`):
-                Required. Redis instance resource name using the form:
-                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-                where ``location_id`` refers to a GCP region.
+                Required. Redis instance resource
+                name using the form:
+                `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+                where `location_id` refers to a GCP
+                region.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reschedule_type (:class:`google.cloud.redis_v1.types.RescheduleMaintenanceRequest.RescheduleType`):
-                Required. If reschedule type is SPECIFIC_TIME, must set
-                up schedule_time as well.
+                Required. If reschedule type is
+                SPECIFIC_TIME, must set up schedule_time
+                as well.
 
                 This corresponds to the ``reschedule_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             schedule_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
-                Optional. Timestamp when the maintenance shall be
-                rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC
-                3339 format, for example ``2012-11-15T16:19:00.094Z``.
+                Optional. Timestamp when the
+                maintenance shall be rescheduled to if
+                reschedule_type=SPECIFIC_TIME, in RFC
+                3339 format, for example
+                `2012-11-15T16:19:00.094Z`.
 
                 This corresponds to the ``schedule_time`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1705,11 +1741,12 @@ class CloudRedisAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A
-                Memorystore for Redis instance.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.redis_v1.types.Instance`
+                A Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.

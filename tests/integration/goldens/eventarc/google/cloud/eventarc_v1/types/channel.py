@@ -42,9 +42,10 @@ class Channel(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the channel. Must be unique
-            within the location on the project and must be in
-            ``projects/{project}/locations/{location}/channels/{channel_id}``
+            Required. The resource name of the channel.
+            Must be unique within the location on the
+            project and must be in
+            `projects/{project}/locations/{location}/channels/{channel_id}`
             format.
         uid (str):
             Output only. Server assigned unique
@@ -56,14 +57,18 @@ class Channel(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last-modified time.
         provider (str):
-            The name of the event provider (e.g. Eventarc SaaS partner)
-            associated with the channel. This provider will be granted
-            permissions to publish events to the channel. Format:
-            ``projects/{project}/locations/{location}/providers/{provider_id}``.
+            The name of the event provider (e.g. Eventarc
+            SaaS partner) associated with the channel. This
+            provider will be granted permissions to publish
+            events to the channel. Format:
+
+            `projects/{project}/locations/{location}/providers/{provider_id}`.
         pubsub_topic (str):
-            Output only. The name of the Pub/Sub topic created and
-            managed by Eventarc system as a transport for the event
-            delivery. Format: ``projects/{project}/topics/{topic_id}``.
+            Output only. The name of the Pub/Sub topic
+            created and managed by Eventarc system as a
+            transport for the event delivery. Format:
+
+            `projects/{project}/topics/{topic_id}`.
 
             This field is a member of `oneof`_ ``transport``.
         state (google.cloud.eventarc_v1.types.Channel.State):
@@ -73,11 +78,12 @@ class Channel(proto.Message):
             channel. The token must be used by the provider
             to register the channel for publishing.
         crypto_key_name (str):
-            Optional. Resource name of a KMS crypto key (managed by the
-            user) used to encrypt/decrypt their event data.
+            Optional. Resource name of a KMS crypto key
+            (managed by the user) used to encrypt/decrypt
+            their event data.
 
             It must match the pattern
-            ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+            `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
     """
     class State(proto.Enum):
         r"""State lists all the possible states of a Channel

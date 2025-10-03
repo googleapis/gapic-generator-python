@@ -341,19 +341,20 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
             Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export assets method over gRPC.
 
-        Exports assets with time and resource types to a given Cloud
-        Storage location/BigQuery table. For Cloud Storage location
-        destinations, the output format is newline-delimited JSON. Each
-        line represents a
-        [google.cloud.asset.v1.Asset][google.cloud.asset.v1.Asset] in
-        the JSON format; for BigQuery table destinations, the output
-        table stores the fields in asset Protobuf as columns. This API
-        implements the
+        Exports assets with time and resource types to a
+        given Cloud Storage location/BigQuery table. For Cloud
+        Storage location destinations, the output format is
+        newline-delimited JSON. Each line represents a
+        [google.cloud.asset.v1.Asset][google.cloud.asset.v1.Asset]
+        in the JSON format; for BigQuery table destinations, the
+        output table stores the fields in asset Protobuf as
+        columns. This API implements the
         [google.longrunning.Operation][google.longrunning.Operation]
-        API, which allows you to keep track of the export. We recommend
-        intervals of at least 2 seconds with exponential retry to poll
-        the export operation result. For regular-size resource parent,
-        the export operation usually finishes within 5 minutes.
+        API, which allows you to keep track of the export. We
+        recommend intervals of at least 2 seconds with
+        exponential retry to poll the export operation result.
+        For regular-size resource parent, the export operation
+        usually finishes within 5 minutes.
 
         Returns:
             Callable[[~.ExportAssetsRequest],
@@ -406,12 +407,13 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
             Awaitable[asset_service.BatchGetAssetsHistoryResponse]]:
         r"""Return a callable for the batch get assets history method over gRPC.
 
-        Batch gets the update history of assets that overlap a time
-        window. For IAM_POLICY content, this API outputs history when
-        the asset and its attached IAM POLICY both exist. This can
-        create gaps in the output history. Otherwise, this API outputs
-        history with asset in both non-delete or deleted status. If a
-        specified asset does not exist, this API returns an
+        Batch gets the update history of assets that overlap
+        a time window. For IAM_POLICY content, this API outputs
+        history when the asset and its attached IAM POLICY both
+        exist. This can create gaps in the output history.
+        Otherwise, this API outputs history with asset in both
+        non-delete or deleted status.
+        If a specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
         Returns:
@@ -571,10 +573,11 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
             Awaitable[asset_service.SearchAllResourcesResponse]]:
         r"""Return a callable for the search all resources method over gRPC.
 
-        Searches all Google Cloud resources within the specified scope,
-        such as a project, folder, or organization. The caller must be
-        granted the ``cloudasset.assets.searchAllResources`` permission
-        on the desired scope, otherwise the request will be rejected.
+        Searches all Google Cloud resources within the
+        specified scope, such as a project, folder, or
+        organization. The caller must be granted the
+        `cloudasset.assets.searchAllResources` permission on the
+        desired scope, otherwise the request will be rejected.
 
         Returns:
             Callable[[~.SearchAllResourcesRequest],
@@ -600,10 +603,12 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
             Awaitable[asset_service.SearchAllIamPoliciesResponse]]:
         r"""Return a callable for the search all iam policies method over gRPC.
 
-        Searches all IAM policies within the specified scope, such as a
-        project, folder, or organization. The caller must be granted the
-        ``cloudasset.assets.searchAllIamPolicies`` permission on the
-        desired scope, otherwise the request will be rejected.
+        Searches all IAM policies within the specified scope,
+        such as a project, folder, or organization. The caller
+        must be granted the
+        `cloudasset.assets.searchAllIamPolicies` permission on
+        the desired scope, otherwise the request will be
+        rejected.
 
         Returns:
             Callable[[~.SearchAllIamPoliciesRequest],
@@ -656,18 +661,19 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
             Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the analyze iam policy longrunning method over gRPC.
 
-        Analyzes IAM policies asynchronously to answer which identities
-        have what accesses on which resources, and writes the analysis
-        results to a Google Cloud Storage or a BigQuery destination. For
-        Cloud Storage destination, the output format is the JSON format
-        that represents a
+        Analyzes IAM policies asynchronously to answer which
+        identities have what accesses on which resources, and
+        writes the analysis results to a Google Cloud Storage or
+        a BigQuery destination. For Cloud Storage destination,
+        the output format is the JSON format that represents a
         [AnalyzeIamPolicyResponse][google.cloud.asset.v1.AnalyzeIamPolicyResponse].
         This method implements the
         [google.longrunning.Operation][google.longrunning.Operation],
-        which allows you to track the operation status. We recommend
-        intervals of at least 2 seconds with exponential backoff retry
-        to poll the operation result. The metadata contains the metadata
-        for the long-running operation.
+        which allows you to track the operation status. We
+        recommend intervals of at least 2 seconds with
+        exponential backoff retry to poll the operation result.
+        The metadata contains the metadata for the long-running
+        operation.
 
         Returns:
             Callable[[~.AnalyzeIamPolicyLongrunningRequest],
@@ -725,20 +731,20 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
             Awaitable[asset_service.QueryAssetsResponse]]:
         r"""Return a callable for the query assets method over gRPC.
 
-        Issue a job that queries assets using a SQL statement compatible
-        with `BigQuery Standard
-        SQL <http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>`__.
+        Issue a job that queries assets using a SQL statement
+        compatible with [BigQuery Standard
+        SQL](http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql).
 
-        If the query execution finishes within timeout and there's no
-        pagination, the full query results will be returned in the
-        ``QueryAssetsResponse``.
+        If the query execution finishes within timeout and
+        there's no pagination, the full query results will be
+        returned in the `QueryAssetsResponse`.
 
-        Otherwise, full query results can be obtained by issuing extra
-        requests with the ``job_reference`` from the a previous
-        ``QueryAssets`` call.
+        Otherwise, full query results can be obtained by issuing
+        extra requests with the `job_reference` from the a
+        previous `QueryAssets` call.
 
-        Note, the query result has approximately 10 GB limitation
-        enforced by BigQuery
+        Note, the query result has approximately 10 GB
+        limitation enforced by BigQuery
         https://cloud.google.com/bigquery/docs/best-practices-performance-output,
         queries return larger results will result in errors.
 
@@ -980,24 +986,25 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         r"""Return a callable for the analyze org policy governed
         assets method over gRPC.
 
-        Analyzes organization policies governed assets (Google Cloud
-        resources or policies) under a scope. This RPC supports custom
-        constraints and the following 10 canned constraints:
+        Analyzes organization policies governed assets
+        (Google Cloud resources or policies) under a scope. This
+        RPC supports custom constraints and the following 10
+        canned constraints:
 
-        - storage.uniformBucketLevelAccess
-        - iam.disableServiceAccountKeyCreation
-        - iam.allowedPolicyMemberDomains
-        - compute.vmExternalIpAccess
-        - appengine.enforceServiceAccountActAsCheck
-        - gcp.resourceLocations
-        - compute.trustedImageProjects
-        - compute.skipDefaultNetworkCreation
-        - compute.requireOsLogin
-        - compute.disableNestedVirtualization
+        * storage.uniformBucketLevelAccess
+        * iam.disableServiceAccountKeyCreation
+        * iam.allowedPolicyMemberDomains
+        * compute.vmExternalIpAccess
+        * appengine.enforceServiceAccountActAsCheck
+        * gcp.resourceLocations
+        * compute.trustedImageProjects
+        * compute.skipDefaultNetworkCreation
+        * compute.requireOsLogin
+        * compute.disableNestedVirtualization
 
-        This RPC only returns either resources of types supported by
-        `searchable asset
-        types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__,
+        This RPC only returns either resources of types
+        supported by [searchable asset
+        types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types),
         or IAM policies.
 
         Returns:

@@ -43,25 +43,29 @@ class GenerateAccessTokenRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the service account for which
-            the credentials are requested, in the following format:
-            ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            The ``-`` wildcard character is required; replacing it with
-            a project ID is invalid.
+            Required. The resource name of the service
+            account for which the credentials are requested,
+            in the following format:
+
+            `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`.
+            The `-` wildcard character is required;
+            replacing it with a project ID is invalid.
         delegates (MutableSequence[str]):
-            The sequence of service accounts in a delegation chain. Each
-            service account must be granted the
-            ``roles/iam.serviceAccountTokenCreator`` role on its next
-            service account in the chain. The last service account in
-            the chain must be granted the
-            ``roles/iam.serviceAccountTokenCreator`` role on the service
-            account that is specified in the ``name`` field of the
-            request.
+            The sequence of service accounts in a
+            delegation chain. Each service account must be
+            granted the
+            `roles/iam.serviceAccountTokenCreator` role on
+            its next service account in the chain. The last
+            service account in the chain must be granted the
+            `roles/iam.serviceAccountTokenCreator` role on
+            the service account that is specified in the
+            `name` field of the request.
 
             The delegates must have the following format:
-            ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            The ``-`` wildcard character is required; replacing it with
-            a project ID is invalid.
+
+            `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`.
+            The `-` wildcard character is required;
+            replacing it with a project ID is invalid.
         scope (MutableSequence[str]):
             Required. Code to identify the scopes to be
             included in the OAuth 2.0 access token. See
@@ -122,25 +126,29 @@ class SignBlobRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the service account for which
-            the credentials are requested, in the following format:
-            ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            The ``-`` wildcard character is required; replacing it with
-            a project ID is invalid.
+            Required. The resource name of the service
+            account for which the credentials are requested,
+            in the following format:
+
+            `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`.
+            The `-` wildcard character is required;
+            replacing it with a project ID is invalid.
         delegates (MutableSequence[str]):
-            The sequence of service accounts in a delegation chain. Each
-            service account must be granted the
-            ``roles/iam.serviceAccountTokenCreator`` role on its next
-            service account in the chain. The last service account in
-            the chain must be granted the
-            ``roles/iam.serviceAccountTokenCreator`` role on the service
-            account that is specified in the ``name`` field of the
-            request.
+            The sequence of service accounts in a
+            delegation chain. Each service account must be
+            granted the
+            `roles/iam.serviceAccountTokenCreator` role on
+            its next service account in the chain. The last
+            service account in the chain must be granted the
+            `roles/iam.serviceAccountTokenCreator` role on
+            the service account that is specified in the
+            `name` field of the request.
 
             The delegates must have the following format:
-            ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            The ``-`` wildcard character is required; replacing it with
-            a project ID is invalid.
+
+            `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`.
+            The `-` wildcard character is required;
+            replacing it with a project ID is invalid.
         payload (bytes):
             Required. The bytes to sign.
     """
@@ -184,25 +192,29 @@ class SignJwtRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the service account for which
-            the credentials are requested, in the following format:
-            ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            The ``-`` wildcard character is required; replacing it with
-            a project ID is invalid.
+            Required. The resource name of the service
+            account for which the credentials are requested,
+            in the following format:
+
+            `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`.
+            The `-` wildcard character is required;
+            replacing it with a project ID is invalid.
         delegates (MutableSequence[str]):
-            The sequence of service accounts in a delegation chain. Each
-            service account must be granted the
-            ``roles/iam.serviceAccountTokenCreator`` role on its next
-            service account in the chain. The last service account in
-            the chain must be granted the
-            ``roles/iam.serviceAccountTokenCreator`` role on the service
-            account that is specified in the ``name`` field of the
-            request.
+            The sequence of service accounts in a
+            delegation chain. Each service account must be
+            granted the
+            `roles/iam.serviceAccountTokenCreator` role on
+            its next service account in the chain. The last
+            service account in the chain must be granted the
+            `roles/iam.serviceAccountTokenCreator` role on
+            the service account that is specified in the
+            `name` field of the request.
 
             The delegates must have the following format:
-            ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            The ``-`` wildcard character is required; replacing it with
-            a project ID is invalid.
+
+            `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`.
+            The `-` wildcard character is required;
+            replacing it with a project ID is invalid.
         payload (str):
             Required. The JWT payload to sign: a JSON
             object that contains a JWT Claims Set.
@@ -247,33 +259,37 @@ class GenerateIdTokenRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the service account for which
-            the credentials are requested, in the following format:
-            ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            The ``-`` wildcard character is required; replacing it with
-            a project ID is invalid.
+            Required. The resource name of the service
+            account for which the credentials are requested,
+            in the following format:
+
+            `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`.
+            The `-` wildcard character is required;
+            replacing it with a project ID is invalid.
         delegates (MutableSequence[str]):
-            The sequence of service accounts in a delegation chain. Each
-            service account must be granted the
-            ``roles/iam.serviceAccountTokenCreator`` role on its next
-            service account in the chain. The last service account in
-            the chain must be granted the
-            ``roles/iam.serviceAccountTokenCreator`` role on the service
-            account that is specified in the ``name`` field of the
-            request.
+            The sequence of service accounts in a
+            delegation chain. Each service account must be
+            granted the
+            `roles/iam.serviceAccountTokenCreator` role on
+            its next service account in the chain. The last
+            service account in the chain must be granted the
+            `roles/iam.serviceAccountTokenCreator` role on
+            the service account that is specified in the
+            `name` field of the request.
 
             The delegates must have the following format:
-            ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
-            The ``-`` wildcard character is required; replacing it with
-            a project ID is invalid.
+
+            `projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}`.
+            The `-` wildcard character is required;
+            replacing it with a project ID is invalid.
         audience (str):
             Required. The audience for the token, such as
             the API or account that this token grants access
             to.
         include_email (bool):
-            Include the service account email in the token. If set to
-            ``true``, the token will contain ``email`` and
-            ``email_verified`` claims.
+            Include the service account email in the
+            token. If set to `true`, the token will contain
+            `email` and `email_verified` claims.
     """
 
     name: str = proto.Field(

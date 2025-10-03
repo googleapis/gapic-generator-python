@@ -881,10 +881,11 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListTriggersPager:
-                The response message for the ListTriggers method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                The response message for the
+                `ListTriggers` method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1028,11 +1029,13 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.eventarc_v1.types.Trigger` A
-                representation of the trigger resource.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.eventarc_v1.types.Trigger`
+                A representation of the trigger
+                resource.
 
         """
         # Create or coerce a protobuf request object.
@@ -1143,18 +1146,21 @@ class EventarcClient(metaclass=EventarcClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The fields to be updated; only fields explicitly
-                provided are updated. If no field mask is provided, all
-                provided fields in the request are updated. To update
-                all fields, provide a field mask of "\*".
+                The fields to be updated; only fields
+                explicitly provided are updated. If no
+                field mask is provided, all provided
+                fields in the request are updated. To
+                update all fields, provide a field mask
+                of "*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             allow_missing (bool):
-                If set to true, and the trigger is not found, a new
-                trigger will be created. In this situation,
-                ``update_mask`` is ignored.
+                If set to true, and the trigger is
+                not found, a new trigger will be
+                created. In this situation,
+                `update_mask` is ignored.
 
                 This corresponds to the ``allow_missing`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1169,11 +1175,13 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.eventarc_v1.types.Trigger` A
-                representation of the trigger resource.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.eventarc_v1.types.Trigger`
+                A representation of the trigger
+                resource.
 
         """
         # Create or coerce a protobuf request object.
@@ -1303,11 +1311,13 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.eventarc_v1.types.Trigger` A
-                representation of the trigger resource.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.eventarc_v1.types.Trigger`
+                A representation of the trigger
+                resource.
 
         """
         # Create or coerce a protobuf request object.
@@ -1533,10 +1543,11 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListChannelsPager:
-                The response message for the ListChannels method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                The response message for the
+                `ListChannels` method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1677,14 +1688,19 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.eventarc_v1.types.Channel` A representation of the Channel resource.
-                   A Channel is a resource on which event providers
-                   publish their events. The published events are
-                   delivered through the transport associated with the
-                   channel. Note that a channel is associated with
-                   exactly one event provider.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.eventarc_v1.types.Channel`
+                A representation of the Channel
+                resource. A Channel is a resource on
+                which event providers publish their
+                events. The published events are
+                delivered through the transport
+                associated with the channel. Note that a
+                channel is associated with exactly one
+                event provider.
 
         """
         # Create or coerce a protobuf request object.
@@ -1794,10 +1810,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The fields to be updated; only fields explicitly
-                provided are updated. If no field mask is provided, all
-                provided fields in the request are updated. To update
-                all fields, provide a field mask of "\*".
+                The fields to be updated; only fields
+                explicitly provided are updated. If no
+                field mask is provided, all provided
+                fields in the request are updated. To
+                update all fields, provide a field mask
+                of "*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1812,14 +1830,19 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.eventarc_v1.types.Channel` A representation of the Channel resource.
-                   A Channel is a resource on which event providers
-                   publish their events. The published events are
-                   delivered through the transport associated with the
-                   channel. Note that a channel is associated with
-                   exactly one event provider.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.eventarc_v1.types.Channel`
+                A representation of the Channel
+                resource. A Channel is a resource on
+                which event providers publish their
+                events. The published events are
+                delivered through the transport
+                associated with the channel. Note that a
+                channel is associated with exactly one
+                event provider.
 
         """
         # Create or coerce a protobuf request object.
@@ -1938,14 +1961,19 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.eventarc_v1.types.Channel` A representation of the Channel resource.
-                   A Channel is a resource on which event providers
-                   publish their events. The published events are
-                   delivered through the transport associated with the
-                   channel. Note that a channel is associated with
-                   exactly one event provider.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.eventarc_v1.types.Channel`
+                A representation of the Channel
+                resource. A Channel is a resource on
+                which event providers publish their
+                events. The published events are
+                delivered through the transport
+                associated with the channel. Note that a
+                channel is associated with exactly one
+                event provider.
 
         """
         # Create or coerce a protobuf request object.
@@ -2163,10 +2191,11 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListProvidersPager:
-                The response message for the ListProviders method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                The response message for the
+                `ListProviders` method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -2392,11 +2421,11 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListChannelConnectionsPager:
-                The response message for the ListChannelConnections
-                method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                The response message for the
+                `ListChannelConnections` method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -2538,13 +2567,18 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.eventarc_v1.types.ChannelConnection` A representation of the ChannelConnection resource.
-                   A ChannelConnection is a resource which event
-                   providers create during the activation process to
-                   establish a connection between the provider and the
-                   subscriber channel.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.eventarc_v1.types.ChannelConnection`
+                A representation of the
+                ChannelConnection resource. A
+                ChannelConnection is a resource which
+                event providers create during the
+                activation process to establish a
+                connection between the provider and the
+                subscriber channel.
 
         """
         # Create or coerce a protobuf request object.
@@ -2664,13 +2698,18 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.eventarc_v1.types.ChannelConnection` A representation of the ChannelConnection resource.
-                   A ChannelConnection is a resource which event
-                   providers create during the activation process to
-                   establish a connection between the provider and the
-                   subscriber channel.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.eventarc_v1.types.ChannelConnection`
+                A representation of the
+                ChannelConnection resource. A
+                ChannelConnection is a resource which
+                event providers create during the
+                activation process to establish a
+                connection between the provider and the
+                subscriber channel.
 
         """
         # Create or coerce a protobuf request object.
@@ -2886,10 +2925,12 @@ class EventarcClient(metaclass=EventarcClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The fields to be updated; only fields explicitly
-                provided are updated. If no field mask is provided, all
-                provided fields in the request are updated. To update
-                all fields, provide a field mask of "\*".
+                The fields to be updated; only fields
+                explicitly provided are updated. If no
+                field mask is provided, all provided
+                fields in the request are updated. To
+                update all fields, provide a field mask
+                of "*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
