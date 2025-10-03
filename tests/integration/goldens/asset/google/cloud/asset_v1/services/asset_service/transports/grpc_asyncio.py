@@ -732,8 +732,8 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         r"""Return a callable for the query assets method over gRPC.
 
         Issue a job that queries assets using a SQL statement
-        compatible with [BigQuery Standard
-        SQL](http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql).
+        compatible with [BigQuery
+        SQL](https://cloud.google.com/bigquery/docs/introduction-sql).
 
         If the query execution finishes within timeout and
         there's no pagination, the full query results will be
@@ -744,9 +744,9 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         previous `QueryAssets` call.
 
         Note, the query result has approximately 10 GB
-        limitation enforced by BigQuery
-        https://cloud.google.com/bigquery/docs/best-practices-performance-output,
-        queries return larger results will result in errors.
+        limitation enforced by
+        [BigQuery](https://cloud.google.com/bigquery/docs/best-practices-performance-output).
+        Queries return larger results will result in errors.
 
         Returns:
             Callable[[~.QueryAssetsRequest],
@@ -988,23 +988,58 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
 
         Analyzes organization policies governed assets
         (Google Cloud resources or policies) under a scope. This
-        RPC supports custom constraints and the following 10
-        canned constraints:
+        RPC supports custom constraints and the following canned
+        constraints:
 
-        * storage.uniformBucketLevelAccess
-        * iam.disableServiceAccountKeyCreation
-        * iam.allowedPolicyMemberDomains
-        * compute.vmExternalIpAccess
-        * appengine.enforceServiceAccountActAsCheck
-        * gcp.resourceLocations
-        * compute.trustedImageProjects
-        * compute.skipDefaultNetworkCreation
-        * compute.requireOsLogin
-        * compute.disableNestedVirtualization
+        * constraints/ainotebooks.accessMode
+        * constraints/ainotebooks.disableFileDownloads
+        * constraints/ainotebooks.disableRootAccess
+        * constraints/ainotebooks.disableTerminal
+        * constraints/ainotebooks.environmentOptions
+        * constraints/ainotebooks.requireAutoUpgradeSchedule *
+        constraints/ainotebooks.restrictVpcNetworks
+        * constraints/compute.disableGuestAttributesAccess *
+        constraints/compute.disableInstanceDataAccessApis *
+        constraints/compute.disableNestedVirtualization *
+        constraints/compute.disableSerialPortAccess
+        * constraints/compute.disableSerialPortLogging
+        * constraints/compute.disableVpcExternalIpv6
+        * constraints/compute.requireOsLogin
+        * constraints/compute.requireShieldedVm
+        *
+        constraints/compute.restrictLoadBalancerCreationForTypes
+        *
+        constraints/compute.restrictProtocolForwardingCreationForTypes
+        * constraints/compute.restrictXpnProjectLienRemoval *
+        constraints/compute.setNewProjectDefaultToZonalDNSOnly *
+        constraints/compute.skipDefaultNetworkCreation *
+        constraints/compute.trustedImageProjects
+        * constraints/compute.vmCanIpForward
+        * constraints/compute.vmExternalIpAccess
+        * constraints/gcp.detailedAuditLoggingMode
+        * constraints/gcp.resourceLocations
+        * constraints/iam.allowedPolicyMemberDomains
+        *
+        constraints/iam.automaticIamGrantsForDefaultServiceAccounts
+        * constraints/iam.disableServiceAccountCreation
+        * constraints/iam.disableServiceAccountKeyCreation *
+        constraints/iam.disableServiceAccountKeyUpload *
+        constraints/iam.restrictCrossProjectServiceAccountLienRemoval
+        * constraints/iam.serviceAccountKeyExpiryHours
+        * constraints/resourcemanager.accessBoundaries
+        * constraints/resourcemanager.allowedExportDestinations
+        * constraints/sql.restrictAuthorizedNetworks
+        *
+        constraints/sql.restrictNoncompliantDiagnosticDataAccess
+        * constraints/sql.restrictNoncompliantResourceCreation *
+        constraints/sql.restrictPublicIp
+        * constraints/storage.publicAccessPrevention
+        * constraints/storage.restrictAuthTypes
+        * constraints/storage.uniformBucketLevelAccess
 
         This RPC only returns either resources of types
-        supported by [searchable asset
-        types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types),
+        [supported by search
+        APIs](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
         or IAM policies.
 
         Returns:

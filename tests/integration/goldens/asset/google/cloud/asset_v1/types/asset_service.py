@@ -957,7 +957,7 @@ class PartitionSpec(proto.Message):
             READ_TIME (1):
                 The time when the snapshot is taken. If
                 specified as partition key, the result table(s)
-                is partitoned by the additional timestamp
+                is partitioned by the additional timestamp
                 column, readTime. If [read_time] in
                 ExportAssetsRequest is specified, the readTime
                 column's value will be the same as it.
@@ -966,10 +966,10 @@ class PartitionSpec(proto.Message):
             REQUEST_TIME (2):
                 The time when the request is received and
                 started to be processed. If specified as
-                partition key, the result table(s) is partitoned
-                by the requestTime column, an additional
-                timestamp column representing when the request
-                was received.
+                partition key, the result table(s) is
+                partitioned by the requestTime column, an
+                additional timestamp column representing when
+                the request was received.
         """
         PARTITION_KEY_UNSPECIFIED = 0
         READ_TIME = 1
@@ -1174,72 +1174,109 @@ class SearchAllResourcesRequest(proto.Message):
             Examples:
 
             * `name:Important` to find Google Cloud
-            resources whose name contains   "Important" as a
+            resources whose name contains   `Important` as a
             word.
             * `name=Important` to find the Google Cloud
-            resource whose name is exactly   "Important".
+            resource whose name is exactly   `Important`.
             * `displayName:Impor*` to find Google Cloud
-            resources whose display name   contains "Impor"
+            resources whose display name   contains `Impor`
             as a prefix of any word in the field. *
             `location:us-west*` to find Google Cloud
-            resources whose location   contains both "us"
-            and "west" as prefixes.
+            resources whose location   contains both `us`
+            and `west` as prefixes.
             * `labels:prod` to find Google Cloud resources
-            whose labels contain "prod"   as a key or value.
+            whose labels contain `prod`   as a key or value.
             * `labels.env:prod` to find Google Cloud
-            resources that have a label "env"   and its
-            value is "prod".
+            resources that have a label `env`   and its
+            value is `prod`.
             * `labels.env:*` to find Google Cloud resources
-            that have a label "env". * `kmsKey:key` to find
-            Google Cloud resources encrypted with a
-            customer-managed encryption key whose name
-            contains "key" as a word. This   field is
-            deprecated. Please use the `kmsKeys` field to
+            that have a label `env`. * `tagKeys:env` to find
+            Google Cloud resources that have directly
+            attached tags where the
+            [`TagKey.namespacedName`](https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys#resource:-tagkey)
+            contains `env`.
+            * `tagValues:prod*` to find Google Cloud
+            resources that have directly   attached tags
+            where the
+            [`TagValue.namespacedName`](https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue)
+            contains a word prefixed by `prod`.
+            * `tagValueIds=tagValues/123` to find Google
+            Cloud resources that have   directly attached
+            tags where the
+            [`TagValue.name`](https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue)
+            is exactly `tagValues/123`.
+            * `effectiveTagKeys:env` to find Google Cloud
+            resources that have   directly attached or
+            inherited tags where the
+            [`TagKey.namespacedName`](https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys#resource:-tagkey)
+            contains `env`.
+            * `effectiveTagValues:prod*` to find Google
+            Cloud resources that have   directly attached or
+            inherited tags where the
+            [`TagValue.namespacedName`](https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue)
+            contains a word prefixed by `prod`.
+            * `effectiveTagValueIds=tagValues/123` to find
+            Google Cloud resources that    have directly
+            attached or inherited tags where the
+            [`TagValue.name`](https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue)
+            is exactly `tagValues/123`.
+            * `kmsKey:key` to find Google Cloud resources
+            encrypted with a   customer-managed encryption
+            key whose name contains `key` as a word. This
+            field is deprecated. Use the `kmsKeys` field to
             retrieve Cloud KMS   key information.
             * `kmsKeys:key` to find Google Cloud resources
             encrypted with   customer-managed encryption
-            keys whose name contains the word "key". *
+            keys whose name contains the word `key`. *
             `relationships:instance-group-1` to find Google
             Cloud resources that have   relationships with
-            "instance-group-1" in the related resource name.
+            `instance-group-1` in the related resource name.
             * `relationships:INSTANCE_TO_INSTANCEGROUP` to
             find Compute Engine   instances that have
             relationships of type
-            "INSTANCE_TO_INSTANCEGROUP". *
+            `INSTANCE_TO_INSTANCEGROUP`. *
             `relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1`
             to find   Compute Engine instances that have
-            relationships with "instance-group-1"   in the
+            relationships with `instance-group-1`   in the
             Compute Engine instance group resource name, for
-            relationship type   "INSTANCE_TO_INSTANCEGROUP".
+            relationship type   `INSTANCE_TO_INSTANCEGROUP`.
+            * `sccSecurityMarks.key=value` to find Cloud
+            resources that are attached   with security
+            marks whose key is `key` and value is `value`. *
+            `sccSecurityMarks.key:*` to find Cloud resources
+            that are attached with   security marks whose
+            key is `key`.
             * `state:ACTIVE` to find Google Cloud resources
-            whose state contains   "ACTIVE" as a word.
+            whose state contains   `ACTIVE` as a word.
             * `NOT state:ACTIVE` to find Google Cloud
-            resources whose state doesn't   contain "ACTIVE"
+            resources whose state doesn't   contain `ACTIVE`
             as a word.
             * `createTime<1609459200` to find Google Cloud
-            resources that were created   before "2021-01-01
-            00:00:00 UTC". 1609459200 is the epoch timestamp
-            of   "2021-01-01 00:00:00 UTC" in seconds.
+            resources that were created   before `2021-01-01
+            00:00:00 UTC`. `1609459200` is the epoch
+            timestamp of   `2021-01-01 00:00:00 UTC` in
+            seconds.
             * `updateTime>1609459200` to find Google Cloud
-            resources that were updated   after "2021-01-01
-            00:00:00 UTC". 1609459200 is the epoch timestamp
-            of   "2021-01-01 00:00:00 UTC" in seconds.
+            resources that were updated   after `2021-01-01
+            00:00:00 UTC`. `1609459200` is the epoch
+            timestamp of   `2021-01-01 00:00:00 UTC` in
+            seconds.
             * `Important` to find Google Cloud resources
-            that contain "Important" as a   word in any of
+            that contain `Important` as a   word in any of
             the searchable fields.
             * `Impor*` to find Google Cloud resources that
-            contain "Impor" as a prefix   of any word in any
+            contain `Impor` as a prefix   of any word in any
             of the searchable fields. * `Important
             location:(us-west1 OR global)` to find Google
-            Cloud   resources that contain "Important" as a
+            Cloud   resources that contain `Important` as a
             word in any of the searchable   fields and are
-            also located in the "us-west1" region or the
-            "global"   location.
+            also located in the `us-west1` region or the
+            `global`   location.
         asset_types (MutableSequence[str]):
             Optional. A list of asset types that this
             request searches for. If empty, it will search
-            all the [searchable asset
-            types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types).
+            all the asset types [supported by search
+            APIs](https://cloud.google.com/asset-inventory/docs/supported-asset-types).
 
             Regular expressions are also supported. For
             example:
@@ -1261,11 +1298,12 @@ class SearchAllResourcesRequest(proto.Message):
         page_size (int):
             Optional. The page size for search result
             pagination. Page size is capped at 500 even if a
-            larger value is given. If set to zero, server
-            will pick an appropriate default. Returned
-            results may be fewer than requested. When this
-            happens, there could be more results as long as
-            `next_page_token` is returned.
+            larger value is given. If set to zero or a
+            negative value, server will pick an appropriate
+            default. Returned results may be fewer than
+            requested. When this happens, there could be
+            more results as long as `next_page_token` is
+            returned.
         page_token (str):
             Optional. If present, then retrieve the next
             batch of results from the preceding call to this
@@ -1280,8 +1318,8 @@ class SearchAllResourcesRequest(proto.Message):
             the field name to indicate descending order.
             Redundant space characters are ignored. Example:
             "location DESC, name".
-            Only singular primitive fields in the response
-            are sortable:
+            Only the following fields in the response are
+            sortable:
 
               * name
               * assetType
@@ -1294,51 +1332,43 @@ class SearchAllResourcesRequest(proto.Message):
               * state
               * parentFullResourceName
               * parentAssetType
-
-            All the other fields such as repeated fields
-            (e.g., `networkTags`, `kmsKeys`), map fields
-            (e.g., `labels`) and struct fields (e.g.,
-            `additionalAttributes`) are not supported.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. A comma-separated list of fields
-            specifying which fields to be returned in
-            ResourceSearchResult. Only '*' or combination of
-            top level fields can be specified. Field names
-            of both snake_case and camelCase are supported.
-            Examples: `"*"`, `"name,location"`,
-            `"name,versionedResources"`.
+            that you want returned in the results. The
+            following fields are returned by default if not
+            specified:
 
-            The read_mask paths must be valid field paths
-            listed but not limited to (both snake_case and
-            camelCase are supported):
+              * `name`
+              * `assetType`
+              * `project`
+              * `folders`
+              * `organization`
+              * `displayName`
+              * `description`
+              * `location`
+              * `labels`
+              * `tags`
+              * `effectiveTags`
+              * `networkTags`
+              * `kmsKeys`
+              * `createTime`
+              * `updateTime`
+              * `state`
+              * `additionalAttributes`
+              * `parentFullResourceName`
+              * `parentAssetType`
 
-              * name
-              * assetType
-              * project
-              * displayName
-              * description
-              * location
-              * tagKeys
-              * tagValues
-              * tagValueIds
-              * labels
-              * networkTags
-              * kmsKey (This field is deprecated. Please use
-            the `kmsKeys` field to     retrieve Cloud KMS
-            key information.)
-              * kmsKeys
-              * createTime
-              * updateTime
-              * state
-              * additionalAttributes
-              * versionedResources
-
-            If read_mask is not specified, all fields except
-            versionedResources will be returned.
-            If only '*' is specified, all fields including
-            versionedResources will be returned.
-            Any invalid field path will trigger
-            INVALID_ARGUMENT error.
+            Some fields of large size, such as
+            `versionedResources`, `attachedResources`,
+            `effectiveTags` etc., are not returned by
+            default, but you can specify them in the
+            `read_mask` parameter if you want to include
+            them. If `"*"` is specified, all [available
+            fields](https://cloud.google.com/asset-inventory/docs/reference/rest/v1/TopLevel/searchAllResources#resourcesearchresult)
+            are returned.
+            Examples: `"name,location"`,
+            `"name,versionedResources"`, `"*"`. Any invalid
+            field path will trigger INVALID_ARGUMENT error.
     """
 
     scope: str = proto.Field(
@@ -1485,11 +1515,12 @@ class SearchAllIamPoliciesRequest(proto.Message):
         page_size (int):
             Optional. The page size for search result
             pagination. Page size is capped at 500 even if a
-            larger value is given. If set to zero, server
-            will pick an appropriate default. Returned
-            results may be fewer than requested. When this
-            happens, there could be more results as long as
-            `next_page_token` is returned.
+            larger value is given. If set to zero or a
+            negative value, server will pick an appropriate
+            default. Returned results may be fewer than
+            requested. When this happens, there could be
+            more results as long as `next_page_token` is
+            returned.
         page_token (str):
             Optional. If present, retrieve the next batch
             of results from the preceding call to this
@@ -1501,8 +1532,8 @@ class SearchAllIamPoliciesRequest(proto.Message):
             Optional. A list of asset types that the IAM
             policies are attached to. If empty, it will
             search the IAM policies that are attached to all
-            the [searchable asset
-            types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types).
+            the asset types [supported by search
+            APIs](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
 
             Regular expressions are also supported. For
             example:
@@ -1611,10 +1642,10 @@ class IamPolicyAnalysisQuery(proto.Message):
             "projects/my-project-id"), or a project number
             (such as "projects/12345").
 
-            To know how to get organization id, visit [here
+            To know how to get organization ID, visit [here
             ](https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
 
-            To know how to get folder or project id, visit
+            To know how to get folder or project ID, visit
             [here
             ](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
         resource_selector (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.ResourceSelector):
@@ -1923,7 +1954,7 @@ class AnalyzeIamPolicyRequest(proto.Message):
             be merged together with the
             `saved_analysis_query` as base and the
             `analysis_query` as overrides. For more details
-            of the merge behavior, please refer to the
+            of the merge behavior, refer to the
             [MergeFrom](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.message#Message.MergeFrom.details)
             page.
 
@@ -1974,7 +2005,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
             request.
         service_account_impersonation_analysis (MutableSequence[google.cloud.asset_v1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis]):
             The service account impersonation analysis if
-            [AnalyzeIamPolicyRequest.analyze_service_account_impersonation][]
+            [IamPolicyAnalysisQuery.Options.analyze_service_account_impersonation][google.cloud.asset.v1.IamPolicyAnalysisQuery.Options.analyze_service_account_impersonation]
             is enabled.
         fully_explored (bool):
             Represents whether all entries in the
@@ -2146,7 +2177,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
                 REQUEST_TIME (1):
                     The time when the request is received. If
                     specified as partition key, the result table(s)
-                    is partitoned by the RequestTime column, an
+                    is partitioned by the RequestTime column, an
                     additional timestamp column representing when
                     the request was received.
             """
@@ -2207,7 +2238,7 @@ class AnalyzeIamPolicyLongrunningRequest(proto.Message):
             be merged together with the
             `saved_analysis_query` as base and the
             `analysis_query` as overrides. For more details
-            of the merge behavior, please refer to the
+            of the merge behavior, refer to the
             [MergeFrom](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.message#Message.MergeFrom.details)
             doc.
 
@@ -2563,8 +2594,8 @@ class AnalyzeMoveRequest(proto.Message):
             organization to reparent the target resource.
             The analysis will be performed against
             hypothetically moving the resource to this
-            specified desitination parent. This can only be
-            a folder number (such as "folders/123") or an
+            specified destination parent. This can only be a
+            folder number (such as "folders/123") or an
             organization number (such as
             "organizations/123").
         view (google.cloud.asset_v1.types.AnalyzeMoveRequest.AnalysisView):
@@ -2793,8 +2824,8 @@ class QueryAssetsRequest(proto.Message):
             returned.
         statement (str):
             Optional. A SQL statement that's compatible
-            with [BigQuery Standard
-            SQL](http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql).
+            with [BigQuery
+            SQL](https://cloud.google.com/bigquery/docs/introduction-sql).
 
             This field is a member of `oneof`_ ``query``.
         job_reference (str):
@@ -2927,11 +2958,13 @@ class QueryAssetsResponse(proto.Message):
             The query response, which can be either an
             `error` or a valid `response`.
             If `done` == `false` and the query result is
-            being saved in a output, the output_config field
-            will be set.
+            being saved in an output, the output_config
+            field will be set.
             If `done` == `true`, exactly one of
             `error`, `query_result` or `output_config` will
-            be set.
+            be set. [done] is unset unless the
+            [QueryAssetsResponse] contains a
+            [QueryAssetsResponse.job_reference].
         error (google.rpc.status_pb2.Status):
             Error status.
 
@@ -2941,10 +2974,10 @@ class QueryAssetsResponse(proto.Message):
 
             This field is a member of `oneof`_ ``response``.
         output_config (google.cloud.asset_v1.types.QueryAssetsOutputConfig):
-            Output configuration which indicates instead
-            of being returned in API response on the fly,
-            the query result will be saved in a specific
-            output.
+            Output configuration, which indicates that
+            instead of being returned in an API response on
+            the fly, the query result will be saved in a
+            specific output.
 
             This field is a member of `oneof`_ ``response``.
     """
@@ -3106,18 +3139,18 @@ class BatchGetEffectiveIamPoliciesRequest(proto.Message):
             "projects/my-project-id"), or a project number
             (such as "projects/12345").
 
-            To know how to get organization id, visit [here
+            To know how to get organization ID, visit [here
             ](https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
 
-            To know how to get folder or project id, visit
+            To know how to get folder or project ID, visit
             [here
             ](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
         names (MutableSequence[str]):
             Required. The names refer to the
             [full_resource_names]
             (https://cloud.google.com/asset-inventory/docs/resource-name-format)
-            of [searchable asset
-            types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types).
+            of the asset types [supported by search
+            APIs](https://cloud.google.com/asset-inventory/docs/supported-asset-types).
             A maximum of 20 resources' effective policies
             can be retrieved in a batch.
     """
@@ -3271,7 +3304,11 @@ class AnalyzerOrgPolicy(proto.Message):
     """
 
     class Rule(proto.Message):
-        r"""Represents a rule defined in an organization policy
+        r"""This rule message is a customized version of the one defined
+        in the Organization Policy system. In addition to the fields
+        defined in the original organization policy, it contains
+        additional field(s) under specific circumstances to support
+        analysis results.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -3282,9 +3319,9 @@ class AnalyzerOrgPolicy(proto.Message):
 
         Attributes:
             values (google.cloud.asset_v1.types.AnalyzerOrgPolicy.Rule.StringValues):
-                List of values to be used for this
-                PolicyRule. This field can be set only in
-                Policies for list constraints.
+                List of values to be used for this policy
+                rule. This field can be set only in policies for
+                list constraints.
 
                 This field is a member of `oneof`_ ``kind``.
             allow_all (bool):
@@ -3308,6 +3345,22 @@ class AnalyzerOrgPolicy(proto.Message):
                 This field is a member of `oneof`_ ``kind``.
             condition (google.type.expr_pb2.Expr):
                 The evaluating condition for this rule.
+            condition_evaluation (google.cloud.asset_v1.types.ConditionEvaluation):
+                The condition evaluation result for this
+                rule. Only populated if it meets all the
+                following criteria:
+
+                * There is a
+                [condition][google.cloud.asset.v1.AnalyzerOrgPolicy.Rule.condition]
+                defined for this rule.
+                * This rule is within
+                [AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.consolidated_policy][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.consolidated_policy],
+                or
+                [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.consolidated_policy][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.consolidated_policy]
+                when the
+                [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset]
+                has
+                [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.governed_resource][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.governed_resource].
         """
 
         class StringValues(proto.Message):
@@ -3354,6 +3407,11 @@ class AnalyzerOrgPolicy(proto.Message):
             proto.MESSAGE,
             number=7,
             message=expr_pb2.Expr,
+        )
+        condition_evaluation: gca_assets.ConditionEvaluation = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message=gca_assets.ConditionEvaluation,
         )
 
     attached_resource: str = proto.Field(
@@ -3585,11 +3643,19 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
                 DELETE (3):
                     Constraint applied when deleting the
                     resource.
+                REMOVE_GRANT (4):
+                    Constraint applied when removing an IAM
+                    grant.
+                GOVERN_TAGS (5):
+                    Constraint applied when enforcing forced
+                    tagging.
             """
             METHOD_TYPE_UNSPECIFIED = 0
             CREATE = 1
             UPDATE = 2
             DELETE = 3
+            REMOVE_GRANT = 4
+            GOVERN_TAGS = 5
 
         class ActionType(proto.Enum):
             r"""Allow or deny type.
@@ -3674,15 +3740,18 @@ class AnalyzeOrgPoliciesRequest(proto.Message):
         filter (str):
             The expression to filter
             [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results].
-            The only supported field is
-            `consolidated_policy.attached_resource`, and the
-            only supported operator is `=`.
+            Filtering is currently available for bare
+            literal values and the following fields:
 
-            Example:
+            * consolidated_policy.attached_resource
+            * consolidated_policy.rules.enforce
 
+            When filtering by a specific field, the only
+            supported operator is `=`. For example,
+            filtering by
             consolidated_policy.attached_resource="//cloudresourcemanager.googleapis.com/folders/001"
-            will return the org policy results
-            of"folders/001".
+            will return all the Organization Policy results
+            attached to "folders/001".
         page_size (int):
             The maximum number of items to return per
             page. If unspecified,
@@ -3744,18 +3813,37 @@ class AnalyzeOrgPoliciesResponse(proto.Message):
                 The consolidated organization policy for the
                 analyzed resource. The consolidated organization
                 policy is computed by merging and evaluating
-                [AnalyzeOrgPoliciesResponse.policy_bundle][].
+                [policy_bundle][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.OrgPolicyResult.policy_bundle].
                 The evaluation will respect the organization
                 policy [hierarchy
                 rules](https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy).
             policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
                 The ordered list of all organization policies
                 from the
-                [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][].
+                [consolidated_policy.attached_resource][google.cloud.asset.v1.AnalyzerOrgPolicy.attached_resource].
                 to the scope specified in the request.
 
                 If the constraint is defined with default
                 policy, it will also appear in the list.
+            project (str):
+                The project that this consolidated policy
+                belongs to, in the format of
+                projects/{PROJECT_NUMBER}. This field is
+                available when the consolidated policy belongs
+                to a project.
+            folders (MutableSequence[str]):
+                The folder(s) that this consolidated policy
+                belongs to, in the format of
+                folders/{FOLDER_NUMBER}. This field is available
+                when the consolidated policy belongs (directly
+                or cascadingly) to one or more folders.
+            organization (str):
+                The organization that this consolidated
+                policy belongs to, in the format of
+                organizations/{ORGANIZATION_NUMBER}. This field
+                is available when the consolidated policy
+                belongs (directly or cascadingly) to an
+                organization.
         """
 
         consolidated_policy: 'AnalyzerOrgPolicy' = proto.Field(
@@ -3767,6 +3855,18 @@ class AnalyzeOrgPoliciesResponse(proto.Message):
             proto.MESSAGE,
             number=2,
             message='AnalyzerOrgPolicy',
+        )
+        project: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        folders: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=4,
+        )
+        organization: str = proto.Field(
+            proto.STRING,
+            number=5,
         )
 
     @property
@@ -3812,15 +3912,20 @@ class AnalyzeOrgPolicyGovernedContainersRequest(proto.Message):
             only contains organization policies for the
             provided constraint.
         filter (str):
-            The expression to filter the governed
-            containers in result. The only supported field
-            is `parent`, and the only supported operator is
-            `=`.
+            The expression to filter
+            [AnalyzeOrgPolicyGovernedContainersResponse.governed_containers][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.governed_containers].
+            Filtering is currently available for bare
+            literal values and the following fields:
 
-            Example:
+            * parent
+            * consolidated_policy.rules.enforce
 
+            When filtering by a specific field, the only
+            supported operator is `=`. For example,
+            filtering by
             parent="//cloudresourcemanager.googleapis.com/folders/001"
-            will return all containers under "folders/001".
+            will return all the containers under
+            "folders/001".
         page_size (int):
             The maximum number of items to return per
             page. If unspecified,
@@ -3897,11 +4002,30 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
             policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
                 The ordered list of all organization policies
                 from the
-                [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][].
+                [consolidated_policy.attached_resource][google.cloud.asset.v1.AnalyzerOrgPolicy.attached_resource].
                 to the scope specified in the request.
 
                 If the constraint is defined with default
                 policy, it will also appear in the list.
+            project (str):
+                The project that this resource belongs to, in
+                the format of projects/{PROJECT_NUMBER}. This
+                field is available when the resource belongs to
+                a project.
+            folders (MutableSequence[str]):
+                The folder(s) that this resource belongs to,
+                in the format of folders/{FOLDER_NUMBER}. This
+                field is available when the resource belongs
+                (directly or cascadingly) to one or more
+                folders.
+            organization (str):
+                The organization that this resource belongs
+                to, in the format of
+                organizations/{ORGANIZATION_NUMBER}. This field
+                is available when the resource belongs (directly
+                or cascadingly) to an organization.
+            effective_tags (MutableSequence[google.cloud.asset_v1.types.EffectiveTagDetails]):
+                The effective tags on this resource.
         """
 
         full_resource_name: str = proto.Field(
@@ -3921,6 +4045,23 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
             proto.MESSAGE,
             number=4,
             message='AnalyzerOrgPolicy',
+        )
+        project: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        folders: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=6,
+        )
+        organization: str = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+        effective_tags: MutableSequence[gca_assets.EffectiveTagDetails] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message=gca_assets.EffectiveTagDetails,
         )
 
     @property
@@ -3966,26 +4107,43 @@ class AnalyzeOrgPolicyGovernedAssetsRequest(proto.Message):
             contains analyzed organization policies for the
             provided constraint.
         filter (str):
-            The expression to filter the governed assets
-            in result. The only supported fields for
-            governed resources are
-            `governed_resource.project` and
-            `governed_resource.folders`. The only supported
-            fields for governed iam policies are
-            `governed_iam_policy.project` and
-            `governed_iam_policy.folders`. The only
-            supported operator is `=`.
+            The expression to filter
+            [AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets].
 
-            Example 1:
-            governed_resource.project="projects/12345678"
-            filter will return all governed resources under
-            projects/12345678 including the project ifself,
-            if applicable.
+            For governed resources, filtering is currently
+            available for bare literal values and the
+            following fields:
 
-            Example 2:
-            governed_iam_policy.folders="folders/12345678"
-            filter will return all governed iam policies
-            under folders/12345678, if applicable.
+            * governed_resource.project
+            * governed_resource.folders
+            * consolidated_policy.rules.enforce
+            When filtering by `governed_resource.project` or
+            `consolidated_policy.rules.enforce`, the only
+            supported operator is `=`. When filtering by
+            `governed_resource.folders`, the supported
+            operators are `=` and `:`.
+            For example, filtering by
+            `governed_resource.project="projects/12345678"`
+            will return all the governed resources under
+            "projects/12345678", including the project
+            itself if applicable.
+
+            For governed IAM policies, filtering is
+            currently available for bare literal values and
+            the following fields:
+
+            * governed_iam_policy.project
+            * governed_iam_policy.folders
+            * consolidated_policy.rules.enforce
+            When filtering by `governed_iam_policy.project`
+            or `consolidated_policy.rules.enforce`, the only
+            supported operator is `=`. When filtering by
+            `governed_iam_policy.folders`, the supported
+            operators are `=` and `:`.
+            For example, filtering by
+            `governed_iam_policy.folders:"folders/12345678"`
+            will return all the governed IAM policies under
+            "folders/001".
         page_size (int):
             The maximum number of items to return per
             page. If unspecified,
@@ -4068,6 +4226,17 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 organizations/{ORGANIZATION_NUMBER}. This field
                 is available when the resource belongs (directly
                 or cascadingly) to an organization.
+            asset_type (str):
+                The asset type of the
+                [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name]
+                Example:
+
+                `cloudresourcemanager.googleapis.com/Project`
+                See [Cloud Asset Inventory Supported Asset
+                Types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
+                for all supported asset types.
+            effective_tags (MutableSequence[google.cloud.asset_v1.types.EffectiveTagDetails]):
+                The effective tags on this resource.
         """
 
         full_resource_name: str = proto.Field(
@@ -4090,6 +4259,15 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
             proto.STRING,
             number=7,
         )
+        asset_type: str = proto.Field(
+            proto.STRING,
+            number=8,
+        )
+        effective_tags: MutableSequence[gca_assets.EffectiveTagDetails] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=9,
+            message=gca_assets.EffectiveTagDetails,
+        )
 
     class GovernedIamPolicy(proto.Message):
         r"""The IAM policies governed by the organization policies of the
@@ -4097,8 +4275,8 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
 
         Attributes:
             attached_resource (str):
-                The full resource name of the resource
-                associated with this IAM policy. Example:
+                The full resource name of the resource on
+                which this IAM policy is set. Example:
 
                 `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
                 See [Cloud Asset Inventory Resource Name
@@ -4124,6 +4302,15 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 organizations/{ORGANIZATION_NUMBER}. This field
                 is available when the IAM policy belongs
                 (directly or cascadingly) to an organization.
+            asset_type (str):
+                The asset type of the
+                [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy.attached_resource][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy.attached_resource].
+                Example:
+
+                `cloudresourcemanager.googleapis.com/Project`
+                See [Cloud Asset Inventory Supported Asset
+                Types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
+                for all supported asset types.
         """
 
         attached_resource: str = proto.Field(
@@ -4146,6 +4333,10 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
         organization: str = proto.Field(
             proto.STRING,
             number=7,
+        )
+        asset_type: str = proto.Field(
+            proto.STRING,
+            number=8,
         )
 
     class GovernedAsset(proto.Message):
@@ -4184,7 +4375,7 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
             policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
                 The ordered list of all organization policies
                 from the
-                [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][]
+                [consolidated_policy.attached_resource][google.cloud.asset.v1.AnalyzerOrgPolicy.attached_resource]
                 to the scope specified in the request.
 
                 If the constraint is defined with default

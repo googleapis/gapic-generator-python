@@ -1254,78 +1254,117 @@ class AssetServiceAsyncClient:
 
                 * `name:Important` to find Google Cloud
                 resources whose name contains
-                "Important" as a word.
+                `Important` as a word.
                 * `name=Important` to find the Google
                 Cloud resource whose name is exactly
-                "Important".
+                `Important`.
                 * `displayName:Impor*` to find Google
                 Cloud resources whose display name
-                contains "Impor" as a prefix of any word
+                contains `Impor` as a prefix of any word
                 in the field. * `location:us-west*` to
                 find Google Cloud resources whose
-                location   contains both "us" and "west"
+                location   contains both `us` and `west`
                 as prefixes. * `labels:prod` to find
                 Google Cloud resources whose labels
-                contain "prod"   as a key or value.
+                contain `prod`   as a key or value.
                 * `labels.env:prod` to find Google Cloud
-                resources that have a label "env"   and
-                its value is "prod".
+                resources that have a label `env`   and
+                its value is `prod`.
                 * `labels.env:*` to find Google Cloud
-                resources that have a label "env". *
-                `kmsKey:key` to find Google Cloud
+                resources that have a label `env`. *
+                `tagKeys:env` to find Google Cloud
+                resources that have directly   attached
+                tags where the
+                [`TagKey.namespacedName`](https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys#resource:-tagkey)
+                contains `env`.
+                * `tagValues:prod*` to find Google Cloud
+                resources that have directly   attached
+                tags where the
+                [`TagValue.namespacedName`](https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue)
+                contains a word prefixed by `prod`.
+                * `tagValueIds=tagValues/123` to find
+                Google Cloud resources that have
+                directly attached tags where the
+                [`TagValue.name`](https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue)
+                is exactly `tagValues/123`.
+                * `effectiveTagKeys:env` to find Google
+                Cloud resources that have   directly
+                attached or inherited tags where the
+                [`TagKey.namespacedName`](https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys#resource:-tagkey)
+                contains `env`.
+                * `effectiveTagValues:prod*` to find
+                Google Cloud resources that have
+                directly attached or inherited tags
+                where the
+                [`TagValue.namespacedName`](https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue)
+                contains a word prefixed by `prod`.
+                * `effectiveTagValueIds=tagValues/123`
+                to find Google Cloud resources that
+                have directly attached or inherited tags
+                where the
+                [`TagValue.name`](https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue)
+                is exactly `tagValues/123`.
+                * `kmsKey:key` to find Google Cloud
                 resources encrypted with a
                 customer-managed encryption key whose
-                name contains "key" as a word. This
-                field is deprecated. Please use the
-                `kmsKeys` field to retrieve Cloud KMS
-                key information.
+                name contains `key` as a word. This
+                field is deprecated. Use the `kmsKeys`
+                field to retrieve Cloud KMS   key
+                information.
                 * `kmsKeys:key` to find Google Cloud
                 resources encrypted with
                 customer-managed encryption keys whose
-                name contains the word "key". *
+                name contains the word `key`. *
                 `relationships:instance-group-1` to find
                 Google Cloud resources that have
-                relationships with "instance-group-1" in
+                relationships with `instance-group-1` in
                 the related resource name. *
                 `relationships:INSTANCE_TO_INSTANCEGROUP`
                 to find Compute Engine   instances that
                 have relationships of type
-                "INSTANCE_TO_INSTANCEGROUP". *
+                `INSTANCE_TO_INSTANCEGROUP`. *
                 `relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1`
                 to find   Compute Engine instances that
                 have relationships with
-                "instance-group-1"   in the Compute
+                `instance-group-1`   in the Compute
                 Engine instance group resource name, for
                 relationship type
-                "INSTANCE_TO_INSTANCEGROUP".
+                `INSTANCE_TO_INSTANCEGROUP`.
+                * `sccSecurityMarks.key=value` to find
+                Cloud resources that are attached   with
+                security marks whose key is `key` and
+                value is `value`. *
+                `sccSecurityMarks.key:*` to find Cloud
+                resources that are attached with
+                security marks whose key is `key`.
                 * `state:ACTIVE` to find Google Cloud
                 resources whose state contains
-                "ACTIVE" as a word.
+                `ACTIVE` as a word.
                 * `NOT state:ACTIVE` to find Google
                 Cloud resources whose state doesn't
-                contain "ACTIVE" as a word.
+                contain `ACTIVE` as a word.
                 * `createTime<1609459200` to find Google
                 Cloud resources that were created
-                before "2021-01-01 00:00:00 UTC".
-                1609459200 is the epoch timestamp of
-                "2021-01-01 00:00:00 UTC" in seconds.
+                before `2021-01-01 00:00:00 UTC`.
+                `1609459200` is the epoch timestamp of
+                `2021-01-01 00:00:00 UTC` in seconds.
                 * `updateTime>1609459200` to find Google
                 Cloud resources that were updated
-                after "2021-01-01 00:00:00 UTC".
-                1609459200 is the epoch timestamp of
-                "2021-01-01 00:00:00 UTC" in seconds.
+                after `2021-01-01 00:00:00 UTC`.
+                `1609459200` is the epoch timestamp of
+                `2021-01-01 00:00:00 UTC` in seconds.
                 * `Important` to find Google Cloud
-                resources that contain "Important" as a
+                resources that contain `Important` as a
                 word in any of the searchable fields.
                 * `Impor*` to find Google Cloud
-                resources that contain "Impor" as a
+                resources that contain `Impor` as a
                 prefix   of any word in any of the
                 searchable fields. * `Important
                 location:(us-west1 OR global)` to find
                 Google Cloud   resources that contain
-                "Important" as a word in any of the
+                `Important` as a word in any of the
                 searchable   fields and are also located
-                in the "us-west1" region or the "global"
+                in the `us-west1` region or the `global`
                 location.
 
                 This corresponds to the ``query`` field
@@ -1334,8 +1373,9 @@ class AssetServiceAsyncClient:
             asset_types (:class:`MutableSequence[str]`):
                 Optional. A list of asset types that
                 this request searches for. If empty, it
-                will search all the [searchable asset
-                types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types).
+                will search all the asset types
+                [supported by search
+                APIs](https://cloud.google.com/asset-inventory/docs/supported-asset-types).
 
                 Regular expressions are also supported.
                 For example:
@@ -1962,8 +2002,8 @@ class AssetServiceAsyncClient:
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> asset_service.QueryAssetsResponse:
         r"""Issue a job that queries assets using a SQL statement
-        compatible with [BigQuery Standard
-        SQL](http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql).
+        compatible with [BigQuery
+        SQL](https://cloud.google.com/bigquery/docs/introduction-sql).
 
         If the query execution finishes within timeout and
         there's no pagination, the full query results will be
@@ -1974,9 +2014,9 @@ class AssetServiceAsyncClient:
         previous `QueryAssets` call.
 
         Note, the query result has approximately 10 GB
-        limitation enforced by BigQuery
-        https://cloud.google.com/bigquery/docs/best-practices-performance-output,
-        queries return larger results will result in errors.
+        limitation enforced by
+        [BigQuery](https://cloud.google.com/bigquery/docs/best-practices-performance-output).
+        Queries return larger results will result in errors.
 
         .. code-block:: python
 
@@ -2814,15 +2854,19 @@ class AssetServiceAsyncClient:
             filter (:class:`str`):
                 The expression to filter
                 [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results].
-                The only supported field is
-                `consolidated_policy.attached_resource`,
-                and the only supported operator is `=`.
+                Filtering is currently available for
+                bare literal values and the following
+                fields:
 
-                Example:
+                * consolidated_policy.attached_resource
+                * consolidated_policy.rules.enforce
 
+                When filtering by a specific field, the
+                only supported operator is `=`. For
+                example, filtering by
                 consolidated_policy.attached_resource="//cloudresourcemanager.googleapis.com/folders/001"
-                will return the org policy results
-                of"folders/001".
+                will return all the Organization Policy
+                results attached to "folders/001".
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2974,15 +3018,20 @@ class AssetServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (:class:`str`):
-                The expression to filter the governed
-                containers in result. The only supported
-                field is `parent`, and the only
-                supported operator is `=`.
+                The expression to filter
+                [AnalyzeOrgPolicyGovernedContainersResponse.governed_containers][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.governed_containers].
+                Filtering is currently available for
+                bare literal values and the following
+                fields:
 
-                Example:
+                * parent
+                * consolidated_policy.rules.enforce
 
+                When filtering by a specific field, the
+                only supported operator is `=`. For
+                example, filtering by
                 parent="//cloudresourcemanager.googleapis.com/folders/001"
-                will return all containers under
+                will return all the containers under
                 "folders/001".
 
                 This corresponds to the ``filter`` field
@@ -3078,23 +3127,58 @@ class AssetServiceAsyncClient:
             ) -> pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager:
         r"""Analyzes organization policies governed assets
         (Google Cloud resources or policies) under a scope. This
-        RPC supports custom constraints and the following 10
-        canned constraints:
+        RPC supports custom constraints and the following canned
+        constraints:
 
-        * storage.uniformBucketLevelAccess
-        * iam.disableServiceAccountKeyCreation
-        * iam.allowedPolicyMemberDomains
-        * compute.vmExternalIpAccess
-        * appengine.enforceServiceAccountActAsCheck
-        * gcp.resourceLocations
-        * compute.trustedImageProjects
-        * compute.skipDefaultNetworkCreation
-        * compute.requireOsLogin
-        * compute.disableNestedVirtualization
+        * constraints/ainotebooks.accessMode
+        * constraints/ainotebooks.disableFileDownloads
+        * constraints/ainotebooks.disableRootAccess
+        * constraints/ainotebooks.disableTerminal
+        * constraints/ainotebooks.environmentOptions
+        * constraints/ainotebooks.requireAutoUpgradeSchedule *
+        constraints/ainotebooks.restrictVpcNetworks
+        * constraints/compute.disableGuestAttributesAccess *
+        constraints/compute.disableInstanceDataAccessApis *
+        constraints/compute.disableNestedVirtualization *
+        constraints/compute.disableSerialPortAccess
+        * constraints/compute.disableSerialPortLogging
+        * constraints/compute.disableVpcExternalIpv6
+        * constraints/compute.requireOsLogin
+        * constraints/compute.requireShieldedVm
+        *
+        constraints/compute.restrictLoadBalancerCreationForTypes
+        *
+        constraints/compute.restrictProtocolForwardingCreationForTypes
+        * constraints/compute.restrictXpnProjectLienRemoval *
+        constraints/compute.setNewProjectDefaultToZonalDNSOnly *
+        constraints/compute.skipDefaultNetworkCreation *
+        constraints/compute.trustedImageProjects
+        * constraints/compute.vmCanIpForward
+        * constraints/compute.vmExternalIpAccess
+        * constraints/gcp.detailedAuditLoggingMode
+        * constraints/gcp.resourceLocations
+        * constraints/iam.allowedPolicyMemberDomains
+        *
+        constraints/iam.automaticIamGrantsForDefaultServiceAccounts
+        * constraints/iam.disableServiceAccountCreation
+        * constraints/iam.disableServiceAccountKeyCreation *
+        constraints/iam.disableServiceAccountKeyUpload *
+        constraints/iam.restrictCrossProjectServiceAccountLienRemoval
+        * constraints/iam.serviceAccountKeyExpiryHours
+        * constraints/resourcemanager.accessBoundaries
+        * constraints/resourcemanager.allowedExportDestinations
+        * constraints/sql.restrictAuthorizedNetworks
+        *
+        constraints/sql.restrictNoncompliantDiagnosticDataAccess
+        * constraints/sql.restrictNoncompliantResourceCreation *
+        constraints/sql.restrictPublicIp
+        * constraints/storage.publicAccessPrevention
+        * constraints/storage.restrictAuthTypes
+        * constraints/storage.uniformBucketLevelAccess
 
         This RPC only returns either resources of types
-        supported by [searchable asset
-        types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types),
+        [supported by search
+        APIs](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
         or IAM policies.
 
         .. code-block:: python
@@ -3154,29 +3238,47 @@ class AssetServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (:class:`str`):
-                The expression to filter the governed
-                assets in result. The only supported
-                fields for governed resources are
-                `governed_resource.project` and
-                `governed_resource.folders`. The only
-                supported fields for governed iam
-                policies are
-                `governed_iam_policy.project` and
-                `governed_iam_policy.folders`. The only
-                supported operator is `=`.
+                The expression to filter
+                [AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets].
 
-                Example 1:
-                governed_resource.project="projects/12345678"
-                filter will return all governed
-                resources under projects/12345678
-                including the project ifself, if
-                applicable.
+                For governed resources, filtering is
+                currently available for bare literal
+                values and the following fields:
 
-                Example 2:
-                governed_iam_policy.folders="folders/12345678"
-                filter will return all governed iam
-                policies under folders/12345678, if
-                applicable.
+                * governed_resource.project
+                * governed_resource.folders
+                * consolidated_policy.rules.enforce
+                When filtering by
+                `governed_resource.project` or
+                `consolidated_policy.rules.enforce`, the
+                only supported operator is `=`. When
+                filtering by
+                `governed_resource.folders`, the
+                supported operators are `=` and `:`.
+                For example, filtering by
+                `governed_resource.project="projects/12345678"`
+                will return all the governed resources
+                under "projects/12345678", including the
+                project itself if applicable.
+
+                For governed IAM policies, filtering is
+                currently available for bare literal
+                values and the following fields:
+
+                * governed_iam_policy.project
+                * governed_iam_policy.folders
+                * consolidated_policy.rules.enforce
+                When filtering by
+                `governed_iam_policy.project` or
+                `consolidated_policy.rules.enforce`, the
+                only supported operator is `=`. When
+                filtering by
+                `governed_iam_policy.folders`, the
+                supported operators are `=` and `:`.
+                For example, filtering by
+                `governed_iam_policy.folders:"folders/12345678"`
+                will return all the governed IAM
+                policies under "folders/001".
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this

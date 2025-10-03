@@ -21,6 +21,7 @@ __version__ = package_version.__version__
 from .services.asset_service import AssetServiceClient
 from .services.asset_service import AssetServiceAsyncClient
 
+from .types.asset_enrichment_resourceowners import ResourceOwners
 from .types.asset_service import AnalyzeIamPolicyLongrunningMetadata
 from .types.asset_service import AnalyzeIamPolicyLongrunningRequest
 from .types.asset_service import AnalyzeIamPolicyLongrunningResponse
@@ -83,8 +84,10 @@ from .types.asset_service import UpdateFeedRequest
 from .types.asset_service import UpdateSavedQueryRequest
 from .types.asset_service import ContentType
 from .types.assets import Asset
+from .types.assets import AssetEnrichment
 from .types.assets import AttachedResource
 from .types.assets import ConditionEvaluation
+from .types.assets import EffectiveTagDetails
 from .types.assets import IamPolicyAnalysisResult
 from .types.assets import IamPolicyAnalysisState
 from .types.assets import IamPolicySearchResult
@@ -95,6 +98,7 @@ from .types.assets import RelatedResources
 from .types.assets import RelationshipAttributes
 from .types.assets import Resource
 from .types.assets import ResourceSearchResult
+from .types.assets import Tag
 from .types.assets import TemporalAsset
 from .types.assets import TimeWindow
 from .types.assets import VersionedResource
@@ -117,6 +121,7 @@ __all__ = (
 'AnalyzerOrgPolicy',
 'AnalyzerOrgPolicyConstraint',
 'Asset',
+'AssetEnrichment',
 'AssetServiceClient',
 'AttachedResource',
 'BatchGetAssetsHistoryRequest',
@@ -130,6 +135,7 @@ __all__ = (
 'CreateSavedQueryRequest',
 'DeleteFeedRequest',
 'DeleteSavedQueryRequest',
+'EffectiveTagDetails',
 'ExportAssetsRequest',
 'ExportAssetsResponse',
 'Feed',
@@ -166,6 +172,7 @@ __all__ = (
 'RelatedResources',
 'RelationshipAttributes',
 'Resource',
+'ResourceOwners',
 'ResourceSearchResult',
 'SavedQuery',
 'SearchAllIamPoliciesRequest',
@@ -174,6 +181,7 @@ __all__ = (
 'SearchAllResourcesResponse',
 'TableFieldSchema',
 'TableSchema',
+'Tag',
 'TemporalAsset',
 'TimeWindow',
 'UpdateFeedRequest',
