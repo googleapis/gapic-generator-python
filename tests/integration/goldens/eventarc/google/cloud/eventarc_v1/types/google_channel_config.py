@@ -39,17 +39,18 @@ class GoogleChannelConfig(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the config. Must be in the
-            format of,
-            ``projects/{project}/locations/{location}/googleChannelConfig``.
+            Required. The resource name of the config.
+            Must be in the format of,
+            `projects/{project}/locations/{location}/googleChannelConfig`.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last-modified time.
         crypto_key_name (str):
-            Optional. Resource name of a KMS crypto key (managed by the
-            user) used to encrypt/decrypt their event data.
+            Optional. Resource name of a KMS crypto key
+            (managed by the user) used to encrypt/decrypt
+            their event data.
 
             It must match the pattern
-            ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+            `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
     """
 
     name: str = proto.Field(

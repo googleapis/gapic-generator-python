@@ -53,12 +53,10 @@ install_deps()
 load(
     "//:repositories.bzl",
     "gapic_generator_python",
-    "gapic_generator_register_toolchains",
 )
 
 gapic_generator_python()
 
-gapic_generator_register_toolchains()
 
 _grpc_version = "1.71.0"
 

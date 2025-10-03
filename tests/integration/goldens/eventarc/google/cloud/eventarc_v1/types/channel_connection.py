@@ -44,10 +44,11 @@ class ChannelConnection(proto.Message):
             resource. The server guarantees uniqueness and
             immutability until deleted.
         channel (str):
-            Required. The name of the connected subscriber Channel. This
-            is a weak reference to avoid cross project and cross
-            accounts references. This must be in
-            ``projects/{project}/location/{location}/channels/{channel_id}``
+            Required. The name of the connected
+            subscriber Channel. This is a weak reference to
+            avoid cross project and cross accounts
+            references. This must be in
+            `projects/{project}/location/{location}/channels/{channel_id}`
             format.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time.

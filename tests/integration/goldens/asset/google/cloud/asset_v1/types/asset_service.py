@@ -164,27 +164,31 @@ class ExportAssetsRequest(proto.Message):
             window during which running the same query may
             get different results.
         asset_types (MutableSequence[str]):
-            A list of asset types to take a snapshot for. For example:
-            "compute.googleapis.com/Disk".
+            A list of asset types to take a snapshot for.
+            For example: "compute.googleapis.com/Disk".
 
-            Regular expressions are also supported. For example:
+            Regular expressions are also supported. For
+            example:
 
-            - "compute.googleapis.com.\*" snapshots resources whose
-              asset type starts with "compute.googleapis.com".
-            - ".*Instance" snapshots resources whose asset type ends
-              with "Instance".
-            - ".\ *Instance.*" snapshots resources whose asset type
-              contains "Instance".
+            * "compute.googleapis.com.*" snapshots resources
+            whose asset type starts with
+            "compute.googleapis.com".
+            * ".*Instance" snapshots resources whose asset
+            type ends with "Instance". * ".*Instance.*"
+            snapshots resources whose asset type contains
+            "Instance".
 
-            See `RE2 <https://github.com/google/re2/wiki/Syntax>`__ for
-            all supported regular expression syntax. If the regular
-            expression does not match any supported asset type, an
-            INVALID_ARGUMENT error will be returned.
+            See
+            [RE2](https://github.com/google/re2/wiki/Syntax)
+            for all supported regular expression syntax. If
+            the regular expression does not match any
+            supported asset type, an INVALID_ARGUMENT error
+            will be returned.
 
-            If specified, only matching assets will be returned,
-            otherwise, it will snapshot all asset types. See
-            `Introduction to Cloud Asset
-            Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
+            If specified, only matching assets will be
+            returned, otherwise, it will snapshot all asset
+            types. See [Introduction to Cloud Asset
+            Inventory](https://cloud.google.com/asset-inventory/docs/overview)
             for all supported asset types.
         content_type (google.cloud.asset_v1.types.ContentType):
             Asset content type. If not specified, no
@@ -193,22 +197,28 @@ class ExportAssetsRequest(proto.Message):
             Required. Output configuration indicating
             where the results will be output to.
         relationship_types (MutableSequence[str]):
-            A list of relationship types to export, for example:
-            ``INSTANCE_TO_INSTANCEGROUP``. This field should only be
-            specified if content_type=RELATIONSHIP.
+            A list of relationship types to export, for
+            example: `INSTANCE_TO_INSTANCEGROUP`. This field
+            should only be specified if
+            content_type=RELATIONSHIP.
+            * If specified:
 
-            - If specified: it snapshots specified relationships. It
-              returns an error if any of the [relationship_types]
-              doesn't belong to the supported relationship types of the
-              [asset_types] or if any of the [asset_types] doesn't
-              belong to the source types of the [relationship_types].
-            - Otherwise: it snapshots the supported relationships for
-              all [asset_types] or returns an error if any of the
-              [asset_types] has no relationship support. An unspecified
-              asset types field means all supported asset_types. See
-              `Introduction to Cloud Asset
-              Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
-              for all supported asset types and relationship types.
+            it snapshots specified relationships. It returns
+            an error if any of the [relationship_types]
+            doesn't belong to the supported relationship
+            types of the [asset_types] or if any of the
+            [asset_types] doesn't belong to the source types
+            of the [relationship_types]. * Otherwise:
+
+            it snapshots the supported relationships for all
+            [asset_types] or returns an error if any of the
+            [asset_types] has no relationship support. An
+            unspecified asset types field means all
+            supported asset_types. See [Introduction to
+            Cloud Asset
+            Inventory](https://cloud.google.com/asset-inventory/docs/overview)
+            for all supported asset types and relationship
+            types.
     """
 
     parent: str = proto.Field(
@@ -254,12 +264,14 @@ class ExportAssetsResponse(proto.Message):
             Output configuration indicating where the
             results were output to.
         output_result (google.cloud.asset_v1.types.OutputResult):
-            Output result indicating where the assets were exported to.
-            For example, a set of actual Cloud Storage object URIs where
-            the assets are exported to. The URIs can be different from
-            what [output_config] has specified, as the service will
-            split the output object into multiple ones once it exceeds a
-            single Cloud Storage object limit.
+            Output result indicating where the assets
+            were exported to. For example, a set of actual
+            Cloud Storage object URIs where the assets are
+            exported to. The URIs can be different from what
+            [output_config] has specified, as the service
+            will split the output object into multiple ones
+            once it exceeds a single Cloud Storage object
+            limit.
     """
 
     read_time: timestamp_pb2.Timestamp = proto.Field(
@@ -284,13 +296,14 @@ class ListAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization, folder, or project the
-            assets belong to. Format:
+            Required. Name of the organization, folder,
+            or project the assets belong to. Format:
             "organizations/[organization-number]" (such as
-            "organizations/123"), "projects/[project-id]" (such as
-            "projects/my-project-id"), "projects/[project-number]" (such
-            as "projects/12345"), or "folders/[folder-number]" (such as
-            "folders/12345").
+            "organizations/123"), "projects/[project-id]"
+            (such as "projects/my-project-id"),
+            "projects/[project-number]" (such as
+            "projects/12345"), or "folders/[folder-number]"
+            (such as "folders/12345").
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp to take an asset snapshot. This can
             only be set to a timestamp between the current
@@ -301,27 +314,31 @@ class ListAssetsRequest(proto.Message):
             window during which running the same query may
             get different results.
         asset_types (MutableSequence[str]):
-            A list of asset types to take a snapshot for. For example:
-            "compute.googleapis.com/Disk".
+            A list of asset types to take a snapshot for.
+            For example: "compute.googleapis.com/Disk".
 
-            Regular expression is also supported. For example:
+            Regular expression is also supported. For
+            example:
 
-            - "compute.googleapis.com.\*" snapshots resources whose
-              asset type starts with "compute.googleapis.com".
-            - ".*Instance" snapshots resources whose asset type ends
-              with "Instance".
-            - ".\ *Instance.*" snapshots resources whose asset type
-              contains "Instance".
+            * "compute.googleapis.com.*" snapshots resources
+            whose asset type starts with
+            "compute.googleapis.com".
+            * ".*Instance" snapshots resources whose asset
+            type ends with "Instance". * ".*Instance.*"
+            snapshots resources whose asset type contains
+            "Instance".
 
-            See `RE2 <https://github.com/google/re2/wiki/Syntax>`__ for
-            all supported regular expression syntax. If the regular
-            expression does not match any supported asset type, an
-            INVALID_ARGUMENT error will be returned.
+            See
+            [RE2](https://github.com/google/re2/wiki/Syntax)
+            for all supported regular expression syntax. If
+            the regular expression does not match any
+            supported asset type, an INVALID_ARGUMENT error
+            will be returned.
 
-            If specified, only matching assets will be returned,
-            otherwise, it will snapshot all asset types. See
-            `Introduction to Cloud Asset
-            Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
+            If specified, only matching assets will be
+            returned, otherwise, it will snapshot all asset
+            types. See [Introduction to Cloud Asset
+            Inventory](https://cloud.google.com/asset-inventory/docs/overview)
             for all supported asset types.
         content_type (google.cloud.asset_v1.types.ContentType):
             Asset content type. If not specified, no
@@ -331,28 +348,34 @@ class ListAssetsRequest(proto.Message):
             in a single response. Default is 100, minimum is
             1, and maximum is 1000.
         page_token (str):
-            The ``next_page_token`` returned from the previous
-            ``ListAssetsResponse``, or unspecified for the first
-            ``ListAssetsRequest``. It is a continuation of a prior
-            ``ListAssets`` call, and the API should return the next page
-            of assets.
+            The `next_page_token` returned from the
+            previous `ListAssetsResponse`, or unspecified
+            for the first `ListAssetsRequest`. It is a
+            continuation of a prior `ListAssets` call, and
+            the API should return the next page of assets.
         relationship_types (MutableSequence[str]):
-            A list of relationship types to output, for example:
-            ``INSTANCE_TO_INSTANCEGROUP``. This field should only be
-            specified if content_type=RELATIONSHIP.
+            A list of relationship types to output, for
+            example: `INSTANCE_TO_INSTANCEGROUP`. This field
+            should only be specified if
+            content_type=RELATIONSHIP.
+            * If specified:
 
-            - If specified: it snapshots specified relationships. It
-              returns an error if any of the [relationship_types]
-              doesn't belong to the supported relationship types of the
-              [asset_types] or if any of the [asset_types] doesn't
-              belong to the source types of the [relationship_types].
-            - Otherwise: it snapshots the supported relationships for
-              all [asset_types] or returns an error if any of the
-              [asset_types] has no relationship support. An unspecified
-              asset types field means all supported asset_types. See
-              `Introduction to Cloud Asset
-              Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
-              for all supported asset types and relationship types.
+            it snapshots specified relationships. It returns
+            an error if any of the [relationship_types]
+            doesn't belong to the supported relationship
+            types of the [asset_types] or if any of the
+            [asset_types] doesn't belong to the source types
+            of the [relationship_types]. * Otherwise:
+
+            it snapshots the supported relationships for all
+            [asset_types] or returns an error if any of the
+            [asset_types] has no relationship support. An
+            unspecified asset types field means all
+            supported asset_types. See [Introduction to
+            Cloud Asset
+            Inventory](https://cloud.google.com/asset-inventory/docs/overview)
+            for all supported asset types and relationship
+            types.
     """
 
     parent: str = proto.Field(
@@ -433,42 +456,52 @@ class BatchGetAssetsHistoryRequest(proto.Message):
             (such as "projects/my-project-id")", or a
             project number (such as "projects/12345").
         asset_names (MutableSequence[str]):
-            A list of the full names of the assets. See:
+            A list of the full names of the assets.
+            See:
             https://cloud.google.com/asset-inventory/docs/resource-name-format
             Example:
 
-            ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
+            `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
 
-            The request becomes a no-op if the asset name list is empty,
-            and the max size of the asset name list is 100 in one
-            request.
+            The request becomes a no-op if the asset name
+            list is empty, and the max size of the asset
+            name list is 100 in one request.
         content_type (google.cloud.asset_v1.types.ContentType):
             Optional. The content type.
         read_time_window (google.cloud.asset_v1.types.TimeWindow):
-            Optional. The time window for the asset history. Both
-            start_time and end_time are optional and if set, it must be
-            after the current time minus 35 days. If end_time is not
-            set, it is default to current timestamp. If start_time is
-            not set, the snapshot of the assets at end_time will be
-            returned. The returned results contain all temporal assets
+            Optional. The time window for the asset
+            history. Both start_time and end_time are
+            optional and if set, it must be after the
+            current time minus 35 days. If end_time is not
+            set, it is default to current timestamp. If
+            start_time is not set, the snapshot of the
+            assets at end_time will be returned. The
+            returned results contain all temporal assets
             whose time window overlap with read_time_window.
         relationship_types (MutableSequence[str]):
-            Optional. A list of relationship types to output, for
-            example: ``INSTANCE_TO_INSTANCEGROUP``. This field should
+            Optional. A list of relationship types to
+            output, for example:
+            `INSTANCE_TO_INSTANCEGROUP`. This field should
             only be specified if content_type=RELATIONSHIP.
+            * If specified:
 
-            - If specified: it outputs specified relationships' history
-              on the [asset_names]. It returns an error if any of the
-              [relationship_types] doesn't belong to the supported
-              relationship types of the [asset_names] or if any of the
-              [asset_names]'s types doesn't belong to the source types
-              of the [relationship_types].
-            - Otherwise: it outputs the supported relationships' history
-              on the [asset_names] or returns an error if any of the
-              [asset_names]'s types has no relationship support. See
-              `Introduction to Cloud Asset
-              Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
-              for all supported asset types and relationship types.
+            it outputs specified relationships' history on
+            the [asset_names]. It returns an error if any of
+            the [relationship_types] doesn't belong to the
+            supported relationship types of the
+            [asset_names] or if any of the [asset_names]'s
+            types doesn't belong to the source types of the
+            [relationship_types].
+            * Otherwise:
+
+            it outputs the supported relationships' history
+            on the [asset_names] or returns an error if any
+            of the [asset_names]'s types has no relationship
+            support.
+            See [Introduction to Cloud Asset
+            Inventory](https://cloud.google.com/asset-inventory/docs/overview)
+            for all supported asset types and relationship
+            types.
     """
 
     parent: str = proto.Field(
@@ -528,9 +561,9 @@ class CreateFeedRequest(proto.Message):
             feed identifier and it needs to be unique under
             a specific parent project/folder/organization.
         feed (google.cloud.asset_v1.types.Feed):
-            Required. The feed details. The field ``name`` must be empty
-            and it will be generated in the format of:
-            projects/project_number/feeds/feed_id
+            Required. The feed details. The field `name`
+            must be empty and it will be generated in the
+            format of: projects/project_number/feeds/feed_id
             folders/folder_number/feeds/feed_id
             organizations/organization_number/feeds/feed_id
     """
@@ -555,8 +588,9 @@ class GetFeedRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Feed and it must be in the format
-            of: projects/project_number/feeds/feed_id
+            Required. The name of the Feed and it must be
+            in the format of:
+            projects/project_number/feeds/feed_id
             folders/folder_number/feeds/feed_id
             organizations/organization_number/feeds/feed_id
     """
@@ -606,15 +640,18 @@ class UpdateFeedRequest(proto.Message):
 
     Attributes:
         feed (google.cloud.asset_v1.types.Feed):
-            Required. The new values of feed details. It must match an
-            existing feed and the field ``name`` must be in the format
-            of: projects/project_number/feeds/feed_id or
+            Required. The new values of feed details. It
+            must match an existing feed and the field `name`
+            must be in the format of:
+
+            projects/project_number/feeds/feed_id or
             folders/folder_number/feeds/feed_id or
             organizations/organization_number/feeds/feed_id.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Only updates the ``feed`` fields indicated by this
-            mask. The field mask must not be empty, and it must not
-            contain fields that are immutable or only set by the server.
+            Required. Only updates the `feed` fields
+            indicated by this mask. The field mask must not
+            be empty, and it must not contain fields that
+            are immutable or only set by the server.
     """
 
     feed: 'Feed' = proto.Field(
@@ -634,8 +671,9 @@ class DeleteFeedRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the feed and it must be in the format
-            of: projects/project_number/feeds/feed_id
+            Required. The name of the feed and it must be
+            in the format of:
+            projects/project_number/feeds/feed_id
             folders/folder_number/feeds/feed_id
             organizations/organization_number/feeds/feed_id
     """
@@ -708,8 +746,8 @@ class GcsOutputResult(proto.Message):
 
     Attributes:
         uris (MutableSequence[str]):
-            List of URIs of the Cloud Storage objects. Example:
-            "gs://bucket_name/object_name".
+            List of URIs of the Cloud Storage objects.
+            Example: "gs://bucket_name/object_name".
     """
 
     uris: MutableSequence[str] = proto.RepeatedField(
@@ -730,28 +768,37 @@ class GcsDestination(proto.Message):
 
     Attributes:
         uri (str):
-            The URI of the Cloud Storage object. It's the same URI that
-            is used by gsutil. Example: "gs://bucket_name/object_name".
-            See `Viewing and Editing Object
-            Metadata <https://cloud.google.com/storage/docs/viewing-editing-metadata>`__
+            The URI of the Cloud Storage object. It's the
+            same URI that is used by gsutil. Example:
+            "gs://bucket_name/object_name". See [Viewing and
+            Editing Object
+            Metadata](https://cloud.google.com/storage/docs/viewing-editing-metadata)
             for more information.
 
-            If the specified Cloud Storage object already exists and
-            there is no
-            `hold <https://cloud.google.com/storage/docs/object-holds>`__,
+            If the specified Cloud Storage object already
+            exists and there is no
+            [hold](https://cloud.google.com/storage/docs/object-holds),
             it will be overwritten with the exported result.
 
             This field is a member of `oneof`_ ``object_uri``.
         uri_prefix (str):
-            The URI prefix of all generated Cloud Storage objects.
-            Example: "gs://bucket_name/object_name_prefix". Each object
-            URI is in format: "gs://bucket_name/object_name_prefix// and
-            only contains assets for that type. starts from 0. Example:
+            The URI prefix of all generated Cloud Storage
+            objects. Example:
+            "gs://bucket_name/object_name_prefix". Each
+            object URI is in format:
+
+            "gs://bucket_name/object_name_prefix/<asset
+            type>/<shard number> and only contains assets
+            for that type. <shard number> starts from 0.
+            Example:
+
             "gs://bucket_name/object_name_prefix/compute.googleapis.com/Disk/0"
-            is the first shard of output objects containing all
-            compute.googleapis.com/Disk assets. An INVALID_ARGUMENT
-            error will be returned if file with the same name
-            "gs://bucket_name/object_name_prefix" already exists.
+            is the first shard of output objects containing
+            all compute.googleapis.com/Disk assets. An
+            INVALID_ARGUMENT error will be returned if file
+            with the same name
+            "gs://bucket_name/object_name_prefix" already
+            exists.
 
             This field is a member of `oneof`_ ``object_uri``.
     """
@@ -774,82 +821,94 @@ class BigQueryDestination(proto.Message):
     Attributes:
         dataset (str):
             Required. The BigQuery dataset in format
-            "projects/projectId/datasets/datasetId", to which the
-            snapshot result should be exported. If this dataset does not
-            exist, the export call returns an INVALID_ARGUMENT error.
-            Setting the ``contentType`` for ``exportAssets`` determines
-            the
-            `schema </asset-inventory/docs/exporting-to-bigquery#bigquery-schema>`__
+            "projects/projectId/datasets/datasetId", to
+            which the snapshot result should be exported. If
+            this dataset does not exist, the export call
+            returns an INVALID_ARGUMENT error. Setting the
+            `contentType` for `exportAssets` determines the
+            [schema](/asset-inventory/docs/exporting-to-bigquery#bigquery-schema)
             of the BigQuery table. Setting
-            ``separateTablesPerAssetType`` to ``TRUE`` also influences
-            the schema.
+            `separateTablesPerAssetType` to `TRUE` also
+            influences the schema.
         table (str):
             Required. The BigQuery table to which the
             snapshot result should be written. If this table
             does not exist, a new table with the given name
             will be created.
         force (bool):
-            If the destination table already exists and this flag is
-            ``TRUE``, the table will be overwritten by the contents of
-            assets snapshot. If the flag is ``FALSE`` or unset and the
-            destination table already exists, the export call returns an
-            INVALID_ARGUMEMT error.
+            If the destination table already exists and
+            this flag is `TRUE`, the table will be
+            overwritten by the contents of assets snapshot.
+            If the flag is `FALSE` or unset and the
+            destination table already exists, the export
+            call returns an INVALID_ARGUMEMT error.
         partition_spec (google.cloud.asset_v1.types.PartitionSpec):
-            [partition_spec] determines whether to export to partitioned
-            table(s) and how to partition the data.
+            [partition_spec] determines whether to export
+            to partitioned table(s) and how to partition the
+            data.
 
             If [partition_spec] is unset or
             [partition_spec.partition_key] is unset or
-            ``PARTITION_KEY_UNSPECIFIED``, the snapshot results will be
-            exported to non-partitioned table(s). [force] will decide
-            whether to overwrite existing table(s).
+            `PARTITION_KEY_UNSPECIFIED`, the snapshot
+            results will be exported to non-partitioned
+            table(s). [force] will decide whether to
+            overwrite existing table(s).
 
-            If [partition_spec] is specified. First, the snapshot
-            results will be written to partitioned table(s) with two
-            additional timestamp columns, readTime and requestTime, one
-            of which will be the partition key. Secondly, in the case
-            when any destination table already exists, it will first try
-            to update existing table's schema as necessary by appending
-            additional columns. Then, if [force] is ``TRUE``, the
-            corresponding partition will be overwritten by the snapshot
-            results (data in different partitions will remain intact);
-            if [force] is unset or ``FALSE``, it will append the data.
-            An error will be returned if the schema update or data
-            appension fails.
+            If [partition_spec] is specified. First, the
+            snapshot results will be written to partitioned
+            table(s) with two additional timestamp columns,
+            readTime and requestTime, one of which will be
+            the partition key. Secondly, in the case when
+            any destination table already exists, it will
+            first try to update existing table's schema as
+            necessary by appending additional columns. Then,
+            if [force] is `TRUE`, the corresponding
+            partition will be overwritten by the snapshot
+            results (data in different partitions will
+            remain intact); if [force] is unset or `FALSE`,
+            it will append the data. An error will be
+            returned if the schema update or data appension
+            fails.
         separate_tables_per_asset_type (bool):
-            If this flag is ``TRUE``, the snapshot results will be
-            written to one or multiple tables, each of which contains
-            results of one asset type. The [force] and [partition_spec]
-            fields will apply to each of them.
+            If this flag is `TRUE`, the snapshot results
+            will be written to one or multiple tables, each
+            of which contains results of one asset type. The
+            [force] and [partition_spec] fields will apply
+            to each of them.
 
-            Field [table] will be concatenated with "*" and the asset
-            type names (see
+            Field [table] will be concatenated with "_" and
+            the asset type names (see
             https://cloud.google.com/asset-inventory/docs/supported-asset-types
-            for supported asset types) to construct per-asset-type table
-            names, in which all non-alphanumeric characters like "." and
-            "/" will be substituted by "*". Example: if field [table] is
-            "mytable" and snapshot results contain
-            "storage.googleapis.com/Bucket" assets, the corresponding
-            table name will be "mytable_storage_googleapis_com_Bucket".
-            If any of these tables does not exist, a new table with the
-            concatenated name will be created.
+            for supported asset types) to construct
+            per-asset-type table names, in which all
+            non-alphanumeric characters like "." and "/"
+            will be substituted by "_". Example: if field
+            [table] is "mytable" and snapshot results
+            contain "storage.googleapis.com/Bucket" assets,
+            the corresponding table name will be
+            "mytable_storage_googleapis_com_Bucket". If any
+            of these tables does not exist, a new table with
+            the concatenated name will be created.
 
-            When [content_type] in the ExportAssetsRequest is
-            ``RESOURCE``, the schema of each table will include
-            RECORD-type columns mapped to the nested fields in the
-            Asset.resource.data field of that asset type (up to the 15
-            nested level BigQuery supports
+            When [content_type] in the ExportAssetsRequest
+            is `RESOURCE`, the schema of each table will
+            include RECORD-type columns mapped to the nested
+            fields in the Asset.resource.data field of that
+            asset type (up to the 15 nested level BigQuery
+            supports
             (https://cloud.google.com/bigquery/docs/nested-repeated#limitations)).
-            The fields in >15 nested levels will be stored in JSON
-            format string as a child column of its parent RECORD column.
+            The fields in >15 nested levels will be stored
+            in JSON format string as a child column of its
+            parent RECORD column.
 
-            If error occurs when exporting to any table, the whole
-            export call will return an error but the export results that
-            already succeed will persist. Example: if exporting to
-            table_type_A succeeds when exporting to table_type_B fails
-            during one export call, the results in table_type_A will
-            persist and there will not be partial results persisting in
-            a table.
+            If error occurs when exporting to any table, the
+            whole export call will return an error but the
+            export results that already succeed will
+            persist. Example: if exporting to table_type_A
+            succeeds when exporting to table_type_B fails
+            during one export call, the results in
+            table_type_A will persist and there will not be
+            partial results persisting in a table.
     """
 
     dataset: str = proto.Field(
@@ -886,9 +945,9 @@ class PartitionSpec(proto.Message):
     """
     class PartitionKey(proto.Enum):
         r"""This enum is used to determine the partition key column when
-        exporting assets to BigQuery partitioned table(s). Note that, if the
-        partition key is a timestamp column, the actual partition is based
-        on its date value (expressed in UTC. see details in
+        exporting assets to BigQuery partitioned table(s). Note that, if
+        the partition key is a timestamp column, the actual partition is
+        based on its date value (expressed in UTC. see details in
         https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables).
 
         Values:
@@ -896,12 +955,14 @@ class PartitionSpec(proto.Message):
                 Unspecified partition key. If used, it means
                 using non-partitioned table.
             READ_TIME (1):
-                The time when the snapshot is taken. If specified as
-                partition key, the result table(s) is partitoned by the
-                additional timestamp column, readTime. If [read_time] in
-                ExportAssetsRequest is specified, the readTime column's
-                value will be the same as it. Otherwise, its value will be
-                the current time that is used to take the snapshot.
+                The time when the snapshot is taken. If
+                specified as partition key, the result table(s)
+                is partitoned by the additional timestamp
+                column, readTime. If [read_time] in
+                ExportAssetsRequest is specified, the readTime
+                column's value will be the same as it.
+                Otherwise, its value will be the current time
+                that is used to take the snapshot.
             REQUEST_TIME (2):
                 The time when the request is received and
                 started to be processed. If specified as
@@ -926,8 +987,8 @@ class PubsubDestination(proto.Message):
 
     Attributes:
         topic (str):
-            The name of the Pub/Sub topic to publish to. Example:
-            ``projects/PROJECT_ID/topics/TOPIC_ID``.
+            The name of the Pub/Sub topic to publish to.
+            Example: `projects/PROJECT_ID/topics/TOPIC_ID`.
     """
 
     topic: str = proto.Field(
@@ -973,28 +1034,31 @@ class Feed(proto.Message):
             or
             organizations/{organization_number}/feeds/{client-assigned_feed_identifier}
 
-            The client-assigned feed identifier must be unique within
-            the parent project/folder/organization.
+            The client-assigned feed identifier must be
+            unique within the parent
+            project/folder/organization.
         asset_names (MutableSequence[str]):
-            A list of the full names of the assets to receive updates.
-            You must specify either or both of asset_names and
-            asset_types. Only asset updates matching specified
-            asset_names or asset_types are exported to the feed.
-            Example:
-            ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
-            For a list of the full names for supported asset types, see
-            `Resource name
-            format </asset-inventory/docs/resource-name-format>`__.
-        asset_types (MutableSequence[str]):
-            A list of types of the assets to receive updates. You must
-            specify either or both of asset_names and asset_types. Only
-            asset updates matching specified asset_names or asset_types
-            are exported to the feed. Example:
-            ``"compute.googleapis.com/Disk"``
+            A list of the full names of the assets to
+            receive updates. You must specify either or both
+            of asset_names and asset_types. Only asset
+            updates matching specified asset_names or
+            asset_types are exported to the feed. Example:
 
-            For a list of all supported asset types, see `Supported
-            asset
-            types </asset-inventory/docs/supported-asset-types>`__.
+            `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
+            For a list of the full names for supported asset
+            types, see [Resource name
+            format](/asset-inventory/docs/resource-name-format).
+        asset_types (MutableSequence[str]):
+            A list of types of the assets to receive
+            updates. You must specify either or both of
+            asset_names and asset_types. Only asset updates
+            matching specified asset_names or asset_types
+            are exported to the feed. Example:
+            `"compute.googleapis.com/Disk"`
+
+            For a list of all supported asset types, see
+            [Supported asset
+            types](/asset-inventory/docs/supported-asset-types).
         content_type (google.cloud.asset_v1.types.ContentType):
             Asset content type. If not specified, no
             content but the asset name and type will be
@@ -1003,37 +1067,46 @@ class Feed(proto.Message):
             Required. Feed output configuration defining
             where the asset updates are published to.
         condition (google.type.expr_pb2.Expr):
-            A condition which determines whether an asset update should
-            be published. If specified, an asset will be returned only
-            when the expression evaluates to true. When set,
-            ``expression`` field in the ``Expr`` must be a valid [CEL
-            expression] (https://github.com/google/cel-spec) on a
-            TemporalAsset with name ``temporal_asset``. Example: a Feed
-            with expression ("temporal_asset.deleted == true") will only
-            publish Asset deletions. Other fields of ``Expr`` are
-            optional.
+            A condition which determines whether an asset
+            update should be published. If specified, an
+            asset will be returned only when the expression
+            evaluates to true.
+            When set, `expression` field in the `Expr` must
+            be a valid [CEL expression]
+            (https://github.com/google/cel-spec) on a
+            TemporalAsset with name `temporal_asset`.
+            Example: a Feed with expression
+            ("temporal_asset.deleted == true") will only
+            publish Asset deletions. Other fields of `Expr`
+            are optional.
 
-            See our `user
-            guide <https://cloud.google.com/asset-inventory/docs/monitoring-asset-changes-with-condition>`__
+            See our [user
+            guide](https://cloud.google.com/asset-inventory/docs/monitoring-asset-changes-with-condition)
             for detailed instructions.
         relationship_types (MutableSequence[str]):
-            A list of relationship types to output, for example:
-            ``INSTANCE_TO_INSTANCEGROUP``. This field should only be
-            specified if content_type=RELATIONSHIP.
+            A list of relationship types to output, for
+            example: `INSTANCE_TO_INSTANCEGROUP`. This field
+            should only be specified if
+            content_type=RELATIONSHIP.
+            * If specified:
 
-            - If specified: it outputs specified relationship updates on
-              the [asset_names] or the [asset_types]. It returns an
-              error if any of the [relationship_types] doesn't belong to
-              the supported relationship types of the [asset_names] or
-              [asset_types], or any of the [asset_names] or the
-              [asset_types] doesn't belong to the source types of the
-              [relationship_types].
-            - Otherwise: it outputs the supported relationships of the
-              types of [asset_names] and [asset_types] or returns an
-              error if any of the [asset_names] or the [asset_types] has
-              no replationship support. See `Introduction to Cloud Asset
-              Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
-              for all supported asset types and relationship types.
+            it outputs specified relationship updates on the
+            [asset_names] or the [asset_types]. It returns
+            an error if any of the [relationship_types]
+            doesn't belong to the supported relationship
+            types of the [asset_names] or [asset_types], or
+            any of the [asset_names] or the [asset_types]
+            doesn't belong to the source types of the
+            [relationship_types]. * Otherwise:
+
+            it outputs the supported relationships of the
+            types of [asset_names] and [asset_types] or
+            returns an error if any of the [asset_names] or
+            the [asset_types] has no replationship support.
+            See [Introduction to Cloud Asset
+            Inventory](https://cloud.google.com/asset-inventory/docs/overview)
+            for all supported asset types and relationship
+            types.
     """
 
     name: str = proto.Field(
@@ -1074,171 +1147,197 @@ class SearchAllResourcesRequest(proto.Message):
 
     Attributes:
         scope (str):
-            Required. A scope can be a project, a folder, or an
-            organization. The search is limited to the resources within
-            the ``scope``. The caller must be granted the
-            ```cloudasset.assets.searchAllResources`` <https://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+            Required. A scope can be a project, a folder,
+            or an organization. The search is limited to the
+            resources within the `scope`. The caller must be
+            granted the
+            [`cloudasset.assets.searchAllResources`](https://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
             permission on the desired scope.
 
             The allowed values are:
 
-            - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
-            - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
-            - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
-            - organizations/{ORGANIZATION_NUMBER} (e.g.,
-              "organizations/123456")
+            * projects/{PROJECT_ID} (e.g.,
+            "projects/foo-bar") * projects/{PROJECT_NUMBER}
+            (e.g., "projects/12345678") *
+            folders/{FOLDER_NUMBER} (e.g.,
+            "folders/1234567") *
+            organizations/{ORGANIZATION_NUMBER} (e.g.,
+            "organizations/123456")
         query (str):
-            Optional. The query statement. See `how to construct a
-            query <https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
-            for more information. If not specified or empty, it will
-            search all the resources within the specified ``scope``.
+            Optional. The query statement. See [how to
+            construct a
+            query](https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query)
+            for more information. If not specified or empty,
+            it will search all the resources within the
+            specified `scope`.
 
             Examples:
 
-            - ``name:Important`` to find Google Cloud resources whose
-              name contains "Important" as a word.
-            - ``name=Important`` to find the Google Cloud resource whose
-              name is exactly "Important".
-            - ``displayName:Impor*`` to find Google Cloud resources
-              whose display name contains "Impor" as a prefix of any
-              word in the field.
-            - ``location:us-west*`` to find Google Cloud resources whose
-              location contains both "us" and "west" as prefixes.
-            - ``labels:prod`` to find Google Cloud resources whose
-              labels contain "prod" as a key or value.
-            - ``labels.env:prod`` to find Google Cloud resources that
-              have a label "env" and its value is "prod".
-            - ``labels.env:*`` to find Google Cloud resources that have
-              a label "env".
-            - ``kmsKey:key`` to find Google Cloud resources encrypted
-              with a customer-managed encryption key whose name contains
-              "key" as a word. This field is deprecated. Please use the
-              ``kmsKeys`` field to retrieve Cloud KMS key information.
-            - ``kmsKeys:key`` to find Google Cloud resources encrypted
-              with customer-managed encryption keys whose name contains
-              the word "key".
-            - ``relationships:instance-group-1`` to find Google Cloud
-              resources that have relationships with "instance-group-1"
-              in the related resource name.
-            - ``relationships:INSTANCE_TO_INSTANCEGROUP`` to find
-              Compute Engine instances that have relationships of type
-              "INSTANCE_TO_INSTANCEGROUP".
-            - ``relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1``
-              to find Compute Engine instances that have relationships
-              with "instance-group-1" in the Compute Engine instance
-              group resource name, for relationship type
-              "INSTANCE_TO_INSTANCEGROUP".
-            - ``state:ACTIVE`` to find Google Cloud resources whose
-              state contains "ACTIVE" as a word.
-            - ``NOT state:ACTIVE`` to find Google Cloud resources whose
-              state doesn't contain "ACTIVE" as a word.
-            - ``createTime<1609459200`` to find Google Cloud resources
-              that were created before "2021-01-01 00:00:00 UTC".
-              1609459200 is the epoch timestamp of "2021-01-01 00:00:00
-              UTC" in seconds.
-            - ``updateTime>1609459200`` to find Google Cloud resources
-              that were updated after "2021-01-01 00:00:00 UTC".
-              1609459200 is the epoch timestamp of "2021-01-01 00:00:00
-              UTC" in seconds.
-            - ``Important`` to find Google Cloud resources that contain
-              "Important" as a word in any of the searchable fields.
-            - ``Impor*`` to find Google Cloud resources that contain
-              "Impor" as a prefix of any word in any of the searchable
-              fields.
-            - ``Important location:(us-west1 OR global)`` to find Google
-              Cloud resources that contain "Important" as a word in any
-              of the searchable fields and are also located in the
-              "us-west1" region or the "global" location.
+            * `name:Important` to find Google Cloud
+            resources whose name contains   "Important" as a
+            word.
+            * `name=Important` to find the Google Cloud
+            resource whose name is exactly   "Important".
+            * `displayName:Impor*` to find Google Cloud
+            resources whose display name   contains "Impor"
+            as a prefix of any word in the field. *
+            `location:us-west*` to find Google Cloud
+            resources whose location   contains both "us"
+            and "west" as prefixes.
+            * `labels:prod` to find Google Cloud resources
+            whose labels contain "prod"   as a key or value.
+            * `labels.env:prod` to find Google Cloud
+            resources that have a label "env"   and its
+            value is "prod".
+            * `labels.env:*` to find Google Cloud resources
+            that have a label "env". * `kmsKey:key` to find
+            Google Cloud resources encrypted with a
+            customer-managed encryption key whose name
+            contains "key" as a word. This   field is
+            deprecated. Please use the `kmsKeys` field to
+            retrieve Cloud KMS   key information.
+            * `kmsKeys:key` to find Google Cloud resources
+            encrypted with   customer-managed encryption
+            keys whose name contains the word "key". *
+            `relationships:instance-group-1` to find Google
+            Cloud resources that have   relationships with
+            "instance-group-1" in the related resource name.
+            * `relationships:INSTANCE_TO_INSTANCEGROUP` to
+            find Compute Engine   instances that have
+            relationships of type
+            "INSTANCE_TO_INSTANCEGROUP". *
+            `relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1`
+            to find   Compute Engine instances that have
+            relationships with "instance-group-1"   in the
+            Compute Engine instance group resource name, for
+            relationship type   "INSTANCE_TO_INSTANCEGROUP".
+            * `state:ACTIVE` to find Google Cloud resources
+            whose state contains   "ACTIVE" as a word.
+            * `NOT state:ACTIVE` to find Google Cloud
+            resources whose state doesn't   contain "ACTIVE"
+            as a word.
+            * `createTime<1609459200` to find Google Cloud
+            resources that were created   before "2021-01-01
+            00:00:00 UTC". 1609459200 is the epoch timestamp
+            of   "2021-01-01 00:00:00 UTC" in seconds.
+            * `updateTime>1609459200` to find Google Cloud
+            resources that were updated   after "2021-01-01
+            00:00:00 UTC". 1609459200 is the epoch timestamp
+            of   "2021-01-01 00:00:00 UTC" in seconds.
+            * `Important` to find Google Cloud resources
+            that contain "Important" as a   word in any of
+            the searchable fields.
+            * `Impor*` to find Google Cloud resources that
+            contain "Impor" as a prefix   of any word in any
+            of the searchable fields. * `Important
+            location:(us-west1 OR global)` to find Google
+            Cloud   resources that contain "Important" as a
+            word in any of the searchable   fields and are
+            also located in the "us-west1" region or the
+            "global"   location.
         asset_types (MutableSequence[str]):
-            Optional. A list of asset types that this request searches
-            for. If empty, it will search all the `searchable asset
-            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+            Optional. A list of asset types that this
+            request searches for. If empty, it will search
+            all the [searchable asset
+            types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types).
 
-            Regular expressions are also supported. For example:
+            Regular expressions are also supported. For
+            example:
 
-            - "compute.googleapis.com.\*" snapshots resources whose
-              asset type starts with "compute.googleapis.com".
-            - ".*Instance" snapshots resources whose asset type ends
-              with "Instance".
-            - ".\ *Instance.*" snapshots resources whose asset type
-              contains "Instance".
+            * "compute.googleapis.com.*" snapshots resources
+            whose asset type starts with
+            "compute.googleapis.com".
+            * ".*Instance" snapshots resources whose asset
+            type ends with "Instance". * ".*Instance.*"
+            snapshots resources whose asset type contains
+            "Instance".
 
-            See `RE2 <https://github.com/google/re2/wiki/Syntax>`__ for
-            all supported regular expression syntax. If the regular
-            expression does not match any supported asset type, an
-            INVALID_ARGUMENT error will be returned.
+            See
+            [RE2](https://github.com/google/re2/wiki/Syntax)
+            for all supported regular expression syntax. If
+            the regular expression does not match any
+            supported asset type, an INVALID_ARGUMENT error
+            will be returned.
         page_size (int):
-            Optional. The page size for search result pagination. Page
-            size is capped at 500 even if a larger value is given. If
-            set to zero, server will pick an appropriate default.
-            Returned results may be fewer than requested. When this
+            Optional. The page size for search result
+            pagination. Page size is capped at 500 even if a
+            larger value is given. If set to zero, server
+            will pick an appropriate default. Returned
+            results may be fewer than requested. When this
             happens, there could be more results as long as
-            ``next_page_token`` is returned.
+            `next_page_token` is returned.
         page_token (str):
-            Optional. If present, then retrieve the next batch of
-            results from the preceding call to this method.
-            ``page_token`` must be the value of ``next_page_token`` from
-            the previous response. The values of all other method
-            parameters, must be identical to those in the previous call.
+            Optional. If present, then retrieve the next
+            batch of results from the preceding call to this
+            method. `page_token` must be the value of
+            `next_page_token` from the previous response.
+            The values of all other method parameters, must
+            be identical to those in the previous call.
         order_by (str):
-            Optional. A comma-separated list of fields specifying the
-            sorting order of the results. The default order is
-            ascending. Add " DESC" after the field name to indicate
-            descending order. Redundant space characters are ignored.
-            Example: "location DESC, name". Only singular primitive
-            fields in the response are sortable:
+            Optional. A comma-separated list of fields
+            specifying the sorting order of the results. The
+            default order is ascending. Add " DESC" after
+            the field name to indicate descending order.
+            Redundant space characters are ignored. Example:
+            "location DESC, name".
+            Only singular primitive fields in the response
+            are sortable:
 
-            - name
-            - assetType
-            - project
-            - displayName
-            - description
-            - location
-            - createTime
-            - updateTime
-            - state
-            - parentFullResourceName
-            - parentAssetType
+              * name
+              * assetType
+              * project
+              * displayName
+              * description
+              * location
+              * createTime
+              * updateTime
+              * state
+              * parentFullResourceName
+              * parentAssetType
 
-            All the other fields such as repeated fields (e.g.,
-            ``networkTags``, ``kmsKeys``), map fields (e.g., ``labels``)
-            and struct fields (e.g., ``additionalAttributes``) are not
-            supported.
+            All the other fields such as repeated fields
+            (e.g., `networkTags`, `kmsKeys`), map fields
+            (e.g., `labels`) and struct fields (e.g.,
+            `additionalAttributes`) are not supported.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. A comma-separated list of fields specifying which
-            fields to be returned in ResourceSearchResult. Only '\*' or
-            combination of top level fields can be specified. Field
-            names of both snake_case and camelCase are supported.
-            Examples: ``"*"``, ``"name,location"``,
-            ``"name,versionedResources"``.
+            Optional. A comma-separated list of fields
+            specifying which fields to be returned in
+            ResourceSearchResult. Only '*' or combination of
+            top level fields can be specified. Field names
+            of both snake_case and camelCase are supported.
+            Examples: `"*"`, `"name,location"`,
+            `"name,versionedResources"`.
 
-            The read_mask paths must be valid field paths listed but not
-            limited to (both snake_case and camelCase are supported):
+            The read_mask paths must be valid field paths
+            listed but not limited to (both snake_case and
+            camelCase are supported):
 
-            - name
-            - assetType
-            - project
-            - displayName
-            - description
-            - location
-            - tagKeys
-            - tagValues
-            - tagValueIds
-            - labels
-            - networkTags
-            - kmsKey (This field is deprecated. Please use the
-              ``kmsKeys`` field to retrieve Cloud KMS key information.)
-            - kmsKeys
-            - createTime
-            - updateTime
-            - state
-            - additionalAttributes
-            - versionedResources
+              * name
+              * assetType
+              * project
+              * displayName
+              * description
+              * location
+              * tagKeys
+              * tagValues
+              * tagValueIds
+              * labels
+              * networkTags
+              * kmsKey (This field is deprecated. Please use
+            the `kmsKeys` field to     retrieve Cloud KMS
+            key information.)
+              * kmsKeys
+              * createTime
+              * updateTime
+              * state
+              * additionalAttributes
+              * versionedResources
 
             If read_mask is not specified, all fields except
-            versionedResources will be returned. If only '\*' is
-            specified, all fields including versionedResources will be
-            returned. Any invalid field path will trigger
+            versionedResources will be returned.
+            If only '*' is specified, all fields including
+            versionedResources will be returned.
+            Any invalid field path will trigger
             INVALID_ARGUMENT error.
     """
 
@@ -1282,10 +1381,11 @@ class SearchAllResourcesResponse(proto.Message):
             query. It contains the resource standard
             metadata information.
         next_page_token (str):
-            If there are more results than those appearing in this
-            response, then ``next_page_token`` is included. To get the
-            next set of results, call this method again using the value
-            of ``next_page_token`` as ``page_token``.
+            If there are more results than those
+            appearing in this response, then
+            `next_page_token` is included. To get the next
+            set of results, call this method again using the
+            value of `next_page_token` as `page_token`.
     """
 
     @property
@@ -1308,112 +1408,135 @@ class SearchAllIamPoliciesRequest(proto.Message):
 
     Attributes:
         scope (str):
-            Required. A scope can be a project, a folder, or an
-            organization. The search is limited to the IAM policies
-            within the ``scope``. The caller must be granted the
-            ```cloudasset.assets.searchAllIamPolicies`` <https://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+            Required. A scope can be a project, a folder,
+            or an organization. The search is limited to the
+            IAM policies within the `scope`. The caller must
+            be granted the
+            [`cloudasset.assets.searchAllIamPolicies`](https://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
             permission on the desired scope.
 
             The allowed values are:
 
-            - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
-            - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
-            - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
-            - organizations/{ORGANIZATION_NUMBER} (e.g.,
-              "organizations/123456")
+            * projects/{PROJECT_ID} (e.g.,
+            "projects/foo-bar") * projects/{PROJECT_NUMBER}
+            (e.g., "projects/12345678") *
+            folders/{FOLDER_NUMBER} (e.g.,
+            "folders/1234567") *
+            organizations/{ORGANIZATION_NUMBER} (e.g.,
+            "organizations/123456")
         query (str):
-            Optional. The query statement. See `how to construct a
-            query <https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query>`__
-            for more information. If not specified or empty, it will
-            search all the IAM policies within the specified ``scope``.
-            Note that the query string is compared against each IAM
-            policy binding, including its principals, roles, and IAM
-            conditions. The returned IAM policies will only contain the
-            bindings that match your query. To learn more about the IAM
-            policy structure, see the `IAM policy
-            documentation <https://cloud.google.com/iam/help/allow-policies/structure>`__.
+            Optional. The query statement. See [how to
+            construct a
+            query](https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query)
+            for more information. If not specified or empty,
+            it will search all the IAM policies within the
+            specified `scope`. Note that the query string is
+            compared against each IAM policy binding,
+            including its principals, roles, and IAM
+            conditions. The returned IAM policies will only
+            contain the bindings that match your query. To
+            learn more about the IAM policy structure, see
+            the [IAM policy
+            documentation](https://cloud.google.com/iam/help/allow-policies/structure).
 
             Examples:
 
-            - ``policy:amy@gmail.com`` to find IAM policy bindings that
-              specify user "amy@gmail.com".
-            - ``policy:roles/compute.admin`` to find IAM policy bindings
-              that specify the Compute Admin role.
-            - ``policy:comp*`` to find IAM policy bindings that contain
-              "comp" as a prefix of any word in the binding.
-            - ``policy.role.permissions:storage.buckets.update`` to find
-              IAM policy bindings that specify a role containing
-              "storage.buckets.update" permission. Note that if callers
-              don't have ``iam.roles.get`` access to a role's included
-              permissions, policy bindings that specify this role will
-              be dropped from the search results.
-            - ``policy.role.permissions:upd*`` to find IAM policy
-              bindings that specify a role containing "upd" as a prefix
-              of any word in the role permission. Note that if callers
-              don't have ``iam.roles.get`` access to a role's included
-              permissions, policy bindings that specify this role will
-              be dropped from the search results.
-            - ``resource:organizations/123456`` to find IAM policy
-              bindings that are set on "organizations/123456".
-            - ``resource=//cloudresourcemanager.googleapis.com/projects/myproject``
-              to find IAM policy bindings that are set on the project
-              named "myproject".
-            - ``Important`` to find IAM policy bindings that contain
-              "Important" as a word in any of the searchable fields
-              (except for the included permissions).
-            - ``resource:(instance1 OR instance2) policy:amy`` to find
-              IAM policy bindings that are set on resources "instance1"
-              or "instance2" and also specify user "amy".
-            - ``roles:roles/compute.admin`` to find IAM policy bindings
-              that specify the Compute Admin role.
-            - ``memberTypes:user`` to find IAM policy bindings that
-              contain the principal type "user".
+            * `policy:amy@gmail.com` to find IAM policy
+            bindings that specify user   "amy@gmail.com".
+            * `policy:roles/compute.admin` to find IAM
+            policy bindings that specify   the Compute Admin
+            role.
+            * `policy:comp*` to find IAM policy bindings
+            that contain "comp" as a   prefix of any word in
+            the binding.
+            *
+            `policy.role.permissions:storage.buckets.update`
+            to find IAM policy   bindings that specify a
+            role containing "storage.buckets.update"
+            permission. Note that if callers don't have
+            `iam.roles.get` access to a   role's included
+            permissions, policy bindings that specify this
+            role will   be dropped from the search results.
+            * `policy.role.permissions:upd*` to find IAM
+            policy bindings that specify a   role containing
+            "upd" as a prefix of any word in the role
+            permission.   Note that if callers don't have
+            `iam.roles.get` access to a role's   included
+            permissions, policy bindings that specify this
+            role will be   dropped from the search results.
+            * `resource:organizations/123456` to find IAM
+            policy bindings   that are set on
+            "organizations/123456".
+            *
+            `resource=//cloudresourcemanager.googleapis.com/projects/myproject`
+            to   find IAM policy bindings that are set on
+            the project named "myproject". * `Important` to
+            find IAM policy bindings that contain
+            "Important" as a   word in any of the searchable
+            fields (except for the included   permissions).
+            * `resource:(instance1 OR instance2) policy:amy`
+            to find   IAM policy bindings that are set on
+            resources "instance1" or   "instance2" and also
+            specify user "amy".
+            * `roles:roles/compute.admin` to find IAM policy
+            bindings that specify the   Compute Admin role.
+            * `memberTypes:user` to find IAM policy bindings
+            that contain the   principal type "user".
         page_size (int):
-            Optional. The page size for search result pagination. Page
-            size is capped at 500 even if a larger value is given. If
-            set to zero, server will pick an appropriate default.
-            Returned results may be fewer than requested. When this
+            Optional. The page size for search result
+            pagination. Page size is capped at 500 even if a
+            larger value is given. If set to zero, server
+            will pick an appropriate default. Returned
+            results may be fewer than requested. When this
             happens, there could be more results as long as
-            ``next_page_token`` is returned.
+            `next_page_token` is returned.
         page_token (str):
-            Optional. If present, retrieve the next batch of results
-            from the preceding call to this method. ``page_token`` must
-            be the value of ``next_page_token`` from the previous
-            response. The values of all other method parameters must be
-            identical to those in the previous call.
+            Optional. If present, retrieve the next batch
+            of results from the preceding call to this
+            method. `page_token` must be the value of
+            `next_page_token` from the previous response.
+            The values of all other method parameters must
+            be identical to those in the previous call.
         asset_types (MutableSequence[str]):
-            Optional. A list of asset types that the IAM policies are
-            attached to. If empty, it will search the IAM policies that
-            are attached to all the `searchable asset
-            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+            Optional. A list of asset types that the IAM
+            policies are attached to. If empty, it will
+            search the IAM policies that are attached to all
+            the [searchable asset
+            types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types).
 
-            Regular expressions are also supported. For example:
+            Regular expressions are also supported. For
+            example:
 
-            - "compute.googleapis.com.\*" snapshots IAM policies
-              attached to asset type starts with
-              "compute.googleapis.com".
-            - ".*Instance" snapshots IAM policies attached to asset type
-              ends with "Instance".
-            - ".\ *Instance.*" snapshots IAM policies attached to asset
-              type contains "Instance".
+            * "compute.googleapis.com.*" snapshots IAM
+            policies attached to asset type starts with
+            "compute.googleapis.com".
+            * ".*Instance" snapshots IAM policies attached
+            to asset type ends with "Instance".
+            * ".*Instance.*" snapshots IAM policies attached
+            to asset type contains "Instance".
 
-            See `RE2 <https://github.com/google/re2/wiki/Syntax>`__ for
-            all supported regular expression syntax. If the regular
-            expression does not match any supported asset type, an
-            INVALID_ARGUMENT error will be returned.
+            See
+            [RE2](https://github.com/google/re2/wiki/Syntax)
+            for all supported regular expression syntax. If
+            the regular expression does not match any
+            supported asset type, an INVALID_ARGUMENT error
+            will be returned.
         order_by (str):
-            Optional. A comma-separated list of fields specifying the
-            sorting order of the results. The default order is
-            ascending. Add " DESC" after the field name to indicate
-            descending order. Redundant space characters are ignored.
-            Example: "assetType DESC, resource". Only singular primitive
-            fields in the response are sortable:
+            Optional. A comma-separated list of fields
+            specifying the sorting order of the results. The
+            default order is ascending. Add " DESC" after
+            the field name to indicate descending order.
+            Redundant space characters are ignored. Example:
+            "assetType DESC, resource".
+            Only singular primitive fields in the response
+            are sortable:
 
-            - resource
-            - assetType
-            - project All the other fields such as repeated fields
-              (e.g., ``folders``) and non-primitive fields (e.g.,
-              ``policy``) are not supported.
+              * resource
+              * assetType
+              * project
+            All the other fields such as repeated fields
+            (e.g., `folders`) and non-primitive fields
+            (e.g., `policy`) are not supported.
     """
 
     scope: str = proto.Field(
@@ -1452,9 +1575,10 @@ class SearchAllIamPoliciesResponse(proto.Message):
             associated resource is returned along with the
             policy.
         next_page_token (str):
-            Set if there are more results than those appearing in this
-            response; to get the next set of results, call this method
-            again, using this value as the ``page_token``.
+            Set if there are more results than those
+            appearing in this response; to get the next set
+            of results, call this method again, using this
+            value as the `page_token`.
     """
 
     @property
@@ -1477,21 +1601,22 @@ class IamPolicyAnalysisQuery(proto.Message):
 
     Attributes:
         scope (str):
-            Required. The relative name of the root asset. Only
-            resources and IAM policies within the scope will be
-            analyzed.
+            Required. The relative name of the root
+            asset. Only resources and IAM policies within
+            the scope will be analyzed.
 
             This can only be an organization number (such as
             "organizations/123"), a folder number (such as
             "folders/123"), a project ID (such as
-            "projects/my-project-id"), or a project number (such as
-            "projects/12345").
+            "projects/my-project-id"), or a project number
+            (such as "projects/12345").
 
-            To know how to get organization id, visit
-            `here <https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id>`__.
+            To know how to get organization id, visit [here
+            ](https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
 
             To know how to get folder or project id, visit
-            `here <https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects>`__.
+            [here
+            ](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
         resource_selector (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.ResourceSelector):
             Optional. Specifies a resource for analysis.
         identity_selector (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.IdentitySelector):
@@ -1515,8 +1640,8 @@ class IamPolicyAnalysisQuery(proto.Message):
             full_resource_name (str):
                 Required. The [full resource name]
                 (https://cloud.google.com/asset-inventory/docs/resource-name-format)
-                of a resource of `supported resource
-                types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#analyzable_asset_types>`__.
+                of a resource of [supported resource
+                types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#analyzable_asset_types).
         """
 
         full_resource_name: str = proto.Field(
@@ -1531,17 +1656,20 @@ class IamPolicyAnalysisQuery(proto.Message):
 
         Attributes:
             identity (str):
-                Required. The identity appear in the form of principals in
-                `IAM policy
-                binding <https://cloud.google.com/iam/reference/rest/v1/Binding>`__.
+                Required. The identity appear in the form of
+                principals in [IAM policy
+                binding](https://cloud.google.com/iam/reference/rest/v1/Binding).
 
                 The examples of supported forms are:
-                "user:mike@example.com", "group:admins@example.com",
+
+                "user:mike@example.com",
+                "group:admins@example.com",
                 "domain:google.com",
                 "serviceAccount:my-project-id@appspot.gserviceaccount.com".
 
-                Notice that wildcard characters (such as \* and ?) are not
-                supported. You must give a specific identity.
+                Notice that wildcard characters (such as * and
+                ?) are not supported. You must give a specific
+                identity.
         """
 
         identity: str = proto.Field(
@@ -1578,57 +1706,64 @@ class IamPolicyAnalysisQuery(proto.Message):
 
         Attributes:
             expand_groups (bool):
-                Optional. If true, the identities section of the result will
-                expand any Google groups appearing in an IAM policy binding.
+                Optional. If true, the identities section of
+                the result will expand any Google groups
+                appearing in an IAM policy binding.
 
                 If
                 [IamPolicyAnalysisQuery.identity_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.identity_selector]
-                is specified, the identity in the result will be determined
-                by the selector, and this flag is not allowed to set.
+                is specified, the identity in the result will be
+                determined by the selector, and this flag is not
+                allowed to set.
 
-                If true, the default max expansion per group is 1000 for
-                AssetService.AnalyzeIamPolicy][].
+                If true, the default max expansion per group is
+                1000 for AssetService.AnalyzeIamPolicy][].
 
                 Default is false.
             expand_roles (bool):
-                Optional. If true, the access section of result will expand
-                any roles appearing in IAM policy bindings to include their
-                permissions.
+                Optional. If true, the access section of
+                result will expand any roles appearing in IAM
+                policy bindings to include their permissions.
 
                 If
                 [IamPolicyAnalysisQuery.access_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.access_selector]
-                is specified, the access section of the result will be
-                determined by the selector, and this flag is not allowed to
-                set.
+                is specified, the access section of the result
+                will be determined by the selector, and this
+                flag is not allowed to set.
 
                 Default is false.
             expand_resources (bool):
                 Optional. If true and
                 [IamPolicyAnalysisQuery.resource_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.resource_selector]
-                is not specified, the resource section of the result will
-                expand any resource attached to an IAM policy to include
-                resources lower in the resource hierarchy.
+                is not specified, the resource section of the
+                result will expand any resource attached to an
+                IAM policy to include resources lower in the
+                resource hierarchy.
 
-                For example, if the request analyzes for which resources
-                user A has permission P, and the results include an IAM
-                policy with P on a Google Cloud folder, the results will
-                also include resources in that folder with permission P.
+                For example, if the request analyzes for which
+                resources user A has permission P, and the
+                results include an IAM policy with P on a Google
+                Cloud folder, the results will also include
+                resources in that folder with permission P.
 
                 If true and
                 [IamPolicyAnalysisQuery.resource_selector][google.cloud.asset.v1.IamPolicyAnalysisQuery.resource_selector]
-                is specified, the resource section of the result will expand
-                the specified resource to include resources lower in the
-                resource hierarchy. Only project or lower resources are
-                supported. Folder and organization resources cannot be used
+                is specified, the resource section of the result
+                will expand the specified resource to include
+                resources lower in the resource hierarchy. Only
+                project or lower resources are supported. Folder
+                and organization resources cannot be used
                 together with this option.
 
-                For example, if the request analyzes for which users have
-                permission P on a Google Cloud project with this option
-                enabled, the results will include all users who have
-                permission P on that project or any lower resource.
+                For example, if the request analyzes for which
+                users have permission P on a Google Cloud
+                project with this option enabled, the results
+                will include all users who have permission P on
+                that project or any lower resource.
 
-                If true, the default max expansion per resource is 1000 for
-                AssetService.AnalyzeIamPolicy][] and 100000 for
+                If true, the default max expansion per resource
+                is 1000 for AssetService.AnalyzeIamPolicy][] and
+                100000 for
                 AssetService.AnalyzeIamPolicyLongrunning][].
 
                 Default is false.
@@ -1642,43 +1777,48 @@ class IamPolicyAnalysisQuery(proto.Message):
                 and other groups, and between groups and
                 principals. Default is false.
             analyze_service_account_impersonation (bool):
-                Optional. If true, the response will include access analysis
-                from identities to resources via service account
-                impersonation. This is a very expensive operation, because
-                many derived queries will be executed. We highly recommend
+                Optional. If true, the response will include
+                access analysis from identities to resources via
+                service account impersonation. This is a very
+                expensive operation, because many derived
+                queries will be executed. We highly recommend
                 you use
                 [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning]
                 RPC instead.
 
-                For example, if the request analyzes for which resources
-                user A has permission P, and there's an IAM policy states
-                user A has iam.serviceAccounts.getAccessToken permission to
-                a service account SA, and there's another IAM policy states
-                service account SA has permission P to a Google Cloud folder
-                F, then user A potentially has access to the Google Cloud
-                folder F. And those advanced analysis results will be
-                included in
+                For example, if the request analyzes for which
+                resources user A has permission P, and there's
+                an IAM policy states user A has
+                iam.serviceAccounts.getAccessToken permission to
+                a service account SA, and there's another IAM
+                policy states service account SA has permission
+                P to a Google Cloud folder F, then user A
+                potentially has access to the Google Cloud
+                folder F. And those advanced analysis results
+                will be included in
                 [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
 
-                Another example, if the request analyzes for who has
-                permission P to a Google Cloud folder F, and there's an IAM
-                policy states user A has iam.serviceAccounts.actAs
-                permission to a service account SA, and there's another IAM
-                policy states service account SA has permission P to the
-                Google Cloud folder F, then user A potentially has access to
-                the Google Cloud folder F. And those advanced analysis
-                results will be included in
+                Another example, if the request analyzes for who
+                has permission P to a Google Cloud folder F, and
+                there's an IAM policy states user A has
+                iam.serviceAccounts.actAs permission to a
+                service account SA, and there's another IAM
+                policy states service account SA has permission
+                P to the Google Cloud folder F, then user A
+                potentially has access to the Google Cloud
+                folder F. And those advanced analysis results
+                will be included in
                 [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
 
-                Only the following permissions are considered in this
-                analysis:
+                Only the following permissions are considered in
+                this analysis:
 
-                - ``iam.serviceAccounts.actAs``
-                - ``iam.serviceAccounts.signBlob``
-                - ``iam.serviceAccounts.signJwt``
-                - ``iam.serviceAccounts.getAccessToken``
-                - ``iam.serviceAccounts.getOpenIdToken``
-                - ``iam.serviceAccounts.implicitDelegation``
+                * `iam.serviceAccounts.actAs`
+                * `iam.serviceAccounts.signBlob`
+                * `iam.serviceAccounts.signJwt`
+                * `iam.serviceAccounts.getAccessToken`
+                * `iam.serviceAccounts.getOpenIdToken`
+                * `iam.serviceAccounts.implicitDelegation`
 
                 Default is false.
         """
@@ -1715,10 +1855,10 @@ class IamPolicyAnalysisQuery(proto.Message):
 
         Attributes:
             access_time (google.protobuf.timestamp_pb2.Timestamp):
-                The hypothetical access timestamp to evaluate IAM
-                conditions. Note that this value must not be earlier than
-                the current time; otherwise, an INVALID_ARGUMENT error will
-                be returned.
+                The hypothetical access timestamp to evaluate
+                IAM conditions. Note that this value must not be
+                earlier than the current time; otherwise, an
+                INVALID_ARGUMENT error will be returned.
 
                 This field is a member of `oneof`_ ``TimeContext``.
         """
@@ -1769,35 +1909,41 @@ class AnalyzeIamPolicyRequest(proto.Message):
         analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
             Required. The request query.
         saved_analysis_query (str):
-            Optional. The name of a saved query, which must be in the
-            format of:
+            Optional. The name of a saved query, which
+            must be in the format of:
+            *
+            projects/project_number/savedQueries/saved_query_id
+            *
+            folders/folder_number/savedQueries/saved_query_id
+            *
+            organizations/organization_number/savedQueries/saved_query_id
 
-            - projects/project_number/savedQueries/saved_query_id
-            - folders/folder_number/savedQueries/saved_query_id
-            - organizations/organization_number/savedQueries/saved_query_id
-
-            If both ``analysis_query`` and ``saved_analysis_query`` are
-            provided, they will be merged together with the
-            ``saved_analysis_query`` as base and the ``analysis_query``
-            as overrides. For more details of the merge behavior, please
-            refer to the
-            `MergeFrom <https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.message#Message.MergeFrom.details>`__
+            If both `analysis_query` and
+            `saved_analysis_query` are provided, they will
+            be merged together with the
+            `saved_analysis_query` as base and the
+            `analysis_query` as overrides. For more details
+            of the merge behavior, please refer to the
+            [MergeFrom](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.message#Message.MergeFrom.details)
             page.
 
-            Note that you cannot override primitive fields with default
-            value, such as 0 or empty string, etc., because we use
-            proto3, which doesn't support field presence yet.
+            Note that you cannot override primitive fields
+            with default value, such as 0 or empty string,
+            etc., because we use proto3, which doesn't
+            support field presence yet.
         execution_timeout (google.protobuf.duration_pb2.Duration):
-            Optional. Amount of time executable has to complete. See
-            JSON representation of
-            `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__.
+            Optional. Amount of time executable has to
+            complete.  See JSON representation of
+            [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json).
 
-            If this field is set with a value less than the RPC
-            deadline, and the execution of your query hasn't finished in
-            the specified execution timeout, you will get a response
-            with partial result. Otherwise, your query's execution will
-            continue until the RPC deadline. If it's not finished until
-            then, you will get a DEADLINE_EXCEEDED error.
+            If this field is set with a value less than the
+            RPC deadline, and the execution of your query
+            hasn't finished in the specified execution
+            timeout,  you will get a response with partial
+            result. Otherwise, your query's execution will
+            continue until the RPC deadline. If it's not
+            finished until then, you will get a
+            DEADLINE_EXCEEDED error.
 
             Default is empty.
     """
@@ -1835,7 +1981,8 @@ class AnalyzeIamPolicyResponse(proto.Message):
             [main_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.main_analysis]
             and
             [service_account_impersonation_analysis][google.cloud.asset.v1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis]
-            have been fully explored to answer the query in the request.
+            have been fully explored to answer the query in
+            the request.
     """
 
     class IamPolicyAnalysis(proto.Message):
@@ -1847,8 +1994,8 @@ class AnalyzeIamPolicyResponse(proto.Message):
             analysis_results (MutableSequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult]):
                 A list of
                 [IamPolicyAnalysisResult][google.cloud.asset.v1.IamPolicyAnalysisResult]
-                that matches the analysis query, or empty if no result is
-                found.
+                that matches the analysis query, or empty if no
+                result is found.
             fully_explored (bool):
                 Represents whether all entries in the
                 [analysis_results][google.cloud.asset.v1.AnalyzeIamPolicyResponse.IamPolicyAnalysis.analysis_results]
@@ -1921,16 +2068,16 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
 
         Attributes:
             uri (str):
-                Required. The URI of the Cloud Storage object. It's the same
-                URI that is used by gsutil. Example:
-                "gs://bucket_name/object_name". See `Viewing and Editing
-                Object
-                Metadata <https://cloud.google.com/storage/docs/viewing-editing-metadata>`__
+                Required. The URI of the Cloud Storage
+                object. It's the same URI that is used by
+                gsutil. Example: "gs://bucket_name/object_name".
+                See [Viewing and Editing Object
+                Metadata](https://cloud.google.com/storage/docs/viewing-editing-metadata)
                 for more information.
 
-                If the specified Cloud Storage object already exists and
-                there is no
-                `hold <https://cloud.google.com/storage/docs/object-holds>`__,
+                If the specified Cloud Storage object already
+                exists and there is no
+                [hold](https://cloud.google.com/storage/docs/object-holds),
                 it will be overwritten with the analysis result.
         """
 
@@ -1945,41 +2092,44 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
         Attributes:
             dataset (str):
                 Required. The BigQuery dataset in format
-                "projects/projectId/datasets/datasetId", to which the
-                analysis results should be exported. If this dataset does
-                not exist, the export call will return an INVALID_ARGUMENT
-                error.
+                "projects/projectId/datasets/datasetId", to
+                which the analysis results should be exported.
+                If this dataset does not exist, the export call
+                will return an INVALID_ARGUMENT error.
             table_prefix (str):
-                Required. The prefix of the BigQuery tables to which the
-                analysis results will be written. Tables will be created
-                based on this table_prefix if not exist:
+                Required. The prefix of the BigQuery tables
+                to which the analysis results will be written.
+                Tables will be created based on this
+                table_prefix if not exist:
 
-                - <table_prefix>_analysis table will contain export
-                  operation's metadata.
-                - <table_prefix>_analysis_result will contain all the
-                  [IamPolicyAnalysisResult][google.cloud.asset.v1.IamPolicyAnalysisResult].
-                  When [partition_key] is specified, both tables will be
-                  partitioned based on the [partition_key].
+                * <table_prefix>_analysis table will contain
+                export operation's metadata. *
+                <table_prefix>_analysis_result will contain all
+                the
+                [IamPolicyAnalysisResult][google.cloud.asset.v1.IamPolicyAnalysisResult].
+                When [partition_key] is specified, both tables
+                will be partitioned based on the
+                [partition_key].
             partition_key (google.cloud.asset_v1.types.IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey):
                 The partition key for BigQuery partitioned
                 table.
             write_disposition (str):
-                Optional. Specifies the action that occurs if the
-                destination table or partition already exists. The following
-                values are supported:
+                Optional. Specifies the action that occurs if
+                the destination table or partition already
+                exists. The following values are supported:
 
-                - WRITE_TRUNCATE: If the table or partition already exists,
-                  BigQuery overwrites the entire table or all the partitions
-                  data.
-                - WRITE_APPEND: If the table or partition already exists,
-                  BigQuery appends the data to the table or the latest
-                  partition.
-                - WRITE_EMPTY: If the table already exists and contains
-                  data, an error is returned.
+                * WRITE_TRUNCATE: If the table or partition
+                already exists, BigQuery overwrites the entire
+                table or all the partitions data. *
+                WRITE_APPEND: If the table or partition already
+                exists, BigQuery appends the data to the table
+                or the latest partition. * WRITE_EMPTY: If the
+                table already exists and contains data, an error
+                is returned.
 
-                The default value is WRITE_APPEND. Each action is atomic and
-                only occurs if BigQuery is able to complete the job
-                successfully. Details are at
+                The default value is WRITE_APPEND. Each action
+                is atomic and only occurs if BigQuery is able to
+                complete the job successfully. Details are at
                 https://cloud.google.com/bigquery/docs/loading-data-local#appending_to_or_overwriting_a_table_using_a_local_file.
         """
         class PartitionKey(proto.Enum):
@@ -2043,24 +2193,28 @@ class AnalyzeIamPolicyLongrunningRequest(proto.Message):
         analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
             Required. The request query.
         saved_analysis_query (str):
-            Optional. The name of a saved query, which must be in the
-            format of:
+            Optional. The name of a saved query, which
+            must be in the format of:
+            *
+            projects/project_number/savedQueries/saved_query_id
+            *
+            folders/folder_number/savedQueries/saved_query_id
+            *
+            organizations/organization_number/savedQueries/saved_query_id
 
-            - projects/project_number/savedQueries/saved_query_id
-            - folders/folder_number/savedQueries/saved_query_id
-            - organizations/organization_number/savedQueries/saved_query_id
-
-            If both ``analysis_query`` and ``saved_analysis_query`` are
-            provided, they will be merged together with the
-            ``saved_analysis_query`` as base and the ``analysis_query``
-            as overrides. For more details of the merge behavior, please
-            refer to the
-            `MergeFrom <https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.message#Message.MergeFrom.details>`__
+            If both `analysis_query` and
+            `saved_analysis_query` are provided, they will
+            be merged together with the
+            `saved_analysis_query` as base and the
+            `analysis_query` as overrides. For more details
+            of the merge behavior, please refer to the
+            [MergeFrom](https://developers.google.com/protocol-buffers/docs/reference/cpp/google.protobuf.message#Message.MergeFrom.details)
             doc.
 
-            Note that you cannot override primitive fields with default
-            value, such as 0 or empty string, etc., because we use
-            proto3, which doesn't support field presence yet.
+            Note that you cannot override primitive fields
+            with default value, such as 0 or empty string,
+            etc., because we use proto3, which doesn't
+            support field presence yet.
         output_config (google.cloud.asset_v1.types.IamPolicyAnalysisOutputConfig):
             Required. Output configuration indicating
             where the results will be output to.
@@ -2094,11 +2248,14 @@ class SavedQuery(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the saved query. The format must be:
-
-            - projects/project_number/savedQueries/saved_query_id
-            - folders/folder_number/savedQueries/saved_query_id
-            - organizations/organization_number/savedQueries/saved_query_id
+            The resource name of the saved query. The
+            format must be:
+            *
+            projects/project_number/savedQueries/saved_query_id
+            *
+            folders/folder_number/savedQueries/saved_query_id
+            *
+            organizations/organization_number/savedQueries/saved_query_id
         description (str):
             The description of this saved query. This
             value should be fewer than 255 characters.
@@ -2130,7 +2287,8 @@ class SavedQuery(proto.Message):
 
         Attributes:
             iam_policy_analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
-                An IAM Policy Analysis query, which could be used in the
+                An IAM Policy Analysis query, which could be
+                used in the
                 [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy]
                 RPC or the
                 [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning]
@@ -2189,27 +2347,30 @@ class CreateSavedQueryRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project/folder/organization where
-            this saved_query should be created in. It can only be an
-            organization number (such as "organizations/123"), a folder
-            number (such as "folders/123"), a project ID (such as
-            "projects/my-project-id"), or a project number (such as
-            "projects/12345").
+            Required. The name of the
+            project/folder/organization where this
+            saved_query should be created in. It can only be
+            an organization number (such as
+            "organizations/123"), a folder number (such as
+            "folders/123"), a project ID (such as
+            "projects/my-project-id"), or a project number
+            (such as "projects/12345").
         saved_query (google.cloud.asset_v1.types.SavedQuery):
-            Required. The saved_query details. The ``name`` field must
-            be empty as it will be generated based on the parent and
-            saved_query_id.
+            Required. The saved_query details. The `name`
+            field must be empty as it will be generated
+            based on the parent and saved_query_id.
         saved_query_id (str):
-            Required. The ID to use for the saved query, which must be
-            unique in the specified parent. It will become the final
-            component of the saved query's resource name.
+            Required. The ID to use for the saved query,
+            which must be unique in the specified parent. It
+            will become the final component of the saved
+            query's resource name.
 
-            This value should be 4-63 characters, and valid characters
-            are ``[a-z][0-9]-``.
+            This value should be 4-63 characters, and valid
+            characters are `[a-z][0-9]-`.
 
-            Notice that this field is required in the saved query
-            creation, and the ``name`` field of the ``saved_query`` will
-            be ignored.
+            Notice that this field is required in the saved
+            query creation, and the `name` field of the
+            `saved_query` will be ignored.
     """
 
     parent: str = proto.Field(
@@ -2232,12 +2393,14 @@ class GetSavedQueryRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the saved query and it must be in the
-            format of:
-
-            - projects/project_number/savedQueries/saved_query_id
-            - folders/folder_number/savedQueries/saved_query_id
-            - organizations/organization_number/savedQueries/saved_query_id
+            Required. The name of the saved query and it
+            must be in the format of:
+            *
+            projects/project_number/savedQueries/saved_query_id
+            *
+            folders/folder_number/savedQueries/saved_query_id
+            *
+            organizations/organization_number/savedQueries/saved_query_id
     """
 
     name: str = proto.Field(
@@ -2258,15 +2421,17 @@ class ListSavedQueriesRequest(proto.Message):
             "folders/12345")", or a project ID (such as
             "projects/my-project-id").
         filter (str):
-            Optional. The expression to filter resources. The expression
-            is a list of zero or more restrictions combined via logical
-            operators ``AND`` and ``OR``. When ``AND`` and ``OR`` are
-            both used in the expression, parentheses must be
-            appropriately used to group the combinations. The expression
-            may also contain regular expressions.
+            Optional. The expression to filter resources.
+            The expression is a list of zero or more
+            restrictions combined via logical operators
+            `AND` and `OR`. When `AND` and `OR` are both
+            used in the expression, parentheses must be
+            appropriately used to group the combinations.
+            The expression may also contain regular
+            expressions.
 
-            See https://google.aip.dev/160 for more information on the
-            grammar.
+            See https://google.aip.dev/160 for more
+            information on the grammar.
         page_size (int):
             Optional. The maximum number of saved queries
             to return per page. The service may return fewer
@@ -2274,13 +2439,13 @@ class ListSavedQueriesRequest(proto.Message):
             be returned. The maximum value is 1000; values
             above 1000 will be coerced to 1000.
         page_token (str):
-            Optional. A page token, received from a previous
-            ``ListSavedQueries`` call. Provide this to retrieve the
-            subsequent page.
+            Optional. A page token, received from a
+            previous `ListSavedQueries` call. Provide this
+            to retrieve the subsequent page.
 
-            When paginating, all other parameters provided to
-            ``ListSavedQueries`` must match the call that provided the
-            page token.
+            When paginating, all other parameters provided
+            to `ListSavedQueries` must match the call that
+            provided the page token.
     """
 
     parent: str = proto.Field(
@@ -2308,9 +2473,9 @@ class ListSavedQueriesResponse(proto.Message):
         saved_queries (MutableSequence[google.cloud.asset_v1.types.SavedQuery]):
             A list of savedQueries.
         next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
+            A token, which can be sent as `page_token` to
+            retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     @property
@@ -2335,12 +2500,16 @@ class UpdateSavedQueryRequest(proto.Message):
         saved_query (google.cloud.asset_v1.types.SavedQuery):
             Required. The saved query to update.
 
-            The saved query's ``name`` field is used to identify the one
-            to update, which has format as below:
+            The saved query's `name` field is used to
+            identify the one to update, which has format as
+            below:
 
-            - projects/project_number/savedQueries/saved_query_id
-            - folders/folder_number/savedQueries/saved_query_id
-            - organizations/organization_number/savedQueries/saved_query_id
+            *
+            projects/project_number/savedQueries/saved_query_id
+            *
+            folders/folder_number/savedQueries/saved_query_id
+            *
+            organizations/organization_number/savedQueries/saved_query_id
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to update.
     """
@@ -2362,12 +2531,15 @@ class DeleteSavedQueryRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the saved query to delete. It must be
-            in the format of:
+            Required. The name of the saved query to
+            delete. It must be in the format of:
 
-            - projects/project_number/savedQueries/saved_query_id
-            - folders/folder_number/savedQueries/saved_query_id
-            - organizations/organization_number/savedQueries/saved_query_id
+            *
+            projects/project_number/savedQueries/saved_query_id
+            *
+            folders/folder_number/savedQueries/saved_query_id
+            *
+            organizations/organization_number/savedQueries/saved_query_id
     """
 
     name: str = proto.Field(
@@ -2562,18 +2734,18 @@ class QueryAssetsOutputConfig(proto.Message):
                 exist, a new table with the given name will be
                 created.
             write_disposition (str):
-                Specifies the action that occurs if the destination table or
-                partition already exists. The following values are
-                supported:
+                Specifies the action that occurs if the
+                destination table or partition already exists.
+                The following values are supported:
 
-                - WRITE_TRUNCATE: If the table or partition already exists,
-                  BigQuery overwrites the entire table or all the partitions
-                  data.
-                - WRITE_APPEND: If the table or partition already exists,
-                  BigQuery appends the data to the table or the latest
-                  partition.
-                - WRITE_EMPTY: If the table already exists and contains
-                  data, a 'duplicate' error is returned in the job result.
+                * WRITE_TRUNCATE: If the table or partition
+                already exists, BigQuery overwrites the entire
+                table or all the partitions data. *
+                WRITE_APPEND: If the table or partition already
+                exists, BigQuery appends the data to the table
+                or the latest partition. * WRITE_EMPTY: If the
+                table already exists and contains data, a
+                'duplicate' error is returned in the job result.
 
                 The default value is WRITE_EMPTY.
         """
@@ -2610,58 +2782,67 @@ class QueryAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The relative name of the root asset. This can only
-            be an organization number (such as "organizations/123"), a
-            project ID (such as "projects/my-project-id"), or a project
-            number (such as "projects/12345"), or a folder number (such
-            as "folders/123").
+            Required. The relative name of the root
+            asset. This can only be an organization number
+            (such as "organizations/123"), a project ID
+            (such as "projects/my-project-id"), or a project
+            number (such as "projects/12345"), or a folder
+            number (such as "folders/123").
 
-            Only assets belonging to the ``parent`` will be returned.
+            Only assets belonging to the `parent` will be
+            returned.
         statement (str):
-            Optional. A SQL statement that's compatible with `BigQuery
-            Standard
-            SQL <http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>`__.
+            Optional. A SQL statement that's compatible
+            with [BigQuery Standard
+            SQL](http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql).
 
             This field is a member of `oneof`_ ``query``.
         job_reference (str):
-            Optional. Reference to the query job, which is from the
-            ``QueryAssetsResponse`` of previous ``QueryAssets`` call.
+            Optional. Reference to the query job, which
+            is from the `QueryAssetsResponse` of previous
+            `QueryAssets` call.
 
             This field is a member of `oneof`_ ``query``.
         page_size (int):
-            Optional. The maximum number of rows to return in the
-            results. Responses are limited to 10 MB and 1000 rows.
+            Optional. The maximum number of rows to
+            return in the results. Responses are limited to
+            10 MB and 1000 rows.
 
-            By default, the maximum row count is 1000. When the byte or
-            row count limit is reached, the rest of the query results
-            will be paginated.
+            By default, the maximum row count is 1000. When
+            the byte or row count limit is reached, the rest
+            of the query results will be paginated.
 
-            The field will be ignored when [output_config] is specified.
+            The field will be ignored when [output_config]
+            is specified.
         page_token (str):
             Optional. A page token received from previous
-            ``QueryAssets``.
-
-            The field will be ignored when [output_config] is specified.
+            `QueryAssets`.
+            The field will be ignored when [output_config]
+            is specified.
         timeout (google.protobuf.duration_pb2.Duration):
-            Optional. Specifies the maximum amount of time that the
-            client is willing to wait for the query to complete. By
-            default, this limit is 5 min for the first query, and 1
-            minute for the following queries. If the query is complete,
-            the ``done`` field in the ``QueryAssetsResponse`` is true,
-            otherwise false.
+            Optional. Specifies the maximum amount of
+            time that the client is willing to wait for the
+            query to complete. By default, this limit is 5
+            min for the first query, and 1 minute for the
+            following queries. If the query is complete, the
+            `done` field in the `QueryAssetsResponse` is
+            true, otherwise false.
 
-            Like BigQuery `jobs.query
-            API <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#queryrequest>`__
-            The call is not guaranteed to wait for the specified
-            timeout; it typically returns after around 200 seconds
-            (200,000 milliseconds), even if the query is not complete.
+            Like BigQuery [jobs.query
+            API](https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#queryrequest)
+            The call is not guaranteed to wait for the
+            specified timeout; it typically returns after
+            around 200 seconds (200,000 milliseconds), even
+            if the query is not complete.
 
-            The field will be ignored when [output_config] is specified.
+            The field will be ignored when [output_config]
+            is specified.
         read_time_window (google.cloud.asset_v1.types.TimeWindow):
-            Optional. [start_time] is required. [start_time] must be
-            less than [end_time] Defaults [end_time] to now if
-            [start_time] is set and [end_time] isn't. Maximum permitted
-            time range is 7 days.
+            Optional. [start_time] is required.
+            [start_time] must be less than [end_time]
+            Defaults [end_time] to now if [start_time] is
+            set and [end_time] isn't. Maximum permitted time
+            range is 7 days.
 
             This field is a member of `oneof`_ ``time``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -2670,15 +2851,17 @@ class QueryAssetsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``time``.
         output_config (google.cloud.asset_v1.types.QueryAssetsOutputConfig):
-            Optional. Destination where the query results will be saved.
-
-            When this field is specified, the query results won't be
-            saved in the [QueryAssetsResponse.query_result]. Instead
+            Optional. Destination where the query results
+            will be saved.
+            When this field is specified, the query results
+            won't be saved in the
+            [QueryAssetsResponse.query_result]. Instead
             [QueryAssetsResponse.output_config] will be set.
 
-            Meanwhile, [QueryAssetsResponse.job_reference] will be set
-            and can be used to check the status of the query job when
-            passed to a following [QueryAssets] API call.
+            Meanwhile, [QueryAssetsResponse.job_reference]
+            will be set and can be used to check the status
+            of the query job when passed to a following
+            [QueryAssets] API call.
     """
 
     parent: str = proto.Field(
@@ -2741,13 +2924,14 @@ class QueryAssetsResponse(proto.Message):
         job_reference (str):
             Reference to a query job.
         done (bool):
-            The query response, which can be either an ``error`` or a
-            valid ``response``.
-
-            If ``done`` == ``false`` and the query result is being saved
-            in a output, the output_config field will be set. If
-            ``done`` == ``true``, exactly one of ``error``,
-            ``query_result`` or ``output_config`` will be set.
+            The query response, which can be either an
+            `error` or a valid `response`.
+            If `done` == `false` and the query result is
+            being saved in a output, the output_config field
+            will be set.
+            If `done` == `true`, exactly one of
+            `error`, `query_result` or `output_config` will
+            be set.
         error (google.rpc.status_pb2.Status):
             Error status.
 
@@ -2796,13 +2980,15 @@ class QueryAssetsResponse(proto.Message):
 class QueryResult(proto.Message):
     r"""Execution results of the query.
 
-    The result is formatted as rows represented by BigQuery compatible
-    [schema]. When pagination is necessary, it will contains the page
-    token to retrieve the results of following pages.
+    The result is formatted as rows represented by BigQuery
+    compatible [schema]. When pagination is necessary, it will
+    contains the page token to retrieve the results of following
+    pages.
 
     Attributes:
         rows (MutableSequence[google.protobuf.struct_pb2.Struct]):
-            Each row hold a query result in the format of ``Struct``.
+            Each row hold a query result in the format of
+            `Struct`.
         schema (google.cloud.asset_v1.types.TableSchema):
             Describes the format of the [rows].
         next_page_token (str):
@@ -2856,27 +3042,28 @@ class TableFieldSchema(proto.Message):
 
     Attributes:
         field (str):
-            The field name. The name must contain only letters (a-z,
-            A-Z), numbers (0-9), or underscores (\_), and must start
-            with a letter or underscore. The maximum length is 128
+            The field name. The name must contain only
+            letters (a-z, A-Z), numbers (0-9), or
+            underscores (_), and must start with a letter or
+            underscore. The maximum length is 128
             characters.
         type_ (str):
             The field data type. Possible values include
-
-            - STRING
-            - BYTES
-            - INTEGER
-            - FLOAT
-            - BOOLEAN
-            - TIMESTAMP
-            - DATE
-            - TIME
-            - DATETIME
-            - GEOGRAPHY,
-            - NUMERIC,
-            - BIGNUMERIC,
-            - RECORD (where RECORD indicates that the field contains a
-              nested schema).
+            * STRING
+            * BYTES
+            * INTEGER
+            * FLOAT
+            * BOOLEAN
+            * TIMESTAMP
+            * DATE
+            * TIME
+            * DATETIME
+            * GEOGRAPHY,
+            * NUMERIC,
+            * BIGNUMERIC,
+            * RECORD
+            (where RECORD indicates that the field contains
+            a nested schema).
         mode (str):
             The field mode. Possible values include
             NULLABLE, REQUIRED and REPEATED. The default
@@ -2911,27 +3098,28 @@ class BatchGetEffectiveIamPoliciesRequest(proto.Message):
 
     Attributes:
         scope (str):
-            Required. Only IAM policies on or below the scope will be
-            returned.
-
+            Required. Only IAM policies on or below the
+            scope will be returned.
             This can only be an organization number (such as
             "organizations/123"), a folder number (such as
             "folders/123"), a project ID (such as
-            "projects/my-project-id"), or a project number (such as
-            "projects/12345").
+            "projects/my-project-id"), or a project number
+            (such as "projects/12345").
 
-            To know how to get organization id, visit
-            `here <https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id>`__.
+            To know how to get organization id, visit [here
+            ](https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
 
             To know how to get folder or project id, visit
-            `here <https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects>`__.
+            [here
+            ](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
         names (MutableSequence[str]):
-            Required. The names refer to the [full_resource_names]
+            Required. The names refer to the
+            [full_resource_names]
             (https://cloud.google.com/asset-inventory/docs/resource-name-format)
-            of `searchable asset
-            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
-            A maximum of 20 resources' effective policies can be
-            retrieved in a batch.
+            of [searchable asset
+            types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types).
+            A maximum of 20 resources' effective policies
+            can be retrieved in a batch.
     """
 
     scope: str = proto.Field(
@@ -2950,11 +3138,13 @@ class BatchGetEffectiveIamPoliciesResponse(proto.Message):
 
     Attributes:
         policy_results (MutableSequence[google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy]):
-            The effective policies for a batch of resources. Note that
-            the results order is the same as the order of
+            The effective policies for a batch of
+            resources. Note that the results order is the
+            same as the order of
             [BatchGetEffectiveIamPoliciesRequest.names][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesRequest.names].
-            When a resource does not have any effective IAM policies,
-            its corresponding policy_result will contain empty
+            When a resource does not have any effective IAM
+            policies, its corresponding policy_result will
+            contain empty
             [EffectiveIamPolicy.policies][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.policies].
     """
 
@@ -2976,17 +3166,19 @@ class BatchGetEffectiveIamPoliciesResponse(proto.Message):
 
                 These policies include the policy set on the
                 [full_resource_name][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.full_resource_name]
-                and those set on its parents and ancestors up to the
+                and those set on its parents and ancestors up to
+                the
                 [BatchGetEffectiveIamPoliciesRequest.scope][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesRequest.scope].
-                Note that these policies are not filtered according to the
-                resource type of the
+                Note that these policies are not filtered
+                according to the resource type of the
                 [full_resource_name][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.full_resource_name].
 
                 These policies are hierarchically ordered by
                 [PolicyInfo.attached_resource][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.attached_resource]
                 starting from
                 [full_resource_name][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.full_resource_name]
-                itself to its parents and ancestors, such that policies[i]'s
+                itself to its parents and ancestors, such that
+                policies[i]'s
                 [PolicyInfo.attached_resource][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.attached_resource]
                 is the child of policies[i+1]'s
                 [PolicyInfo.attached_resource][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.attached_resource],
@@ -3002,7 +3194,8 @@ class BatchGetEffectiveIamPoliciesResponse(proto.Message):
                     [policy][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.policy]
                     is directly attached to.
                 policy (google.iam.v1.policy_pb2.Policy):
-                    The IAM policy that's directly attached to the
+                    The IAM policy that's directly attached to
+                    the
                     [attached_resource][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.attached_resource].
             """
 
@@ -3043,34 +3236,38 @@ class AnalyzerOrgPolicy(proto.Message):
         attached_resource (str):
             The [full resource name]
             (https://cloud.google.com/asset-inventory/docs/resource-name-format)
-            of an organization/folder/project resource where this
-            organization policy is set.
+            of an organization/folder/project resource where
+            this organization policy is set.
 
-            Notice that some type of constraints are defined with
-            default policy. This field will be empty for them.
+            Notice that some type of constraints are defined
+            with default policy. This field will be empty
+            for them.
         applied_resource (str):
             The [full resource name]
             (https://cloud.google.com/asset-inventory/docs/resource-name-format)
-            of an organization/folder/project resource where this
-            organization policy applies to.
+            of an organization/folder/project resource where
+            this organization policy applies to.
 
-            For any user defined org policies, this field has the same
-            value as the [attached_resource] field. Only for default
-            policy, this field has the different value.
+            For any user defined org policies, this field
+            has the same value as the [attached_resource]
+            field. Only for default policy, this field has
+            the different value.
         rules (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy.Rule]):
             List of rules for this organization policy.
         inherit_from_parent (bool):
-            If ``inherit_from_parent`` is true, Rules set higher up in
-            the hierarchy (up to the closest root) are inherited and
-            present in the effective policy. If it is false, then no
-            rules are inherited, and this policy becomes the effective
+            If `inherit_from_parent` is true, Rules set
+            higher up in the hierarchy (up to the closest
+            root) are inherited and present in the effective
+            policy. If it is false, then no rules are
+            inherited, and this policy becomes the effective
             root for evaluation.
         reset (bool):
-            Ignores policies set above this resource and restores the
-            default behavior of the constraint at this resource. This
-            field can be set in policies for either list or boolean
-            constraints. If set, ``rules`` must be empty and
-            ``inherit_from_parent`` must be set to false.
+            Ignores policies set above this resource and
+            restores the default behavior of the constraint
+            at this resource. This field can be set in
+            policies for either list or boolean constraints.
+            If set, `rules` must be empty and
+            `inherit_from_parent` must be set to false.
     """
 
     class Rule(proto.Message):
@@ -3103,9 +3300,10 @@ class AnalyzerOrgPolicy(proto.Message):
 
                 This field is a member of `oneof`_ ``kind``.
             enforce (bool):
-                If ``true``, then the ``Policy`` is enforced. If ``false``,
-                then any configuration is acceptable. This field can be set
-                only in Policies for boolean constraints.
+                If `true`, then the `Policy` is enforced. If
+                `false`, then any configuration is acceptable.
+                This field can be set only in Policies for
+                boolean constraints.
 
                 This field is a member of `oneof`_ ``kind``.
             condition (google.type.expr_pb2.Expr):
@@ -3215,18 +3413,18 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
 
         Attributes:
             name (str):
-                The unique name of the constraint. Format of the name should
-                be
-
-                - ``constraints/{constraint_name}``
+                The unique name of the constraint. Format of
+                the name should be *
+                `constraints/{constraint_name}`
 
                 For example,
-                ``constraints/compute.disableSerialPortAccess``.
+                `constraints/compute.disableSerialPortAccess`.
             display_name (str):
                 The human readable name of the constraint.
             description (str):
-                Detailed description of what this ``Constraint`` controls as
-                well as how and where it is enforced.
+                Detailed description of what this
+                `Constraint` controls as well as how and where
+                it is enforced.
             constraint_default (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint.Constraint.ConstraintDefault):
                 The evaluation behavior of this constraint in
                 the absence of 'Policy'.
@@ -3242,9 +3440,9 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
                 This field is a member of `oneof`_ ``constraint_type``.
         """
         class ConstraintDefault(proto.Enum):
-            r"""Specifies the default behavior in the absence of any ``Policy`` for
-            the ``Constraint``. This must not be
-            ``CONSTRAINT_DEFAULT_UNSPECIFIED``.
+            r"""Specifies the default behavior in the absence of any `Policy`
+            for the `Constraint`. This must not be
+            `CONSTRAINT_DEFAULT_UNSPECIFIED`.
 
             Values:
                 CONSTRAINT_DEFAULT_UNSPECIFIED (0):
@@ -3264,22 +3462,25 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             DENY = 2
 
         class ListConstraint(proto.Message):
-            r"""A ``Constraint`` that allows or disallows a list of string values,
-            which are configured by an organization's policy administrator with
-            a ``Policy``.
+            r"""A `Constraint` that allows or disallows a list of string
+            values, which are configured by an organization's policy
+            administrator with a `Policy`.
 
             Attributes:
                 supports_in (bool):
-                    Indicates whether values grouped into categories can be used
-                    in ``Policy.allowed_values`` and ``Policy.denied_values``.
-                    For example, ``"in:Python"`` would match any value in the
+                    Indicates whether values grouped into
+                    categories can be used in
+                    `Policy.allowed_values` and
+                    `Policy.denied_values`. For example,
+                    `"in:Python"` would match any value in the
                     'Python' group.
                 supports_under (bool):
-                    Indicates whether subtrees of Cloud Resource Manager
-                    resource hierarchy can be used in ``Policy.allowed_values``
-                    and ``Policy.denied_values``. For example,
-                    ``"under:folders/123"`` would match any resource under the
-                    'folders/123' folder.
+                    Indicates whether subtrees of Cloud Resource
+                    Manager resource hierarchy can be used in
+                    `Policy.allowed_values` and
+                    `Policy.denied_values`. For example,
+                    `"under:folders/123"` would match any resource
+                    under the 'folders/123' folder.
             """
 
             supports_in: bool = proto.Field(
@@ -3292,12 +3493,12 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             )
 
         class BooleanConstraint(proto.Message):
-            r"""A ``Constraint`` that is either enforced or not.
+            r"""A `Constraint` that is either enforced or not.
 
             For example a constraint
-            ``constraints/compute.disableSerialPortAccess``. If it is enforced
-            on a VM instance, serial port connections will not be opened to that
-            instance.
+            `constraints/compute.disableSerialPortAccess`. If it is enforced
+            on a VM instance, serial port connections will not be opened to
+            that instance.
 
             """
 
@@ -3336,25 +3537,27 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
 
         Attributes:
             name (str):
-                Name of the constraint. This is unique within the
-                organization. Format of the name should be
-
-                - ``organizations/{organization_id}/customConstraints/{custom_constraint_id}``
+                Name of the constraint. This is unique within
+                the organization. Format of the name should be *
+                `organizations/{organization_id}/customConstraints/{custom_constraint_id}`
 
                 Example :
+
                 "organizations/123/customConstraints/custom.createOnlyE2TypeVms".
             resource_types (MutableSequence[str]):
-                The Resource Instance type on which this policy applies to.
-                Format will be of the form : "/" Example:
+                The Resource Instance type on which this
+                policy applies to. Format will be of the form :
+                "<canonical service name>/<type>" Example:
 
-                - ``compute.googleapis.com/Instance``.
+                 * `compute.googleapis.com/Instance`.
             method_types (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType]):
                 All the operations being applied for this
                 constraint.
             condition (str):
-                Organization Policy condition/expression. For example:
-                ``resource.instanceName.matches("[production|test]_.*_(\d)+")'``
-                or, ``resource.management.auto_upgrade == true``
+                Organization Policy condition/expression. For
+                example:
+                `resource.instanceName.matches("[production|test]_.*_(\d)+")'`
+                or, `resource.management.auto_upgrade == true`
             action_type (google.cloud.asset_v1.types.AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType):
                 Allow or deny type.
             display_name (str):
@@ -3364,10 +3567,11 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
                 constraint.
         """
         class MethodType(proto.Enum):
-            r"""The operation in which this constraint will be applied. For example:
-            If the constraint applies only when create VMs, the method_types
-            will be "CREATE" only. If the constraint applied when create or
-            delete VMs, the method_types will be "CREATE" and "DELETE".
+            r"""The operation in which this constraint will be applied. For
+            example: If the constraint applies only when create VMs, the
+            method_types will be "CREATE" only. If the constraint applied
+            when create or delete VMs, the method_types will be "CREATE" and
+            "DELETE".
 
             Values:
                 METHOD_TYPE_UNSPECIFIED (0):
@@ -3456,11 +3660,12 @@ class AnalyzeOrgPoliciesRequest(proto.Message):
 
     Attributes:
         scope (str):
-            Required. The organization to scope the request. Only
-            organization policies within the scope will be analyzed.
+            Required. The organization to scope the
+            request. Only organization policies within the
+            scope will be analyzed.
 
-            - organizations/{ORGANIZATION_NUMBER} (e.g.,
-              "organizations/123456")
+            * organizations/{ORGANIZATION_NUMBER} (e.g.,
+            "organizations/123456")
         constraint (str):
             Required. The name of the constraint to
             analyze organization policies for. The response
@@ -3470,15 +3675,17 @@ class AnalyzeOrgPoliciesRequest(proto.Message):
             The expression to filter
             [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results].
             The only supported field is
-            ``consolidated_policy.attached_resource``, and the only
-            supported operator is ``=``.
+            `consolidated_policy.attached_resource`, and the
+            only supported operator is `=`.
 
             Example:
+
             consolidated_policy.attached_resource="//cloudresourcemanager.googleapis.com/folders/001"
-            will return the org policy results of"folders/001".
+            will return the org policy results
+            of"folders/001".
         page_size (int):
-            The maximum number of items to return per page. If
-            unspecified,
+            The maximum number of items to return per
+            page. If unspecified,
             [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results]
             will contain 20 items with a maximum of 200.
 
@@ -3534,19 +3741,21 @@ class AnalyzeOrgPoliciesResponse(proto.Message):
 
         Attributes:
             consolidated_policy (google.cloud.asset_v1.types.AnalyzerOrgPolicy):
-                The consolidated organization policy for the analyzed
-                resource. The consolidated organization policy is computed
-                by merging and evaluating
-                [AnalyzeOrgPoliciesResponse.policy_bundle][]. The evaluation
-                will respect the organization policy `hierarchy
-                rules <https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy>`__.
+                The consolidated organization policy for the
+                analyzed resource. The consolidated organization
+                policy is computed by merging and evaluating
+                [AnalyzeOrgPoliciesResponse.policy_bundle][].
+                The evaluation will respect the organization
+                policy [hierarchy
+                rules](https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy).
             policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
-                The ordered list of all organization policies from the
+                The ordered list of all organization policies
+                from the
                 [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][].
                 to the scope specified in the request.
 
-                If the constraint is defined with default policy, it will
-                also appear in the list.
+                If the constraint is defined with default
+                policy, it will also appear in the list.
         """
 
         consolidated_policy: 'AnalyzerOrgPolicy' = proto.Field(
@@ -3589,29 +3798,32 @@ class AnalyzeOrgPolicyGovernedContainersRequest(proto.Message):
 
     Attributes:
         scope (str):
-            Required. The organization to scope the request. Only
-            organization policies within the scope will be analyzed. The
-            output containers will also be limited to the ones governed
-            by those in-scope organization policies.
+            Required. The organization to scope the
+            request. Only organization policies within the
+            scope will be analyzed. The output containers
+            will also be limited to the ones governed by
+            those in-scope organization policies.
 
-            - organizations/{ORGANIZATION_NUMBER} (e.g.,
-              "organizations/123456")
+            * organizations/{ORGANIZATION_NUMBER} (e.g.,
+            "organizations/123456")
         constraint (str):
             Required. The name of the constraint to
             analyze governed containers for. The analysis
             only contains organization policies for the
             provided constraint.
         filter (str):
-            The expression to filter the governed containers in result.
-            The only supported field is ``parent``, and the only
-            supported operator is ``=``.
+            The expression to filter the governed
+            containers in result. The only supported field
+            is `parent`, and the only supported operator is
+            `=`.
 
             Example:
+
             parent="//cloudresourcemanager.googleapis.com/folders/001"
             will return all containers under "folders/001".
         page_size (int):
-            The maximum number of items to return per page. If
-            unspecified,
+            The maximum number of items to return per
+            page. If unspecified,
             [AnalyzeOrgPolicyGovernedContainersResponse.governed_containers][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.governed_containers]
             will contain 100 items with a maximum of 200.
 
@@ -3660,8 +3872,8 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
     """
 
     class GovernedContainer(proto.Message):
-        r"""The organization/folder/project resource governed by organization
-        policies of
+        r"""The organization/folder/project resource governed by
+        organization policies of
         [AnalyzeOrgPolicyGovernedContainersRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersRequest.constraint].
 
         Attributes:
@@ -3675,20 +3887,21 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
                 of the parent of
                 [AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.full_resource_name][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.full_resource_name].
             consolidated_policy (google.cloud.asset_v1.types.AnalyzerOrgPolicy):
-                The consolidated organization policy for the analyzed
-                resource. The consolidated organization policy is computed
-                by merging and evaluating
+                The consolidated organization policy for the
+                analyzed resource. The consolidated organization
+                policy is computed by merging and evaluating
                 [AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.policy_bundle][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.policy_bundle].
-                The evaluation will respect the organization policy
-                `hierarchy
-                rules <https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy>`__.
+                The evaluation will respect the organization
+                policy [hierarchy
+                rules](https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy).
             policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
-                The ordered list of all organization policies from the
+                The ordered list of all organization policies
+                from the
                 [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][].
                 to the scope specified in the request.
 
-                If the constraint is defined with default policy, it will
-                also appear in the list.
+                If the constraint is defined with default
+                policy, it will also appear in the list.
         """
 
         full_resource_name: str = proto.Field(
@@ -3739,38 +3952,43 @@ class AnalyzeOrgPolicyGovernedAssetsRequest(proto.Message):
 
     Attributes:
         scope (str):
-            Required. The organization to scope the request. Only
-            organization policies within the scope will be analyzed. The
-            output assets will also be limited to the ones governed by
-            those in-scope organization policies.
+            Required. The organization to scope the
+            request. Only organization policies within the
+            scope will be analyzed. The output assets will
+            also be limited to the ones governed by those
+            in-scope organization policies.
 
-            - organizations/{ORGANIZATION_NUMBER} (e.g.,
-              "organizations/123456")
+            * organizations/{ORGANIZATION_NUMBER} (e.g.,
+            "organizations/123456")
         constraint (str):
             Required. The name of the constraint to
             analyze governed assets for. The analysis only
             contains analyzed organization policies for the
             provided constraint.
         filter (str):
-            The expression to filter the governed assets in result. The
-            only supported fields for governed resources are
-            ``governed_resource.project`` and
-            ``governed_resource.folders``. The only supported fields for
-            governed iam policies are ``governed_iam_policy.project``
-            and ``governed_iam_policy.folders``. The only supported
-            operator is ``=``.
+            The expression to filter the governed assets
+            in result. The only supported fields for
+            governed resources are
+            `governed_resource.project` and
+            `governed_resource.folders`. The only supported
+            fields for governed iam policies are
+            `governed_iam_policy.project` and
+            `governed_iam_policy.folders`. The only
+            supported operator is `=`.
 
-            Example 1: governed_resource.project="projects/12345678"
+            Example 1:
+            governed_resource.project="projects/12345678"
             filter will return all governed resources under
-            projects/12345678 including the project ifself, if
-            applicable.
+            projects/12345678 including the project ifself,
+            if applicable.
 
-            Example 2: governed_iam_policy.folders="folders/12345678"
-            filter will return all governed iam policies under
-            folders/12345678, if applicable.
+            Example 2:
+            governed_iam_policy.folders="folders/12345678"
+            filter will return all governed iam policies
+            under folders/12345678, if applicable.
         page_size (int):
-            The maximum number of items to return per page. If
-            unspecified,
+            The maximum number of items to return per
+            page. If unspecified,
             [AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets]
             will contain 100 items with a maximum of 200.
 
@@ -3819,8 +4037,8 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
     """
 
     class GovernedResource(proto.Message):
-        r"""The Google Cloud resources governed by the organization policies of
-        the
+        r"""The Google Cloud resources governed by the organization
+        policies of the
         [AnalyzeOrgPolicyGovernedAssetsRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsRequest.constraint].
 
         Attributes:
@@ -3834,19 +4052,22 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 of the parent of
                 [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name].
             project (str):
-                The project that this resource belongs to, in the format of
-                projects/{PROJECT_NUMBER}. This field is available when the
-                resource belongs to a project.
+                The project that this resource belongs to, in
+                the format of projects/{PROJECT_NUMBER}. This
+                field is available when the resource belongs to
+                a project.
             folders (MutableSequence[str]):
-                The folder(s) that this resource belongs to, in the format
-                of folders/{FOLDER_NUMBER}. This field is available when the
-                resource belongs (directly or cascadingly) to one or more
+                The folder(s) that this resource belongs to,
+                in the format of folders/{FOLDER_NUMBER}. This
+                field is available when the resource belongs
+                (directly or cascadingly) to one or more
                 folders.
             organization (str):
-                The organization that this resource belongs to, in the
-                format of organizations/{ORGANIZATION_NUMBER}. This field is
-                available when the resource belongs (directly or
-                cascadingly) to an organization.
+                The organization that this resource belongs
+                to, in the format of
+                organizations/{ORGANIZATION_NUMBER}. This field
+                is available when the resource belongs (directly
+                or cascadingly) to an organization.
         """
 
         full_resource_name: str = proto.Field(
@@ -3876,29 +4097,33 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
 
         Attributes:
             attached_resource (str):
-                The full resource name of the resource associated with this
-                IAM policy. Example:
-                ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``.
-                See `Cloud Asset Inventory Resource Name
-                Format <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
+                The full resource name of the resource
+                associated with this IAM policy. Example:
+
+                `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
+                See [Cloud Asset Inventory Resource Name
+                Format](https://cloud.google.com/asset-inventory/docs/resource-name-format)
                 for more information.
             policy (google.iam.v1.policy_pb2.Policy):
                 The IAM policy directly set on the given
                 resource.
             project (str):
-                The project that this IAM policy belongs to, in the format
-                of projects/{PROJECT_NUMBER}. This field is available when
-                the IAM policy belongs to a project.
+                The project that this IAM policy belongs to,
+                in the format of projects/{PROJECT_NUMBER}. This
+                field is available when the IAM policy belongs
+                to a project.
             folders (MutableSequence[str]):
-                The folder(s) that this IAM policy belongs to, in the format
-                of folders/{FOLDER_NUMBER}. This field is available when the
-                IAM policy belongs (directly or cascadingly) to one or more
+                The folder(s) that this IAM policy belongs
+                to, in the format of folders/{FOLDER_NUMBER}.
+                This field is available when the IAM policy
+                belongs (directly or cascadingly) to one or more
                 folders.
             organization (str):
-                The organization that this IAM policy belongs to, in the
-                format of organizations/{ORGANIZATION_NUMBER}. This field is
-                available when the IAM policy belongs (directly or
-                cascadingly) to an organization.
+                The organization that this IAM policy belongs
+                to, in the format of
+                organizations/{ORGANIZATION_NUMBER}. This field
+                is available when the IAM policy belongs
+                (directly or cascadingly) to an organization.
         """
 
         attached_resource: str = proto.Field(
@@ -3924,8 +4149,8 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
         )
 
     class GovernedAsset(proto.Message):
-        r"""Represents a Google Cloud asset(resource or IAM policy) governed by
-        the organization policies of the
+        r"""Represents a Google Cloud asset(resource or IAM policy)
+        governed by the organization policies of the
         [AnalyzeOrgPolicyGovernedAssetsRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsRequest.constraint].
 
         This message has `oneof`_ fields (mutually exclusive fields).
@@ -3937,30 +4162,33 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
 
         Attributes:
             governed_resource (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource):
-                A Google Cloud resource governed by the organization
-                policies of the
+                A Google Cloud resource governed by the
+                organization policies of the
                 [AnalyzeOrgPolicyGovernedAssetsRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsRequest.constraint].
 
                 This field is a member of `oneof`_ ``governed_asset``.
             governed_iam_policy (google.cloud.asset_v1.types.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy):
-                An IAM policy governed by the organization policies of the
+                An IAM policy governed by the organization
+                policies of the
                 [AnalyzeOrgPolicyGovernedAssetsRequest.constraint][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsRequest.constraint].
 
                 This field is a member of `oneof`_ ``governed_asset``.
             consolidated_policy (google.cloud.asset_v1.types.AnalyzerOrgPolicy):
-                The consolidated policy for the analyzed asset. The
-                consolidated policy is computed by merging and evaluating
+                The consolidated policy for the analyzed
+                asset. The consolidated policy is computed by
+                merging and evaluating
                 [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.policy_bundle][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.policy_bundle].
-                The evaluation will respect the organization policy
-                `hierarchy
-                rules <https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy>`__.
+                The evaluation will respect the organization
+                policy [hierarchy
+                rules](https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy).
             policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
-                The ordered list of all organization policies from the
+                The ordered list of all organization policies
+                from the
                 [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][]
                 to the scope specified in the request.
 
-                If the constraint is defined with default policy, it will
-                also appear in the list.
+                If the constraint is defined with default
+                policy, it will also appear in the list.
         """
 
         governed_resource: 'AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource' = proto.Field(

@@ -86,15 +86,18 @@ class Instance(proto.Message):
 
     Attributes:
         name (str):
-            Required. Unique name of the resource in this scope
-            including project and location using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+            Required. Unique name of the resource in this
+            scope including project and location using the
+            form:
 
-            Note: Redis instances are managed and addressed at regional
-            level so location_id here refers to a GCP region; however,
-            users may choose which specific zone (or collection of zones
-            for cross-zone instances) an instance should be provisioned
-            in. Refer to
+            `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+
+            Note: Redis instances are managed and addressed
+            at regional level so location_id here refers to
+            a GCP region; however, users may choose which
+            specific zone (or collection of zones for
+            cross-zone instances) an instance should be
+            provisioned in. Refer to
             [location_id][google.cloud.redis.v1.Instance.location_id]
             and
             [alternative_location_id][google.cloud.redis.v1.Instance.alternative_location_id]
@@ -115,38 +118,46 @@ class Instance(proto.Message):
             at least one node will be provisioned in this
             zone.
         alternative_location_id (str):
-            Optional. If specified, at least one node will be
-            provisioned in this zone in addition to the zone specified
-            in location_id. Only applicable to standard tier. If
-            provided, it must be a different zone from the one provided
-            in [location_id]. Additional nodes beyond the first 2 will
-            be placed in zones selected by the service.
+            Optional. If specified, at least one node
+            will be provisioned in this zone in addition to
+            the zone specified in location_id. Only
+            applicable to standard tier. If provided, it
+            must be a different zone from the one provided
+            in [location_id]. Additional nodes beyond the
+            first 2 will be placed in zones selected by the
+            service.
         redis_version (str):
-            Optional. The version of Redis software. If not provided,
-            latest supported version will be used. Currently, the
-            supported values are:
+            Optional. The version of Redis software.
+            If not provided, latest supported version will
+            be used. Currently, the supported values are:
 
-            - ``REDIS_3_2`` for Redis 3.2 compatibility
-            - ``REDIS_4_0`` for Redis 4.0 compatibility (default)
-            - ``REDIS_5_0`` for Redis 5.0 compatibility
-            - ``REDIS_6_X`` for Redis 6.x compatibility
+             *   `REDIS_3_2` for Redis 3.2 compatibility
+             *   `REDIS_4_0` for Redis 4.0 compatibility
+            (default)  *   `REDIS_5_0` for Redis 5.0
+            compatibility
+             *   `REDIS_6_X` for Redis 6.x compatibility
         reserved_ip_range (str):
-            Optional. For DIRECT_PEERING mode, the CIDR range of
-            internal addresses that are reserved for this instance.
-            Range must be unique and non-overlapping with existing
-            subnets in an authorized network. For PRIVATE_SERVICE_ACCESS
-            mode, the name of one allocated IP address ranges associated
-            with this private service access connection. If not
-            provided, the service will choose an unused /29 block, for
-            example, 10.0.0.0/29 or 192.168.0.0/29. For
-            READ_REPLICAS_ENABLED the default block size is /28.
+            Optional. For DIRECT_PEERING mode, the CIDR
+            range of internal addresses that are reserved
+            for this instance. Range must be unique and
+            non-overlapping with existing subnets in an
+            authorized network. For PRIVATE_SERVICE_ACCESS
+            mode, the name of one allocated IP address
+            ranges associated with this private service
+            access connection. If not provided, the service
+            will choose an unused /29 block, for example,
+            10.0.0.0/29 or 192.168.0.0/29.  For
+            READ_REPLICAS_ENABLED the default block size is
+            /28.
         secondary_ip_range (str):
-            Optional. Additional IP range for node placement. Required
-            when enabling read replicas on an existing instance. For
-            DIRECT_PEERING mode value must be a CIDR range of size /28,
-            or "auto". For PRIVATE_SERVICE_ACCESS mode value must be the
-            name of an allocated address range associated with the
-            private service access connection, or "auto".
+            Optional. Additional IP range for node
+            placement. Required when enabling read replicas
+            on an existing instance. For DIRECT_PEERING mode
+            value must be a CIDR range of size /28, or
+            "auto". For PRIVATE_SERVICE_ACCESS mode value
+            must be the name of an allocated address range
+            associated with the private service access
+            connection, or "auto".
         host (str):
             Output only. Hostname or IP address of the
             exposed Redis endpoint used by clients to
@@ -155,10 +166,11 @@ class Instance(proto.Message):
             Output only. The port number of the exposed
             Redis endpoint.
         current_location_id (str):
-            Output only. The current zone where the Redis primary node
-            is located. In basic tier, this will always be the same as
-            [location_id]. In standard tier, this can be the zone of any
-            node in the instance.
+            Output only. The current zone where the Redis
+            primary node is located. In basic tier, this
+            will always be the same as [location_id]. In
+            standard tier, this can be the zone of any node
+            in the instance.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the instance was
             created.
@@ -169,44 +181,48 @@ class Instance(proto.Message):
             Output only. Additional information about the
             current status of this instance, if available.
         redis_configs (MutableMapping[str, str]):
-            Optional. Redis configuration parameters, according to
-            http://redis.io/topics/config. Currently, the only supported
-            parameters are:
+            Optional. Redis configuration parameters,
+            according to http://redis.io/topics/config.
+            Currently, the only supported parameters are:
 
-            Redis version 3.2 and newer:
+             Redis version 3.2 and newer:
 
-            - maxmemory-policy
-            - notify-keyspace-events
+             *   maxmemory-policy
+             *   notify-keyspace-events
 
-            Redis version 4.0 and newer:
+             Redis version 4.0 and newer:
 
-            - activedefrag
-            - lfu-decay-time
-            - lfu-log-factor
-            - maxmemory-gb
+             *   activedefrag
+             *   lfu-decay-time
+             *   lfu-log-factor
+             *   maxmemory-gb
 
-            Redis version 5.0 and newer:
+             Redis version 5.0 and newer:
 
-            - stream-node-max-bytes
-            - stream-node-max-entries
+             *   stream-node-max-bytes
+             *   stream-node-max-entries
         tier (google.cloud.redis_v1.types.Instance.Tier):
             Required. The service tier of the instance.
         memory_size_gb (int):
             Required. Redis memory size in GiB.
         authorized_network (str):
-            Optional. The full name of the Google Compute Engine
-            `network <https://cloud.google.com/vpc/docs/vpc>`__ to which
-            the instance is connected. If left unspecified, the
-            ``default`` network will be used.
+            Optional. The full name of the Google Compute
+            Engine
+            [network](https://cloud.google.com/vpc/docs/vpc)
+            to which the instance is connected. If left
+            unspecified, the `default` network will be used.
         persistence_iam_identity (str):
-            Output only. Cloud IAM identity used by import / export
-            operations to transfer data to/from Cloud Storage. Format is
-            "serviceAccount:<service_account_email>". The value may
-            change over time for a given instance so should be checked
-            before each import/export operation.
+            Output only. Cloud IAM identity used by
+            import / export operations to transfer data
+            to/from Cloud Storage. Format is
+            "serviceAccount:<service_account_email>". The
+            value may change over time for a given instance
+            so should be checked before each import/export
+            operation.
         connect_mode (google.cloud.redis_v1.types.Instance.ConnectMode):
-            Optional. The network connect mode of the Redis instance. If
-            not provided, the connect mode defaults to DIRECT_PEERING.
+            Optional. The network connect mode of the
+            Redis instance. If not provided, the connect
+            mode defaults to DIRECT_PEERING.
         auth_enabled (bool):
             Optional. Indicates whether OSS Redis AUTH is
             enabled for the instance. If set to "true" AUTH
@@ -227,12 +243,13 @@ class Instance(proto.Message):
             Output only. Date and time of upcoming
             maintenance events which have been scheduled.
         replica_count (int):
-            Optional. The number of replica nodes. The valid range for
-            the Standard Tier with read replicas enabled is [1-5] and
-            defaults to 2. If read replicas are not enabled for a
-            Standard Tier instance, the only valid value is 1 and the
-            default is 1. The valid value for basic tier is 0 and the
-            default is also 0.
+            Optional. The number of replica nodes. The
+            valid range for the Standard Tier with read
+            replicas enabled is [1-5] and defaults to 2. If
+            read replicas are not enabled for a Standard
+            Tier instance, the only valid value is 1 and the
+            default is 1. The valid value for basic tier is
+            0 and the default is also 0.
         nodes (MutableSequence[google.cloud.redis_v1.types.NodeInfo]):
             Output only. Info per node.
         read_endpoint (str):
@@ -247,8 +264,8 @@ class Instance(proto.Message):
             readonly redis endpoint. Standard tier only.
             Write requests should target 'port'.
         read_replicas_mode (google.cloud.redis_v1.types.Instance.ReadReplicasMode):
-            Optional. Read replicas mode for the instance. Defaults to
-            READ_REPLICAS_DISABLED.
+            Optional. Read replicas mode for the
+            instance. Defaults to READ_REPLICAS_DISABLED.
         customer_managed_key (str):
             Optional. The KMS key reference that the
             customer provides when trying to create the
@@ -260,8 +277,9 @@ class Instance(proto.Message):
             Optional. reasons that causes instance in
             "SUSPENDED" state.
         maintenance_version (str):
-            Optional. The self service update maintenance version. The
-            version is date based such as "20210712_00_00".
+            Optional. The self service update maintenance
+            version. The version is date based such as
+            "20210712_00_00".
         available_maintenance_versions (MutableSequence[str]):
             Optional. The available maintenance versions
             that an instance could update to.
@@ -316,7 +334,8 @@ class Instance(proto.Message):
             BASIC (1):
                 BASIC tier: standalone instance
             STANDARD_HA (3):
-                STANDARD_HA tier: highly available primary/replica instances
+                STANDARD_HA tier: highly available
+                primary/replica instances
         """
         TIER_UNSPECIFIED = 0
         BASIC = 1
@@ -362,8 +381,8 @@ class Instance(proto.Message):
 
         Values:
             READ_REPLICAS_MODE_UNSPECIFIED (0):
-                If not set, Memorystore Redis backend will default to
-                READ_REPLICAS_DISABLED.
+                If not set, Memorystore Redis backend will
+                default to READ_REPLICAS_DISABLED.
             READ_REPLICAS_DISABLED (1):
                 If disabled, read endpoint will not be
                 provided and the instance cannot scale up or
@@ -556,13 +575,15 @@ class PersistenceConfig(proto.Message):
             features are enabled. If not provided, the
             existing value will be used.
         rdb_snapshot_period (google.cloud.redis_v1.types.PersistenceConfig.SnapshotPeriod):
-            Optional. Period between RDB snapshots. Snapshots will be
-            attempted every period starting from the provided snapshot
-            start time. For example, a start time of 01/01/2033 06:45
-            and SIX_HOURS snapshot period will do nothing until
-            01/01/2033, and then trigger snapshots every day at 06:45,
-            12:45, 18:45, and 00:45 the next day, and so on. If not
-            provided, TWENTY_FOUR_HOURS will be used as default.
+            Optional. Period between RDB snapshots.
+            Snapshots will be attempted every period
+            starting from the provided snapshot start time.
+            For example, a start time of 01/01/2033 06:45
+            and SIX_HOURS snapshot period will do nothing
+            until 01/01/2033, and then trigger snapshots
+            every day at 06:45, 12:45, 18:45, and 00:45 the
+            next day, and so on. If not provided,
+            TWENTY_FOUR_HOURS will be used as default.
         rdb_next_snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The next time that a snapshot
             attempt is scheduled to occur.
@@ -637,16 +658,19 @@ class RescheduleMaintenanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
+            Required. Redis instance resource name using
+            the form:
+            `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+            where `location_id` refers to a GCP region.
         reschedule_type (google.cloud.redis_v1.types.RescheduleMaintenanceRequest.RescheduleType):
-            Required. If reschedule type is SPECIFIC_TIME, must set up
-            schedule_time as well.
+            Required. If reschedule type is
+            SPECIFIC_TIME, must set up schedule_time as
+            well.
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional. Timestamp when the maintenance shall be
-            rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC 3339
-            format, for example ``2012-11-15T16:19:00.094Z``.
+            Optional. Timestamp when the maintenance
+            shall be rescheduled to if
+            reschedule_type=SPECIFIC_TIME, in RFC 3339
+            format, for example `2012-11-15T16:19:00.094Z`.
     """
     class RescheduleType(proto.Enum):
         r"""Reschedule options.
@@ -697,13 +721,15 @@ class MaintenancePolicy(proto.Message):
             Output only. The time when the policy was
             last updated.
         description (str):
-            Optional. Description of what this policy is for.
-            Create/Update methods return INVALID_ARGUMENT if the length
-            is greater than 512.
+            Optional. Description of what this policy is
+            for. Create/Update methods return
+            INVALID_ARGUMENT if the length is greater than
+            512.
         weekly_maintenance_window (MutableSequence[google.cloud.redis_v1.types.WeeklyMaintenanceWindow]):
-            Optional. Maintenance window that is applied to resources
-            covered by this policy. Minimum 1. For the current version,
-            the maximum number of weekly_window is expected to be one.
+            Optional. Maintenance window that is applied
+            to resources covered by this policy. Minimum 1.
+            For the current version, the maximum number of
+            weekly_window is expected to be one.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -807,20 +833,24 @@ class ListInstancesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the instance location using
-            the form: ``projects/{project_id}/locations/{location_id}``
-            where ``location_id`` refers to a GCP region.
+            Required. The resource name of the instance
+            location using the form:
+            `projects/{project_id}/locations/{location_id}`
+            where `location_id` refers to a GCP region.
         page_size (int):
             The maximum number of items to return.
 
-            If not specified, a default value of 1000 will be used by
-            the service. Regardless of the page_size value, the response
-            may include a partial list and a caller should only rely on
+            If not specified, a default value of 1000 will
+            be used by the service. Regardless of the
+            page_size value, the response may include a
+            partial list and a caller should only rely on
             response's
-            [``next_page_token``][google.cloud.redis.v1.ListInstancesResponse.next_page_token]
-            to determine if there are more instances left to be queried.
+            [`next_page_token`][google.cloud.redis.v1.ListInstancesResponse.next_page_token]
+            to determine if there are more instances left to
+            be queried.
         page_token (str):
-            The ``next_page_token`` value returned from a previous
+            The `next_page_token` value returned from a
+            previous
             [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances]
             request, if any.
     """
@@ -845,18 +875,20 @@ class ListInstancesResponse(proto.Message):
 
     Attributes:
         instances (MutableSequence[google.cloud.redis_v1.types.Instance]):
-            A list of Redis instances in the project in the specified
-            location, or across all locations.
+            A list of Redis instances in the project in
+            the specified location, or across all locations.
 
-            If the ``location_id`` in the parent field of the request is
-            "-", all regions available to the project are queried, and
-            the results aggregated. If in such an aggregated query a
-            location is unavailable, a placeholder Redis entry is
-            included in the response with the ``name`` field set to a
-            value of the form
-            ``projects/{project_id}/locations/{location_id}/instances/``-
-            and the ``status`` field set to ERROR and ``status_message``
-            field set to "location not available for ListInstances".
+            If the `location_id` in the parent field of the
+            request is "-", all regions available to the
+            project are queried, and the results aggregated.
+            If in such an aggregated query a location is
+            unavailable, a placeholder Redis entry is
+            included in the response with the `name` field
+            set to a value of the form
+            `projects/{project_id}/locations/{location_id}/instances/`-
+            and the `status` field set to ERROR and
+            `status_message` field set to "location not
+            available for ListInstances".
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -890,9 +922,10 @@ class GetInstanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
+            Required. Redis instance resource name using
+            the form:
+            `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+            where `location_id` refers to a GCP region.
     """
 
     name: str = proto.Field(
@@ -907,9 +940,10 @@ class GetInstanceAuthStringRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
+            Required. Redis instance resource name using
+            the form:
+            `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+            where `location_id` refers to a GCP region.
     """
 
     name: str = proto.Field(
@@ -938,18 +972,21 @@ class CreateInstanceRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the instance location using
-            the form: ``projects/{project_id}/locations/{location_id}``
-            where ``location_id`` refers to a GCP region.
+            Required. The resource name of the instance
+            location using the form:
+            `projects/{project_id}/locations/{location_id}`
+            where `location_id` refers to a GCP region.
         instance_id (str):
-            Required. The logical name of the Redis instance in the
-            customer project with the following restrictions:
+            Required. The logical name of the Redis
+            instance in the customer project with the
+            following restrictions:
 
-            - Must contain only lowercase letters, numbers, and hyphens.
-            - Must start with a letter.
-            - Must be between 1-40 characters.
-            - Must end with a number or a letter.
-            - Must be unique within the customer project / location
+            * Must contain only lowercase letters, numbers,
+            and hyphens. * Must start with a letter.
+            * Must be between 1-40 characters.
+            * Must end with a number or a letter.
+            * Must be unique within the customer project /
+            location
         instance (google.cloud.redis_v1.types.Instance):
             Required. A Redis [Instance] resource
     """
@@ -975,19 +1012,21 @@ class UpdateInstanceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Mask of fields to update. At least one path must
-            be supplied in this field. The elements of the repeated
-            paths field may only include these fields from
+            Required. Mask of fields to update. At least
+            one path must be supplied in this field. The
+            elements of the repeated paths field may only
+            include these fields from
             [Instance][google.cloud.redis.v1.Instance]:
 
-            - ``displayName``
-            - ``labels``
-            - ``memorySizeGb``
-            - ``redisConfig``
-            - ``replica_count``
+             *   `displayName`
+             *   `labels`
+             *   `memorySizeGb`
+             *   `redisConfig`
+             *   `replica_count`
         instance (google.cloud.redis_v1.types.Instance):
-            Required. Update description. Only fields specified in
-            update_mask are updated.
+            Required. Update description.
+            Only fields specified in update_mask are
+            updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -1008,9 +1047,10 @@ class UpgradeInstanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
+            Required. Redis instance resource name using
+            the form:
+            `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+            where `location_id` refers to a GCP region.
         redis_version (str):
             Required. Specifies the target version of
             Redis software to upgrade to.
@@ -1032,9 +1072,10 @@ class DeleteInstanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
+            Required. Redis instance resource name using
+            the form:
+            `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+            where `location_id` refers to a GCP region.
     """
 
     name: str = proto.Field(
@@ -1085,9 +1126,10 @@ class ImportInstanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
+            Required. Redis instance resource name using
+            the form:
+            `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+            where `location_id` refers to a GCP region.
         input_config (google.cloud.redis_v1.types.InputConfig):
             Required. Specify data to be imported.
     """
@@ -1109,8 +1151,8 @@ class GcsDestination(proto.Message):
     Attributes:
         uri (str):
             Required. Data destination URI (e.g.
-            'gs://my_bucket/my_object'). Existing files will be
-            overwritten.
+            'gs://my_bucket/my_object'). Existing files will
+            be overwritten.
     """
 
     uri: str = proto.Field(
@@ -1146,9 +1188,10 @@ class ExportInstanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
+            Required. Redis instance resource name using
+            the form:
+            `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+            where `location_id` refers to a GCP region.
         output_config (google.cloud.redis_v1.types.OutputConfig):
             Required. Specify data to be exported.
     """
@@ -1170,13 +1213,15 @@ class FailoverInstanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Redis instance resource name using the form:
-            ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
-            where ``location_id`` refers to a GCP region.
+            Required. Redis instance resource name using
+            the form:
+            `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+            where `location_id` refers to a GCP region.
         data_protection_mode (google.cloud.redis_v1.types.FailoverInstanceRequest.DataProtectionMode):
-            Optional. Available data protection modes that the user can
-            choose. If it's unspecified, data protection mode will be
-            LIMITED_DATA_LOSS by default.
+            Optional. Available data protection modes
+            that the user can choose. If it's unspecified,
+            data protection mode will be LIMITED_DATA_LOSS
+            by default.
     """
     class DataProtectionMode(proto.Enum):
         r"""Specifies different modes of operation in relation to the
@@ -1184,8 +1229,8 @@ class FailoverInstanceRequest(proto.Message):
 
         Values:
             DATA_PROTECTION_MODE_UNSPECIFIED (0):
-                Defaults to LIMITED_DATA_LOSS if a data protection mode is
-                not specified.
+                Defaults to LIMITED_DATA_LOSS if a data
+                protection mode is not specified.
             LIMITED_DATA_LOSS (1):
                 Instance failover will be protected with data
                 loss control. More specifically, the failover
@@ -1265,18 +1310,20 @@ class OperationMetadata(proto.Message):
 
 
 class LocationMetadata(proto.Message):
-    r"""This location metadata represents additional configuration options
-    for a given location where a Redis instance may be created. All
-    fields are output only. It is returned as content of the
-    ``google.cloud.location.Location.metadata`` field.
+    r"""This location metadata represents additional configuration
+    options for a given location where a Redis instance may be
+    created. All fields are output only. It is returned as content
+    of the
+    `google.cloud.location.Location.metadata` field.
 
     Attributes:
         available_zones (MutableMapping[str, google.cloud.redis_v1.types.ZoneMetadata]):
-            Output only. The set of available zones in the location. The
-            map is keyed by the lowercase ID of each zone, as defined by
-            GCE. These keys can be specified in ``location_id`` or
-            ``alternative_location_id`` fields when creating a Redis
-            instance.
+            Output only. The set of available zones in
+            the location. The map is keyed by the lowercase
+            ID of each zone, as defined by GCE. These keys
+            can be specified in `location_id` or
+            `alternative_location_id` fields when creating a
+            Redis instance.
     """
 
     available_zones: MutableMapping[str, 'ZoneMetadata'] = proto.MapField(
@@ -1304,13 +1351,15 @@ class TlsCertificate(proto.Message):
         cert (str):
             PEM representation.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time when the certificate was created in
-            `RFC 3339 <https://tools.ietf.org/html/rfc3339>`__ format,
-            for example ``2020-05-18T00:00:00.094Z``.
+            Output only. The time when the certificate
+            was created in [RFC
+            3339](https://tools.ietf.org/html/rfc3339)
+            format, for example `2020-05-18T00:00:00.094Z`.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time when the certificate expires in `RFC
-            3339 <https://tools.ietf.org/html/rfc3339>`__ format, for
-            example ``2020-05-18T00:00:00.094Z``.
+            Output only. The time when the certificate
+            expires in [RFC
+            3339](https://tools.ietf.org/html/rfc3339)
+            format, for example `2020-05-18T00:00:00.094Z`.
         sha1_fingerprint (str):
             Sha1 Fingerprint of the certificate.
     """

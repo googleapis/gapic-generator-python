@@ -258,11 +258,12 @@ class LoggingServiceV2AsyncClient:
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> None:
-        r"""Deletes all the log entries in a log for the \_Default Log
-        Bucket. The log reappears if it receives new entries. Log
-        entries written shortly before the delete operation might not be
-        deleted. Entries received after the delete operation with a
-        timestamp before the operation will be deleted.
+        r"""Deletes all the log entries in a log for the _Default
+        Log Bucket. The log reappears if it receives new
+        entries. Log entries written shortly before the delete
+        operation might not be deleted. Entries received after
+        the delete operation with a timestamp before the
+        operation will be deleted.
 
         .. code-block:: python
 
@@ -291,18 +292,22 @@ class LoggingServiceV2AsyncClient:
             request (Optional[Union[google.cloud.logging_v2.types.DeleteLogRequest, dict]]):
                 The request object. The parameters to DeleteLog.
             log_name (:class:`str`):
-                Required. The resource name of the log to delete:
+                Required. The resource name of the
+                log to delete:
+                * `projects/[PROJECT_ID]/logs/[LOG_ID]`
+                *
+                `organizations/[ORGANIZATION_ID]/logs/[LOG_ID]`
+                *
+                `billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]`
+                * `folders/[FOLDER_ID]/logs/[LOG_ID]`
 
-                - ``projects/[PROJECT_ID]/logs/[LOG_ID]``
-                - ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
-                - ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
-                - ``folders/[FOLDER_ID]/logs/[LOG_ID]``
+                `[LOG_ID]` must be URL-encoded. For
+                example,
+                `"projects/my-project-id/logs/syslog"`,
+                `"organizations/123/logs/cloudaudit.googleapis.com%2Factivity"`.
 
-                ``[LOG_ID]`` must be URL-encoded. For example,
-                ``"projects/my-project-id/logs/syslog"``,
-                ``"organizations/123/logs/cloudaudit.googleapis.com%2Factivity"``.
-
-                For more information about log names, see
+                For more information about log names,
+                see
                 [LogEntry][google.logging.v2.LogEntry].
 
                 This corresponds to the ``log_name`` field
@@ -410,87 +415,104 @@ class LoggingServiceV2AsyncClient:
             request (Optional[Union[google.cloud.logging_v2.types.WriteLogEntriesRequest, dict]]):
                 The request object. The parameters to WriteLogEntries.
             log_name (:class:`str`):
-                Optional. A default log resource name that is assigned
-                to all log entries in ``entries`` that do not specify a
-                value for ``log_name``:
+                Optional. A default log resource name
+                that is assigned to all log entries in
+                `entries` that do not specify a value
+                for `log_name`:
 
-                - ``projects/[PROJECT_ID]/logs/[LOG_ID]``
-                - ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
-                - ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
-                - ``folders/[FOLDER_ID]/logs/[LOG_ID]``
+                * `projects/[PROJECT_ID]/logs/[LOG_ID]`
+                *
+                `organizations/[ORGANIZATION_ID]/logs/[LOG_ID]`
+                *
+                `billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]`
+                * `folders/[FOLDER_ID]/logs/[LOG_ID]`
 
-                ``[LOG_ID]`` must be URL-encoded. For example:
-
-                ::
+                `[LOG_ID]` must be URL-encoded. For
+                example:
 
                     "projects/my-project-id/logs/syslog"
-                    "organizations/123/logs/cloudaudit.googleapis.com%2Factivity"
+                "organizations/123/logs/cloudaudit.googleapis.com%2Factivity"
 
-                The permission ``logging.logEntries.create`` is needed
-                on each project, organization, billing account, or
-                folder that is receiving new log entries, whether the
-                resource is specified in ``logName`` or in an individual
-                log entry.
+                The permission
+                `logging.logEntries.create` is needed on
+                each project, organization, billing
+                account, or folder that is receiving new
+                log entries, whether the resource is
+                specified in `logName` or in an
+                individual log entry.
 
                 This corresponds to the ``log_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resource (:class:`google.api.monitored_resource_pb2.MonitoredResource`):
-                Optional. A default monitored resource object that is
-                assigned to all log entries in ``entries`` that do not
-                specify a value for ``resource``. Example:
-
-                ::
+                Optional. A default monitored
+                resource object that is assigned to all
+                log entries in `entries` that do not
+                specify a value for `resource`. Example:
 
                     { "type": "gce_instance",
                       "labels": {
-                        "zone": "us-central1-a", "instance_id": "00000000000000000000" }}
+                        "zone": "us-central1-a",
+                "instance_id": "00000000000000000000" }}
 
-                See [LogEntry][google.logging.v2.LogEntry].
+                See
+                [LogEntry][google.logging.v2.LogEntry].
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             labels (:class:`MutableMapping[str, str]`):
-                Optional. Default labels that are added to the
-                ``labels`` field of all log entries in ``entries``. If a
-                log entry already has a label with the same key as a
-                label in this parameter, then the log entry's label is
-                not changed. See [LogEntry][google.logging.v2.LogEntry].
+                Optional. Default labels that are
+                added to the `labels` field of all log
+                entries in `entries`. If a log entry
+                already has a label with the same key as
+                a label in this parameter, then the log
+                entry's label is not changed. See
+                [LogEntry][google.logging.v2.LogEntry].
 
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             entries (:class:`MutableSequence[google.cloud.logging_v2.types.LogEntry]`):
-                Required. The log entries to send to Logging. The order
-                of log entries in this list does not matter. Values
-                supplied in this method's ``log_name``, ``resource``,
-                and ``labels`` fields are copied into those log entries
-                in this list that do not include values for their
-                corresponding fields. For more information, see the
-                [LogEntry][google.logging.v2.LogEntry] type.
+                Required. The log entries to send to
+                Logging. The order of log entries in
+                this list does not matter. Values
+                supplied in this method's `log_name`,
+                `resource`, and `labels` fields are
+                copied into those log entries in this
+                list that do not include values for
+                their corresponding fields. For more
+                information, see the
+                [LogEntry][google.logging.v2.LogEntry]
+                type.
 
-                If the ``timestamp`` or ``insert_id`` fields are missing
-                in log entries, then this method supplies the current
-                time or a unique identifier, respectively. The supplied
-                values are chosen so that, among the log entries that
-                did not supply their own values, the entries earlier in
-                the list will sort before the entries later in the list.
-                See the ``entries.list`` method.
+                If the `timestamp` or `insert_id` fields
+                are missing in log entries, then this
+                method supplies the current time or a
+                unique identifier, respectively. The
+                supplied values are chosen so that,
+                among the log entries that did not
+                supply their own values, the entries
+                earlier in the list will sort before the
+                entries later in the list. See the
+                `entries.list` method.
 
-                Log entries with timestamps that are more than the `logs
-                retention
-                period <https://cloud.google.com/logging/quotas>`__ in
-                the past or more than 24 hours in the future will not be
-                available when calling ``entries.list``. However, those
-                log entries can still be `exported with
-                LogSinks <https://cloud.google.com/logging/docs/api/tasks/exporting-logs>`__.
+                Log entries with timestamps that are
+                more than the [logs retention
+                period](https://cloud.google.com/logging/quotas)
+                in the past or more than 24 hours in the
+                future will not be available when
+                calling `entries.list`. However, those
+                log entries can still be [exported with
+                LogSinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).
 
-                To improve throughput and to avoid exceeding the `quota
-                limit <https://cloud.google.com/logging/quotas>`__ for
-                calls to ``entries.write``, you should try to include
-                several log entries in this list, rather than calling
-                this method for each individual log entry.
+                To improve throughput and to avoid
+                exceeding the [quota
+                limit](https://cloud.google.com/logging/quotas)
+                for calls to `entries.write`, you should
+                try to include several log entries in
+                this list, rather than calling this
+                method for each individual log entry.
 
                 This corresponds to the ``entries`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -561,10 +583,11 @@ class LoggingServiceV2AsyncClient:
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.ListLogEntriesAsyncPager:
-        r"""Lists log entries. Use this method to retrieve log entries that
-        originated from a project/folder/organization/billing account.
-        For ways to export log entries, see `Exporting
-        Logs <https://cloud.google.com/logging/docs/export>`__.
+        r"""Lists log entries.  Use this method to retrieve log
+        entries that originated from a
+        project/folder/organization/billing account.  For ways
+        to export log entries, see [Exporting
+        Logs](https://cloud.google.com/logging/docs/export).
 
         .. code-block:: python
 
@@ -595,50 +618,63 @@ class LoggingServiceV2AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.logging_v2.types.ListLogEntriesRequest, dict]]):
-                The request object. The parameters to ``ListLogEntries``.
+                The request object. The parameters to `ListLogEntries`.
             resource_names (:class:`MutableSequence[str]`):
-                Required. Names of one or more parent resources from
-                which to retrieve log entries:
+                Required. Names of one or more parent
+                resources from which to retrieve log
+                entries:
 
-                - ``projects/[PROJECT_ID]``
-                - ``organizations/[ORGANIZATION_ID]``
-                - ``billingAccounts/[BILLING_ACCOUNT_ID]``
-                - ``folders/[FOLDER_ID]``
+                *  `projects/[PROJECT_ID]`
+                *  `organizations/[ORGANIZATION_ID]`
+                *
+                `billingAccounts/[BILLING_ACCOUNT_ID]`
+                *  `folders/[FOLDER_ID]`
 
                 May alternatively be one or more views:
 
-                - ``projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
-                - ``organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
-                - ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
-                - ``folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                 *
+                `projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
+                *
+                `organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
+                *
+                `billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
+                *
+                `folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]`
 
-                Projects listed in the ``project_ids`` field are added
-                to this list. A maximum of 100 resources may be
-                specified in a single request.
+                Projects listed in the `project_ids`
+                field are added to this list. A maximum
+                of 100 resources may be specified in a
+                single request.
 
                 This corresponds to the ``resource_names`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (:class:`str`):
-                Optional. Only log entries that match the filter are
-                returned. An empty filter matches all log entries in the
-                resources listed in ``resource_names``. Referencing a
-                parent resource that is not listed in ``resource_names``
-                will cause the filter to return no results. The maximum
-                length of a filter is 20,000 characters.
+                Optional. Only log entries that match
+                the filter are returned.  An empty
+                filter matches all log entries in the
+                resources listed in `resource_names`.
+                Referencing a parent resource that is
+                not listed in `resource_names` will
+                cause the filter to return no results.
+                The maximum length of a filter is 20,000
+                characters.
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             order_by (:class:`str`):
-                Optional. How the results should be sorted. Presently,
-                the only permitted values are ``"timestamp asc"``
-                (default) and ``"timestamp desc"``. The first option
-                returns entries in order of increasing values of
-                ``LogEntry.timestamp`` (oldest first), and the second
-                option returns entries in order of decreasing timestamps
-                (newest first). Entries with equal timestamps are
-                returned in order of their ``insert_id`` values.
+                Optional. How the results should be
+                sorted.  Presently, the only permitted
+                values are `"timestamp asc"` (default)
+                and `"timestamp desc"`. The first option
+                returns entries in order of increasing
+                values of `LogEntry.timestamp` (oldest
+                first), and the second option returns
+                entries in order of decreasing
+                timestamps (newest first).  Entries with
+                equal timestamps are returned in order
+                of their `insert_id` values.
 
                 This corresponds to the ``order_by`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -653,10 +689,11 @@ class LoggingServiceV2AsyncClient:
 
         Returns:
             google.cloud.logging_v2.services.logging_service_v2.pagers.ListLogEntriesAsyncPager:
-                Result returned from ListLogEntries.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Result returned from
+                `ListLogEntries`.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -846,12 +883,13 @@ class LoggingServiceV2AsyncClient:
             request (Optional[Union[google.cloud.logging_v2.types.ListLogsRequest, dict]]):
                 The request object. The parameters to ListLogs.
             parent (:class:`str`):
-                Required. The resource name to list logs for:
-
-                - ``projects/[PROJECT_ID]``
-                - ``organizations/[ORGANIZATION_ID]``
-                - ``billingAccounts/[BILLING_ACCOUNT_ID]``
-                - ``folders/[FOLDER_ID]``
+                Required. The resource name to list
+                logs for:
+                *  `projects/[PROJECT_ID]`
+                *  `organizations/[ORGANIZATION_ID]`
+                *
+                `billingAccounts/[BILLING_ACCOUNT_ID]`
+                *  `folders/[FOLDER_ID]`
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -979,7 +1017,7 @@ class LoggingServiceV2AsyncClient:
 
         Args:
             requests (AsyncIterator[`google.cloud.logging_v2.types.TailLogEntriesRequest`]):
-                The request object AsyncIterator. The parameters to ``TailLogEntries``.
+                The request object AsyncIterator. The parameters to `TailLogEntries`.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -990,7 +1028,9 @@ class LoggingServiceV2AsyncClient:
 
         Returns:
             AsyncIterable[google.cloud.logging_v2.types.TailLogEntriesResponse]:
-                Result returned from TailLogEntries.
+                Result returned from
+                `TailLogEntries`.
+
         """
 
         # Wrap the RPC method; this adds retry and timeout information,
