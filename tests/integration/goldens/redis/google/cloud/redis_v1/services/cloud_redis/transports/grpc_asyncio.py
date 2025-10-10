@@ -115,23 +115,23 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
 
     Google Cloud Memorystore for Redis v1
 
-    The ``redis.googleapis.com`` service implements the Google Cloud
-    Memorystore for Redis API and defines the following resource model
-    for managing Redis instances:
+    The `redis.googleapis.com` service implements the Google Cloud
+    Memorystore for Redis API and defines the following resource
+    model for managing Redis instances:
 
-    - The service works with a collection of cloud projects, named:
-      ``/projects/*``
-    - Each project has a collection of available locations, named:
-      ``/locations/*``
-    - Each location has a collection of Redis instances, named:
-      ``/instances/*``
-    - As such, Redis instances are resources of the form:
-      ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+    * The service works with a collection of cloud projects, named:
+    `/projects/*` * Each project has a collection of available
+    locations, named: `/locations/*` * Each location has a
+    collection of Redis instances, named: `/instances/*` * As such,
+    Redis instances are resources of the form:
 
-    Note that location_id must be referring to a GCP ``region``; for
+    `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+
+    Note that location_id must be referring to a GCP `region`; for
     example:
 
-    - ``projects/redpepper-1290/locations/us-central1/instances/my-redis``
+    *
+    `projects/redpepper-1290/locations/us-central1/instances/my-redis`
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -361,16 +361,16 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
             Awaitable[cloud_redis.ListInstancesResponse]]:
         r"""Return a callable for the list instances method over gRPC.
 
-        Lists all Redis instances owned by a project in either the
-        specified location (region) or all locations.
+        Lists all Redis instances owned by a project in
+        either the specified location (region) or all locations.
 
         The location should have the following format:
 
-        - ``projects/{project_id}/locations/{location_id}``
+        * `projects/{project_id}/locations/{location_id}`
 
-        If ``location_id`` is specified as ``-`` (wildcard), then all
-        regions available to the project are queried, and the results
-        are aggregated.
+        If `location_id` is specified as `-` (wildcard), then
+        all regions available to the project are queried, and
+        the results are aggregated.
 
         Returns:
             Callable[[~.ListInstancesRequest],
@@ -451,20 +451,20 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
             Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create instance method over gRPC.
 
-        Creates a Redis instance based on the specified tier and memory
-        size.
+        Creates a Redis instance based on the specified tier
+        and memory size.
+        By default, the instance is accessible from the
+        project's [default
+        network](https://cloud.google.com/vpc/docs/vpc).
 
-        By default, the instance is accessible from the project's
-        `default network <https://cloud.google.com/vpc/docs/vpc>`__.
+        The creation is executed asynchronously and callers may
+        check the returned operation to track its progress. Once
+        the operation is completed the Redis instance will be
+        fully functional. Completed longrunning.Operation will
+        contain the new instance object in the response field.
 
-        The creation is executed asynchronously and callers may check
-        the returned operation to track its progress. Once the operation
-        is completed the Redis instance will be fully functional.
-        Completed longrunning.Operation will contain the new instance
-        object in the response field.
-
-        The returned operation is automatically deleted after a few
-        hours, so there is no need to call DeleteOperation.
+        The returned operation is automatically deleted after a
+        few hours, so there is no need to call DeleteOperation.
 
         Returns:
             Callable[[~.CreateInstanceRequest],

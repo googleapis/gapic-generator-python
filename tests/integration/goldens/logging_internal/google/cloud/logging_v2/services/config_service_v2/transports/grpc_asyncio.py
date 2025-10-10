@@ -424,11 +424,12 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
 
         Updates a log bucket asynchronously.
 
-        If the bucket has a ``lifecycle_state`` of ``DELETE_REQUESTED``,
-        then ``FAILED_PRECONDITION`` will be returned.
+        If the bucket has a `lifecycle_state` of
+        `DELETE_REQUESTED`, then `FAILED_PRECONDITION` will be
+        returned.
 
-        After a bucket has been created, the bucket's location cannot be
-        changed.
+        After a bucket has been created, the bucket's location
+        cannot be changed.
 
         Returns:
             Callable[[~.UpdateBucketRequest],
@@ -484,11 +485,12 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
 
         Updates a log bucket.
 
-        If the bucket has a ``lifecycle_state`` of ``DELETE_REQUESTED``,
-        then ``FAILED_PRECONDITION`` will be returned.
+        If the bucket has a `lifecycle_state` of
+        `DELETE_REQUESTED`, then `FAILED_PRECONDITION` will be
+        returned.
 
-        After a bucket has been created, the bucket's location cannot be
-        changed.
+        After a bucket has been created, the bucket's location
+        cannot be changed.
 
         Returns:
             Callable[[~.UpdateBucketRequest],
@@ -516,10 +518,10 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
 
         Deletes a log bucket.
 
-        Changes the bucket's ``lifecycle_state`` to the
-        ``DELETE_REQUESTED`` state. After 7 days, the bucket will be
-        purged and all log entries in the bucket will be permanently
-        deleted.
+        Changes the bucket's `lifecycle_state` to the
+        `DELETE_REQUESTED` state. After 7 days, the bucket will
+        be purged and all log entries in the bucket will be
+        permanently deleted.
 
         Returns:
             Callable[[~.DeleteBucketRequest],
@@ -652,11 +654,12 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogView]]:
         r"""Return a callable for the update view method over gRPC.
 
-        Updates a view on a log bucket. This method replaces the
-        following fields in the existing view with values from the new
-        view: ``filter``. If an ``UNAVAILABLE`` error is returned, this
-        indicates that system is not in a state where it can update the
-        view. If this occurs, please try again in a few minutes.
+        Updates a view on a log bucket. This method replaces
+        the following fields in the existing view with values
+        from the new view: `filter`. If an `UNAVAILABLE` error
+        is returned, this indicates that system is not in a
+        state where it can update the view. If this occurs,
+        please try again in a few minutes.
 
         Returns:
             Callable[[~.UpdateViewRequest],
@@ -682,10 +685,10 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete view method over gRPC.
 
-        Deletes a view on a log bucket. If an ``UNAVAILABLE`` error is
-        returned, this indicates that system is not in a state where it
-        can delete the view. If this occurs, please try again in a few
-        minutes.
+        Deletes a view on a log bucket.
+        If an `UNAVAILABLE` error is returned, this indicates
+        that system is not in a state where it can delete the
+        view. If this occurs, please try again in a few minutes.
 
         Returns:
             Callable[[~.DeleteViewRequest],
@@ -763,11 +766,12 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogSink]]:
         r"""Return a callable for the create sink method over gRPC.
 
-        Creates a sink that exports specified log entries to a
-        destination. The export of newly-ingested log entries begins
-        immediately, unless the sink's ``writer_identity`` is not
-        permitted to write to the destination. A sink can export log
-        entries only from the resource owning the sink.
+        Creates a sink that exports specified log entries to
+        a destination. The export of newly-ingested log entries
+        begins immediately, unless the sink's `writer_identity`
+        is not permitted to write to the destination. A sink can
+        export log entries only from the resource owning the
+        sink.
 
         Returns:
             Callable[[~.CreateSinkRequest],
@@ -793,12 +797,13 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogSink]]:
         r"""Return a callable for the update sink method over gRPC.
 
-        Updates a sink. This method replaces the following fields in the
-        existing sink with values from the new sink: ``destination``,
-        and ``filter``.
+        Updates a sink. This method replaces the following
+        fields in the existing sink with values from the new
+        sink: `destination`, and `filter`.
 
-        The updated sink might also have a new ``writer_identity``; see
-        the ``unique_writer_identity`` field.
+        The updated sink might also have a new
+        `writer_identity`; see the `unique_writer_identity`
+        field.
 
         Returns:
             Callable[[~.UpdateSinkRequest],
@@ -824,8 +829,9 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete sink method over gRPC.
 
-        Deletes a sink. If the sink has a unique ``writer_identity``,
-        then that service account is also deleted.
+        Deletes a sink. If the sink has a unique
+        `writer_identity`, then that service account is also
+        deleted.
 
         Returns:
             Callable[[~.DeleteSinkRequest],
@@ -959,8 +965,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.ListExclusionsResponse]]:
         r"""Return a callable for the list exclusions method over gRPC.
 
-        Lists all the exclusions on the \_Default sink in a parent
-        resource.
+        Lists all the exclusions on the _Default sink in a
+        parent resource.
 
         Returns:
             Callable[[~.ListExclusionsRequest],
@@ -986,7 +992,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogExclusion]]:
         r"""Return a callable for the get exclusion method over gRPC.
 
-        Gets the description of an exclusion in the \_Default sink.
+        Gets the description of an exclusion in the _Default
+        sink.
 
         Returns:
             Callable[[~.GetExclusionRequest],
@@ -1012,9 +1019,10 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogExclusion]]:
         r"""Return a callable for the create exclusion method over gRPC.
 
-        Creates a new exclusion in the \_Default sink in a specified
-        parent resource. Only log entries belonging to that resource can
-        be excluded. You can have up to 10 exclusions in a resource.
+        Creates a new exclusion in the _Default sink in a
+        specified parent resource. Only log entries belonging to
+        that resource can be excluded. You can have up to 10
+        exclusions in a resource.
 
         Returns:
             Callable[[~.CreateExclusionRequest],
@@ -1040,8 +1048,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.LogExclusion]]:
         r"""Return a callable for the update exclusion method over gRPC.
 
-        Changes one or more properties of an existing exclusion in the
-        \_Default sink.
+        Changes one or more properties of an existing
+        exclusion in the _Default sink.
 
         Returns:
             Callable[[~.UpdateExclusionRequest],
@@ -1067,7 +1075,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete exclusion method over gRPC.
 
-        Deletes an exclusion in the \_Default sink.
+        Deletes an exclusion in the _Default sink.
 
         Returns:
             Callable[[~.DeleteExclusionRequest],
@@ -1093,15 +1101,16 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.CmekSettings]]:
         r"""Return a callable for the get cmek settings method over gRPC.
 
-        Gets the Logging CMEK settings for the given resource.
+        Gets the Logging CMEK settings for the given
+        resource.
+        Note: CMEK for the Log Router can be configured for
+        Google Cloud projects, folders, organizations and
+        billing accounts. Once configured for an organization,
+        it applies to all projects and folders in the Google
+        Cloud organization.
 
-        Note: CMEK for the Log Router can be configured for Google Cloud
-        projects, folders, organizations and billing accounts. Once
-        configured for an organization, it applies to all projects and
-        folders in the Google Cloud organization.
-
-        See `Enabling CMEK for Log
-        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        See [Enabling CMEK for Log
+        Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
         for more information.
 
         Returns:
@@ -1128,20 +1137,22 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.CmekSettings]]:
         r"""Return a callable for the update cmek settings method over gRPC.
 
-        Updates the Log Router CMEK settings for the given resource.
-
-        Note: CMEK for the Log Router can currently only be configured
-        for Google Cloud organizations. Once configured, it applies to
-        all projects and folders in the Google Cloud organization.
+        Updates the Log Router CMEK settings for the given
+        resource.
+        Note: CMEK for the Log Router can currently only be
+        configured for Google Cloud organizations. Once
+        configured, it applies to all projects and folders in
+        the Google Cloud organization.
 
         [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings]
-        will fail if 1) ``kms_key_name`` is invalid, or 2) the
+        will fail if 1) `kms_key_name` is invalid, or 2) the
         associated service account does not have the required
-        ``roles/cloudkms.cryptoKeyEncrypterDecrypter`` role assigned for
-        the key, or 3) access to the key is disabled.
+        `roles/cloudkms.cryptoKeyEncrypterDecrypter` role
+        assigned for the key, or 3) access to the key is
+        disabled.
 
-        See `Enabling CMEK for Log
-        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        See [Enabling CMEK for Log
+        Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
         for more information.
 
         Returns:
@@ -1170,14 +1181,15 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
 
         Gets the Log Router settings for the given resource.
 
-        Note: Settings for the Log Router can be get for Google Cloud
-        projects, folders, organizations and billing accounts. Currently
-        it can only be configured for organizations. Once configured for
-        an organization, it applies to all projects and folders in the
-        Google Cloud organization.
+        Note: Settings for the Log Router can be get for Google
+        Cloud projects, folders, organizations and billing
+        accounts. Currently it can only be configured for
+        organizations. Once configured for an organization, it
+        applies to all projects and folders in the Google Cloud
+        organization.
 
-        See `Enabling CMEK for Log
-        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        See [Enabling CMEK for Log
+        Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
         for more information.
 
         Returns:
@@ -1204,23 +1216,23 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             Awaitable[logging_config.Settings]]:
         r"""Return a callable for the update settings method over gRPC.
 
-        Updates the Log Router settings for the given resource.
-
+        Updates the Log Router settings for the given
+        resource.
         Note: Settings for the Log Router can currently only be
-        configured for Google Cloud organizations. Once configured, it
-        applies to all projects and folders in the Google Cloud
-        organization.
+        configured for Google Cloud organizations. Once
+        configured, it applies to all projects and folders in
+        the Google Cloud organization.
 
         [UpdateSettings][google.logging.v2.ConfigServiceV2.UpdateSettings]
-        will fail if 1) ``kms_key_name`` is invalid, or 2) the
+        will fail if 1) `kms_key_name` is invalid, or 2) the
         associated service account does not have the required
-        ``roles/cloudkms.cryptoKeyEncrypterDecrypter`` role assigned for
-        the key, or 3) access to the key is disabled. 4) ``location_id``
-        is not supported by Logging. 5) ``location_id`` violate
-        OrgPolicy.
+        `roles/cloudkms.cryptoKeyEncrypterDecrypter` role
+        assigned for the key, or 3) access to the key is
+        disabled. 4) `location_id` is not supported by Logging.
+        5) `location_id` violate OrgPolicy.
 
-        See `Enabling CMEK for Log
-        Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
+        See [Enabling CMEK for Log
+        Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
         for more information.
 
         Returns:

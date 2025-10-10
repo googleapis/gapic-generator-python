@@ -680,19 +680,20 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation.Operation:
-        r"""Exports assets with time and resource types to a given Cloud
-        Storage location/BigQuery table. For Cloud Storage location
-        destinations, the output format is newline-delimited JSON. Each
-        line represents a
-        [google.cloud.asset.v1.Asset][google.cloud.asset.v1.Asset] in
-        the JSON format; for BigQuery table destinations, the output
-        table stores the fields in asset Protobuf as columns. This API
-        implements the
+        r"""Exports assets with time and resource types to a
+        given Cloud Storage location/BigQuery table. For Cloud
+        Storage location destinations, the output format is
+        newline-delimited JSON. Each line represents a
+        [google.cloud.asset.v1.Asset][google.cloud.asset.v1.Asset]
+        in the JSON format; for BigQuery table destinations, the
+        output table stores the fields in asset Protobuf as
+        columns. This API implements the
         [google.longrunning.Operation][google.longrunning.Operation]
-        API, which allows you to keep track of the export. We recommend
-        intervals of at least 2 seconds with exponential retry to poll
-        the export operation result. For regular-size resource parent,
-        the export operation usually finishes within 5 minutes.
+        API, which allows you to keep track of the export. We
+        recommend intervals of at least 2 seconds with
+        exponential retry to poll the export operation result.
+        For regular-size resource parent, the export operation
+        usually finishes within 5 minutes.
 
         .. code-block:: python
 
@@ -741,13 +742,17 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.asset_v1.types.ExportAssetsResponse` The export asset response. This message is returned by the
-                   [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
-                   method in the returned
-                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
-                   field.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.asset_v1.types.ExportAssetsResponse`
+                The export asset response. This message
+                is returned by the
+                [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
+                method in the returned
+                [google.longrunning.Operation.response][google.longrunning.Operation.response]
+                field.
 
         """
         # Create or coerce a protobuf request object.
@@ -832,13 +837,17 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request (Union[google.cloud.asset_v1.types.ListAssetsRequest, dict]):
                 The request object. ListAssets request.
             parent (str):
-                Required. Name of the organization, folder, or project
-                the assets belong to. Format:
-                "organizations/[organization-number]" (such as
-                "organizations/123"), "projects/[project-id]" (such as
-                "projects/my-project-id"), "projects/[project-number]"
-                (such as "projects/12345"), or "folders/[folder-number]"
-                (such as "folders/12345").
+                Required. Name of the organization,
+                folder, or project the assets belong to.
+                Format:
+                "organizations/[organization-number]"
+                (such as "organizations/123"),
+                "projects/[project-id]" (such as
+                "projects/my-project-id"),
+                "projects/[project-number]" (such as
+                "projects/12345"), or
+                "folders/[folder-number]" (such as
+                "folders/12345").
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -922,12 +931,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> asset_service.BatchGetAssetsHistoryResponse:
-        r"""Batch gets the update history of assets that overlap a time
-        window. For IAM_POLICY content, this API outputs history when
-        the asset and its attached IAM POLICY both exist. This can
-        create gaps in the output history. Otherwise, this API outputs
-        history with asset in both non-delete or deleted status. If a
-        specified asset does not exist, this API returns an
+        r"""Batch gets the update history of assets that overlap
+        a time window. For IAM_POLICY content, this API outputs
+        history when the asset and its attached IAM POLICY both
+        exist. This can create gaps in the output history.
+        Otherwise, this API outputs history with asset in both
+        non-delete or deleted status.
+        If a specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
         .. code-block:: python
@@ -1167,8 +1177,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request (Union[google.cloud.asset_v1.types.GetFeedRequest, dict]):
                 The request object. Get asset feed request.
             name (str):
-                Required. The name of the Feed and it must be in the
-                format of: projects/project_number/feeds/feed_id
+                Required. The name of the Feed and it
+                must be in the format of:
+                projects/project_number/feeds/feed_id
                 folders/folder_number/feeds/feed_id
                 organizations/organization_number/feeds/feed_id
 
@@ -1389,9 +1400,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request (Union[google.cloud.asset_v1.types.UpdateFeedRequest, dict]):
                 The request object. Update asset feed request.
             feed (google.cloud.asset_v1.types.Feed):
-                Required. The new values of feed details. It must match
-                an existing feed and the field ``name`` must be in the
-                format of: projects/project_number/feeds/feed_id or
+                Required. The new values of feed
+                details. It must match an existing feed
+                and the field `name` must be in the
+                format of:
+
+                projects/project_number/feeds/feed_id or
                 folders/folder_number/feeds/feed_id or
                 organizations/organization_number/feeds/feed_id.
 
@@ -1499,8 +1513,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request (Union[google.cloud.asset_v1.types.DeleteFeedRequest, dict]):
                 The request object.
             name (str):
-                Required. The name of the feed and it must be in the
-                format of: projects/project_number/feeds/feed_id
+                Required. The name of the feed and it
+                must be in the format of:
+                projects/project_number/feeds/feed_id
                 folders/folder_number/feeds/feed_id
                 organizations/organization_number/feeds/feed_id
 
@@ -1566,10 +1581,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.SearchAllResourcesPager:
-        r"""Searches all Google Cloud resources within the specified scope,
-        such as a project, folder, or organization. The caller must be
-        granted the ``cloudasset.assets.searchAllResources`` permission
-        on the desired scope, otherwise the request will be rejected.
+        r"""Searches all Google Cloud resources within the
+        specified scope, such as a project, folder, or
+        organization. The caller must be granted the
+        `cloudasset.assets.searchAllResources` permission on the
+        desired scope, otherwise the request will be rejected.
 
         .. code-block:: python
 
@@ -1602,112 +1618,139 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request (Union[google.cloud.asset_v1.types.SearchAllResourcesRequest, dict]):
                 The request object. Search all resources request.
             scope (str):
-                Required. A scope can be a project, a folder, or an
-                organization. The search is limited to the resources
-                within the ``scope``. The caller must be granted the
-                ```cloudasset.assets.searchAllResources`` <https://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+                Required. A scope can be a project, a
+                folder, or an organization. The search
+                is limited to the resources within the
+                `scope`. The caller must be granted the
+                [`cloudasset.assets.searchAllResources`](https://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
                 permission on the desired scope.
 
                 The allowed values are:
 
-                - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
-                - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
-                - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
-                - organizations/{ORGANIZATION_NUMBER} (e.g.,
-                  "organizations/123456")
+                * projects/{PROJECT_ID} (e.g.,
+                "projects/foo-bar") *
+                projects/{PROJECT_NUMBER} (e.g.,
+                "projects/12345678") *
+                folders/{FOLDER_NUMBER} (e.g.,
+                "folders/1234567") *
+                organizations/{ORGANIZATION_NUMBER}
+                (e.g., "organizations/123456")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             query (str):
-                Optional. The query statement. See `how to construct a
-                query <https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
-                for more information. If not specified or empty, it will
-                search all the resources within the specified ``scope``.
+                Optional. The query statement. See
+                [how to construct a
+                query](https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query)
+                for more information. If not specified
+                or empty, it will search all the
+                resources within the specified `scope`.
 
                 Examples:
 
-                - ``name:Important`` to find Google Cloud resources
-                  whose name contains "Important" as a word.
-                - ``name=Important`` to find the Google Cloud resource
-                  whose name is exactly "Important".
-                - ``displayName:Impor*`` to find Google Cloud resources
-                  whose display name contains "Impor" as a prefix of any
-                  word in the field.
-                - ``location:us-west*`` to find Google Cloud resources
-                  whose location contains both "us" and "west" as
-                  prefixes.
-                - ``labels:prod`` to find Google Cloud resources whose
-                  labels contain "prod" as a key or value.
-                - ``labels.env:prod`` to find Google Cloud resources
-                  that have a label "env" and its value is "prod".
-                - ``labels.env:*`` to find Google Cloud resources that
-                  have a label "env".
-                - ``kmsKey:key`` to find Google Cloud resources
-                  encrypted with a customer-managed encryption key whose
-                  name contains "key" as a word. This field is
-                  deprecated. Please use the ``kmsKeys`` field to
-                  retrieve Cloud KMS key information.
-                - ``kmsKeys:key`` to find Google Cloud resources
-                  encrypted with customer-managed encryption keys whose
-                  name contains the word "key".
-                - ``relationships:instance-group-1`` to find Google
-                  Cloud resources that have relationships with
-                  "instance-group-1" in the related resource name.
-                - ``relationships:INSTANCE_TO_INSTANCEGROUP`` to find
-                  Compute Engine instances that have relationships of
-                  type "INSTANCE_TO_INSTANCEGROUP".
-                - ``relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1``
-                  to find Compute Engine instances that have
-                  relationships with "instance-group-1" in the Compute
-                  Engine instance group resource name, for relationship
-                  type "INSTANCE_TO_INSTANCEGROUP".
-                - ``state:ACTIVE`` to find Google Cloud resources whose
-                  state contains "ACTIVE" as a word.
-                - ``NOT state:ACTIVE`` to find Google Cloud resources
-                  whose state doesn't contain "ACTIVE" as a word.
-                - ``createTime<1609459200`` to find Google Cloud
-                  resources that were created before "2021-01-01
-                  00:00:00 UTC". 1609459200 is the epoch timestamp of
-                  "2021-01-01 00:00:00 UTC" in seconds.
-                - ``updateTime>1609459200`` to find Google Cloud
-                  resources that were updated after "2021-01-01 00:00:00
-                  UTC". 1609459200 is the epoch timestamp of "2021-01-01
-                  00:00:00 UTC" in seconds.
-                - ``Important`` to find Google Cloud resources that
-                  contain "Important" as a word in any of the searchable
-                  fields.
-                - ``Impor*`` to find Google Cloud resources that contain
-                  "Impor" as a prefix of any word in any of the
-                  searchable fields.
-                - ``Important location:(us-west1 OR global)`` to find
-                  Google Cloud resources that contain "Important" as a
-                  word in any of the searchable fields and are also
-                  located in the "us-west1" region or the "global"
-                  location.
+                * `name:Important` to find Google Cloud
+                resources whose name contains
+                "Important" as a word.
+                * `name=Important` to find the Google
+                Cloud resource whose name is exactly
+                "Important".
+                * `displayName:Impor*` to find Google
+                Cloud resources whose display name
+                contains "Impor" as a prefix of any word
+                in the field. * `location:us-west*` to
+                find Google Cloud resources whose
+                location   contains both "us" and "west"
+                as prefixes. * `labels:prod` to find
+                Google Cloud resources whose labels
+                contain "prod"   as a key or value.
+                * `labels.env:prod` to find Google Cloud
+                resources that have a label "env"   and
+                its value is "prod".
+                * `labels.env:*` to find Google Cloud
+                resources that have a label "env". *
+                `kmsKey:key` to find Google Cloud
+                resources encrypted with a
+                customer-managed encryption key whose
+                name contains "key" as a word. This
+                field is deprecated. Please use the
+                `kmsKeys` field to retrieve Cloud KMS
+                key information.
+                * `kmsKeys:key` to find Google Cloud
+                resources encrypted with
+                customer-managed encryption keys whose
+                name contains the word "key". *
+                `relationships:instance-group-1` to find
+                Google Cloud resources that have
+                relationships with "instance-group-1" in
+                the related resource name. *
+                `relationships:INSTANCE_TO_INSTANCEGROUP`
+                to find Compute Engine   instances that
+                have relationships of type
+                "INSTANCE_TO_INSTANCEGROUP". *
+                `relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1`
+                to find   Compute Engine instances that
+                have relationships with
+                "instance-group-1"   in the Compute
+                Engine instance group resource name, for
+                relationship type
+                "INSTANCE_TO_INSTANCEGROUP".
+                * `state:ACTIVE` to find Google Cloud
+                resources whose state contains
+                "ACTIVE" as a word.
+                * `NOT state:ACTIVE` to find Google
+                Cloud resources whose state doesn't
+                contain "ACTIVE" as a word.
+                * `createTime<1609459200` to find Google
+                Cloud resources that were created
+                before "2021-01-01 00:00:00 UTC".
+                1609459200 is the epoch timestamp of
+                "2021-01-01 00:00:00 UTC" in seconds.
+                * `updateTime>1609459200` to find Google
+                Cloud resources that were updated
+                after "2021-01-01 00:00:00 UTC".
+                1609459200 is the epoch timestamp of
+                "2021-01-01 00:00:00 UTC" in seconds.
+                * `Important` to find Google Cloud
+                resources that contain "Important" as a
+                word in any of the searchable fields.
+                * `Impor*` to find Google Cloud
+                resources that contain "Impor" as a
+                prefix   of any word in any of the
+                searchable fields. * `Important
+                location:(us-west1 OR global)` to find
+                Google Cloud   resources that contain
+                "Important" as a word in any of the
+                searchable   fields and are also located
+                in the "us-west1" region or the "global"
+                location.
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             asset_types (MutableSequence[str]):
-                Optional. A list of asset types that this request
-                searches for. If empty, it will search all the
-                `searchable asset
-                types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+                Optional. A list of asset types that
+                this request searches for. If empty, it
+                will search all the [searchable asset
+                types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types).
 
-                Regular expressions are also supported. For example:
+                Regular expressions are also supported.
+                For example:
 
-                - "compute.googleapis.com.\*" snapshots resources whose
-                  asset type starts with "compute.googleapis.com".
-                - ".*Instance" snapshots resources whose asset type ends
-                  with "Instance".
-                - ".\ *Instance.*" snapshots resources whose asset type
-                  contains "Instance".
+                * "compute.googleapis.com.*" snapshots
+                resources whose asset type starts with
+                "compute.googleapis.com".
+                * ".*Instance" snapshots resources whose
+                asset type ends with "Instance". *
+                ".*Instance.*" snapshots resources whose
+                asset type contains "Instance".
 
-                See `RE2 <https://github.com/google/re2/wiki/Syntax>`__
-                for all supported regular expression syntax. If the
-                regular expression does not match any supported asset
-                type, an INVALID_ARGUMENT error will be returned.
+                See
+                [RE2](https://github.com/google/re2/wiki/Syntax)
+                for all supported regular expression
+                syntax. If the regular expression does
+                not match any supported asset type, an
+                INVALID_ARGUMENT error will be returned.
 
                 This corresponds to the ``asset_types`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1797,10 +1840,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.SearchAllIamPoliciesPager:
-        r"""Searches all IAM policies within the specified scope, such as a
-        project, folder, or organization. The caller must be granted the
-        ``cloudasset.assets.searchAllIamPolicies`` permission on the
-        desired scope, otherwise the request will be rejected.
+        r"""Searches all IAM policies within the specified scope,
+        such as a project, folder, or organization. The caller
+        must be granted the
+        `cloudasset.assets.searchAllIamPolicies` permission on
+        the desired scope, otherwise the request will be
+        rejected.
 
         .. code-block:: python
 
@@ -1833,74 +1878,97 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request (Union[google.cloud.asset_v1.types.SearchAllIamPoliciesRequest, dict]):
                 The request object. Search all IAM policies request.
             scope (str):
-                Required. A scope can be a project, a folder, or an
-                organization. The search is limited to the IAM policies
-                within the ``scope``. The caller must be granted the
-                ```cloudasset.assets.searchAllIamPolicies`` <https://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+                Required. A scope can be a project, a
+                folder, or an organization. The search
+                is limited to the IAM policies within
+                the `scope`. The caller must be granted
+                the
+                [`cloudasset.assets.searchAllIamPolicies`](https://cloud.google.com/asset-inventory/docs/access-control#required_permissions)
                 permission on the desired scope.
 
                 The allowed values are:
 
-                - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
-                - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
-                - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
-                - organizations/{ORGANIZATION_NUMBER} (e.g.,
-                  "organizations/123456")
+                * projects/{PROJECT_ID} (e.g.,
+                "projects/foo-bar") *
+                projects/{PROJECT_NUMBER} (e.g.,
+                "projects/12345678") *
+                folders/{FOLDER_NUMBER} (e.g.,
+                "folders/1234567") *
+                organizations/{ORGANIZATION_NUMBER}
+                (e.g., "organizations/123456")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             query (str):
-                Optional. The query statement. See `how to construct a
-                query <https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query>`__
-                for more information. If not specified or empty, it will
-                search all the IAM policies within the specified
-                ``scope``. Note that the query string is compared
-                against each IAM policy binding, including its
-                principals, roles, and IAM conditions. The returned IAM
-                policies will only contain the bindings that match your
-                query. To learn more about the IAM policy structure, see
-                the `IAM policy
-                documentation <https://cloud.google.com/iam/help/allow-policies/structure>`__.
+                Optional. The query statement. See
+                [how to construct a
+                query](https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query)
+                for more information. If not specified
+                or empty, it will search all the IAM
+                policies within the specified `scope`.
+                Note that the query string is compared
+                against each IAM policy binding,
+                including its principals, roles, and IAM
+                conditions. The returned IAM policies
+                will only contain the bindings that
+                match your query. To learn more about
+                the IAM policy structure, see the [IAM
+                policy
+                documentation](https://cloud.google.com/iam/help/allow-policies/structure).
 
                 Examples:
 
-                - ``policy:amy@gmail.com`` to find IAM policy bindings
-                  that specify user "amy@gmail.com".
-                - ``policy:roles/compute.admin`` to find IAM policy
-                  bindings that specify the Compute Admin role.
-                - ``policy:comp*`` to find IAM policy bindings that
-                  contain "comp" as a prefix of any word in the binding.
-                - ``policy.role.permissions:storage.buckets.update`` to
-                  find IAM policy bindings that specify a role
-                  containing "storage.buckets.update" permission. Note
-                  that if callers don't have ``iam.roles.get`` access to
-                  a role's included permissions, policy bindings that
-                  specify this role will be dropped from the search
-                  results.
-                - ``policy.role.permissions:upd*`` to find IAM policy
-                  bindings that specify a role containing "upd" as a
-                  prefix of any word in the role permission. Note that
-                  if callers don't have ``iam.roles.get`` access to a
-                  role's included permissions, policy bindings that
-                  specify this role will be dropped from the search
-                  results.
-                - ``resource:organizations/123456`` to find IAM policy
-                  bindings that are set on "organizations/123456".
-                - ``resource=//cloudresourcemanager.googleapis.com/projects/myproject``
-                  to find IAM policy bindings that are set on the
-                  project named "myproject".
-                - ``Important`` to find IAM policy bindings that contain
-                  "Important" as a word in any of the searchable fields
-                  (except for the included permissions).
-                - ``resource:(instance1 OR instance2) policy:amy`` to
-                  find IAM policy bindings that are set on resources
-                  "instance1" or "instance2" and also specify user
-                  "amy".
-                - ``roles:roles/compute.admin`` to find IAM policy
-                  bindings that specify the Compute Admin role.
-                - ``memberTypes:user`` to find IAM policy bindings that
-                  contain the principal type "user".
+                * `policy:amy@gmail.com` to find IAM
+                policy bindings that specify user
+                "amy@gmail.com".
+                * `policy:roles/compute.admin` to find
+                IAM policy bindings that specify   the
+                Compute Admin role.
+                * `policy:comp*` to find IAM policy
+                bindings that contain "comp" as a
+                prefix of any word in the binding.
+                *
+                `policy.role.permissions:storage.buckets.update`
+                to find IAM policy   bindings that
+                specify a role containing
+                "storage.buckets.update"   permission.
+                Note that if callers don't have
+                `iam.roles.get` access to a   role's
+                included permissions, policy bindings
+                that specify this role will   be dropped
+                from the search results.
+                * `policy.role.permissions:upd*` to find
+                IAM policy bindings that specify a
+                role containing "upd" as a prefix of any
+                word in the role permission.   Note that
+                if callers don't have `iam.roles.get`
+                access to a role's   included
+                permissions, policy bindings that
+                specify this role will be   dropped from
+                the search results.
+                * `resource:organizations/123456` to
+                find IAM policy bindings   that are set
+                on "organizations/123456".
+                *
+                `resource=//cloudresourcemanager.googleapis.com/projects/myproject`
+                to   find IAM policy bindings that are
+                set on the project named "myproject". *
+                `Important` to find IAM policy bindings
+                that contain "Important" as a   word in
+                any of the searchable fields (except for
+                the included   permissions).
+                * `resource:(instance1 OR instance2)
+                policy:amy` to find   IAM policy
+                bindings that are set on resources
+                "instance1" or   "instance2" and also
+                specify user "amy". *
+                `roles:roles/compute.admin` to find IAM
+                policy bindings that specify the
+                Compute Admin role.
+                * `memberTypes:user` to find IAM policy
+                bindings that contain the   principal
+                type "user".
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2033,7 +2101,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1.types.AnalyzeIamPolicyResponse:
                 A response message for
-                   [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
+                [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
 
         """
         # Create or coerce a protobuf request object.
@@ -2075,18 +2143,19 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> operation.Operation:
-        r"""Analyzes IAM policies asynchronously to answer which identities
-        have what accesses on which resources, and writes the analysis
-        results to a Google Cloud Storage or a BigQuery destination. For
-        Cloud Storage destination, the output format is the JSON format
-        that represents a
+        r"""Analyzes IAM policies asynchronously to answer which
+        identities have what accesses on which resources, and
+        writes the analysis results to a Google Cloud Storage or
+        a BigQuery destination. For Cloud Storage destination,
+        the output format is the JSON format that represents a
         [AnalyzeIamPolicyResponse][google.cloud.asset.v1.AnalyzeIamPolicyResponse].
         This method implements the
         [google.longrunning.Operation][google.longrunning.Operation],
-        which allows you to track the operation status. We recommend
-        intervals of at least 2 seconds with exponential backoff retry
-        to poll the operation result. The metadata contains the metadata
-        for the long-running operation.
+        which allows you to track the operation status. We
+        recommend intervals of at least 2 seconds with
+        exponential backoff retry to poll the operation result.
+        The metadata contains the metadata for the long-running
+        operation.
 
         .. code-block:: python
 
@@ -2139,10 +2208,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningResponse` A response message for
-                   [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningResponse`
+                A response message for
+                [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
 
         """
         # Create or coerce a protobuf request object.
@@ -2284,20 +2356,20 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> asset_service.QueryAssetsResponse:
-        r"""Issue a job that queries assets using a SQL statement compatible
-        with `BigQuery Standard
-        SQL <http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>`__.
+        r"""Issue a job that queries assets using a SQL statement
+        compatible with [BigQuery Standard
+        SQL](http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql).
 
-        If the query execution finishes within timeout and there's no
-        pagination, the full query results will be returned in the
-        ``QueryAssetsResponse``.
+        If the query execution finishes within timeout and
+        there's no pagination, the full query results will be
+        returned in the `QueryAssetsResponse`.
 
-        Otherwise, full query results can be obtained by issuing extra
-        requests with the ``job_reference`` from the a previous
-        ``QueryAssets`` call.
+        Otherwise, full query results can be obtained by issuing
+        extra requests with the `job_reference` from the a
+        previous `QueryAssets` call.
 
-        Note, the query result has approximately 10 GB limitation
-        enforced by BigQuery
+        Note, the query result has approximately 10 GB
+        limitation enforced by BigQuery
         https://cloud.google.com/bigquery/docs/best-practices-performance-output,
         queries return larger results will result in errors.
 
@@ -2419,35 +2491,42 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request (Union[google.cloud.asset_v1.types.CreateSavedQueryRequest, dict]):
                 The request object. Request to create a saved query.
             parent (str):
-                Required. The name of the project/folder/organization
-                where this saved_query should be created in. It can only
-                be an organization number (such as "organizations/123"),
-                a folder number (such as "folders/123"), a project ID
-                (such as "projects/my-project-id"), or a project number
-                (such as "projects/12345").
+                Required. The name of the
+                project/folder/organization where this
+                saved_query should be created in. It can
+                only be an organization number (such as
+                "organizations/123"), a folder number
+                (such as "folders/123"), a project ID
+                (such as "projects/my-project-id"), or a
+                project number (such as
+                "projects/12345").
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             saved_query (google.cloud.asset_v1.types.SavedQuery):
-                Required. The saved_query details. The ``name`` field
-                must be empty as it will be generated based on the
-                parent and saved_query_id.
+                Required. The saved_query details.
+                The `name` field must be empty as it
+                will be generated based on the parent
+                and saved_query_id.
 
                 This corresponds to the ``saved_query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             saved_query_id (str):
-                Required. The ID to use for the saved query, which must
-                be unique in the specified parent. It will become the
-                final component of the saved query's resource name.
+                Required. The ID to use for the saved
+                query, which must be unique in the
+                specified parent. It will become the
+                final component of the saved query's
+                resource name.
 
-                This value should be 4-63 characters, and valid
-                characters are ``[a-z][0-9]-``.
+                This value should be 4-63 characters,
+                and valid characters are `[a-z][0-9]-`.
 
-                Notice that this field is required in the saved query
-                creation, and the ``name`` field of the ``saved_query``
-                will be ignored.
+                Notice that this field is required in
+                the saved query creation, and the `name`
+                field of the `saved_query` will be
+                ignored.
 
                 This corresponds to the ``saved_query_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2554,12 +2633,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request (Union[google.cloud.asset_v1.types.GetSavedQueryRequest, dict]):
                 The request object. Request to get a saved query.
             name (str):
-                Required. The name of the saved query and it must be in
-                the format of:
-
-                - projects/project_number/savedQueries/saved_query_id
-                - folders/folder_number/savedQueries/saved_query_id
-                - organizations/organization_number/savedQueries/saved_query_id
+                Required. The name of the saved query
+                and it must be in the format of:
+                *
+                projects/project_number/savedQueries/saved_query_id
+                *
+                folders/folder_number/savedQueries/saved_query_id
+                *
+                organizations/organization_number/savedQueries/saved_query_id
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2789,12 +2870,16 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             saved_query (google.cloud.asset_v1.types.SavedQuery):
                 Required. The saved query to update.
 
-                The saved query's ``name`` field is used to identify the
-                one to update, which has format as below:
+                The saved query's `name` field is used
+                to identify the one to update, which has
+                format as below:
 
-                - projects/project_number/savedQueries/saved_query_id
-                - folders/folder_number/savedQueries/saved_query_id
-                - organizations/organization_number/savedQueries/saved_query_id
+                *
+                projects/project_number/savedQueries/saved_query_id
+                *
+                folders/folder_number/savedQueries/saved_query_id
+                *
+                organizations/organization_number/savedQueries/saved_query_id
 
                 This corresponds to the ``saved_query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2903,12 +2988,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             request (Union[google.cloud.asset_v1.types.DeleteSavedQueryRequest, dict]):
                 The request object. Request to delete a saved query.
             name (str):
-                Required. The name of the saved query to delete. It must
-                be in the format of:
+                Required. The name of the saved query
+                to delete. It must be in the format of:
 
-                - projects/project_number/savedQueries/saved_query_id
-                - folders/folder_number/savedQueries/saved_query_id
-                - organizations/organization_number/savedQueries/saved_query_id
+                *
+                projects/project_number/savedQueries/saved_query_id
+                *
+                folders/folder_number/savedQueries/saved_query_id
+                *
+                organizations/organization_number/savedQueries/saved_query_id
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3013,7 +3101,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1.types.BatchGetEffectiveIamPoliciesResponse:
                 A response message for
-                   [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
+                [AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies].
 
         """
         # Create or coerce a protobuf request object.
@@ -3093,11 +3181,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 The request object. A request message for
                 [AssetService.AnalyzeOrgPolicies][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicies].
             scope (str):
-                Required. The organization to scope the request. Only
-                organization policies within the scope will be analyzed.
+                Required. The organization to scope
+                the request. Only organization policies
+                within the scope will be analyzed.
 
-                - organizations/{ORGANIZATION_NUMBER} (e.g.,
-                  "organizations/123456")
+                * organizations/{ORGANIZATION_NUMBER}
+                (e.g., "organizations/123456")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3116,12 +3205,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 The expression to filter
                 [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results].
                 The only supported field is
-                ``consolidated_policy.attached_resource``, and the only
-                supported operator is ``=``.
+                `consolidated_policy.attached_resource`,
+                and the only supported operator is `=`.
 
                 Example:
+
                 consolidated_policy.attached_resource="//cloudresourcemanager.googleapis.com/folders/001"
-                will return the org policy results of"folders/001".
+                will return the org policy results
+                of"folders/001".
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3137,10 +3228,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.AnalyzeOrgPoliciesPager:
                 The response message for
-                   [AssetService.AnalyzeOrgPolicies][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicies].
+                [AssetService.AnalyzeOrgPolicies][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicies].
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -3248,13 +3340,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 The request object. A request message for
                 [AssetService.AnalyzeOrgPolicyGovernedContainers][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedContainers].
             scope (str):
-                Required. The organization to scope the request. Only
-                organization policies within the scope will be analyzed.
-                The output containers will also be limited to the ones
-                governed by those in-scope organization policies.
+                Required. The organization to scope
+                the request. Only organization policies
+                within the scope will be analyzed. The
+                output containers will also be limited
+                to the ones governed by those in-scope
+                organization policies.
 
-                - organizations/{ORGANIZATION_NUMBER} (e.g.,
-                  "organizations/123456")
+                * organizations/{ORGANIZATION_NUMBER}
+                (e.g., "organizations/123456")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3269,13 +3363,16 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (str):
-                The expression to filter the governed containers in
-                result. The only supported field is ``parent``, and the
-                only supported operator is ``=``.
+                The expression to filter the governed
+                containers in result. The only supported
+                field is `parent`, and the only
+                supported operator is `=`.
 
                 Example:
+
                 parent="//cloudresourcemanager.googleapis.com/folders/001"
-                will return all containers under "folders/001".
+                will return all containers under
+                "folders/001".
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3291,10 +3388,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.AnalyzeOrgPolicyGovernedContainersPager:
                 The response message for
-                   [AssetService.AnalyzeOrgPolicyGovernedContainers][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedContainers].
+                [AssetService.AnalyzeOrgPolicyGovernedContainers][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedContainers].
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -3366,24 +3464,25 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> pagers.AnalyzeOrgPolicyGovernedAssetsPager:
-        r"""Analyzes organization policies governed assets (Google Cloud
-        resources or policies) under a scope. This RPC supports custom
-        constraints and the following 10 canned constraints:
+        r"""Analyzes organization policies governed assets
+        (Google Cloud resources or policies) under a scope. This
+        RPC supports custom constraints and the following 10
+        canned constraints:
 
-        - storage.uniformBucketLevelAccess
-        - iam.disableServiceAccountKeyCreation
-        - iam.allowedPolicyMemberDomains
-        - compute.vmExternalIpAccess
-        - appengine.enforceServiceAccountActAsCheck
-        - gcp.resourceLocations
-        - compute.trustedImageProjects
-        - compute.skipDefaultNetworkCreation
-        - compute.requireOsLogin
-        - compute.disableNestedVirtualization
+        * storage.uniformBucketLevelAccess
+        * iam.disableServiceAccountKeyCreation
+        * iam.allowedPolicyMemberDomains
+        * compute.vmExternalIpAccess
+        * appengine.enforceServiceAccountActAsCheck
+        * gcp.resourceLocations
+        * compute.trustedImageProjects
+        * compute.skipDefaultNetworkCreation
+        * compute.requireOsLogin
+        * compute.disableNestedVirtualization
 
-        This RPC only returns either resources of types supported by
-        `searchable asset
-        types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__,
+        This RPC only returns either resources of types
+        supported by [searchable asset
+        types](https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types),
         or IAM policies.
 
         .. code-block:: python
@@ -3419,13 +3518,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 The request object. A request message for
                 [AssetService.AnalyzeOrgPolicyGovernedAssets][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedAssets].
             scope (str):
-                Required. The organization to scope the request. Only
-                organization policies within the scope will be analyzed.
-                The output assets will also be limited to the ones
-                governed by those in-scope organization policies.
+                Required. The organization to scope
+                the request. Only organization policies
+                within the scope will be analyzed. The
+                output assets will also be limited to
+                the ones governed by those in-scope
+                organization policies.
 
-                - organizations/{ORGANIZATION_NUMBER} (e.g.,
-                  "organizations/123456")
+                * organizations/{ORGANIZATION_NUMBER}
+                (e.g., "organizations/123456")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3441,24 +3542,29 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (str):
-                The expression to filter the governed assets in result.
-                The only supported fields for governed resources are
-                ``governed_resource.project`` and
-                ``governed_resource.folders``. The only supported fields
-                for governed iam policies are
-                ``governed_iam_policy.project`` and
-                ``governed_iam_policy.folders``. The only supported
-                operator is ``=``.
+                The expression to filter the governed
+                assets in result. The only supported
+                fields for governed resources are
+                `governed_resource.project` and
+                `governed_resource.folders`. The only
+                supported fields for governed iam
+                policies are
+                `governed_iam_policy.project` and
+                `governed_iam_policy.folders`. The only
+                supported operator is `=`.
 
-                Example 1: governed_resource.project="projects/12345678"
-                filter will return all governed resources under
-                projects/12345678 including the project ifself, if
+                Example 1:
+                governed_resource.project="projects/12345678"
+                filter will return all governed
+                resources under projects/12345678
+                including the project ifself, if
                 applicable.
 
                 Example 2:
-                governed_iam_policy.folders="folders/12345678" filter
-                will return all governed iam policies under
-                folders/12345678, if applicable.
+                governed_iam_policy.folders="folders/12345678"
+                filter will return all governed iam
+                policies under folders/12345678, if
+                applicable.
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3474,10 +3580,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.AnalyzeOrgPolicyGovernedAssetsPager:
                 The response message for
-                   [AssetService.AnalyzeOrgPolicyGovernedAssets][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedAssets].
+                [AssetService.AnalyzeOrgPolicyGovernedAssets][google.cloud.asset.v1.AssetService.AnalyzeOrgPolicyGovernedAssets].
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

@@ -2627,8 +2627,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             Returns:
                 ~.eventarc.ListChannelConnectionsResponse:
-                    The response message for the ``ListChannelConnections``
-                method.
+                    The response message for the
+                `ListChannelConnections` method.
 
             """
 
@@ -2749,7 +2749,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             Returns:
                 ~.eventarc.ListChannelsResponse:
-                    The response message for the ``ListChannels`` method.
+                    The response message for the
+                `ListChannels` method.
+
             """
 
             http_options = _BaseEventarcRestTransport._BaseListChannels._get_http_options()
@@ -2869,7 +2871,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             Returns:
                 ~.eventarc.ListProvidersResponse:
-                    The response message for the ``ListProviders`` method.
+                    The response message for the
+                `ListProviders` method.
+
             """
 
             http_options = _BaseEventarcRestTransport._BaseListProviders._get_http_options()
@@ -2989,7 +2993,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             Returns:
                 ~.eventarc.ListTriggersResponse:
-                    The response message for the ``ListTriggers`` method.
+                    The response message for the
+                `ListTriggers` method.
+
             """
 
             http_options = _BaseEventarcRestTransport._BaseListTriggers._get_http_options()

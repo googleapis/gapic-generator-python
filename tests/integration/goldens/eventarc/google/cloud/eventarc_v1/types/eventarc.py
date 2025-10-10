@@ -85,18 +85,21 @@ class ListTriggersRequest(proto.Message):
             Note: The service may send fewer.
         page_token (str):
             The page token; provide the value from the
-            ``next_page_token`` field in a previous ``ListTriggers``
-            call to retrieve the subsequent page.
+            `next_page_token` field in a previous
+            `ListTriggers` call to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
-            ``ListTriggers`` must match the call that provided the page
-            token.
+            When paginating, all other parameters provided
+            to `ListTriggers` must match the call that
+            provided the page token.
         order_by (str):
-            The sorting order of the resources returned. Value should be
-            a comma-separated list of fields. The default sorting order
-            is ascending. To specify descending order for a field,
-            append a ``desc`` suffix; for example:
-            ``name desc, trigger_id``.
+            The sorting order of the resources returned.
+            Value should be a comma-separated list of
+            fields. The default sorting order is ascending.
+            To specify descending order for a field, append
+            a `desc` suffix; for example:
+
+            `name desc, trigger_id`.
         filter (str):
             Filter field. Used to filter the Triggers to
             be listed. Possible filters are described in
@@ -128,16 +131,16 @@ class ListTriggersRequest(proto.Message):
 
 
 class ListTriggersResponse(proto.Message):
-    r"""The response message for the ``ListTriggers`` method.
+    r"""The response message for the `ListTriggers` method.
 
     Attributes:
         triggers (MutableSequence[google.cloud.eventarc_v1.types.Trigger]):
-            The requested triggers, up to the number specified in
-            ``page_size``.
+            The requested triggers, up to the number
+            specified in `page_size`.
         next_page_token (str):
-            A page token that can be sent to ``ListTriggers`` to request
-            the next page. If this is empty, then there are no more
-            pages.
+            A page token that can be sent to
+            `ListTriggers` to request the next page. If this
+            is empty, then there are no more pages.
         unreachable (MutableSequence[str]):
             Unreachable resources, if any.
     """
@@ -204,14 +207,15 @@ class UpdateTriggerRequest(proto.Message):
         trigger (google.cloud.eventarc_v1.types.Trigger):
             The trigger to be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The fields to be updated; only fields explicitly provided
-            are updated. If no field mask is provided, all provided
-            fields in the request are updated. To update all fields,
-            provide a field mask of "\*".
+            The fields to be updated; only fields
+            explicitly provided are updated. If no field
+            mask is provided, all provided fields in the
+            request are updated. To update all fields,
+            provide a field mask of "*".
         allow_missing (bool):
-            If set to true, and the trigger is not found, a new trigger
-            will be created. In this situation, ``update_mask`` is
-            ignored.
+            If set to true, and the trigger is not found,
+            a new trigger will be created. In this
+            situation, `update_mask` is ignored.
         validate_only (bool):
             Required. If set, validate the request and
             preview the review, but do not post it.
@@ -302,18 +306,21 @@ class ListChannelsRequest(proto.Message):
             Note: The service may send fewer.
         page_token (str):
             The page token; provide the value from the
-            ``next_page_token`` field in a previous ``ListChannels``
-            call to retrieve the subsequent page.
+            `next_page_token` field in a previous
+            `ListChannels` call to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
-            ``ListChannels`` must match the call that provided the page
-            token.
+            When paginating, all other parameters provided
+            to `ListChannels` must match the call that
+            provided the page token.
         order_by (str):
-            The sorting order of the resources returned. Value should be
-            a comma-separated list of fields. The default sorting order
-            is ascending. To specify descending order for a field,
-            append a ``desc`` suffix; for example:
-            ``name desc, channel_id``.
+            The sorting order of the resources returned.
+            Value should be a comma-separated list of
+            fields. The default sorting order is ascending.
+            To specify descending order for a field, append
+            a `desc` suffix; for example:
+
+            `name desc, channel_id`.
     """
 
     parent: str = proto.Field(
@@ -335,16 +342,16 @@ class ListChannelsRequest(proto.Message):
 
 
 class ListChannelsResponse(proto.Message):
-    r"""The response message for the ``ListChannels`` method.
+    r"""The response message for the `ListChannels` method.
 
     Attributes:
         channels (MutableSequence[google.cloud.eventarc_v1.types.Channel]):
-            The requested channels, up to the number specified in
-            ``page_size``.
+            The requested channels, up to the number
+            specified in `page_size`.
         next_page_token (str):
-            A page token that can be sent to ``ListChannels`` to request
-            the next page. If this is empty, then there are no more
-            pages.
+            A page token that can be sent to
+            `ListChannels` to request the next page. If this
+            is empty, then there are no more pages.
         unreachable (MutableSequence[str]):
             Unreachable resources, if any.
     """
@@ -411,10 +418,11 @@ class UpdateChannelRequest(proto.Message):
         channel (google.cloud.eventarc_v1.types.Channel):
             The channel to be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The fields to be updated; only fields explicitly provided
-            are updated. If no field mask is provided, all provided
-            fields in the request are updated. To update all fields,
-            provide a field mask of "\*".
+            The fields to be updated; only fields
+            explicitly provided are updated. If no field
+            mask is provided, all provided fields in the
+            request are updated. To update all fields,
+            provide a field mask of "*".
         validate_only (bool):
             Required. If set, validate the request and
             preview the review, but do not post it.
@@ -483,17 +491,21 @@ class ListProvidersRequest(proto.Message):
             each page.
         page_token (str):
             The page token; provide the value from the
-            ``next_page_token`` field in a previous ``ListProviders``
-            call to retrieve the subsequent page.
+            `next_page_token` field in a previous
+            `ListProviders` call to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
-            ``ListProviders`` must match the call that provided the page
-            token.
+            When paginating, all other parameters provided
+            to `ListProviders` must match the call that
+            provided the page token.
         order_by (str):
-            The sorting order of the resources returned. Value should be
-            a comma-separated list of fields. The default sorting oder
-            is ascending. To specify descending order for a field,
-            append a ``desc`` suffix; for example: ``name desc, _id``.
+            The sorting order of the resources returned.
+            Value should be a comma-separated list of
+            fields. The default sorting oder is ascending.
+            To specify descending order for a field, append
+            a `desc` suffix; for example:
+
+            `name desc, _id`.
         filter (str):
             The filter field that the list request will
             filter on.
@@ -522,16 +534,16 @@ class ListProvidersRequest(proto.Message):
 
 
 class ListProvidersResponse(proto.Message):
-    r"""The response message for the ``ListProviders`` method.
+    r"""The response message for the `ListProviders` method.
 
     Attributes:
         providers (MutableSequence[google.cloud.eventarc_v1.types.Provider]):
-            The requested providers, up to the number specified in
-            ``page_size``.
+            The requested providers, up to the number
+            specified in `page_size`.
         next_page_token (str):
-            A page token that can be sent to ``ListProviders`` to
-            request the next page. If this is empty, then there are no
-            more pages.
+            A page token that can be sent to
+            `ListProviders` to request the next page. If
+            this is empty, then there are no more pages.
         unreachable (MutableSequence[str]):
             Unreachable resources, if any.
     """
@@ -583,13 +595,13 @@ class ListChannelConnectionsRequest(proto.Message):
             Note: The service may send fewer responses.
         page_token (str):
             The page token; provide the value from the
-            ``next_page_token`` field in a previous
-            ``ListChannelConnections`` call to retrieve the subsequent
-            page.
+            `next_page_token` field in a previous
+            `ListChannelConnections` call to retrieve the
+            subsequent page.
 
-            When paginating, all other parameters provided to
-            ``ListChannelConnetions`` match the call that provided the
-            page token.
+            When paginating, all other parameters provided
+            to `ListChannelConnetions` match the call that
+            provided the page token.
     """
 
     parent: str = proto.Field(
@@ -607,16 +619,17 @@ class ListChannelConnectionsRequest(proto.Message):
 
 
 class ListChannelConnectionsResponse(proto.Message):
-    r"""The response message for the ``ListChannelConnections`` method.
+    r"""The response message for the `ListChannelConnections` method.
 
     Attributes:
         channel_connections (MutableSequence[google.cloud.eventarc_v1.types.ChannelConnection]):
-            The requested channel connections, up to the number
-            specified in ``page_size``.
+            The requested channel connections, up to the
+            number specified in `page_size`.
         next_page_token (str):
-            A page token that can be sent to ``ListChannelConnections``
-            to request the next page. If this is empty, then there are
-            no more pages.
+            A page token that can be sent to
+            `ListChannelConnections` to request the next
+            page. If this is empty, then there are no more
+            pages.
         unreachable (MutableSequence[str]):
             Unreachable resources, if any.
     """
@@ -691,10 +704,11 @@ class UpdateGoogleChannelConfigRequest(proto.Message):
         google_channel_config (google.cloud.eventarc_v1.types.GoogleChannelConfig):
             Required. The config to be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The fields to be updated; only fields explicitly provided
-            are updated. If no field mask is provided, all provided
-            fields in the request are updated. To update all fields,
-            provide a field mask of "\*".
+            The fields to be updated; only fields
+            explicitly provided are updated. If no field
+            mask is provided, all provided fields in the
+            request are updated. To update all fields,
+            provide a field mask of "*".
     """
 
     google_channel_config: gce_google_channel_config.GoogleChannelConfig = proto.Field(
@@ -743,11 +757,12 @@ class OperationMetadata(proto.Message):
             Output only. Human-readable status of the
             operation, if any.
         requested_cancellation (bool):
-            Output only. Identifies whether the user has requested
-            cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            Output only. Identifies whether the user has
+            requested cancellation of the operation.
+            Operations that have successfully been cancelled
+            have [Operation.error][] value with a
+            [google.rpc.Status.code][google.rpc.Status.code]
+            of 1, corresponding to `Code.CANCELLED`.
         api_version (str):
             Output only. API version used to start the
             operation.
