@@ -1,6 +1,48 @@
 # Changelog
 
 
+## [1.28.1](https://github.com/googleapis/gapic-generator-python/compare/v1.28.0...v1.28.1) (2025-10-14)
+
+
+### Bug Fixes
+
+* Fix gapic-version generator option for selective gapic generation ([#2460](https://github.com/googleapis/gapic-generator-python/issues/2460)) ([d7c6072](https://github.com/googleapis/gapic-generator-python/commit/d7c6072cc65e8f166d4b5a78bef250068dca43bf))
+
+## [1.28.0](https://github.com/googleapis/gapic-generator-python/compare/v1.27.2...v1.28.0) (2025-10-07)
+
+
+### Features
+
+* Add support for Python 3.14 ([#2451](https://github.com/googleapis/gapic-generator-python/issues/2451)) ([3a854db](https://github.com/googleapis/gapic-generator-python/commit/3a854dbd2448a384dd67d683332a4c438805f5a6))
+
+
+### Bug Fixes
+
+* Require grpcio &gt;=  1.33.2 ([ccf132f](https://github.com/googleapis/gapic-generator-python/commit/ccf132f7a8510ce7ef3728fa569806ac03ccea6e))
+* Require grpcio &gt;= 1.75.1 for Python 3.14 ([ccf132f](https://github.com/googleapis/gapic-generator-python/commit/ccf132f7a8510ce7ef3728fa569806ac03ccea6e))
+
+## [1.27.2](https://github.com/googleapis/gapic-generator-python/compare/v1.27.1...v1.27.2) (2025-10-01)
+
+
+### Bug Fixes
+
+* Deprecate credentials_file ([#2454](https://github.com/googleapis/gapic-generator-python/issues/2454)) ([48c5f38](https://github.com/googleapis/gapic-generator-python/commit/48c5f3895aa638a1def7df3f96c749e746450680))
+* Resolve issue where rest-numeric-enums=False is not supported ([#2456](https://github.com/googleapis/gapic-generator-python/issues/2456)) ([3d24a50](https://github.com/googleapis/gapic-generator-python/commit/3d24a50ac992631649ad06bb2dc6c90abe88988a))
+
+## [1.27.1](https://github.com/googleapis/gapic-generator-python/compare/v1.27.0...v1.27.1) (2025-09-26)
+
+
+### Bug Fixes
+
+* Add testing for Python 3.14 Pre-release ([7f7d50e](https://github.com/googleapis/gapic-generator-python/commit/7f7d50e3154d548e8066d251b85a589afbf183d7))
+
+## [1.27.0](https://github.com/googleapis/gapic-generator-python/compare/v1.26.2...v1.27.0) (2025-09-24)
+
+
+### Features
+
+* Add gapic-version generator option ([#2440](https://github.com/googleapis/gapic-generator-python/issues/2440)) ([75eb349](https://github.com/googleapis/gapic-generator-python/commit/75eb349efcb907dc443b6e8a2c11b2056a476009))
+
 ## [1.26.2](https://github.com/googleapis/gapic-generator-python/compare/v1.26.1...v1.26.2) (2025-08-30)
 
 

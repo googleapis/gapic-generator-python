@@ -44,6 +44,7 @@ ALL_PYTHON = (
     "3.11",
     "3.12",
     "3.13",
+    "3.14",
 )
 
 NEWEST_PYTHON = ALL_PYTHON[-1]
