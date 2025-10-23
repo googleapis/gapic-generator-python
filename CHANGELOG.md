@@ -1,6 +1,27 @@
 # Changelog
 
 
+## [1.28.3](https://github.com/googleapis/gapic-generator-python/compare/v1.28.2...v1.28.3) (2025-10-21)
+
+
+### Bug Fixes
+
+* Only format samples if the directory exists ([#2466](https://github.com/googleapis/gapic-generator-python/issues/2466)) ([2d85dee](https://github.com/googleapis/gapic-generator-python/commit/2d85dee33cc1cd2815dcf1e9304905013ec561b6))
+
+## [1.28.2](https://github.com/googleapis/gapic-generator-python/compare/v1.28.1...v1.28.2) (2025-10-20)
+
+
+### Bug Fixes
+
+* Bump the minimum version of google-apps-card to 0.3.0 ([#2464](https://github.com/googleapis/gapic-generator-python/issues/2464)) ([bfb87e2](https://github.com/googleapis/gapic-generator-python/commit/bfb87e27a38a9c3b77902d1f61899ebc545082e8))
+
+## [1.28.1](https://github.com/googleapis/gapic-generator-python/compare/v1.28.0...v1.28.1) (2025-10-14)
+
+
+### Bug Fixes
+
+* Fix gapic-version generator option for selective gapic generation ([#2460](https://github.com/googleapis/gapic-generator-python/issues/2460)) ([d7c6072](https://github.com/googleapis/gapic-generator-python/commit/d7c6072cc65e8f166d4b5a78bef250068dca43bf))
+
 ## [1.28.0](https://github.com/googleapis/gapic-generator-python/compare/v1.27.2...v1.28.0) (2025-10-07)
 
 
