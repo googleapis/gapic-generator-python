@@ -20,6 +20,7 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
+from google.auth.transport import _mtls_helper			  # type: ignore
 from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
@@ -279,13 +280,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         client_options = cast(client_options_lib.ClientOptions, client_options)
 
         # Create SSL credentials for mutual TLS if needed.
-        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
+	use_client_cert = _mtls_helper.check_use_client_cert()
 
         client_cert_source_func = None
         is_mtls = False
-        if use_client_cert:
+        if use_client_cert == "true":
             if client_options.client_cert_source:
                 is_mtls = True
                 client_cert_source_func = client_options.client_cert_source
