@@ -530,7 +530,7 @@ def test_logging_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is not set.
     # GOOGLE_API_USE_CLIENT_CERTIFICATE is not set, and workloads present in config then mTLS is enabled.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-        with mock.patch('google.auth.transport._mtls_helper.check_use_client_cert', return_value="true")
+        with mock.patch('google.auth.transport._mtls_helper.check_use_client_cert', return_value="true"):
             mock_api_endpoint = "foo"
             options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
@@ -540,7 +540,7 @@ def test_logging_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is not set.
     # GOOGLE_API_USE_CLIENT_CERTIFICATE is not set, and workloads not present in config then mTLS is disabled.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-        with mock.patch('google.auth.transport._mtls_helper.check_use_client_cert', return_value="false")
+        with mock.patch('google.auth.transport._mtls_helper.check_use_client_cert', return_value="false"):
             mock_client_cert_source = mock.Mock()
             mock_api_endpoint = "foo"
             options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
