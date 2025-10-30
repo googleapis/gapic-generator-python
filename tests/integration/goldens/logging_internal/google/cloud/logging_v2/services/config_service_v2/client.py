@@ -355,6 +355,8 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
             client_options = client_options_lib.ClientOptions()
         use_client_cert = _mtls_helper.check_use_client_cert()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
@@ -393,6 +395,8 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         use_client_cert = _mtls_helper.check_use_client_cert()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
         return use_client_cert == "true", use_mtls_endpoint, universe_domain_env

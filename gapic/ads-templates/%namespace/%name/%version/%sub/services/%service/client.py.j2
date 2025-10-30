@@ -281,6 +281,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         # Create SSL credentials for mutual TLS if needed.
 	use_client_cert = _mtls_helper.check_use_client_cert()
+        if use_client_cert not in ("true", "false"):
+            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
 
         client_cert_source_func = None
         is_mtls = False
