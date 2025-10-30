@@ -271,9 +271,6 @@ class Generator:
         # of `import google.cloud.library`.
         if (
             template_name.startswith("%namespace/%name/")
-            and api_schema.all_library_settings[
-                api_schema.naming.proto_package
-            ].python_settings.experimental_features.unversioned_package_disabled
         ):
             return answer
 
