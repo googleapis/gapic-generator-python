@@ -556,26 +556,60 @@ def test_cloud_redis_client_get_mtls_endpoint_and_cert_source(client_class):
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
 
-    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is not set.
-    # GOOGLE_API_USE_CLIENT_CERTIFICATE is not set, and workloads present in config then mTLS is enabled.
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is set to empty string(unset)
+    # and workloads present in config then mTLS is enabled.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-        with mock.patch('google.auth.transport._mtls_helper.check_use_client_cert', return_value="true"):
-            mock_api_endpoint = "foo"
-            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
-            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
-            assert api_endpoint == mock_api_endpoint
-            assert cert_source == mock_client_cert_source
+      config_data = {
+          "version": 1,
+          "cert_configs": {
+              "workload": {
+                  "cert_path": "path/to/cert/file",
+                  "key_path": "path/to/key/file",
+              }
+          },
+      }
+      config_filename = "mock_certificate_config.json"
+      config_file_content = json.dumps(config_data)
+      m = mock.mock_open(read_data=config_file_content)
+      with mock.patch("builtins.open", m):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
+        ):
+          mock_api_endpoint = "foo"
+          options = client_options.ClientOptions(
+              client_cert_source=mock_client_cert_source,
+              api_endpoint=mock_api_endpoint,
+          )
+          api_endpoint, cert_source = (
+              client_class.get_mtls_endpoint_and_cert_source(options)
+          )
+          assert api_endpoint == mock_api_endpoint
+          assert cert_source == mock_client_cert_source
 
-    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is not set.
-    # GOOGLE_API_USE_CLIENT_CERTIFICATE is not set, and workloads not present in config then mTLS is disabled.
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is set to empty string(unset)
+    # and workloads not present in config then mTLS is disabled.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-        with mock.patch('google.auth.transport._mtls_helper.check_use_client_cert', return_value="false"):
-            mock_client_cert_source = mock.Mock()
-            mock_api_endpoint = "foo"
-            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
-            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
-            assert api_endpoint == mock_api_endpoint
-            assert cert_source is None
+      config_data = {
+          "version": 1,
+          "cert_configs": {},
+      }
+      config_filename = "mock_certificate_config.json"
+      config_file_content = json.dumps(config_data)
+      m = mock.mock_open(read_data=config_file_content)
+      with mock.patch("builtins.open", m):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
+        ):
+          mock_api_endpoint = "foo"
+          options = client_options.ClientOptions(
+              client_cert_source=mock_client_cert_source,
+              api_endpoint=mock_api_endpoint,
+          )
+          api_endpoint, cert_source = (
+              client_class.get_mtls_endpoint_and_cert_source(options)
+          )
+          assert api_endpoint == mock_api_endpoint
+          assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
