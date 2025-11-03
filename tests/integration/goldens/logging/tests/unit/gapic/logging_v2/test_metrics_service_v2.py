@@ -524,18 +524,18 @@ def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
         api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
-    
+
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is set to empty string(unset)
     # and workloads present in config then mTLS is enabled.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
       config_data = {
           "version": 1,
           "cert_configs": {
-              "workload": {
-                  "cert_path": "path/to/cert/file",
-                  "key_path": "path/to/key/file",
-              }
-          },
+            "workload": {
+                "cert_path": "path/to/cert/file",
+                "key_path": "path/to/key/file",
+            }
+        },
       }
       config_filename = "mock_certificate_config.json"
       config_file_content = json.dumps(config_data)
@@ -560,7 +560,7 @@ def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
       config_data = {
           "version": 1,
-          "cert_configs": {},
+        "cert_configs": {},
       }
       config_filename = "mock_certificate_config.json"
       config_file_content = json.dumps(config_data)
