@@ -245,6 +245,13 @@ def showcase_library(
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
 
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2473):
+    # Warnings emitted from google-api-core starting in 2.28
+    # appear to cause issues when running protoc.
+    # The specific failure is `Plugin output is unparseable`
+    if session.python in ("3.7", "3.8", "3.9", "3.10"):
+        session.install("google-api-core<2.28")
+
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
         # Download the Showcase descriptor.
