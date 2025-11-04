@@ -283,7 +283,6 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         use_client_cert = _mtls_helper.check_use_client_cert()
         if use_client_cert not in ("true", "false"):
             raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
 
         client_cert_source_func = None
         is_mtls = False
