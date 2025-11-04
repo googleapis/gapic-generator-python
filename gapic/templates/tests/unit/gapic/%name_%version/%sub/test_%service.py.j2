@@ -695,8 +695,8 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
       config_filename = "mock_certificate_config.json"
       config_file_content = json.dumps(config_data)
-      m = mock.mock_open(read_data=config_file_content)
-      with mock.patch("builtins.open", m):
+      mock_read_file = mock.mock_open(read_data=config_file_content)
+      with mock.patch("builtins.open", mock_read_file):
         with mock.patch.dict(
             os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
         ):
