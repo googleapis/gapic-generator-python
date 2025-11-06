@@ -15,10 +15,40 @@
 #
 from google.cloud.logging_v2 import gapic_version as package_version
 
+import google.api_core as api_core
+from typing import Tuple
+import sys
+
 __version__ = package_version.__version__
 
+if sys.version_info >= (3, 8):
+    from importlib import metadata
+else:
+    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
+    # this code path once we drop support for Python 3.7
+    import importlib_metadata as metadata
 
-import google.api_core as api_core
+ParsedVersion = Tuple[int, ...]
+
+def parse_version_to_tuple(version_string: str) -> ParsedVersion:
+    """Safely converts a semantic version string to a comparable tuple of integers.
+    Example: "4.25.8" -> (4, 25, 8)
+    Ignores non-numeric parts and handles common version formats.
+    Args:
+        version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
+    Returns:
+        Tuple of integers for the parsed version string.
+    """
+    parts = []
+    for part in version_string.split("."):
+        try:
+            parts.append(int(part))
+        except ValueError:
+            # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
+            # This is a simplification compared to 'packaging.parse_version', but sufficient
+            # for comparing strictly numeric semantic versions.
+            break
+    return tuple(parts)
 
 if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER
     api_core.check_python_version("google.cloud.logging_v2") # type: ignore
@@ -48,27 +78,15 @@ else:   # pragma: NO COVER
                           f"then update {_package_label}.",
                           FutureWarning)
 
-        from packaging.version import parse as parse_version
-
-        if sys.version_info < (3, 8):
-            import pkg_resources
-
-            def _get_version(dependency_name):
-              try:
-                version_string = pkg_resources.get_distribution(dependency_name).version
-                return (parse_version(version_string), version_string)
-              except pkg_resources.DistributionNotFound:
+        def _get_version(dependency_name):
+            try:
+                version_string: str = metadata.version(dependency_name)
+                parsed_version = parse_version_to_tuple(version_string)
+                return (parsed_version, version_string)
+            except Exception:
+                # Catch exceptions from metadata.version() (e.g., PackageNotFoundError)
+                # or errors during parse_version_to_tuple
                 return (None, "--")
-        else:
-            from importlib import metadata
-
-            def _get_version(dependency_name):
-                try:
-                    version_string = metadata.version("requests")
-                    parsed_version = parse_version(version_string)
-                    return (parsed_version.release, version_string)
-                except metadata.PackageNotFoundError:
-                    return (None, "--")
 
         _dependency_package = "google.protobuf"
         _next_supported_version = "4.25.8"
