@@ -297,25 +297,25 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        try:
-          # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-          from google.auth.transport.mtls import should_use_client_cert
-          use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE",
-            "true" if should_use_client_cert() else "false"
-          )
-        except ImportError:
-          # if unsupported, fallback to reading from env variable
-          use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
+        if hasattr(mtls,"should_use_client_cert"):
+            use_client_cert = mtls.should_use_client_cert()
+        else:
+            # if unsupported, fallback to reading from env var
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError(
+                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
+                    " either `true` or `false`"
+                )
+            use_client_cert = use_client_cert_str == "true"
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
         client_cert_source = None
-        if use_client_cert == "true":
+        if use_client_cert:
             if client_options.client_cert_source:
                 client_cert_source = client_options.client_cert_source
             elif mtls.has_default_client_cert_source():
@@ -345,23 +345,23 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        try:
-          # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-          from google.auth.transport.mtls import should_use_client_cert
-          use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE",
-            "true" if should_use_client_cert() else "false"
-          )
-        except ImportError:
-          # if unsupported, fallback to reading from env var
-          use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
+        if hasattr(mtls,"should_use_client_cert"):
+            use_client_cert = mtls.should_use_client_cert()
+        else:
+            # if unsupported, fallback to reading from env var
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError(
+                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
+                    " either `true` or `false`"
+                )
+            use_client_cert = use_client_cert_str == "true"
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+        return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
