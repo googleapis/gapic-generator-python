@@ -362,7 +362,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        {{ service.client_name }}._use_client_cert_effective()
+        use_client_cert = {{ service.client_name }}._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
         if use_mtls_endpoint not in ("auto", "never", "always"):
