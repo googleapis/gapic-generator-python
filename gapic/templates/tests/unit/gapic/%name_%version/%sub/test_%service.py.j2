@@ -660,8 +660,8 @@ def test_{{ service.client_name|snake_case }}_get_mtls_endpoint_and_cert_source(
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
 
-   # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
-   with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
            mock_client_cert_source = mock.Mock()
            mock_api_endpoint = "foo"
