@@ -176,13 +176,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
 
-        Args:
-            None
         Returns:
             bool: whether client certificate should be used for mTLS
         Raises:
-            ValueError: (If should_use_client_cert is unsupported)
-            if GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.
+            ValueError: (If using a version of google-auth without should_use_client_cert and
+	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
         """
         # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
         if hasattr(mtls, "should_use_client_cert"):
