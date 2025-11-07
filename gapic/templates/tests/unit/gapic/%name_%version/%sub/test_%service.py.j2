@@ -197,6 +197,7 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
         assert {{ service.client_name }}._read_environment_variables() == (False, "auto", "foo.com")
 
+
 def test_use_client_cert_effective():
     # Test case 1: Test when `should_use_client_cert` returns True.
     # We mock the `should_use_client_cert` function to simulate a scenario where
@@ -227,13 +228,37 @@ def test_use_client_cert_effective():
             assert {{ service.client_name }}._use_client_cert_effective() is False
 
     # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert {{ service.client_name }}._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert {{ service.client_name }}._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert {{ service.client_name }}._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert {{ service.client_name }}._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
     # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
     # In this case, the method should return False, which is the default value.
     if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
         with mock.patch.dict(os.environ, clear=True):
             assert {{ service.client_name }}._use_client_cert_effective() is False
 
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
     # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
     # The method should raise a ValueError as the environment variable must be either
     # "true" or "false".
@@ -241,6 +266,21 @@ def test_use_client_cert_effective():
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
             with pytest.raises(ValueError):
                 {{ service.client_name }}._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert {{ service.client_name }}._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also, 
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if  hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert {{ service.client_name }}._use_client_cert_effective() is False
 
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
