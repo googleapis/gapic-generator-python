@@ -128,13 +128,13 @@ def test__read_environment_variables():
     ):
         if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
             with pytest.raises(ValueError) as excinfo:
-                ArtifactRegistryClient._read_environment_variables()
+                LoggingServiceV2Client._read_environment_variables()
             assert (
                 str(excinfo.value)
                 == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
             )
         else:
-            assert ArtifactRegistryClient._read_environment_variables() == (
+            assert LoggingServiceV2Client._read_environment_variables() == (
             False,
             "auto",
             None,
