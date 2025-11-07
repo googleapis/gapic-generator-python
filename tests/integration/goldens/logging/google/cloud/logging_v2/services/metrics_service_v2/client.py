@@ -149,7 +149,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
         if hasattr(mtls, "should_use_client_cert"):
             return mtls.should_use_client_cert()
-        else:
+        else: # pragma: NO COVER
             # if unsupported, fallback to reading from env var
             use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
             if use_client_cert_str not in ("true", "false"):
