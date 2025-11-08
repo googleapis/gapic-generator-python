@@ -320,8 +320,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         """
 
         warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning)
-        if client_options is None:
+            DeprecationWarning) # pragma:  NO COVER
+        if client_options is None: # pragma:  NO COVER
             client_options = client_options_lib.ClientOptions()
         use_client_cert = {{ service.client_name }}._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
