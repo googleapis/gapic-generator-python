@@ -55,9 +55,9 @@ def unit(session):
     """Run the unit test suite."""
     session.install(
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
-        # Temporarily exclude coverage 7.11.1
+        # Temporarily pin coverage to 7.11.0
         # See https://github.com/nedbat/coveragepy/issues/2077
-        "coverage!=7.11.1",
+        "coverage==7.11.0",
         "pytest-cov",
         "pytest",
         "pytest-xdist",
