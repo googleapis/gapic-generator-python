@@ -2032,7 +2032,7 @@ def test_gapic_metadata():
                             ),
                         },
                     ),
-                }
+                },
             ),
         },
     )
@@ -2082,7 +2082,7 @@ def test_gapic_metadata():
                             ),
                         },
                     ),
-                }
+                },
             ),
         },
     )
@@ -2182,7 +2182,7 @@ def test_gapic_metadata():
                             ),
                         },
                     ),
-                }
+                },
             ),
         },
     )
