@@ -57,7 +57,7 @@ def unit(session):
         # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
         # Temporarily pin coverage to 7.11.0
         # See https://github.com/nedbat/coveragepy/issues/2077
-        "coverage==7.11.0",
+        "coverage<=7.11.0",
         "pytest-cov",
         "pytest",
         "pytest-xdist",
