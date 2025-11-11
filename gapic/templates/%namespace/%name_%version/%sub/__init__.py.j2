@@ -18,6 +18,35 @@ else:
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+{#  Import subpackages. -#}
+{% for subpackage, _ in api.subpackages|dictsort %}
+from . import {{ subpackage }}
+{% endfor %}
+
+{#  Import services for this package. -#}
+{% for service in api.services.values()|sort(attribute='name')
+        if service.meta.address.subpackage == api.subpackage_view %}
+from .services.{{ service.name|snake_case }} import {{ service.client_name }}
+{% if 'grpc' in opts.transport %}
+from .services.{{ service.name|snake_case }} import {{ service.async_client_name }}
+{% endif %}
+{% endfor %}
+
+{#  Import messages and enums from each proto.
+    It is safe to import all of the messages into the same namespace here,
+    because protocol buffers itself enforces selector uniqueness within
+    a proto package.
+-#}
+{% for proto in api.protos.values()|sort(attribute='name')
+        if proto.meta.address.subpackage == api.subpackage_view %}
+{% for message in proto.messages.values()|sort(attribute='name') %}
+from .types.{{ proto.module_name }} import {{ message.name }}
+{% endfor %}
+{% for enum in proto.enums.values()|sort(attribute='name') %}
+from .types.{{ proto.module_name }} import {{ enum.name }}
+{% endfor %}
+{% endfor %}
+
 ParsedVersion = Tuple[int, ...]
 
 def parse_version_to_tuple(version_string: str) -> ParsedVersion:
@@ -111,35 +140,6 @@ else:   # pragma: NO COVER
                           "updates for {_package_label}, ensure you are " +
                           "using a supported version of Python; see " +
                           "https://devguide.python.org/versions/")
-
-{#  Import subpackages. -#}
-{% for subpackage, _ in api.subpackages|dictsort %}
-from . import {{ subpackage }}
-{% endfor %}
-
-{#  Import services for this package. -#}
-{% for service in api.services.values()|sort(attribute='name')
-        if service.meta.address.subpackage == api.subpackage_view %}
-from .services.{{ service.name|snake_case }} import {{ service.client_name }}
-{% if 'grpc' in opts.transport %}
-from .services.{{ service.name|snake_case }} import {{ service.async_client_name }}
-{% endif %}
-{% endfor %}
-
-{#  Import messages and enums from each proto.
-    It is safe to import all of the messages into the same namespace here,
-    because protocol buffers itself enforces selector uniqueness within
-    a proto package.
--#}
-{% for proto in api.protos.values()|sort(attribute='name')
-        if proto.meta.address.subpackage == api.subpackage_view %}
-{% for message in proto.messages.values()|sort(attribute='name') %}
-from .types.{{ proto.module_name }} import {{ message.name }}
-{% endfor %}
-{% for enum in proto.enums.values()|sort(attribute='name') %}
-from .types.{{ proto.module_name }} import {{ enum.name }}
-{% endfor %}
-{% endfor %}
 
 {#  Define __all__.
     This requires the full set of imported names, so we iterate over
