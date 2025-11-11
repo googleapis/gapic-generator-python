@@ -11,7 +11,7 @@ import sys
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):
+if sys.version_info >= (3, 8):  # pragma: NO COVER
     from importlib import metadata
 else:  # pragma: NO COVER
     # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
