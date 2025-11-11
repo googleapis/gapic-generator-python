@@ -23,14 +23,27 @@ __version__ = package_version.__version__
 
 if sys.version_info >= (3, 8):
     from importlib import metadata
-else:
+else:  # pragma: NO COVER
     # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
+from .services.iam_credentials import IAMCredentialsClient
+from .services.iam_credentials import IAMCredentialsAsyncClient
+
+from .types.common import GenerateAccessTokenRequest
+from .types.common import GenerateAccessTokenResponse
+from .types.common import GenerateIdTokenRequest
+from .types.common import GenerateIdTokenResponse
+from .types.common import SignBlobRequest
+from .types.common import SignBlobResponse
+from .types.common import SignJwtRequest
+from .types.common import SignJwtResponse
+
 ParsedVersion = Tuple[int, ...]
 
-def parse_version_to_tuple(version_string: str) -> ParsedVersion:
+def parse_version_to_tuple(version_string: str) -> ParsedVersion:  # pragma: NO COVER
     """Safely converts a semantic version string to a comparable tuple of integers.
     Example: "4.25.8" -> (4, 25, 8)
     Ignores non-numeric parts and handles common version formats.
@@ -113,19 +126,6 @@ else:   # pragma: NO COVER
                           "updates for {_package_label}, ensure you are " +
                           "using a supported version of Python; see " +
                           "https://devguide.python.org/versions/")
-
-
-from .services.iam_credentials import IAMCredentialsClient
-from .services.iam_credentials import IAMCredentialsAsyncClient
-
-from .types.common import GenerateAccessTokenRequest
-from .types.common import GenerateAccessTokenResponse
-from .types.common import GenerateIdTokenRequest
-from .types.common import GenerateIdTokenResponse
-from .types.common import SignBlobRequest
-from .types.common import SignBlobResponse
-from .types.common import SignJwtRequest
-from .types.common import SignJwtResponse
 
 __all__ = (
     'IAMCredentialsAsyncClient',

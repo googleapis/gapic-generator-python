@@ -23,14 +23,56 @@ __version__ = package_version.__version__
 
 if sys.version_info >= (3, 8):
     from importlib import metadata
-else:
+else:  # pragma: NO COVER
     # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
+from .services.eventarc import EventarcClient
+from .services.eventarc import EventarcAsyncClient
+
+from .types.channel import Channel
+from .types.channel_connection import ChannelConnection
+from .types.discovery import EventType
+from .types.discovery import FilteringAttribute
+from .types.discovery import Provider
+from .types.eventarc import CreateChannelConnectionRequest
+from .types.eventarc import CreateChannelRequest
+from .types.eventarc import CreateTriggerRequest
+from .types.eventarc import DeleteChannelConnectionRequest
+from .types.eventarc import DeleteChannelRequest
+from .types.eventarc import DeleteTriggerRequest
+from .types.eventarc import GetChannelConnectionRequest
+from .types.eventarc import GetChannelRequest
+from .types.eventarc import GetGoogleChannelConfigRequest
+from .types.eventarc import GetProviderRequest
+from .types.eventarc import GetTriggerRequest
+from .types.eventarc import ListChannelConnectionsRequest
+from .types.eventarc import ListChannelConnectionsResponse
+from .types.eventarc import ListChannelsRequest
+from .types.eventarc import ListChannelsResponse
+from .types.eventarc import ListProvidersRequest
+from .types.eventarc import ListProvidersResponse
+from .types.eventarc import ListTriggersRequest
+from .types.eventarc import ListTriggersResponse
+from .types.eventarc import OperationMetadata
+from .types.eventarc import UpdateChannelRequest
+from .types.eventarc import UpdateGoogleChannelConfigRequest
+from .types.eventarc import UpdateTriggerRequest
+from .types.google_channel_config import GoogleChannelConfig
+from .types.trigger import CloudRun
+from .types.trigger import Destination
+from .types.trigger import EventFilter
+from .types.trigger import GKE
+from .types.trigger import Pubsub
+from .types.trigger import StateCondition
+from .types.trigger import Transport
+from .types.trigger import Trigger
+
 ParsedVersion = Tuple[int, ...]
 
-def parse_version_to_tuple(version_string: str) -> ParsedVersion:
+def parse_version_to_tuple(version_string: str) -> ParsedVersion:  # pragma: NO COVER
     """Safely converts a semantic version string to a comparable tuple of integers.
     Example: "4.25.8" -> (4, 25, 8)
     Ignores non-numeric parts and handles common version formats.
@@ -113,48 +155,6 @@ else:   # pragma: NO COVER
                           "updates for {_package_label}, ensure you are " +
                           "using a supported version of Python; see " +
                           "https://devguide.python.org/versions/")
-
-
-from .services.eventarc import EventarcClient
-from .services.eventarc import EventarcAsyncClient
-
-from .types.channel import Channel
-from .types.channel_connection import ChannelConnection
-from .types.discovery import EventType
-from .types.discovery import FilteringAttribute
-from .types.discovery import Provider
-from .types.eventarc import CreateChannelConnectionRequest
-from .types.eventarc import CreateChannelRequest
-from .types.eventarc import CreateTriggerRequest
-from .types.eventarc import DeleteChannelConnectionRequest
-from .types.eventarc import DeleteChannelRequest
-from .types.eventarc import DeleteTriggerRequest
-from .types.eventarc import GetChannelConnectionRequest
-from .types.eventarc import GetChannelRequest
-from .types.eventarc import GetGoogleChannelConfigRequest
-from .types.eventarc import GetProviderRequest
-from .types.eventarc import GetTriggerRequest
-from .types.eventarc import ListChannelConnectionsRequest
-from .types.eventarc import ListChannelConnectionsResponse
-from .types.eventarc import ListChannelsRequest
-from .types.eventarc import ListChannelsResponse
-from .types.eventarc import ListProvidersRequest
-from .types.eventarc import ListProvidersResponse
-from .types.eventarc import ListTriggersRequest
-from .types.eventarc import ListTriggersResponse
-from .types.eventarc import OperationMetadata
-from .types.eventarc import UpdateChannelRequest
-from .types.eventarc import UpdateGoogleChannelConfigRequest
-from .types.eventarc import UpdateTriggerRequest
-from .types.google_channel_config import GoogleChannelConfig
-from .types.trigger import CloudRun
-from .types.trigger import Destination
-from .types.trigger import EventFilter
-from .types.trigger import GKE
-from .types.trigger import Pubsub
-from .types.trigger import StateCondition
-from .types.trigger import Transport
-from .types.trigger import Trigger
 
 __all__ = (
     'EventarcAsyncClient',

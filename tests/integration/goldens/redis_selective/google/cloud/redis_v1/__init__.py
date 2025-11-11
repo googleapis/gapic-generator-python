@@ -23,14 +23,33 @@ __version__ = package_version.__version__
 
 if sys.version_info >= (3, 8):
     from importlib import metadata
-else:
+else:  # pragma: NO COVER
     # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
+from .services.cloud_redis import CloudRedisClient
+from .services.cloud_redis import CloudRedisAsyncClient
+
+from .types.cloud_redis import CreateInstanceRequest
+from .types.cloud_redis import DeleteInstanceRequest
+from .types.cloud_redis import GetInstanceRequest
+from .types.cloud_redis import Instance
+from .types.cloud_redis import ListInstancesRequest
+from .types.cloud_redis import ListInstancesResponse
+from .types.cloud_redis import MaintenancePolicy
+from .types.cloud_redis import MaintenanceSchedule
+from .types.cloud_redis import NodeInfo
+from .types.cloud_redis import OperationMetadata
+from .types.cloud_redis import PersistenceConfig
+from .types.cloud_redis import TlsCertificate
+from .types.cloud_redis import UpdateInstanceRequest
+from .types.cloud_redis import WeeklyMaintenanceWindow
+
 ParsedVersion = Tuple[int, ...]
 
-def parse_version_to_tuple(version_string: str) -> ParsedVersion:
+def parse_version_to_tuple(version_string: str) -> ParsedVersion:  # pragma: NO COVER
     """Safely converts a semantic version string to a comparable tuple of integers.
     Example: "4.25.8" -> (4, 25, 8)
     Ignores non-numeric parts and handles common version formats.
@@ -113,25 +132,6 @@ else:   # pragma: NO COVER
                           "updates for {_package_label}, ensure you are " +
                           "using a supported version of Python; see " +
                           "https://devguide.python.org/versions/")
-
-
-from .services.cloud_redis import CloudRedisClient
-from .services.cloud_redis import CloudRedisAsyncClient
-
-from .types.cloud_redis import CreateInstanceRequest
-from .types.cloud_redis import DeleteInstanceRequest
-from .types.cloud_redis import GetInstanceRequest
-from .types.cloud_redis import Instance
-from .types.cloud_redis import ListInstancesRequest
-from .types.cloud_redis import ListInstancesResponse
-from .types.cloud_redis import MaintenancePolicy
-from .types.cloud_redis import MaintenanceSchedule
-from .types.cloud_redis import NodeInfo
-from .types.cloud_redis import OperationMetadata
-from .types.cloud_redis import PersistenceConfig
-from .types.cloud_redis import TlsCertificate
-from .types.cloud_redis import UpdateInstanceRequest
-from .types.cloud_redis import WeeklyMaintenanceWindow
 
 __all__ = (
     'CloudRedisAsyncClient',
