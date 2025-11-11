@@ -156,7 +156,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
         """
         # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-        if hasattr(mtls, "should_use_client_cert"):
+        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
             return mtls.should_use_client_cert()
         else: # pragma: NO COVER
             # if unsupported, fallback to reading from env var
