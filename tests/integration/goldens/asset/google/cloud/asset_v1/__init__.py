@@ -138,7 +138,7 @@ else:   # pragma: NO COVER
                           f"then update {_package_label}.",
                           FutureWarning)
 
-        def parse_version_to_tuple(version_string: str) -> ParsedVersion:  # pragma: NO COVER
+        def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
             Example: "4.25.8" -> (4, 25, 8)
             Ignores non-numeric parts and handles common version formats.
