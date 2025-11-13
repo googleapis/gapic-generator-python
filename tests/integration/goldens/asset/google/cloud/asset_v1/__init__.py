@@ -110,8 +110,6 @@ from .types.assets import TemporalAsset
 from .types.assets import TimeWindow
 from .types.assets import VersionedResource
 
-ParsedVersion = Tuple[int, ...]
-
 if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER
     api_core.check_python_version("google.cloud.asset_v1") # type: ignore
     api_core.check_dependency_versions("google.cloud.asset_v1") # type: ignore

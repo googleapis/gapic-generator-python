@@ -47,8 +47,6 @@ from .types.cloud_redis import TlsCertificate
 from .types.cloud_redis import UpdateInstanceRequest
 from .types.cloud_redis import WeeklyMaintenanceWindow
 
-ParsedVersion = Tuple[int, ...]
-
 if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER
     api_core.check_python_version("google.cloud.redis_v1") # type: ignore
     api_core.check_dependency_versions("google.cloud.redis_v1") # type: ignore
@@ -77,7 +75,7 @@ else:   # pragma: NO COVER
                           f"then update {_package_label}.",
                           FutureWarning)
 
-        def parse_version_to_tuple(version_string: str) -> ParsedVersion:  # pragma: NO COVER
+        def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
             Example: "4.25.8" -> (4, 25, 8)
             Ignores non-numeric parts and handles common version formats.
