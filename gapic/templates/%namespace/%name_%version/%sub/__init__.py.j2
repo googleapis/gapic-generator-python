@@ -49,26 +49,6 @@ from .types.{{ proto.module_name }} import {{ enum.name }}
 
 ParsedVersion = Tuple[int, ...]
 
-def parse_version_to_tuple(version_string: str) -> ParsedVersion:  # pragma: NO COVER
-    """Safely converts a semantic version string to a comparable tuple of integers.
-    Example: "4.25.8" -> (4, 25, 8)
-    Ignores non-numeric parts and handles common version formats.
-    Args:
-        version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
-    Returns:
-        Tuple of integers for the parsed version string.
-    """
-    parts = []
-    for part in version_string.split("."):
-        try:
-            parts.append(int(part))
-        except ValueError:
-            # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
-            # This is a simplification compared to 'packaging.parse_version', but sufficient
-            # for comparing strictly numeric semantic versions.
-            break
-    return tuple(parts)
-
 if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER
     {# TODO(api_core): remove `type:ignore` below when minimum version of api_core makes the else clause unnecessary. #}
     api_core.check_python_version("{{package_path}}") # type: ignore
@@ -104,6 +84,25 @@ else:   # pragma: NO COVER
                           f"then update {_package_label}.",
                           FutureWarning)
 
+        def parse_version_to_tuple(version_string: str) -> ParsedVersion:  # pragma: NO COVER
+            """Safely converts a semantic version string to a comparable tuple of integers.
+            Example: "4.25.8" -> (4, 25, 8)
+            Ignores non-numeric parts and handles common version formats.
+            Args:
+                version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
+            Returns:
+                Tuple of integers for the parsed version string.
+            """
+            parts = []
+            for part in version_string.split("."):
+                try:
+                    parts.append(int(part))
+                except ValueError:
+                    # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
+                    # This is a simplification compared to 'packaging.parse_version', but sufficient
+                    # for comparing strictly numeric semantic versions.
+                    break
+            return tuple(parts)
 
         def _get_version(dependency_name):
             try:
