@@ -140,25 +140,25 @@ else:   # pragma: NO COVER
                           f"then update {_package_label}.",
                           FutureWarning)
 
-    def parse_version_to_tuple(version_string: str) -> ParsedVersion:  # pragma: NO COVER
-        """Safely converts a semantic version string to a comparable tuple of integers.
-        Example: "4.25.8" -> (4, 25, 8)
-        Ignores non-numeric parts and handles common version formats.
-        Args:
-            version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
-        Returns:
-            Tuple of integers for the parsed version string.
-        """
-        parts = []
-        for part in version_string.split("."):
-            try:
-                parts.append(int(part))
-            except ValueError:
-                # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
-                # This is a simplification compared to 'packaging.parse_version', but sufficient
-                # for comparing strictly numeric semantic versions.
-                break
-        return tuple(parts)
+        def parse_version_to_tuple(version_string: str) -> ParsedVersion:  # pragma: NO COVER
+            """Safely converts a semantic version string to a comparable tuple of integers.
+            Example: "4.25.8" -> (4, 25, 8)
+            Ignores non-numeric parts and handles common version formats.
+            Args:
+                version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
+            Returns:
+                Tuple of integers for the parsed version string.
+            """
+            parts = []
+            for part in version_string.split("."):
+                try:
+                    parts.append(int(part))
+                except ValueError:
+                    # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
+                    # This is a simplification compared to 'packaging.parse_version', but sufficient
+                    # for comparing strictly numeric semantic versions.
+                    break
+            return tuple(parts)
 
         def _get_version(dependency_name):
             try:
