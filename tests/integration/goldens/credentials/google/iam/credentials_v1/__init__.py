@@ -16,7 +16,6 @@
 from google.iam.credentials_v1 import gapic_version as package_version
 
 import google.api_core as api_core
-from typing import Tuple
 import sys
 
 __version__ = package_version.__version__
