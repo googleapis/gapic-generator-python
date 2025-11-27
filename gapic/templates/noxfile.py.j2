@@ -16,14 +16,17 @@ BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 
 {% if api.naming.module_namespace %}
+FORMAT_PATHS = ["docs", "{{ api.naming.module_namespace[0] }}", "tests", "setup.py"]
 LINT_PATHS = ["docs", "{{ api.naming.module_namespace[0] }}", "tests", "noxfile.py", "setup.py"]
 {% else %}
+FORMAT_PATHS = ["docs", "{{ api.naming.versioned_module_name }}", "tests", "setup.py"]
 LINT_PATHS = ["docs", "{{ api.naming.versioned_module_name }}", "tests", "noxfile.py", "setup.py"]
 {% endif %}
 
 # Add samples to the list of directories to format if the directory exists.
 if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
+    FORMAT_PATHS.append("samples")
 
 ALL_PYTHON = [
     "3.7",
@@ -167,7 +170,7 @@ def blacken(session):
     session.install(BLACK_VERSION)
     session.run(
         "black",
-        *LINT_PATHS,
+        *FORMAT_PATHS,
     )
 
 
@@ -183,11 +186,11 @@ def format(session):
     session.run(
         "isort",
         "--fss",
-        *LINT_PATHS,
+        *FORMAT_PATHS,
     )
     session.run(
         "black",
-        *LINT_PATHS,
+        *FORMAT_PATHS,
     )
 
 
