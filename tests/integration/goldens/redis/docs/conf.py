@@ -81,9 +81,9 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-redis"
-copyright = u"2025, Google, LLC"
-author = u"Google APIs"
+project = "google-cloud-redis"
+copyright = "2025, Google, LLC"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -283,7 +283,7 @@ latex_documents = [
     (
         root_doc,
         "google-cloud-redis.tex",
-        u"google-cloud-redis Documentation",
+        "google-cloud-redis Documentation",
         author,
         "manual",
     )
