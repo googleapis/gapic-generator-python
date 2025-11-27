@@ -16,10 +16,10 @@ BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 
 {% if api.naming.module_namespace %}
-FORMAT_PATHS = ["docs", "{{ api.naming.module_namespace[0] }}", "tests", "setup.py"]
+FORMAT_PATHS = ["docs", "{{ api.naming.module_namespace[0] }}", "tests"]
 LINT_PATHS = ["docs", "{{ api.naming.module_namespace[0] }}", "tests", "noxfile.py", "setup.py"]
 {% else %}
-FORMAT_PATHS = ["docs", "{{ api.naming.versioned_module_name }}", "tests", "setup.py"]
+FORMAT_PATHS = ["docs", "{{ api.naming.versioned_module_name }}", "tests"]
 LINT_PATHS = ["docs", "{{ api.naming.versioned_module_name }}", "tests", "noxfile.py", "setup.py"]
 {% endif %}
 

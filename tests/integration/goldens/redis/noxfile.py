@@ -26,7 +26,7 @@ import nox
 BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 
-FORMAT_PATHS = ["docs", "google", "tests", "setup.py"]
+FORMAT_PATHS = ["docs", "google", "tests"]
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 # We're most interested in ensuring that code is formatted properly

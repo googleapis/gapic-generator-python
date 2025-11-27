@@ -9,11 +9,11 @@ import io
 import os
 import re
 
-import setuptools # type: ignore
+import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = '{{ api.naming.warehouse_package_name }}'
+name = "{{ api.naming.warehouse_package_name }}"
 
 {% set warehouse_description = api.naming.warehouse_package_name.replace('-',' ')|title %}
 
@@ -22,9 +22,9 @@ description = "{{ warehouse_description }} API client library"
 
 version = None
 
-with open(os.path.join(package_root, '{{ package_path }}/gapic_version.py')) as fp:
+with open(os.path.join(package_root, "{{ package_path }}/gapic_version.py")) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
-    assert (len(version_candidates) == 1)
+    assert len(version_candidates) == 1
     version = version_candidates[0]
 
 if version[0] == "0":
@@ -52,14 +52,16 @@ dependencies = [
     {% endif %}
     {% endfor %}
 ]
-extras = {
 {% if rest_async_io_enabled %}
+extras = {
     "async_rest": [
         "google-api-core[grpc] >= 2.21.0, < 3.0.0",
-        "google-auth[aiohttp] >= 2.35.0, <3.0.0"
+        "google-auth[aiohttp] >= 2.35.0, <3.0.0",
     ],
-{% endif %}
 }
+{% else %}
+extras = {}
+{% endif %}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/{{ api.naming.warehouse_package_name }}"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
@@ -68,11 +70,7 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-packages = [
-    package
-    for package in setuptools.find_namespace_packages()
-    if package.startswith("{{ api.naming.namespace_packages|first }}")
-]
+packages = [package for package in setuptools.find_namespace_packages() if package.startswith("{{ api.naming.namespace_packages|first }}")]
 
 setuptools.setup(
     name=name,
