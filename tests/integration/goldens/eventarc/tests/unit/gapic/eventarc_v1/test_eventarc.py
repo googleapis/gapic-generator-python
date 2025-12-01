@@ -995,11 +995,11 @@ def test_get_trigger(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = trigger.Trigger(
-            name='name_value',
-            uid='uid_value',
-            service_account='service_account_value',
-            channel='channel_value',
-            etag='etag_value',
+            name="name_value",
+            uid="uid_value",
+            service_account="service_account_value",
+            channel="channel_value",
+            etag="etag_value",
         )
         response = client.get_trigger(request)
 
@@ -1011,11 +1011,11 @@ def test_get_trigger(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trigger.Trigger)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.service_account == 'service_account_value'
-    assert response.channel == 'channel_value'
-    assert response.etag == 'etag_value'
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.service_account == "service_account_value"
+    assert response.channel == "channel_value"
+    assert response.etag == "etag_value"
 
 
 def test_get_trigger_non_empty_request_with_auto_populated_field():
@@ -1030,7 +1030,7 @@ def test_get_trigger_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.GetTriggerRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1042,7 +1042,7 @@ def test_get_trigger_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetTriggerRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_get_trigger_use_cached_wrapped_rpc():
@@ -1128,11 +1128,11 @@ async def test_get_trigger_async(transport: str = 'grpc_asyncio', request_type=e
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(trigger.Trigger(
-            name='name_value',
-            uid='uid_value',
-            service_account='service_account_value',
-            channel='channel_value',
-            etag='etag_value',
+            name="name_value",
+            uid="uid_value",
+            service_account="service_account_value",
+            channel="channel_value",
+            etag="etag_value",
         ))
         response = await client.get_trigger(request)
 
@@ -1144,11 +1144,11 @@ async def test_get_trigger_async(transport: str = 'grpc_asyncio', request_type=e
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trigger.Trigger)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.service_account == 'service_account_value'
-    assert response.channel == 'channel_value'
-    assert response.etag == 'etag_value'
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.service_account == "service_account_value"
+    assert response.channel == "channel_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -1164,7 +1164,7 @@ def test_get_trigger_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetTriggerRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1196,7 +1196,7 @@ async def test_get_trigger_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetTriggerRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1232,7 +1232,7 @@ def test_get_trigger_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_trigger(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1240,7 +1240,7 @@ def test_get_trigger_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -1254,7 +1254,7 @@ def test_get_trigger_flattened_error():
     with pytest.raises(ValueError):
         client.get_trigger(
             eventarc.GetTriggerRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -1274,7 +1274,7 @@ async def test_get_trigger_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_trigger(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1282,7 +1282,7 @@ async def test_get_trigger_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1296,7 +1296,7 @@ async def test_get_trigger_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_trigger(
             eventarc.GetTriggerRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -1320,8 +1320,8 @@ def test_list_triggers(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = eventarc.ListTriggersResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_triggers(request)
 
@@ -1333,8 +1333,8 @@ def test_list_triggers(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTriggersPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_triggers_non_empty_request_with_auto_populated_field():
@@ -1349,10 +1349,10 @@ def test_list_triggers_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.ListTriggersRequest(
-        parent='parent_value',
-        page_token='page_token_value',
-        order_by='order_by_value',
-        filter='filter_value',
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1364,10 +1364,10 @@ def test_list_triggers_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListTriggersRequest(
-            parent='parent_value',
-            page_token='page_token_value',
-            order_by='order_by_value',
-            filter='filter_value',
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
         )
 
 def test_list_triggers_use_cached_wrapped_rpc():
@@ -1453,8 +1453,8 @@ async def test_list_triggers_async(transport: str = 'grpc_asyncio', request_type
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListTriggersResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         ))
         response = await client.list_triggers(request)
 
@@ -1466,8 +1466,8 @@ async def test_list_triggers_async(transport: str = 'grpc_asyncio', request_type
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTriggersAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -1483,7 +1483,7 @@ def test_list_triggers_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListTriggersRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1515,7 +1515,7 @@ async def test_list_triggers_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListTriggersRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1551,7 +1551,7 @@ def test_list_triggers_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_triggers(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1559,7 +1559,7 @@ def test_list_triggers_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -1573,7 +1573,7 @@ def test_list_triggers_flattened_error():
     with pytest.raises(ValueError):
         client.list_triggers(
             eventarc.ListTriggersRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -1593,7 +1593,7 @@ async def test_list_triggers_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_triggers(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1601,7 +1601,7 @@ async def test_list_triggers_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1615,7 +1615,7 @@ async def test_list_triggers_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_triggers(
             eventarc.ListTriggersRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -1859,8 +1859,8 @@ def test_create_trigger_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.CreateTriggerRequest(
-        parent='parent_value',
-        trigger_id='trigger_id_value',
+        parent="parent_value",
+        trigger_id="trigger_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1872,8 +1872,8 @@ def test_create_trigger_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateTriggerRequest(
-            parent='parent_value',
-            trigger_id='trigger_id_value',
+            parent="parent_value",
+            trigger_id="trigger_id_value",
         )
 
 def test_create_trigger_use_cached_wrapped_rpc():
@@ -1996,7 +1996,7 @@ def test_create_trigger_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateTriggerRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2028,7 +2028,7 @@ async def test_create_trigger_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateTriggerRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2064,9 +2064,9 @@ def test_create_trigger_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_trigger(
-            parent='parent_value',
-            trigger=gce_trigger.Trigger(name='name_value'),
-            trigger_id='trigger_id_value',
+            parent="parent_value",
+            trigger=gce_trigger.Trigger(name="name_value"),
+            trigger_id="trigger_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2074,13 +2074,13 @@ def test_create_trigger_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].trigger
-        mock_val = gce_trigger.Trigger(name='name_value')
+        mock_val = gce_trigger.Trigger(name="name_value")
         assert arg == mock_val
         arg = args[0].trigger_id
-        mock_val = 'trigger_id_value'
+        mock_val = "trigger_id_value"
         assert arg == mock_val
 
 
@@ -2094,9 +2094,9 @@ def test_create_trigger_flattened_error():
     with pytest.raises(ValueError):
         client.create_trigger(
             eventarc.CreateTriggerRequest(),
-            parent='parent_value',
-            trigger=gce_trigger.Trigger(name='name_value'),
-            trigger_id='trigger_id_value',
+            parent="parent_value",
+            trigger=gce_trigger.Trigger(name="name_value"),
+            trigger_id="trigger_id_value",
         )
 
 @pytest.mark.asyncio
@@ -2118,9 +2118,9 @@ async def test_create_trigger_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_trigger(
-            parent='parent_value',
-            trigger=gce_trigger.Trigger(name='name_value'),
-            trigger_id='trigger_id_value',
+            parent="parent_value",
+            trigger=gce_trigger.Trigger(name="name_value"),
+            trigger_id="trigger_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2128,13 +2128,13 @@ async def test_create_trigger_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].trigger
-        mock_val = gce_trigger.Trigger(name='name_value')
+        mock_val = gce_trigger.Trigger(name="name_value")
         assert arg == mock_val
         arg = args[0].trigger_id
-        mock_val = 'trigger_id_value'
+        mock_val = "trigger_id_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2148,9 +2148,9 @@ async def test_create_trigger_flattened_error_async():
     with pytest.raises(ValueError):
         await client.create_trigger(
             eventarc.CreateTriggerRequest(),
-            parent='parent_value',
-            trigger=gce_trigger.Trigger(name='name_value'),
-            trigger_id='trigger_id_value',
+            parent="parent_value",
+            trigger=gce_trigger.Trigger(name="name_value"),
+            trigger_id="trigger_id_value",
         )
 
 
@@ -2331,7 +2331,7 @@ def test_update_trigger_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.UpdateTriggerRequest()
 
-    request.trigger.name = 'name_value'
+    request.trigger.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2363,7 +2363,7 @@ async def test_update_trigger_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.UpdateTriggerRequest()
 
-    request.trigger.name = 'name_value'
+    request.trigger.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2399,8 +2399,8 @@ def test_update_trigger_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_trigger(
-            trigger=gce_trigger.Trigger(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            trigger=gce_trigger.Trigger(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
             allow_missing=True,
         )
 
@@ -2409,10 +2409,10 @@ def test_update_trigger_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].trigger
-        mock_val = gce_trigger.Trigger(name='name_value')
+        mock_val = gce_trigger.Trigger(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
         arg = args[0].allow_missing
         mock_val = True
@@ -2429,8 +2429,8 @@ def test_update_trigger_flattened_error():
     with pytest.raises(ValueError):
         client.update_trigger(
             eventarc.UpdateTriggerRequest(),
-            trigger=gce_trigger.Trigger(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            trigger=gce_trigger.Trigger(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
             allow_missing=True,
         )
 
@@ -2453,8 +2453,8 @@ async def test_update_trigger_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_trigger(
-            trigger=gce_trigger.Trigger(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            trigger=gce_trigger.Trigger(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
             allow_missing=True,
         )
 
@@ -2463,10 +2463,10 @@ async def test_update_trigger_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].trigger
-        mock_val = gce_trigger.Trigger(name='name_value')
+        mock_val = gce_trigger.Trigger(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
         arg = args[0].allow_missing
         mock_val = True
@@ -2483,8 +2483,8 @@ async def test_update_trigger_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_trigger(
             eventarc.UpdateTriggerRequest(),
-            trigger=gce_trigger.Trigger(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            trigger=gce_trigger.Trigger(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
             allow_missing=True,
         )
 
@@ -2533,8 +2533,8 @@ def test_delete_trigger_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.DeleteTriggerRequest(
-        name='name_value',
-        etag='etag_value',
+        name="name_value",
+        etag="etag_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2546,8 +2546,8 @@ def test_delete_trigger_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteTriggerRequest(
-            name='name_value',
-            etag='etag_value',
+            name="name_value",
+            etag="etag_value",
         )
 
 def test_delete_trigger_use_cached_wrapped_rpc():
@@ -2670,7 +2670,7 @@ def test_delete_trigger_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteTriggerRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2702,7 +2702,7 @@ async def test_delete_trigger_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteTriggerRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2738,7 +2738,7 @@ def test_delete_trigger_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_trigger(
-            name='name_value',
+            name="name_value",
             allow_missing=True,
         )
 
@@ -2747,7 +2747,7 @@ def test_delete_trigger_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].allow_missing
         mock_val = True
@@ -2764,7 +2764,7 @@ def test_delete_trigger_flattened_error():
     with pytest.raises(ValueError):
         client.delete_trigger(
             eventarc.DeleteTriggerRequest(),
-            name='name_value',
+            name="name_value",
             allow_missing=True,
         )
 
@@ -2787,7 +2787,7 @@ async def test_delete_trigger_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_trigger(
-            name='name_value',
+            name="name_value",
             allow_missing=True,
         )
 
@@ -2796,7 +2796,7 @@ async def test_delete_trigger_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].allow_missing
         mock_val = True
@@ -2813,7 +2813,7 @@ async def test_delete_trigger_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_trigger(
             eventarc.DeleteTriggerRequest(),
-            name='name_value',
+            name="name_value",
             allow_missing=True,
         )
 
@@ -2838,13 +2838,13 @@ def test_get_channel(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = channel.Channel(
-            name='name_value',
-            uid='uid_value',
-            provider='provider_value',
+            name="name_value",
+            uid="uid_value",
+            provider="provider_value",
             state=channel.Channel.State.PENDING,
-            activation_token='activation_token_value',
-            crypto_key_name='crypto_key_name_value',
-            pubsub_topic='pubsub_topic_value',
+            activation_token="activation_token_value",
+            crypto_key_name="crypto_key_name_value",
+            pubsub_topic="pubsub_topic_value",
         )
         response = client.get_channel(request)
 
@@ -2856,12 +2856,12 @@ def test_get_channel(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel.Channel)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.provider == 'provider_value'
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.provider == "provider_value"
     assert response.state == channel.Channel.State.PENDING
-    assert response.activation_token == 'activation_token_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
+    assert response.activation_token == "activation_token_value"
+    assert response.crypto_key_name == "crypto_key_name_value"
 
 
 def test_get_channel_non_empty_request_with_auto_populated_field():
@@ -2876,7 +2876,7 @@ def test_get_channel_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.GetChannelRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2888,7 +2888,7 @@ def test_get_channel_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetChannelRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_get_channel_use_cached_wrapped_rpc():
@@ -2974,12 +2974,12 @@ async def test_get_channel_async(transport: str = 'grpc_asyncio', request_type=e
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(channel.Channel(
-            name='name_value',
-            uid='uid_value',
-            provider='provider_value',
+            name="name_value",
+            uid="uid_value",
+            provider="provider_value",
             state=channel.Channel.State.PENDING,
-            activation_token='activation_token_value',
-            crypto_key_name='crypto_key_name_value',
+            activation_token="activation_token_value",
+            crypto_key_name="crypto_key_name_value",
         ))
         response = await client.get_channel(request)
 
@@ -2991,12 +2991,12 @@ async def test_get_channel_async(transport: str = 'grpc_asyncio', request_type=e
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel.Channel)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.provider == 'provider_value'
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.provider == "provider_value"
     assert response.state == channel.Channel.State.PENDING
-    assert response.activation_token == 'activation_token_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
+    assert response.activation_token == "activation_token_value"
+    assert response.crypto_key_name == "crypto_key_name_value"
 
 
 @pytest.mark.asyncio
@@ -3012,7 +3012,7 @@ def test_get_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetChannelRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3044,7 +3044,7 @@ async def test_get_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetChannelRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3080,7 +3080,7 @@ def test_get_channel_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_channel(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3088,7 +3088,7 @@ def test_get_channel_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -3102,7 +3102,7 @@ def test_get_channel_flattened_error():
     with pytest.raises(ValueError):
         client.get_channel(
             eventarc.GetChannelRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -3122,7 +3122,7 @@ async def test_get_channel_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_channel(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3130,7 +3130,7 @@ async def test_get_channel_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -3144,7 +3144,7 @@ async def test_get_channel_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_channel(
             eventarc.GetChannelRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -3168,8 +3168,8 @@ def test_list_channels(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = eventarc.ListChannelsResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_channels(request)
 
@@ -3181,8 +3181,8 @@ def test_list_channels(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelsPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_channels_non_empty_request_with_auto_populated_field():
@@ -3197,9 +3197,9 @@ def test_list_channels_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.ListChannelsRequest(
-        parent='parent_value',
-        page_token='page_token_value',
-        order_by='order_by_value',
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3211,9 +3211,9 @@ def test_list_channels_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListChannelsRequest(
-            parent='parent_value',
-            page_token='page_token_value',
-            order_by='order_by_value',
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
         )
 
 def test_list_channels_use_cached_wrapped_rpc():
@@ -3299,8 +3299,8 @@ async def test_list_channels_async(transport: str = 'grpc_asyncio', request_type
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelsResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         ))
         response = await client.list_channels(request)
 
@@ -3312,8 +3312,8 @@ async def test_list_channels_async(transport: str = 'grpc_asyncio', request_type
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelsAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -3329,7 +3329,7 @@ def test_list_channels_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListChannelsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3361,7 +3361,7 @@ async def test_list_channels_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListChannelsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3397,7 +3397,7 @@ def test_list_channels_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_channels(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3405,7 +3405,7 @@ def test_list_channels_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -3419,7 +3419,7 @@ def test_list_channels_flattened_error():
     with pytest.raises(ValueError):
         client.list_channels(
             eventarc.ListChannelsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -3439,7 +3439,7 @@ async def test_list_channels_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_channels(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3447,7 +3447,7 @@ async def test_list_channels_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -3461,7 +3461,7 @@ async def test_list_channels_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_channels(
             eventarc.ListChannelsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -3705,8 +3705,8 @@ def test_create_channel_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.CreateChannelRequest(
-        parent='parent_value',
-        channel_id='channel_id_value',
+        parent="parent_value",
+        channel_id="channel_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3718,8 +3718,8 @@ def test_create_channel_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateChannelRequest(
-            parent='parent_value',
-            channel_id='channel_id_value',
+            parent="parent_value",
+            channel_id="channel_id_value",
         )
 
 def test_create_channel_use_cached_wrapped_rpc():
@@ -3842,7 +3842,7 @@ def test_create_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateChannelRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3874,7 +3874,7 @@ async def test_create_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateChannelRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3910,9 +3910,9 @@ def test_create_channel_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_channel(
-            parent='parent_value',
-            channel=gce_channel.Channel(name='name_value'),
-            channel_id='channel_id_value',
+            parent="parent_value",
+            channel=gce_channel.Channel(name="name_value"),
+            channel_id="channel_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3920,13 +3920,13 @@ def test_create_channel_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].channel
-        mock_val = gce_channel.Channel(name='name_value')
+        mock_val = gce_channel.Channel(name="name_value")
         assert arg == mock_val
         arg = args[0].channel_id
-        mock_val = 'channel_id_value'
+        mock_val = "channel_id_value"
         assert arg == mock_val
 
 
@@ -3940,9 +3940,9 @@ def test_create_channel_flattened_error():
     with pytest.raises(ValueError):
         client.create_channel(
             eventarc.CreateChannelRequest(),
-            parent='parent_value',
-            channel=gce_channel.Channel(name='name_value'),
-            channel_id='channel_id_value',
+            parent="parent_value",
+            channel=gce_channel.Channel(name="name_value"),
+            channel_id="channel_id_value",
         )
 
 @pytest.mark.asyncio
@@ -3964,9 +3964,9 @@ async def test_create_channel_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_channel(
-            parent='parent_value',
-            channel=gce_channel.Channel(name='name_value'),
-            channel_id='channel_id_value',
+            parent="parent_value",
+            channel=gce_channel.Channel(name="name_value"),
+            channel_id="channel_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3974,13 +3974,13 @@ async def test_create_channel_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].channel
-        mock_val = gce_channel.Channel(name='name_value')
+        mock_val = gce_channel.Channel(name="name_value")
         assert arg == mock_val
         arg = args[0].channel_id
-        mock_val = 'channel_id_value'
+        mock_val = "channel_id_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -3994,9 +3994,9 @@ async def test_create_channel_flattened_error_async():
     with pytest.raises(ValueError):
         await client.create_channel(
             eventarc.CreateChannelRequest(),
-            parent='parent_value',
-            channel=gce_channel.Channel(name='name_value'),
-            channel_id='channel_id_value',
+            parent="parent_value",
+            channel=gce_channel.Channel(name="name_value"),
+            channel_id="channel_id_value",
         )
 
 
@@ -4177,7 +4177,7 @@ def test_update_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.UpdateChannelRequest()
 
-    request.channel.name = 'name_value'
+    request.channel.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4209,7 +4209,7 @@ async def test_update_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.UpdateChannelRequest()
 
-    request.channel.name = 'name_value'
+    request.channel.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4245,8 +4245,8 @@ def test_update_channel_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_channel(
-            channel=gce_channel.Channel(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            channel=gce_channel.Channel(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -4254,10 +4254,10 @@ def test_update_channel_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].channel
-        mock_val = gce_channel.Channel(name='name_value')
+        mock_val = gce_channel.Channel(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
@@ -4271,8 +4271,8 @@ def test_update_channel_flattened_error():
     with pytest.raises(ValueError):
         client.update_channel(
             eventarc.UpdateChannelRequest(),
-            channel=gce_channel.Channel(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            channel=gce_channel.Channel(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 @pytest.mark.asyncio
@@ -4294,8 +4294,8 @@ async def test_update_channel_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_channel(
-            channel=gce_channel.Channel(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            channel=gce_channel.Channel(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -4303,10 +4303,10 @@ async def test_update_channel_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].channel
-        mock_val = gce_channel.Channel(name='name_value')
+        mock_val = gce_channel.Channel(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -4320,8 +4320,8 @@ async def test_update_channel_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_channel(
             eventarc.UpdateChannelRequest(),
-            channel=gce_channel.Channel(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            channel=gce_channel.Channel(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -4369,7 +4369,7 @@ def test_delete_channel_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.DeleteChannelRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4381,7 +4381,7 @@ def test_delete_channel_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteChannelRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_delete_channel_use_cached_wrapped_rpc():
@@ -4504,7 +4504,7 @@ def test_delete_channel_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteChannelRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4536,7 +4536,7 @@ async def test_delete_channel_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteChannelRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4572,7 +4572,7 @@ def test_delete_channel_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_channel(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4580,7 +4580,7 @@ def test_delete_channel_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -4594,7 +4594,7 @@ def test_delete_channel_flattened_error():
     with pytest.raises(ValueError):
         client.delete_channel(
             eventarc.DeleteChannelRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -4616,7 +4616,7 @@ async def test_delete_channel_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_channel(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4624,7 +4624,7 @@ async def test_delete_channel_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -4638,7 +4638,7 @@ async def test_delete_channel_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_channel(
             eventarc.DeleteChannelRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -4662,8 +4662,8 @@ def test_get_provider(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = discovery.Provider(
-            name='name_value',
-            display_name='display_name_value',
+            name="name_value",
+            display_name="display_name_value",
         )
         response = client.get_provider(request)
 
@@ -4675,8 +4675,8 @@ def test_get_provider(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, discovery.Provider)
-    assert response.name == 'name_value'
-    assert response.display_name == 'display_name_value'
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
 
 
 def test_get_provider_non_empty_request_with_auto_populated_field():
@@ -4691,7 +4691,7 @@ def test_get_provider_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.GetProviderRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4703,7 +4703,7 @@ def test_get_provider_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetProviderRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_get_provider_use_cached_wrapped_rpc():
@@ -4789,8 +4789,8 @@ async def test_get_provider_async(transport: str = 'grpc_asyncio', request_type=
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(discovery.Provider(
-            name='name_value',
-            display_name='display_name_value',
+            name="name_value",
+            display_name="display_name_value",
         ))
         response = await client.get_provider(request)
 
@@ -4802,8 +4802,8 @@ async def test_get_provider_async(transport: str = 'grpc_asyncio', request_type=
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, discovery.Provider)
-    assert response.name == 'name_value'
-    assert response.display_name == 'display_name_value'
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
 
 
 @pytest.mark.asyncio
@@ -4819,7 +4819,7 @@ def test_get_provider_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetProviderRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4851,7 +4851,7 @@ async def test_get_provider_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetProviderRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4887,7 +4887,7 @@ def test_get_provider_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_provider(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4895,7 +4895,7 @@ def test_get_provider_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -4909,7 +4909,7 @@ def test_get_provider_flattened_error():
     with pytest.raises(ValueError):
         client.get_provider(
             eventarc.GetProviderRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -4929,7 +4929,7 @@ async def test_get_provider_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_provider(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4937,7 +4937,7 @@ async def test_get_provider_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -4951,7 +4951,7 @@ async def test_get_provider_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_provider(
             eventarc.GetProviderRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -4975,8 +4975,8 @@ def test_list_providers(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = eventarc.ListProvidersResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_providers(request)
 
@@ -4988,8 +4988,8 @@ def test_list_providers(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProvidersPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_providers_non_empty_request_with_auto_populated_field():
@@ -5004,10 +5004,10 @@ def test_list_providers_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.ListProvidersRequest(
-        parent='parent_value',
-        page_token='page_token_value',
-        order_by='order_by_value',
-        filter='filter_value',
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5019,10 +5019,10 @@ def test_list_providers_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListProvidersRequest(
-            parent='parent_value',
-            page_token='page_token_value',
-            order_by='order_by_value',
-            filter='filter_value',
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+            filter="filter_value",
         )
 
 def test_list_providers_use_cached_wrapped_rpc():
@@ -5108,8 +5108,8 @@ async def test_list_providers_async(transport: str = 'grpc_asyncio', request_typ
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListProvidersResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         ))
         response = await client.list_providers(request)
 
@@ -5121,8 +5121,8 @@ async def test_list_providers_async(transport: str = 'grpc_asyncio', request_typ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProvidersAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -5138,7 +5138,7 @@ def test_list_providers_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListProvidersRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5170,7 +5170,7 @@ async def test_list_providers_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListProvidersRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5206,7 +5206,7 @@ def test_list_providers_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_providers(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5214,7 +5214,7 @@ def test_list_providers_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -5228,7 +5228,7 @@ def test_list_providers_flattened_error():
     with pytest.raises(ValueError):
         client.list_providers(
             eventarc.ListProvidersRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -5248,7 +5248,7 @@ async def test_list_providers_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_providers(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5256,7 +5256,7 @@ async def test_list_providers_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -5270,7 +5270,7 @@ async def test_list_providers_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_providers(
             eventarc.ListProvidersRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -5490,10 +5490,10 @@ def test_get_channel_connection(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = channel_connection.ChannelConnection(
-            name='name_value',
-            uid='uid_value',
-            channel='channel_value',
-            activation_token='activation_token_value',
+            name="name_value",
+            uid="uid_value",
+            channel="channel_value",
+            activation_token="activation_token_value",
         )
         response = client.get_channel_connection(request)
 
@@ -5505,10 +5505,10 @@ def test_get_channel_connection(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_connection.ChannelConnection)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.channel == 'channel_value'
-    assert response.activation_token == 'activation_token_value'
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.channel == "channel_value"
+    assert response.activation_token == "activation_token_value"
 
 
 def test_get_channel_connection_non_empty_request_with_auto_populated_field():
@@ -5523,7 +5523,7 @@ def test_get_channel_connection_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.GetChannelConnectionRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5535,7 +5535,7 @@ def test_get_channel_connection_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetChannelConnectionRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_get_channel_connection_use_cached_wrapped_rpc():
@@ -5621,10 +5621,10 @@ async def test_get_channel_connection_async(transport: str = 'grpc_asyncio', req
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(channel_connection.ChannelConnection(
-            name='name_value',
-            uid='uid_value',
-            channel='channel_value',
-            activation_token='activation_token_value',
+            name="name_value",
+            uid="uid_value",
+            channel="channel_value",
+            activation_token="activation_token_value",
         ))
         response = await client.get_channel_connection(request)
 
@@ -5636,10 +5636,10 @@ async def test_get_channel_connection_async(transport: str = 'grpc_asyncio', req
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_connection.ChannelConnection)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.channel == 'channel_value'
-    assert response.activation_token == 'activation_token_value'
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.channel == "channel_value"
+    assert response.activation_token == "activation_token_value"
 
 
 @pytest.mark.asyncio
@@ -5655,7 +5655,7 @@ def test_get_channel_connection_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetChannelConnectionRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5687,7 +5687,7 @@ async def test_get_channel_connection_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetChannelConnectionRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5723,7 +5723,7 @@ def test_get_channel_connection_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_channel_connection(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5731,7 +5731,7 @@ def test_get_channel_connection_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -5745,7 +5745,7 @@ def test_get_channel_connection_flattened_error():
     with pytest.raises(ValueError):
         client.get_channel_connection(
             eventarc.GetChannelConnectionRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -5765,7 +5765,7 @@ async def test_get_channel_connection_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_channel_connection(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5773,7 +5773,7 @@ async def test_get_channel_connection_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -5787,7 +5787,7 @@ async def test_get_channel_connection_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_channel_connection(
             eventarc.GetChannelConnectionRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -5811,8 +5811,8 @@ def test_list_channel_connections(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = eventarc.ListChannelConnectionsResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_channel_connections(request)
 
@@ -5824,8 +5824,8 @@ def test_list_channel_connections(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelConnectionsPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_channel_connections_non_empty_request_with_auto_populated_field():
@@ -5840,8 +5840,8 @@ def test_list_channel_connections_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.ListChannelConnectionsRequest(
-        parent='parent_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5853,8 +5853,8 @@ def test_list_channel_connections_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.ListChannelConnectionsRequest(
-            parent='parent_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            page_token="page_token_value",
         )
 
 def test_list_channel_connections_use_cached_wrapped_rpc():
@@ -5940,8 +5940,8 @@ async def test_list_channel_connections_async(transport: str = 'grpc_asyncio', r
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelConnectionsResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         ))
         response = await client.list_channel_connections(request)
 
@@ -5953,8 +5953,8 @@ async def test_list_channel_connections_async(transport: str = 'grpc_asyncio', r
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelConnectionsAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -5970,7 +5970,7 @@ def test_list_channel_connections_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListChannelConnectionsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6002,7 +6002,7 @@ async def test_list_channel_connections_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.ListChannelConnectionsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6038,7 +6038,7 @@ def test_list_channel_connections_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_channel_connections(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6046,7 +6046,7 @@ def test_list_channel_connections_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -6060,7 +6060,7 @@ def test_list_channel_connections_flattened_error():
     with pytest.raises(ValueError):
         client.list_channel_connections(
             eventarc.ListChannelConnectionsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -6080,7 +6080,7 @@ async def test_list_channel_connections_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_channel_connections(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6088,7 +6088,7 @@ async def test_list_channel_connections_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -6102,7 +6102,7 @@ async def test_list_channel_connections_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_channel_connections(
             eventarc.ListChannelConnectionsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -6346,8 +6346,8 @@ def test_create_channel_connection_non_empty_request_with_auto_populated_field()
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.CreateChannelConnectionRequest(
-        parent='parent_value',
-        channel_connection_id='channel_connection_id_value',
+        parent="parent_value",
+        channel_connection_id="channel_connection_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6359,8 +6359,8 @@ def test_create_channel_connection_non_empty_request_with_auto_populated_field()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.CreateChannelConnectionRequest(
-            parent='parent_value',
-            channel_connection_id='channel_connection_id_value',
+            parent="parent_value",
+            channel_connection_id="channel_connection_id_value",
         )
 
 def test_create_channel_connection_use_cached_wrapped_rpc():
@@ -6483,7 +6483,7 @@ def test_create_channel_connection_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateChannelConnectionRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6515,7 +6515,7 @@ async def test_create_channel_connection_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.CreateChannelConnectionRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6551,9 +6551,9 @@ def test_create_channel_connection_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_channel_connection(
-            parent='parent_value',
-            channel_connection=gce_channel_connection.ChannelConnection(name='name_value'),
-            channel_connection_id='channel_connection_id_value',
+            parent="parent_value",
+            channel_connection=gce_channel_connection.ChannelConnection(name="name_value"),
+            channel_connection_id="channel_connection_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6561,13 +6561,13 @@ def test_create_channel_connection_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].channel_connection
-        mock_val = gce_channel_connection.ChannelConnection(name='name_value')
+        mock_val = gce_channel_connection.ChannelConnection(name="name_value")
         assert arg == mock_val
         arg = args[0].channel_connection_id
-        mock_val = 'channel_connection_id_value'
+        mock_val = "channel_connection_id_value"
         assert arg == mock_val
 
 
@@ -6581,9 +6581,9 @@ def test_create_channel_connection_flattened_error():
     with pytest.raises(ValueError):
         client.create_channel_connection(
             eventarc.CreateChannelConnectionRequest(),
-            parent='parent_value',
-            channel_connection=gce_channel_connection.ChannelConnection(name='name_value'),
-            channel_connection_id='channel_connection_id_value',
+            parent="parent_value",
+            channel_connection=gce_channel_connection.ChannelConnection(name="name_value"),
+            channel_connection_id="channel_connection_id_value",
         )
 
 @pytest.mark.asyncio
@@ -6605,9 +6605,9 @@ async def test_create_channel_connection_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_channel_connection(
-            parent='parent_value',
-            channel_connection=gce_channel_connection.ChannelConnection(name='name_value'),
-            channel_connection_id='channel_connection_id_value',
+            parent="parent_value",
+            channel_connection=gce_channel_connection.ChannelConnection(name="name_value"),
+            channel_connection_id="channel_connection_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6615,13 +6615,13 @@ async def test_create_channel_connection_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].channel_connection
-        mock_val = gce_channel_connection.ChannelConnection(name='name_value')
+        mock_val = gce_channel_connection.ChannelConnection(name="name_value")
         assert arg == mock_val
         arg = args[0].channel_connection_id
-        mock_val = 'channel_connection_id_value'
+        mock_val = "channel_connection_id_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -6635,9 +6635,9 @@ async def test_create_channel_connection_flattened_error_async():
     with pytest.raises(ValueError):
         await client.create_channel_connection(
             eventarc.CreateChannelConnectionRequest(),
-            parent='parent_value',
-            channel_connection=gce_channel_connection.ChannelConnection(name='name_value'),
-            channel_connection_id='channel_connection_id_value',
+            parent="parent_value",
+            channel_connection=gce_channel_connection.ChannelConnection(name="name_value"),
+            channel_connection_id="channel_connection_id_value",
         )
 
 
@@ -6685,7 +6685,7 @@ def test_delete_channel_connection_non_empty_request_with_auto_populated_field()
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.DeleteChannelConnectionRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6697,7 +6697,7 @@ def test_delete_channel_connection_non_empty_request_with_auto_populated_field()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.DeleteChannelConnectionRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_delete_channel_connection_use_cached_wrapped_rpc():
@@ -6820,7 +6820,7 @@ def test_delete_channel_connection_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteChannelConnectionRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6852,7 +6852,7 @@ async def test_delete_channel_connection_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.DeleteChannelConnectionRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6888,7 +6888,7 @@ def test_delete_channel_connection_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_channel_connection(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6896,7 +6896,7 @@ def test_delete_channel_connection_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -6910,7 +6910,7 @@ def test_delete_channel_connection_flattened_error():
     with pytest.raises(ValueError):
         client.delete_channel_connection(
             eventarc.DeleteChannelConnectionRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -6932,7 +6932,7 @@ async def test_delete_channel_connection_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_channel_connection(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6940,7 +6940,7 @@ async def test_delete_channel_connection_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -6954,7 +6954,7 @@ async def test_delete_channel_connection_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_channel_connection(
             eventarc.DeleteChannelConnectionRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -6978,8 +6978,8 @@ def test_get_google_channel_config(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = google_channel_config.GoogleChannelConfig(
-            name='name_value',
-            crypto_key_name='crypto_key_name_value',
+            name="name_value",
+            crypto_key_name="crypto_key_name_value",
         )
         response = client.get_google_channel_config(request)
 
@@ -6991,8 +6991,8 @@ def test_get_google_channel_config(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, google_channel_config.GoogleChannelConfig)
-    assert response.name == 'name_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
+    assert response.name == "name_value"
+    assert response.crypto_key_name == "crypto_key_name_value"
 
 
 def test_get_google_channel_config_non_empty_request_with_auto_populated_field():
@@ -7007,7 +7007,7 @@ def test_get_google_channel_config_non_empty_request_with_auto_populated_field()
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = eventarc.GetGoogleChannelConfigRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7019,7 +7019,7 @@ def test_get_google_channel_config_non_empty_request_with_auto_populated_field()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == eventarc.GetGoogleChannelConfigRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_get_google_channel_config_use_cached_wrapped_rpc():
@@ -7105,8 +7105,8 @@ async def test_get_google_channel_config_async(transport: str = 'grpc_asyncio', 
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(google_channel_config.GoogleChannelConfig(
-            name='name_value',
-            crypto_key_name='crypto_key_name_value',
+            name="name_value",
+            crypto_key_name="crypto_key_name_value",
         ))
         response = await client.get_google_channel_config(request)
 
@@ -7118,8 +7118,8 @@ async def test_get_google_channel_config_async(transport: str = 'grpc_asyncio', 
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, google_channel_config.GoogleChannelConfig)
-    assert response.name == 'name_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
+    assert response.name == "name_value"
+    assert response.crypto_key_name == "crypto_key_name_value"
 
 
 @pytest.mark.asyncio
@@ -7135,7 +7135,7 @@ def test_get_google_channel_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetGoogleChannelConfigRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7167,7 +7167,7 @@ async def test_get_google_channel_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.GetGoogleChannelConfigRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7203,7 +7203,7 @@ def test_get_google_channel_config_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_google_channel_config(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7211,7 +7211,7 @@ def test_get_google_channel_config_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -7225,7 +7225,7 @@ def test_get_google_channel_config_flattened_error():
     with pytest.raises(ValueError):
         client.get_google_channel_config(
             eventarc.GetGoogleChannelConfigRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -7245,7 +7245,7 @@ async def test_get_google_channel_config_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_google_channel_config(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7253,7 +7253,7 @@ async def test_get_google_channel_config_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -7267,7 +7267,7 @@ async def test_get_google_channel_config_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_google_channel_config(
             eventarc.GetGoogleChannelConfigRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -7291,8 +7291,8 @@ def test_update_google_channel_config(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = gce_google_channel_config.GoogleChannelConfig(
-            name='name_value',
-            crypto_key_name='crypto_key_name_value',
+            name="name_value",
+            crypto_key_name="crypto_key_name_value",
         )
         response = client.update_google_channel_config(request)
 
@@ -7304,8 +7304,8 @@ def test_update_google_channel_config(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
-    assert response.name == 'name_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
+    assert response.name == "name_value"
+    assert response.crypto_key_name == "crypto_key_name_value"
 
 
 def test_update_google_channel_config_non_empty_request_with_auto_populated_field():
@@ -7416,8 +7416,8 @@ async def test_update_google_channel_config_async(transport: str = 'grpc_asyncio
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(gce_google_channel_config.GoogleChannelConfig(
-            name='name_value',
-            crypto_key_name='crypto_key_name_value',
+            name="name_value",
+            crypto_key_name="crypto_key_name_value",
         ))
         response = await client.update_google_channel_config(request)
 
@@ -7429,8 +7429,8 @@ async def test_update_google_channel_config_async(transport: str = 'grpc_asyncio
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
-    assert response.name == 'name_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
+    assert response.name == "name_value"
+    assert response.crypto_key_name == "crypto_key_name_value"
 
 
 @pytest.mark.asyncio
@@ -7446,7 +7446,7 @@ def test_update_google_channel_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = eventarc.UpdateGoogleChannelConfigRequest()
 
-    request.google_channel_config.name = 'name_value'
+    request.google_channel_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7478,7 +7478,7 @@ async def test_update_google_channel_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = eventarc.UpdateGoogleChannelConfigRequest()
 
-    request.google_channel_config.name = 'name_value'
+    request.google_channel_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7514,8 +7514,8 @@ def test_update_google_channel_config_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_google_channel_config(
-            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -7523,10 +7523,10 @@ def test_update_google_channel_config_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].google_channel_config
-        mock_val = gce_google_channel_config.GoogleChannelConfig(name='name_value')
+        mock_val = gce_google_channel_config.GoogleChannelConfig(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
@@ -7540,8 +7540,8 @@ def test_update_google_channel_config_flattened_error():
     with pytest.raises(ValueError):
         client.update_google_channel_config(
             eventarc.UpdateGoogleChannelConfigRequest(),
-            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 @pytest.mark.asyncio
@@ -7561,8 +7561,8 @@ async def test_update_google_channel_config_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_google_channel_config(
-            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -7570,10 +7570,10 @@ async def test_update_google_channel_config_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].google_channel_config
-        mock_val = gce_google_channel_config.GoogleChannelConfig(name='name_value')
+        mock_val = gce_google_channel_config.GoogleChannelConfig(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -7587,8 +7587,8 @@ async def test_update_google_channel_config_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_google_channel_config(
             eventarc.UpdateGoogleChannelConfigRequest(),
-            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -7645,14 +7645,14 @@ def test_get_trigger_rest_required_fields(request_type=eventarc.GetTriggerReques
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7720,7 +7720,7 @@ def test_get_trigger_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -7754,7 +7754,7 @@ def test_get_trigger_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.get_trigger(
             eventarc.GetTriggerRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -7811,7 +7811,7 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_triggers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -7820,7 +7820,7 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7888,7 +7888,7 @@ def test_list_triggers_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
+            parent="parent_value",
         )
         mock_args.update(sample_request)
 
@@ -7922,7 +7922,7 @@ def test_list_triggers_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.list_triggers(
             eventarc.ListTriggersRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -8053,8 +8053,8 @@ def test_create_trigger_rest_required_fields(request_type=eventarc.CreateTrigger
     assert "validateOnly" in jsonified_request
     assert jsonified_request["validateOnly"] == request_init["validate_only"]
 
-    jsonified_request["parent"] = 'parent_value'
-    jsonified_request["triggerId"] = 'trigger_id_value'
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["triggerId"] = "trigger_id_value"
     jsonified_request["validateOnly"] = True
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_trigger._get_unset_required_fields(jsonified_request)
@@ -8064,9 +8064,9 @@ def test_create_trigger_rest_required_fields(request_type=eventarc.CreateTrigger
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
     assert "triggerId" in jsonified_request
-    assert jsonified_request["triggerId"] == 'trigger_id_value'
+    assert jsonified_request["triggerId"] == "trigger_id_value"
     assert "validateOnly" in jsonified_request
     assert jsonified_request["validateOnly"] == True
 
@@ -8142,9 +8142,9 @@ def test_create_trigger_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
-            trigger=gce_trigger.Trigger(name='name_value'),
-            trigger_id='trigger_id_value',
+            parent="parent_value",
+            trigger=gce_trigger.Trigger(name="name_value"),
+            trigger_id="trigger_id_value",
         )
         mock_args.update(sample_request)
 
@@ -8176,9 +8176,9 @@ def test_create_trigger_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.create_trigger(
             eventarc.CreateTriggerRequest(),
-            parent='parent_value',
-            trigger=gce_trigger.Trigger(name='name_value'),
-            trigger_id='trigger_id_value',
+            parent="parent_value",
+            trigger=gce_trigger.Trigger(name="name_value"),
+            trigger_id="trigger_id_value",
         )
 
 
@@ -8321,8 +8321,8 @@ def test_update_trigger_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            trigger=gce_trigger.Trigger(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            trigger=gce_trigger.Trigger(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
             allow_missing=True,
         )
         mock_args.update(sample_request)
@@ -8355,8 +8355,8 @@ def test_update_trigger_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.update_trigger(
             eventarc.UpdateTriggerRequest(),
-            trigger=gce_trigger.Trigger(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            trigger=gce_trigger.Trigger(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
             allow_missing=True,
         )
 
@@ -8422,7 +8422,7 @@ def test_delete_trigger_rest_required_fields(request_type=eventarc.DeleteTrigger
     assert "validateOnly" in jsonified_request
     assert jsonified_request["validateOnly"] == request_init["validate_only"]
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
     jsonified_request["validateOnly"] = True
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_trigger._get_unset_required_fields(jsonified_request)
@@ -8432,7 +8432,7 @@ def test_delete_trigger_rest_required_fields(request_type=eventarc.DeleteTrigger
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
     assert "validateOnly" in jsonified_request
     assert jsonified_request["validateOnly"] == True
 
@@ -8503,7 +8503,7 @@ def test_delete_trigger_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
             allow_missing=True,
         )
         mock_args.update(sample_request)
@@ -8536,7 +8536,7 @@ def test_delete_trigger_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.delete_trigger(
             eventarc.DeleteTriggerRequest(),
-            name='name_value',
+            name="name_value",
             allow_missing=True,
         )
 
@@ -8594,14 +8594,14 @@ def test_get_channel_rest_required_fields(request_type=eventarc.GetChannelReques
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_channel._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8669,7 +8669,7 @@ def test_get_channel_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -8703,7 +8703,7 @@ def test_get_channel_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.get_channel(
             eventarc.GetChannelRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -8760,7 +8760,7 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_channels._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -8769,7 +8769,7 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8837,7 +8837,7 @@ def test_list_channels_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
+            parent="parent_value",
         )
         mock_args.update(sample_request)
 
@@ -8871,7 +8871,7 @@ def test_list_channels_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.list_channels(
             eventarc.ListChannelsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -9002,8 +9002,8 @@ def test_create_channel_rest_required_fields(request_type=eventarc.CreateChannel
     assert "validateOnly" in jsonified_request
     assert jsonified_request["validateOnly"] == request_init["validate_only"]
 
-    jsonified_request["parent"] = 'parent_value'
-    jsonified_request["channelId"] = 'channel_id_value'
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["channelId"] = "channel_id_value"
     jsonified_request["validateOnly"] = True
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_channel_._get_unset_required_fields(jsonified_request)
@@ -9013,9 +9013,9 @@ def test_create_channel_rest_required_fields(request_type=eventarc.CreateChannel
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
     assert "channelId" in jsonified_request
-    assert jsonified_request["channelId"] == 'channel_id_value'
+    assert jsonified_request["channelId"] == "channel_id_value"
     assert "validateOnly" in jsonified_request
     assert jsonified_request["validateOnly"] == True
 
@@ -9091,9 +9091,9 @@ def test_create_channel_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
-            channel=gce_channel.Channel(name='name_value'),
-            channel_id='channel_id_value',
+            parent="parent_value",
+            channel=gce_channel.Channel(name="name_value"),
+            channel_id="channel_id_value",
         )
         mock_args.update(sample_request)
 
@@ -9125,9 +9125,9 @@ def test_create_channel_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.create_channel(
             eventarc.CreateChannelRequest(),
-            parent='parent_value',
-            channel=gce_channel.Channel(name='name_value'),
-            channel_id='channel_id_value',
+            parent="parent_value",
+            channel=gce_channel.Channel(name="name_value"),
+            channel_id="channel_id_value",
         )
 
 
@@ -9270,8 +9270,8 @@ def test_update_channel_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            channel=gce_channel.Channel(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            channel=gce_channel.Channel(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
 
@@ -9303,8 +9303,8 @@ def test_update_channel_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.update_channel(
             eventarc.UpdateChannelRequest(),
-            channel=gce_channel.Channel(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            channel=gce_channel.Channel(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -9369,7 +9369,7 @@ def test_delete_channel_rest_required_fields(request_type=eventarc.DeleteChannel
     assert "validateOnly" in jsonified_request
     assert jsonified_request["validateOnly"] == request_init["validate_only"]
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
     jsonified_request["validateOnly"] = True
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_channel._get_unset_required_fields(jsonified_request)
@@ -9379,7 +9379,7 @@ def test_delete_channel_rest_required_fields(request_type=eventarc.DeleteChannel
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
     assert "validateOnly" in jsonified_request
     assert jsonified_request["validateOnly"] == True
 
@@ -9450,7 +9450,7 @@ def test_delete_channel_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -9482,7 +9482,7 @@ def test_delete_channel_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.delete_channel(
             eventarc.DeleteChannelRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -9539,14 +9539,14 @@ def test_get_provider_rest_required_fields(request_type=eventarc.GetProviderRequ
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_provider._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9614,7 +9614,7 @@ def test_get_provider_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -9648,7 +9648,7 @@ def test_get_provider_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.get_provider(
             eventarc.GetProviderRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -9705,7 +9705,7 @@ def test_list_providers_rest_required_fields(request_type=eventarc.ListProviders
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_providers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -9714,7 +9714,7 @@ def test_list_providers_rest_required_fields(request_type=eventarc.ListProviders
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9782,7 +9782,7 @@ def test_list_providers_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
+            parent="parent_value",
         )
         mock_args.update(sample_request)
 
@@ -9816,7 +9816,7 @@ def test_list_providers_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.list_providers(
             eventarc.ListProvidersRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -9935,14 +9935,14 @@ def test_get_channel_connection_rest_required_fields(request_type=eventarc.GetCh
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_channel_connection._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10010,7 +10010,7 @@ def test_get_channel_connection_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -10044,7 +10044,7 @@ def test_get_channel_connection_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.get_channel_connection(
             eventarc.GetChannelConnectionRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -10101,7 +10101,7 @@ def test_list_channel_connections_rest_required_fields(request_type=eventarc.Lis
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_channel_connections._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -10110,7 +10110,7 @@ def test_list_channel_connections_rest_required_fields(request_type=eventarc.Lis
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10178,7 +10178,7 @@ def test_list_channel_connections_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
+            parent="parent_value",
         )
         mock_args.update(sample_request)
 
@@ -10212,7 +10212,7 @@ def test_list_channel_connections_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.list_channel_connections(
             eventarc.ListChannelConnectionsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -10339,8 +10339,8 @@ def test_create_channel_connection_rest_required_fields(request_type=eventarc.Cr
     assert "channelConnectionId" in jsonified_request
     assert jsonified_request["channelConnectionId"] == request_init["channel_connection_id"]
 
-    jsonified_request["parent"] = 'parent_value'
-    jsonified_request["channelConnectionId"] = 'channel_connection_id_value'
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["channelConnectionId"] = "channel_connection_id_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_channel_connection._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -10349,9 +10349,9 @@ def test_create_channel_connection_rest_required_fields(request_type=eventarc.Cr
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
     assert "channelConnectionId" in jsonified_request
-    assert jsonified_request["channelConnectionId"] == 'channel_connection_id_value'
+    assert jsonified_request["channelConnectionId"] == "channel_connection_id_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10421,9 +10421,9 @@ def test_create_channel_connection_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
-            channel_connection=gce_channel_connection.ChannelConnection(name='name_value'),
-            channel_connection_id='channel_connection_id_value',
+            parent="parent_value",
+            channel_connection=gce_channel_connection.ChannelConnection(name="name_value"),
+            channel_connection_id="channel_connection_id_value",
         )
         mock_args.update(sample_request)
 
@@ -10455,9 +10455,9 @@ def test_create_channel_connection_rest_flattened_error(transport: str = 'rest')
     with pytest.raises(ValueError):
         client.create_channel_connection(
             eventarc.CreateChannelConnectionRequest(),
-            parent='parent_value',
-            channel_connection=gce_channel_connection.ChannelConnection(name='name_value'),
-            channel_connection_id='channel_connection_id_value',
+            parent="parent_value",
+            channel_connection=gce_channel_connection.ChannelConnection(name="name_value"),
+            channel_connection_id="channel_connection_id_value",
         )
 
 
@@ -10518,14 +10518,14 @@ def test_delete_channel_connection_rest_required_fields(request_type=eventarc.De
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_channel_connection._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10590,7 +10590,7 @@ def test_delete_channel_connection_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -10622,7 +10622,7 @@ def test_delete_channel_connection_rest_flattened_error(transport: str = 'rest')
     with pytest.raises(ValueError):
         client.delete_channel_connection(
             eventarc.DeleteChannelConnectionRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -10679,14 +10679,14 @@ def test_get_google_channel_config_rest_required_fields(request_type=eventarc.Ge
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_google_channel_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10754,7 +10754,7 @@ def test_get_google_channel_config_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -10788,7 +10788,7 @@ def test_get_google_channel_config_rest_flattened_error(transport: str = 'rest')
     with pytest.raises(ValueError):
         client.get_google_channel_config(
             eventarc.GetGoogleChannelConfigRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -10918,8 +10918,8 @@ def test_update_google_channel_config_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
 
@@ -10953,8 +10953,8 @@ def test_update_google_channel_config_rest_flattened_error(transport: str = 'res
     with pytest.raises(ValueError):
         client.update_google_channel_config(
             eventarc.UpdateGoogleChannelConfigRequest(),
-            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            google_channel_config=gce_google_channel_config.GoogleChannelConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -11504,11 +11504,11 @@ async def test_get_trigger_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(trigger.Trigger(
-            name='name_value',
-            uid='uid_value',
-            service_account='service_account_value',
-            channel='channel_value',
-            etag='etag_value',
+            name="name_value",
+            uid="uid_value",
+            service_account="service_account_value",
+            channel="channel_value",
+            etag="etag_value",
         ))
         await client.get_trigger(request=None)
 
@@ -11535,8 +11535,8 @@ async def test_list_triggers_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListTriggersResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         ))
         await client.list_triggers(request=None)
 
@@ -11644,12 +11644,12 @@ async def test_get_channel_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel.Channel(
-            name='name_value',
-            uid='uid_value',
-            provider='provider_value',
+            name="name_value",
+            uid="uid_value",
+            provider="provider_value",
             state=channel.Channel.State.PENDING,
-            activation_token='activation_token_value',
-            crypto_key_name='crypto_key_name_value',
+            activation_token="activation_token_value",
+            crypto_key_name="crypto_key_name_value",
         ))
         await client.get_channel(request=None)
 
@@ -11676,8 +11676,8 @@ async def test_list_channels_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelsResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         ))
         await client.list_channels(request=None)
 
@@ -11785,8 +11785,8 @@ async def test_get_provider_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(discovery.Provider(
-            name='name_value',
-            display_name='display_name_value',
+            name="name_value",
+            display_name="display_name_value",
         ))
         await client.get_provider(request=None)
 
@@ -11813,8 +11813,8 @@ async def test_list_providers_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListProvidersResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         ))
         await client.list_providers(request=None)
 
@@ -11841,10 +11841,10 @@ async def test_get_channel_connection_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel_connection.ChannelConnection(
-            name='name_value',
-            uid='uid_value',
-            channel='channel_value',
-            activation_token='activation_token_value',
+            name="name_value",
+            uid="uid_value",
+            channel="channel_value",
+            activation_token="activation_token_value",
         ))
         await client.get_channel_connection(request=None)
 
@@ -11871,8 +11871,8 @@ async def test_list_channel_connections_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(eventarc.ListChannelConnectionsResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         ))
         await client.list_channel_connections(request=None)
 
@@ -11953,8 +11953,8 @@ async def test_get_google_channel_config_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(google_channel_config.GoogleChannelConfig(
-            name='name_value',
-            crypto_key_name='crypto_key_name_value',
+            name="name_value",
+            crypto_key_name="crypto_key_name_value",
         ))
         await client.get_google_channel_config(request=None)
 
@@ -11981,8 +11981,8 @@ async def test_update_google_channel_config_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gce_google_channel_config.GoogleChannelConfig(
-            name='name_value',
-            crypto_key_name='crypto_key_name_value',
+            name="name_value",
+            crypto_key_name="crypto_key_name_value",
         ))
         await client.update_google_channel_config(request=None)
 
@@ -12041,11 +12041,11 @@ def test_get_trigger_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = trigger.Trigger(
-              name='name_value',
-              uid='uid_value',
-              service_account='service_account_value',
-              channel='channel_value',
-              etag='etag_value',
+              name="name_value",
+              uid="uid_value",
+              service_account="service_account_value",
+              channel="channel_value",
+              etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -12062,11 +12062,11 @@ def test_get_trigger_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trigger.Trigger)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.service_account == 'service_account_value'
-    assert response.channel == 'channel_value'
-    assert response.etag == 'etag_value'
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.service_account == "service_account_value"
+    assert response.channel == "channel_value"
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -12155,8 +12155,8 @@ def test_list_triggers_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = eventarc.ListTriggersResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
+              next_page_token="next_page_token_value",
+              unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -12173,8 +12173,8 @@ def test_list_triggers_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTriggersPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -12694,13 +12694,13 @@ def test_get_channel_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = channel.Channel(
-              name='name_value',
-              uid='uid_value',
-              provider='provider_value',
+              name="name_value",
+              uid="uid_value",
+              provider="provider_value",
               state=channel.Channel.State.PENDING,
-              activation_token='activation_token_value',
-              crypto_key_name='crypto_key_name_value',
-            pubsub_topic='pubsub_topic_value',
+              activation_token="activation_token_value",
+              crypto_key_name="crypto_key_name_value",
+            pubsub_topic="pubsub_topic_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -12717,12 +12717,12 @@ def test_get_channel_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel.Channel)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.provider == 'provider_value'
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.provider == "provider_value"
     assert response.state == channel.Channel.State.PENDING
-    assert response.activation_token == 'activation_token_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
+    assert response.activation_token == "activation_token_value"
+    assert response.crypto_key_name == "crypto_key_name_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -12811,8 +12811,8 @@ def test_list_channels_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = eventarc.ListChannelsResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
+              next_page_token="next_page_token_value",
+              unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -12829,8 +12829,8 @@ def test_list_channels_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelsPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -13350,8 +13350,8 @@ def test_get_provider_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = discovery.Provider(
-              name='name_value',
-              display_name='display_name_value',
+              name="name_value",
+              display_name="display_name_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -13368,8 +13368,8 @@ def test_get_provider_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, discovery.Provider)
-    assert response.name == 'name_value'
-    assert response.display_name == 'display_name_value'
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -13458,8 +13458,8 @@ def test_list_providers_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = eventarc.ListProvidersResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
+              next_page_token="next_page_token_value",
+              unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -13476,8 +13476,8 @@ def test_list_providers_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProvidersPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -13566,10 +13566,10 @@ def test_get_channel_connection_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = channel_connection.ChannelConnection(
-              name='name_value',
-              uid='uid_value',
-              channel='channel_value',
-              activation_token='activation_token_value',
+              name="name_value",
+              uid="uid_value",
+              channel="channel_value",
+              activation_token="activation_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -13586,10 +13586,10 @@ def test_get_channel_connection_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, channel_connection.ChannelConnection)
-    assert response.name == 'name_value'
-    assert response.uid == 'uid_value'
-    assert response.channel == 'channel_value'
-    assert response.activation_token == 'activation_token_value'
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.channel == "channel_value"
+    assert response.activation_token == "activation_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -13678,8 +13678,8 @@ def test_list_channel_connections_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = eventarc.ListChannelConnectionsResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
+              next_page_token="next_page_token_value",
+              unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -13696,8 +13696,8 @@ def test_list_channel_connections_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelConnectionsPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -14052,8 +14052,8 @@ def test_get_google_channel_config_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = google_channel_config.GoogleChannelConfig(
-              name='name_value',
-              crypto_key_name='crypto_key_name_value',
+              name="name_value",
+              crypto_key_name="crypto_key_name_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -14070,8 +14070,8 @@ def test_get_google_channel_config_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, google_channel_config.GoogleChannelConfig)
-    assert response.name == 'name_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
+    assert response.name == "name_value"
+    assert response.crypto_key_name == "crypto_key_name_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -14224,8 +14224,8 @@ def test_update_google_channel_config_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = gce_google_channel_config.GoogleChannelConfig(
-              name='name_value',
-              crypto_key_name='crypto_key_name_value',
+              name="name_value",
+              crypto_key_name="crypto_key_name_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -14242,8 +14242,8 @@ def test_update_google_channel_config_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gce_google_channel_config.GoogleChannelConfig)
-    assert response.name == 'name_value'
-    assert response.crypto_key_name == 'crypto_key_name_value'
+    assert response.name == "name_value"
+    assert response.crypto_key_name == "crypto_key_name_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

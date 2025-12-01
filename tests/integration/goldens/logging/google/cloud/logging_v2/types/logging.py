@@ -25,23 +25,25 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
 
+# fmt: off
 __protobuf__ = proto.module(
-    package='google.logging.v2',
+    package="google.logging.v2",
     manifest={
-        'DeleteLogRequest',
-        'WriteLogEntriesRequest',
-        'WriteLogEntriesResponse',
-        'WriteLogEntriesPartialErrors',
-        'ListLogEntriesRequest',
-        'ListLogEntriesResponse',
-        'ListMonitoredResourceDescriptorsRequest',
-        'ListMonitoredResourceDescriptorsResponse',
-        'ListLogsRequest',
-        'ListLogsResponse',
-        'TailLogEntriesRequest',
-        'TailLogEntriesResponse',
+        "DeleteLogRequest",
+        "WriteLogEntriesRequest",
+        "WriteLogEntriesResponse",
+        "WriteLogEntriesPartialErrors",
+        "ListLogEntriesRequest",
+        "ListLogEntriesResponse",
+        "ListMonitoredResourceDescriptorsRequest",
+        "ListMonitoredResourceDescriptorsResponse",
+        "ListLogsRequest",
+        "ListLogsResponse",
+        "TailLogEntriesRequest",
+        "TailLogEntriesResponse",
     },
 )
+# fmt: on
 
 
 class DeleteLogRequest(proto.Message):
@@ -191,8 +193,7 @@ class WriteLogEntriesRequest(proto.Message):
 
 
 class WriteLogEntriesResponse(proto.Message):
-    r"""Result returned from WriteLogEntries.
-    """
+    r"""Result returned from WriteLogEntries."""
 
 
 class WriteLogEntriesPartialErrors(proto.Message):
@@ -556,6 +557,7 @@ class TailLogEntriesResponse(proto.Message):
                 A lower bound on the count of entries omitted due to
                 ``reason``.
         """
+
         class Reason(proto.Enum):
             r"""An indicator of why entries were omitted.
 
@@ -575,10 +577,10 @@ class TailLogEntriesResponse(proto.Message):
             RATE_LIMIT = 1
             NOT_CONSUMED = 2
 
-        reason: 'TailLogEntriesResponse.SuppressionInfo.Reason' = proto.Field(
+        reason: "TailLogEntriesResponse.SuppressionInfo.Reason" = proto.Field(
             proto.ENUM,
             number=1,
-            enum='TailLogEntriesResponse.SuppressionInfo.Reason',
+            enum="TailLogEntriesResponse.SuppressionInfo.Reason",
         )
         suppressed_count: int = proto.Field(
             proto.INT32,

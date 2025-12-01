@@ -24,11 +24,11 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.logging_v2.types import logging
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
@@ -40,33 +40,36 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class LoggingServiceV2Transport(abc.ABC):
     """Abstract transport class for LoggingServiceV2."""
 
+    # fmt: off
     AUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/cloud-platform.read-only',
-        'https://www.googleapis.com/auth/logging.admin',
-        'https://www.googleapis.com/auth/logging.read',
-        'https://www.googleapis.com/auth/logging.write',
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
+        "https://www.googleapis.com/auth/logging.admin",
+        "https://www.googleapis.com/auth/logging.read",
+        "https://www.googleapis.com/auth/logging.write",
     )
+    # fmt: on
 
-    DEFAULT_HOST: str = 'logging.googleapis.com'
+    DEFAULT_HOST: str = "logging.googleapis.com"
 
     def __init__(
-            self, *,
-            host: str = DEFAULT_HOST,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            **kwargs,
-            ) -> None:
+        self,
+        *,
+        host: str = DEFAULT_HOST,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+        **kwargs,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to (default: 'logging.googleapis.com').
+                 The hostname to connect to (default: "logging.googleapis.com").
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -102,10 +105,10 @@ class LoggingServiceV2Transport(abc.ABC):
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                                credentials_file,
-                                **scopes_kwargs,
-                                quota_project_id=quota_project_id
-                            )
+                credentials_file,
+                **scopes_kwargs,
+                quota_project_id=quota_project_id,
+            )
         elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
@@ -113,15 +116,19 @@ class LoggingServiceV2Transport(abc.ABC):
                 credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
+        if (
+            always_use_jwt_access
+            and isinstance(credentials, service_account.Credentials)
+            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
+        ):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ':' not in host:
-            host += ':443'
+        if ":" not in host:
+            host += ":443"
         self._host = host
 
     @property
@@ -242,70 +249,100 @@ class LoggingServiceV2Transport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-         }
+        }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
+        .. warning::
             Only call this method if the transport is NOT shared
             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
+    # fmt: off
     @property
-    def delete_log(self) -> Callable[
-            [logging.DeleteLogRequest],
-            Union[
-                empty_pb2.Empty,
-                Awaitable[empty_pb2.Empty]
-            ]]:
+    def delete_log(
+        self,
+    ) -> Callable[
+        [logging.DeleteLogRequest],
+        Union[
+            empty_pb2.Empty,
+            Awaitable[empty_pb2.Empty]
+        ],
+    ]:
         raise NotImplementedError()
+    # fmt: on
 
+    # fmt: off
     @property
-    def write_log_entries(self) -> Callable[
-            [logging.WriteLogEntriesRequest],
-            Union[
-                logging.WriteLogEntriesResponse,
-                Awaitable[logging.WriteLogEntriesResponse]
-            ]]:
+    def write_log_entries(
+        self,
+    ) -> Callable[
+        [logging.WriteLogEntriesRequest],
+        Union[
+            logging.WriteLogEntriesResponse,
+            Awaitable[logging.WriteLogEntriesResponse]
+        ],
+    ]:
         raise NotImplementedError()
+    # fmt: on
 
+    # fmt: off
     @property
-    def list_log_entries(self) -> Callable[
-            [logging.ListLogEntriesRequest],
-            Union[
-                logging.ListLogEntriesResponse,
-                Awaitable[logging.ListLogEntriesResponse]
-            ]]:
+    def list_log_entries(
+        self,
+    ) -> Callable[
+        [logging.ListLogEntriesRequest],
+        Union[
+            logging.ListLogEntriesResponse,
+            Awaitable[logging.ListLogEntriesResponse]
+        ],
+    ]:
         raise NotImplementedError()
+    # fmt: on
 
+    # fmt: off
     @property
-    def list_monitored_resource_descriptors(self) -> Callable[
-            [logging.ListMonitoredResourceDescriptorsRequest],
-            Union[
-                logging.ListMonitoredResourceDescriptorsResponse,
-                Awaitable[logging.ListMonitoredResourceDescriptorsResponse]
-            ]]:
+    def list_monitored_resource_descriptors(
+        self,
+    ) -> Callable[
+        [logging.ListMonitoredResourceDescriptorsRequest],
+        Union[
+            logging.ListMonitoredResourceDescriptorsResponse,
+            Awaitable[logging.ListMonitoredResourceDescriptorsResponse]
+        ],
+    ]:
         raise NotImplementedError()
+    # fmt: on
 
+    # fmt: off
     @property
-    def list_logs(self) -> Callable[
-            [logging.ListLogsRequest],
-            Union[
-                logging.ListLogsResponse,
-                Awaitable[logging.ListLogsResponse]
-            ]]:
+    def list_logs(
+        self,
+    ) -> Callable[
+        [logging.ListLogsRequest],
+        Union[
+            logging.ListLogsResponse,
+            Awaitable[logging.ListLogsResponse]
+        ],
+    ]:
         raise NotImplementedError()
+    # fmt: on
 
+    # fmt: off
     @property
-    def tail_log_entries(self) -> Callable[
-            [logging.TailLogEntriesRequest],
-            Union[
-                logging.TailLogEntriesResponse,
-                Awaitable[logging.TailLogEntriesResponse]
-            ]]:
+    def tail_log_entries(
+        self,
+    ) -> Callable[
+        [logging.TailLogEntriesRequest],
+        Union[
+            logging.TailLogEntriesResponse,
+            Awaitable[logging.TailLogEntriesResponse]
+        ],
+    ]:
         raise NotImplementedError()
+    # fmt: on
 
     @property
     def list_operations(
@@ -319,19 +356,13 @@ class LoggingServiceV2Transport(abc.ABC):
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def cancel_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.CancelOperationRequest],
-        None,
-    ]:
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
         raise NotImplementedError()
 
     @property
@@ -339,6 +370,4 @@ class LoggingServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = (
-    'LoggingServiceV2Transport',
-)
+__all__ = ("LoggingServiceV2Transport",)

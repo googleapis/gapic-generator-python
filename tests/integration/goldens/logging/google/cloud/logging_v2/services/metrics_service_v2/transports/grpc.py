@@ -21,7 +21,7 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers
 from google.api_core import gapic_v1
-import google.auth                         # type: ignore
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
@@ -31,12 +31,13 @@ import grpc  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.logging_v2.types import logging_metrics
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -56,10 +57,12 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
+            # fmt: off
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
                 for key, value in request_metadata
             }
+            # fmt: on
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -67,7 +70,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra = {
+                extra={
                     "serviceName": "google.logging.v2.MetricsServiceV2",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -93,7 +96,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             }
             _LOGGER.debug(
                 f"Received response for {client_call_details.method}.",
-                extra = {
+                extra={
                     "serviceName": "google.logging.v2.MetricsServiceV2",
                     "rpcName": client_call_details.method,
                     "response": grpc_response,
@@ -115,28 +118,31 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
+
     _stubs: Dict[str, Callable]
 
-    def __init__(self, *,
-            host: str = 'logging.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
-            api_mtls_endpoint: Optional[str] = None,
-            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "logging.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to (default: 'logging.googleapis.com').
+                 The hostname to connect to (default: "logging.googleapis.com").
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -210,7 +216,8 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
                 if client_cert_source:
                     cert, key = client_cert_source()
                     self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
+                        certificate_chain=cert,
+                        private_key=key,
                     )
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
@@ -219,7 +226,8 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
                     self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
+                        certificate_chain=cert,
+                        private_key=key,
                     )
 
         # The base transport sets the host, credentials and scopes
@@ -254,19 +262,21 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
-    def create_channel(cls,
-                       host: str = 'logging.googleapis.com',
-                       credentials: Optional[ga_credentials.Credentials] = None,
-                       credentials_file: Optional[str] = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       quota_project_id: Optional[str] = None,
-                       **kwargs) -> grpc.Channel:
+    def create_channel(
+        cls,
+        host: str = "logging.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -302,19 +312,18 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs
+            **kwargs,
         )
 
     @property
     def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service.
-        """
+        """Return the channel designed to connect to this service."""
         return self._grpc_channel
 
     @property
-    def list_log_metrics(self) -> Callable[
-            [logging_metrics.ListLogMetricsRequest],
-            logging_metrics.ListLogMetricsResponse]:
+    def list_log_metrics(
+        self,
+    ) -> Callable[[logging_metrics.ListLogMetricsRequest], logging_metrics.ListLogMetricsResponse]:
         r"""Return a callable for the list log metrics method over gRPC.
 
         Lists logs-based metrics.
@@ -329,18 +338,18 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_log_metrics' not in self._stubs:
-            self._stubs['list_log_metrics'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/ListLogMetrics',
+        if "list_log_metrics" not in self._stubs:
+            self._stubs["list_log_metrics"] = self._logged_channel.unary_unary(
+                "/google.logging.v2.MetricsServiceV2/ListLogMetrics",
                 request_serializer=logging_metrics.ListLogMetricsRequest.serialize,
                 response_deserializer=logging_metrics.ListLogMetricsResponse.deserialize,
             )
-        return self._stubs['list_log_metrics']
+        return self._stubs["list_log_metrics"]
 
     @property
-    def get_log_metric(self) -> Callable[
-            [logging_metrics.GetLogMetricRequest],
-            logging_metrics.LogMetric]:
+    def get_log_metric(
+        self,
+    ) -> Callable[[logging_metrics.GetLogMetricRequest], logging_metrics.LogMetric]:
         r"""Return a callable for the get log metric method over gRPC.
 
         Gets a logs-based metric.
@@ -355,18 +364,18 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_log_metric' not in self._stubs:
-            self._stubs['get_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/GetLogMetric',
+        if "get_log_metric" not in self._stubs:
+            self._stubs["get_log_metric"] = self._logged_channel.unary_unary(
+                "/google.logging.v2.MetricsServiceV2/GetLogMetric",
                 request_serializer=logging_metrics.GetLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
             )
-        return self._stubs['get_log_metric']
+        return self._stubs["get_log_metric"]
 
     @property
-    def create_log_metric(self) -> Callable[
-            [logging_metrics.CreateLogMetricRequest],
-            logging_metrics.LogMetric]:
+    def create_log_metric(
+        self,
+    ) -> Callable[[logging_metrics.CreateLogMetricRequest], logging_metrics.LogMetric]:
         r"""Return a callable for the create log metric method over gRPC.
 
         Creates a logs-based metric.
@@ -381,18 +390,18 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_log_metric' not in self._stubs:
-            self._stubs['create_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/CreateLogMetric',
+        if "create_log_metric" not in self._stubs:
+            self._stubs["create_log_metric"] = self._logged_channel.unary_unary(
+                "/google.logging.v2.MetricsServiceV2/CreateLogMetric",
                 request_serializer=logging_metrics.CreateLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
             )
-        return self._stubs['create_log_metric']
+        return self._stubs["create_log_metric"]
 
     @property
-    def update_log_metric(self) -> Callable[
-            [logging_metrics.UpdateLogMetricRequest],
-            logging_metrics.LogMetric]:
+    def update_log_metric(
+        self,
+    ) -> Callable[[logging_metrics.UpdateLogMetricRequest], logging_metrics.LogMetric]:
         r"""Return a callable for the update log metric method over gRPC.
 
         Creates or updates a logs-based metric.
@@ -407,18 +416,18 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_log_metric' not in self._stubs:
-            self._stubs['update_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/UpdateLogMetric',
+        if "update_log_metric" not in self._stubs:
+            self._stubs["update_log_metric"] = self._logged_channel.unary_unary(
+                "/google.logging.v2.MetricsServiceV2/UpdateLogMetric",
                 request_serializer=logging_metrics.UpdateLogMetricRequest.serialize,
                 response_deserializer=logging_metrics.LogMetric.deserialize,
             )
-        return self._stubs['update_log_metric']
+        return self._stubs["update_log_metric"]
 
     @property
-    def delete_log_metric(self) -> Callable[
-            [logging_metrics.DeleteLogMetricRequest],
-            empty_pb2.Empty]:
+    def delete_log_metric(
+        self,
+    ) -> Callable[[logging_metrics.DeleteLogMetricRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete log metric method over gRPC.
 
         Deletes a logs-based metric.
@@ -433,13 +442,13 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_log_metric' not in self._stubs:
-            self._stubs['delete_log_metric'] = self._logged_channel.unary_unary(
-                '/google.logging.v2.MetricsServiceV2/DeleteLogMetric',
+        if "delete_log_metric" not in self._stubs:
+            self._stubs["delete_log_metric"] = self._logged_channel.unary_unary(
+                "/google.logging.v2.MetricsServiceV2/DeleteLogMetric",
                 request_serializer=logging_metrics.DeleteLogMetricRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs['delete_log_metric']
+        return self._stubs["delete_log_metric"]
 
     def close(self):
         self._logged_channel.close()
@@ -448,8 +457,7 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
     def cancel_operation(
         self,
     ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
-        r"""Return a callable for the cancel_operation method over gRPC.
-        """
+        r"""Return a callable for the cancel_operation method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -466,8 +474,7 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
     def get_operation(
         self,
     ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC.
-        """
+        r"""Return a callable for the get_operation method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -484,8 +491,7 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
     def list_operations(
         self,
     ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
-        r"""Return a callable for the list_operations method over gRPC.
-        """
+        r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -503,6 +509,4 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
         return "grpc"
 
 
-__all__ = (
-    'MetricsServiceV2GrpcTransport',
-)
+__all__ = ("MetricsServiceV2GrpcTransport",)

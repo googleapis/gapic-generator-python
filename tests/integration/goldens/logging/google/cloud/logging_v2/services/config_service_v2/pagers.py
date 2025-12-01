@@ -17,6 +17,7 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import retry_async as retries_async
 from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator, Union
+
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -44,14 +45,17 @@ class ListBucketsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., logging_config.ListBucketsResponse],
-            request: logging_config.ListBucketsRequest,
-            response: logging_config.ListBucketsResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., logging_config.ListBucketsResponse],
+        request: logging_config.ListBucketsRequest,
+        response: logging_config.ListBucketsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -92,7 +96,7 @@ class ListBucketsPager:
             yield from page.buckets
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListBucketsAsyncPager:
@@ -112,14 +116,17 @@ class ListBucketsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[logging_config.ListBucketsResponse]],
-            request: logging_config.ListBucketsRequest,
-            response: logging_config.ListBucketsResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[logging_config.ListBucketsResponse]],
+        request: logging_config.ListBucketsRequest,
+        response: logging_config.ListBucketsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -154,6 +161,7 @@ class ListBucketsAsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[logging_config.LogBucket]:
         async def async_generator():
             async for page in self.pages:
@@ -163,7 +171,7 @@ class ListBucketsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListViewsPager:
@@ -183,14 +191,17 @@ class ListViewsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., logging_config.ListViewsResponse],
-            request: logging_config.ListViewsRequest,
-            response: logging_config.ListViewsResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., logging_config.ListViewsResponse],
+        request: logging_config.ListViewsRequest,
+        response: logging_config.ListViewsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -231,7 +242,7 @@ class ListViewsPager:
             yield from page.views
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListViewsAsyncPager:
@@ -251,14 +262,17 @@ class ListViewsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[logging_config.ListViewsResponse]],
-            request: logging_config.ListViewsRequest,
-            response: logging_config.ListViewsResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[logging_config.ListViewsResponse]],
+        request: logging_config.ListViewsRequest,
+        response: logging_config.ListViewsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -293,6 +307,7 @@ class ListViewsAsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[logging_config.LogView]:
         async def async_generator():
             async for page in self.pages:
@@ -302,7 +317,7 @@ class ListViewsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListSinksPager:
@@ -322,14 +337,17 @@ class ListSinksPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., logging_config.ListSinksResponse],
-            request: logging_config.ListSinksRequest,
-            response: logging_config.ListSinksResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., logging_config.ListSinksResponse],
+        request: logging_config.ListSinksRequest,
+        response: logging_config.ListSinksResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -370,7 +388,7 @@ class ListSinksPager:
             yield from page.sinks
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListSinksAsyncPager:
@@ -390,14 +408,17 @@ class ListSinksAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[logging_config.ListSinksResponse]],
-            request: logging_config.ListSinksRequest,
-            response: logging_config.ListSinksResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[logging_config.ListSinksResponse]],
+        request: logging_config.ListSinksRequest,
+        response: logging_config.ListSinksResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -432,6 +453,7 @@ class ListSinksAsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[logging_config.LogSink]:
         async def async_generator():
             async for page in self.pages:
@@ -441,7 +463,7 @@ class ListSinksAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListLinksPager:
@@ -461,14 +483,17 @@ class ListLinksPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., logging_config.ListLinksResponse],
-            request: logging_config.ListLinksRequest,
-            response: logging_config.ListLinksResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., logging_config.ListLinksResponse],
+        request: logging_config.ListLinksRequest,
+        response: logging_config.ListLinksResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -509,7 +534,7 @@ class ListLinksPager:
             yield from page.links
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListLinksAsyncPager:
@@ -529,14 +554,17 @@ class ListLinksAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[logging_config.ListLinksResponse]],
-            request: logging_config.ListLinksRequest,
-            response: logging_config.ListLinksResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[logging_config.ListLinksResponse]],
+        request: logging_config.ListLinksRequest,
+        response: logging_config.ListLinksResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -571,6 +599,7 @@ class ListLinksAsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[logging_config.Link]:
         async def async_generator():
             async for page in self.pages:
@@ -580,7 +609,7 @@ class ListLinksAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListExclusionsPager:
@@ -600,14 +629,17 @@ class ListExclusionsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., logging_config.ListExclusionsResponse],
-            request: logging_config.ListExclusionsRequest,
-            response: logging_config.ListExclusionsResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., logging_config.ListExclusionsResponse],
+        request: logging_config.ListExclusionsRequest,
+        response: logging_config.ListExclusionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -648,7 +680,7 @@ class ListExclusionsPager:
             yield from page.exclusions
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListExclusionsAsyncPager:
@@ -668,14 +700,17 @@ class ListExclusionsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[logging_config.ListExclusionsResponse]],
-            request: logging_config.ListExclusionsRequest,
-            response: logging_config.ListExclusionsResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[logging_config.ListExclusionsResponse]],
+        request: logging_config.ListExclusionsRequest,
+        response: logging_config.ListExclusionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -710,6 +745,7 @@ class ListExclusionsAsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[logging_config.LogExclusion]:
         async def async_generator():
             async for page in self.pages:
@@ -719,4 +755,4 @@ class ListExclusionsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

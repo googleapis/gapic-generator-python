@@ -964,7 +964,7 @@ def test_list_buckets(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListBucketsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.list_buckets(request)
 
@@ -976,7 +976,7 @@ def test_list_buckets(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBucketsPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_buckets_non_empty_request_with_auto_populated_field():
@@ -991,8 +991,8 @@ def test_list_buckets_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.ListBucketsRequest(
-        parent='parent_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1004,8 +1004,8 @@ def test_list_buckets_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListBucketsRequest(
-            parent='parent_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            page_token="page_token_value",
         )
 
 def test_list_buckets_use_cached_wrapped_rpc():
@@ -1091,7 +1091,7 @@ async def test_list_buckets_async(transport: str = 'grpc_asyncio', request_type=
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListBucketsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.list_buckets(request)
 
@@ -1103,7 +1103,7 @@ async def test_list_buckets_async(transport: str = 'grpc_asyncio', request_type=
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBucketsAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -1119,7 +1119,7 @@ def test_list_buckets_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.ListBucketsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1151,7 +1151,7 @@ async def test_list_buckets_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.ListBucketsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1187,7 +1187,7 @@ def test_list_buckets_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_buckets(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1195,7 +1195,7 @@ def test_list_buckets_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -1209,7 +1209,7 @@ def test_list_buckets_flattened_error():
     with pytest.raises(ValueError):
         client.list_buckets(
             logging_config.ListBucketsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -1229,7 +1229,7 @@ async def test_list_buckets_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_buckets(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1237,7 +1237,7 @@ async def test_list_buckets_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1251,7 +1251,7 @@ async def test_list_buckets_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_buckets(
             logging_config.ListBucketsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -1471,13 +1471,13 @@ def test_get_bucket(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogBucket(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
             analytics_enabled=True,
-            restricted_fields=['restricted_fields_value'],
+            restricted_fields=["restricted_fields_value"],
         )
         response = client.get_bucket(request)
 
@@ -1489,13 +1489,13 @@ def test_get_bucket(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogBucket)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
     assert response.analytics_enabled is True
-    assert response.restricted_fields == ['restricted_fields_value']
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 def test_get_bucket_non_empty_request_with_auto_populated_field():
@@ -1510,7 +1510,7 @@ def test_get_bucket_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.GetBucketRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1522,7 +1522,7 @@ def test_get_bucket_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetBucketRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_get_bucket_use_cached_wrapped_rpc():
@@ -1608,13 +1608,13 @@ async def test_get_bucket_async(transport: str = 'grpc_asyncio', request_type=lo
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
             analytics_enabled=True,
-            restricted_fields=['restricted_fields_value'],
+            restricted_fields=["restricted_fields_value"],
         ))
         response = await client.get_bucket(request)
 
@@ -1626,13 +1626,13 @@ async def test_get_bucket_async(transport: str = 'grpc_asyncio', request_type=lo
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogBucket)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
     assert response.analytics_enabled is True
-    assert response.restricted_fields == ['restricted_fields_value']
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 @pytest.mark.asyncio
@@ -1648,7 +1648,7 @@ def test_get_bucket_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetBucketRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1680,7 +1680,7 @@ async def test_get_bucket_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetBucketRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1746,8 +1746,8 @@ def test_create_bucket_async_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.CreateBucketRequest(
-        parent='parent_value',
-        bucket_id='bucket_id_value',
+        parent="parent_value",
+        bucket_id="bucket_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1759,8 +1759,8 @@ def test_create_bucket_async_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateBucketRequest(
-            parent='parent_value',
-            bucket_id='bucket_id_value',
+            parent="parent_value",
+            bucket_id="bucket_id_value",
         )
 
 def test_create_bucket_async_use_cached_wrapped_rpc():
@@ -1883,7 +1883,7 @@ def test_create_bucket_async_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateBucketRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1915,7 +1915,7 @@ async def test_create_bucket_async_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateBucketRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1981,7 +1981,7 @@ def test_update_bucket_async_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.UpdateBucketRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1993,7 +1993,7 @@ def test_update_bucket_async_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateBucketRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_update_bucket_async_use_cached_wrapped_rpc():
@@ -2116,7 +2116,7 @@ def test_update_bucket_async_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateBucketRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2148,7 +2148,7 @@ async def test_update_bucket_async_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateBucketRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2190,13 +2190,13 @@ def test_create_bucket(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogBucket(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
             analytics_enabled=True,
-            restricted_fields=['restricted_fields_value'],
+            restricted_fields=["restricted_fields_value"],
         )
         response = client.create_bucket(request)
 
@@ -2208,13 +2208,13 @@ def test_create_bucket(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogBucket)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
     assert response.analytics_enabled is True
-    assert response.restricted_fields == ['restricted_fields_value']
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 def test_create_bucket_non_empty_request_with_auto_populated_field():
@@ -2229,8 +2229,8 @@ def test_create_bucket_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.CreateBucketRequest(
-        parent='parent_value',
-        bucket_id='bucket_id_value',
+        parent="parent_value",
+        bucket_id="bucket_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2242,8 +2242,8 @@ def test_create_bucket_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateBucketRequest(
-            parent='parent_value',
-            bucket_id='bucket_id_value',
+            parent="parent_value",
+            bucket_id="bucket_id_value",
         )
 
 def test_create_bucket_use_cached_wrapped_rpc():
@@ -2329,13 +2329,13 @@ async def test_create_bucket_async(transport: str = 'grpc_asyncio', request_type
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
             analytics_enabled=True,
-            restricted_fields=['restricted_fields_value'],
+            restricted_fields=["restricted_fields_value"],
         ))
         response = await client.create_bucket(request)
 
@@ -2347,13 +2347,13 @@ async def test_create_bucket_async(transport: str = 'grpc_asyncio', request_type
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogBucket)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
     assert response.analytics_enabled is True
-    assert response.restricted_fields == ['restricted_fields_value']
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 @pytest.mark.asyncio
@@ -2369,7 +2369,7 @@ def test_create_bucket_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateBucketRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2401,7 +2401,7 @@ async def test_create_bucket_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateBucketRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2443,13 +2443,13 @@ def test_update_bucket(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogBucket(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
             analytics_enabled=True,
-            restricted_fields=['restricted_fields_value'],
+            restricted_fields=["restricted_fields_value"],
         )
         response = client.update_bucket(request)
 
@@ -2461,13 +2461,13 @@ def test_update_bucket(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogBucket)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
     assert response.analytics_enabled is True
-    assert response.restricted_fields == ['restricted_fields_value']
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 def test_update_bucket_non_empty_request_with_auto_populated_field():
@@ -2482,7 +2482,7 @@ def test_update_bucket_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.UpdateBucketRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2494,7 +2494,7 @@ def test_update_bucket_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateBucketRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_update_bucket_use_cached_wrapped_rpc():
@@ -2580,13 +2580,13 @@ async def test_update_bucket_async(transport: str = 'grpc_asyncio', request_type
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
             analytics_enabled=True,
-            restricted_fields=['restricted_fields_value'],
+            restricted_fields=["restricted_fields_value"],
         ))
         response = await client.update_bucket(request)
 
@@ -2598,13 +2598,13 @@ async def test_update_bucket_async(transport: str = 'grpc_asyncio', request_type
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogBucket)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
     assert response.retention_days == 1512
     assert response.locked is True
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
     assert response.analytics_enabled is True
-    assert response.restricted_fields == ['restricted_fields_value']
+    assert response.restricted_fields == ["restricted_fields_value"]
 
 
 @pytest.mark.asyncio
@@ -2620,7 +2620,7 @@ def test_update_bucket_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateBucketRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2652,7 +2652,7 @@ async def test_update_bucket_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateBucketRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2718,7 +2718,7 @@ def test_delete_bucket_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.DeleteBucketRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2730,7 +2730,7 @@ def test_delete_bucket_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteBucketRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_delete_bucket_use_cached_wrapped_rpc():
@@ -2841,7 +2841,7 @@ def test_delete_bucket_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.DeleteBucketRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2873,7 +2873,7 @@ async def test_delete_bucket_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.DeleteBucketRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2939,7 +2939,7 @@ def test_undelete_bucket_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.UndeleteBucketRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2951,7 +2951,7 @@ def test_undelete_bucket_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UndeleteBucketRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_undelete_bucket_use_cached_wrapped_rpc():
@@ -3062,7 +3062,7 @@ def test_undelete_bucket_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.UndeleteBucketRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3094,7 +3094,7 @@ async def test_undelete_bucket_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.UndeleteBucketRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3136,7 +3136,7 @@ def test__list_views(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListViewsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client._list_views(request)
 
@@ -3148,7 +3148,7 @@ def test__list_views(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListViewsPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test__list_views_non_empty_request_with_auto_populated_field():
@@ -3163,8 +3163,8 @@ def test__list_views_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.ListViewsRequest(
-        parent='parent_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3176,8 +3176,8 @@ def test__list_views_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListViewsRequest(
-            parent='parent_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            page_token="page_token_value",
         )
 
 def test__list_views_use_cached_wrapped_rpc():
@@ -3263,7 +3263,7 @@ async def test__list_views_async(transport: str = 'grpc_asyncio', request_type=l
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListViewsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client._list_views(request)
 
@@ -3275,7 +3275,7 @@ async def test__list_views_async(transport: str = 'grpc_asyncio', request_type=l
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListViewsAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -3291,7 +3291,7 @@ def test__list_views_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.ListViewsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3323,7 +3323,7 @@ async def test__list_views_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.ListViewsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3359,7 +3359,7 @@ def test__list_views_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._list_views(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3367,7 +3367,7 @@ def test__list_views_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -3381,7 +3381,7 @@ def test__list_views_flattened_error():
     with pytest.raises(ValueError):
         client._list_views(
             logging_config.ListViewsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -3401,7 +3401,7 @@ async def test__list_views_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._list_views(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3409,7 +3409,7 @@ async def test__list_views_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -3423,7 +3423,7 @@ async def test__list_views_flattened_error_async():
     with pytest.raises(ValueError):
         await client._list_views(
             logging_config.ListViewsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -3643,9 +3643,9 @@ def test__get_view(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogView(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
         )
         response = client._get_view(request)
 
@@ -3657,9 +3657,9 @@ def test__get_view(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogView)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
 
 
 def test__get_view_non_empty_request_with_auto_populated_field():
@@ -3674,7 +3674,7 @@ def test__get_view_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.GetViewRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3686,7 +3686,7 @@ def test__get_view_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetViewRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__get_view_use_cached_wrapped_rpc():
@@ -3772,9 +3772,9 @@ async def test__get_view_async(transport: str = 'grpc_asyncio', request_type=log
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
         ))
         response = await client._get_view(request)
 
@@ -3786,9 +3786,9 @@ async def test__get_view_async(transport: str = 'grpc_asyncio', request_type=log
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogView)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
 
 
 @pytest.mark.asyncio
@@ -3804,7 +3804,7 @@ def test__get_view_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetViewRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3836,7 +3836,7 @@ async def test__get_view_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetViewRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3878,9 +3878,9 @@ def test__create_view(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogView(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
         )
         response = client._create_view(request)
 
@@ -3892,9 +3892,9 @@ def test__create_view(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogView)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
 
 
 def test__create_view_non_empty_request_with_auto_populated_field():
@@ -3909,8 +3909,8 @@ def test__create_view_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.CreateViewRequest(
-        parent='parent_value',
-        view_id='view_id_value',
+        parent="parent_value",
+        view_id="view_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3922,8 +3922,8 @@ def test__create_view_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateViewRequest(
-            parent='parent_value',
-            view_id='view_id_value',
+            parent="parent_value",
+            view_id="view_id_value",
         )
 
 def test__create_view_use_cached_wrapped_rpc():
@@ -4009,9 +4009,9 @@ async def test__create_view_async(transport: str = 'grpc_asyncio', request_type=
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
         ))
         response = await client._create_view(request)
 
@@ -4023,9 +4023,9 @@ async def test__create_view_async(transport: str = 'grpc_asyncio', request_type=
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogView)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
 
 
 @pytest.mark.asyncio
@@ -4041,7 +4041,7 @@ def test__create_view_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateViewRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4073,7 +4073,7 @@ async def test__create_view_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateViewRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4115,9 +4115,9 @@ def test__update_view(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogView(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
         )
         response = client._update_view(request)
 
@@ -4129,9 +4129,9 @@ def test__update_view(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogView)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
 
 
 def test__update_view_non_empty_request_with_auto_populated_field():
@@ -4146,7 +4146,7 @@ def test__update_view_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.UpdateViewRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4158,7 +4158,7 @@ def test__update_view_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateViewRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__update_view_use_cached_wrapped_rpc():
@@ -4244,9 +4244,9 @@ async def test__update_view_async(transport: str = 'grpc_asyncio', request_type=
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
         ))
         response = await client._update_view(request)
 
@@ -4258,9 +4258,9 @@ async def test__update_view_async(transport: str = 'grpc_asyncio', request_type=
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogView)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
 
 
 @pytest.mark.asyncio
@@ -4276,7 +4276,7 @@ def test__update_view_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateViewRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4308,7 +4308,7 @@ async def test__update_view_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateViewRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4374,7 +4374,7 @@ def test__delete_view_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.DeleteViewRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4386,7 +4386,7 @@ def test__delete_view_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteViewRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__delete_view_use_cached_wrapped_rpc():
@@ -4497,7 +4497,7 @@ def test__delete_view_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.DeleteViewRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4529,7 +4529,7 @@ async def test__delete_view_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.DeleteViewRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4571,7 +4571,7 @@ def test__list_sinks(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListSinksResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client._list_sinks(request)
 
@@ -4583,7 +4583,7 @@ def test__list_sinks(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSinksPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test__list_sinks_non_empty_request_with_auto_populated_field():
@@ -4598,8 +4598,8 @@ def test__list_sinks_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.ListSinksRequest(
-        parent='parent_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4611,8 +4611,8 @@ def test__list_sinks_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListSinksRequest(
-            parent='parent_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            page_token="page_token_value",
         )
 
 def test__list_sinks_use_cached_wrapped_rpc():
@@ -4698,7 +4698,7 @@ async def test__list_sinks_async(transport: str = 'grpc_asyncio', request_type=l
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListSinksResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client._list_sinks(request)
 
@@ -4710,7 +4710,7 @@ async def test__list_sinks_async(transport: str = 'grpc_asyncio', request_type=l
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSinksAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -4726,7 +4726,7 @@ def test__list_sinks_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.ListSinksRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4758,7 +4758,7 @@ async def test__list_sinks_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.ListSinksRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4794,7 +4794,7 @@ def test__list_sinks_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._list_sinks(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4802,7 +4802,7 @@ def test__list_sinks_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -4816,7 +4816,7 @@ def test__list_sinks_flattened_error():
     with pytest.raises(ValueError):
         client._list_sinks(
             logging_config.ListSinksRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -4836,7 +4836,7 @@ async def test__list_sinks_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._list_sinks(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4844,7 +4844,7 @@ async def test__list_sinks_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -4858,7 +4858,7 @@ async def test__list_sinks_flattened_error_async():
     with pytest.raises(ValueError):
         await client._list_sinks(
             logging_config.ListSinksRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -5078,13 +5078,13 @@ def test__get_sink(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink(
-            name='name_value',
-            destination='destination_value',
-            filter='filter_value',
-            description='description_value',
+            name="name_value",
+            destination="destination_value",
+            filter="filter_value",
+            description="description_value",
             disabled=True,
             output_version_format=logging_config.LogSink.VersionFormat.V2,
-            writer_identity='writer_identity_value',
+            writer_identity="writer_identity_value",
             include_children=True,
         )
         response = client._get_sink(request)
@@ -5097,13 +5097,13 @@ def test__get_sink(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogSink)
-    assert response.name == 'name_value'
-    assert response.destination == 'destination_value'
-    assert response.filter == 'filter_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.destination == "destination_value"
+    assert response.filter == "filter_value"
+    assert response.description == "description_value"
     assert response.disabled is True
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
-    assert response.writer_identity == 'writer_identity_value'
+    assert response.writer_identity == "writer_identity_value"
     assert response.include_children is True
 
 
@@ -5119,7 +5119,7 @@ def test__get_sink_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.GetSinkRequest(
-        sink_name='sink_name_value',
+        sink_name="sink_name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5131,7 +5131,7 @@ def test__get_sink_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetSinkRequest(
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
 def test__get_sink_use_cached_wrapped_rpc():
@@ -5217,13 +5217,13 @@ async def test__get_sink_async(transport: str = 'grpc_asyncio', request_type=log
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
-            name='name_value',
-            destination='destination_value',
-            filter='filter_value',
-            description='description_value',
+            name="name_value",
+            destination="destination_value",
+            filter="filter_value",
+            description="description_value",
             disabled=True,
             output_version_format=logging_config.LogSink.VersionFormat.V2,
-            writer_identity='writer_identity_value',
+            writer_identity="writer_identity_value",
             include_children=True,
         ))
         response = await client._get_sink(request)
@@ -5236,13 +5236,13 @@ async def test__get_sink_async(transport: str = 'grpc_asyncio', request_type=log
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogSink)
-    assert response.name == 'name_value'
-    assert response.destination == 'destination_value'
-    assert response.filter == 'filter_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.destination == "destination_value"
+    assert response.filter == "filter_value"
+    assert response.description == "description_value"
     assert response.disabled is True
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
-    assert response.writer_identity == 'writer_identity_value'
+    assert response.writer_identity == "writer_identity_value"
     assert response.include_children is True
 
 
@@ -5259,7 +5259,7 @@ def test__get_sink_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetSinkRequest()
 
-    request.sink_name = 'sink_name_value'
+    request.sink_name = "sink_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5291,7 +5291,7 @@ async def test__get_sink_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetSinkRequest()
 
-    request.sink_name = 'sink_name_value'
+    request.sink_name = "sink_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5327,7 +5327,7 @@ def test__get_sink_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._get_sink(
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5335,7 +5335,7 @@ def test__get_sink_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].sink_name
-        mock_val = 'sink_name_value'
+        mock_val = "sink_name_value"
         assert arg == mock_val
 
 
@@ -5349,7 +5349,7 @@ def test__get_sink_flattened_error():
     with pytest.raises(ValueError):
         client._get_sink(
             logging_config.GetSinkRequest(),
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
 @pytest.mark.asyncio
@@ -5369,7 +5369,7 @@ async def test__get_sink_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._get_sink(
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5377,7 +5377,7 @@ async def test__get_sink_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].sink_name
-        mock_val = 'sink_name_value'
+        mock_val = "sink_name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -5391,7 +5391,7 @@ async def test__get_sink_flattened_error_async():
     with pytest.raises(ValueError):
         await client._get_sink(
             logging_config.GetSinkRequest(),
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
 
@@ -5415,13 +5415,13 @@ def test__create_sink(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink(
-            name='name_value',
-            destination='destination_value',
-            filter='filter_value',
-            description='description_value',
+            name="name_value",
+            destination="destination_value",
+            filter="filter_value",
+            description="description_value",
             disabled=True,
             output_version_format=logging_config.LogSink.VersionFormat.V2,
-            writer_identity='writer_identity_value',
+            writer_identity="writer_identity_value",
             include_children=True,
         )
         response = client._create_sink(request)
@@ -5434,13 +5434,13 @@ def test__create_sink(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogSink)
-    assert response.name == 'name_value'
-    assert response.destination == 'destination_value'
-    assert response.filter == 'filter_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.destination == "destination_value"
+    assert response.filter == "filter_value"
+    assert response.description == "description_value"
     assert response.disabled is True
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
-    assert response.writer_identity == 'writer_identity_value'
+    assert response.writer_identity == "writer_identity_value"
     assert response.include_children is True
 
 
@@ -5456,7 +5456,7 @@ def test__create_sink_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.CreateSinkRequest(
-        parent='parent_value',
+        parent="parent_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5468,7 +5468,7 @@ def test__create_sink_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateSinkRequest(
-            parent='parent_value',
+            parent="parent_value",
         )
 
 def test__create_sink_use_cached_wrapped_rpc():
@@ -5554,13 +5554,13 @@ async def test__create_sink_async(transport: str = 'grpc_asyncio', request_type=
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
-            name='name_value',
-            destination='destination_value',
-            filter='filter_value',
-            description='description_value',
+            name="name_value",
+            destination="destination_value",
+            filter="filter_value",
+            description="description_value",
             disabled=True,
             output_version_format=logging_config.LogSink.VersionFormat.V2,
-            writer_identity='writer_identity_value',
+            writer_identity="writer_identity_value",
             include_children=True,
         ))
         response = await client._create_sink(request)
@@ -5573,13 +5573,13 @@ async def test__create_sink_async(transport: str = 'grpc_asyncio', request_type=
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogSink)
-    assert response.name == 'name_value'
-    assert response.destination == 'destination_value'
-    assert response.filter == 'filter_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.destination == "destination_value"
+    assert response.filter == "filter_value"
+    assert response.description == "description_value"
     assert response.disabled is True
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
-    assert response.writer_identity == 'writer_identity_value'
+    assert response.writer_identity == "writer_identity_value"
     assert response.include_children is True
 
 
@@ -5596,7 +5596,7 @@ def test__create_sink_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateSinkRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5628,7 +5628,7 @@ async def test__create_sink_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateSinkRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5664,8 +5664,8 @@ def test__create_sink_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._create_sink(
-            parent='parent_value',
-            sink=logging_config.LogSink(name='name_value'),
+            parent="parent_value",
+            sink=logging_config.LogSink(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -5673,10 +5673,10 @@ def test__create_sink_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].sink
-        mock_val = logging_config.LogSink(name='name_value')
+        mock_val = logging_config.LogSink(name="name_value")
         assert arg == mock_val
 
 
@@ -5690,8 +5690,8 @@ def test__create_sink_flattened_error():
     with pytest.raises(ValueError):
         client._create_sink(
             logging_config.CreateSinkRequest(),
-            parent='parent_value',
-            sink=logging_config.LogSink(name='name_value'),
+            parent="parent_value",
+            sink=logging_config.LogSink(name="name_value"),
         )
 
 @pytest.mark.asyncio
@@ -5711,8 +5711,8 @@ async def test__create_sink_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._create_sink(
-            parent='parent_value',
-            sink=logging_config.LogSink(name='name_value'),
+            parent="parent_value",
+            sink=logging_config.LogSink(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -5720,10 +5720,10 @@ async def test__create_sink_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].sink
-        mock_val = logging_config.LogSink(name='name_value')
+        mock_val = logging_config.LogSink(name="name_value")
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -5737,8 +5737,8 @@ async def test__create_sink_flattened_error_async():
     with pytest.raises(ValueError):
         await client._create_sink(
             logging_config.CreateSinkRequest(),
-            parent='parent_value',
-            sink=logging_config.LogSink(name='name_value'),
+            parent="parent_value",
+            sink=logging_config.LogSink(name="name_value"),
         )
 
 
@@ -5762,13 +5762,13 @@ def test__update_sink(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogSink(
-            name='name_value',
-            destination='destination_value',
-            filter='filter_value',
-            description='description_value',
+            name="name_value",
+            destination="destination_value",
+            filter="filter_value",
+            description="description_value",
             disabled=True,
             output_version_format=logging_config.LogSink.VersionFormat.V2,
-            writer_identity='writer_identity_value',
+            writer_identity="writer_identity_value",
             include_children=True,
         )
         response = client._update_sink(request)
@@ -5781,13 +5781,13 @@ def test__update_sink(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogSink)
-    assert response.name == 'name_value'
-    assert response.destination == 'destination_value'
-    assert response.filter == 'filter_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.destination == "destination_value"
+    assert response.filter == "filter_value"
+    assert response.description == "description_value"
     assert response.disabled is True
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
-    assert response.writer_identity == 'writer_identity_value'
+    assert response.writer_identity == "writer_identity_value"
     assert response.include_children is True
 
 
@@ -5803,7 +5803,7 @@ def test__update_sink_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.UpdateSinkRequest(
-        sink_name='sink_name_value',
+        sink_name="sink_name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5815,7 +5815,7 @@ def test__update_sink_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateSinkRequest(
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
 def test__update_sink_use_cached_wrapped_rpc():
@@ -5901,13 +5901,13 @@ async def test__update_sink_async(transport: str = 'grpc_asyncio', request_type=
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
-            name='name_value',
-            destination='destination_value',
-            filter='filter_value',
-            description='description_value',
+            name="name_value",
+            destination="destination_value",
+            filter="filter_value",
+            description="description_value",
             disabled=True,
             output_version_format=logging_config.LogSink.VersionFormat.V2,
-            writer_identity='writer_identity_value',
+            writer_identity="writer_identity_value",
             include_children=True,
         ))
         response = await client._update_sink(request)
@@ -5920,13 +5920,13 @@ async def test__update_sink_async(transport: str = 'grpc_asyncio', request_type=
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogSink)
-    assert response.name == 'name_value'
-    assert response.destination == 'destination_value'
-    assert response.filter == 'filter_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.destination == "destination_value"
+    assert response.filter == "filter_value"
+    assert response.description == "description_value"
     assert response.disabled is True
     assert response.output_version_format == logging_config.LogSink.VersionFormat.V2
-    assert response.writer_identity == 'writer_identity_value'
+    assert response.writer_identity == "writer_identity_value"
     assert response.include_children is True
 
 
@@ -5943,7 +5943,7 @@ def test__update_sink_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateSinkRequest()
 
-    request.sink_name = 'sink_name_value'
+    request.sink_name = "sink_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5975,7 +5975,7 @@ async def test__update_sink_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateSinkRequest()
 
-    request.sink_name = 'sink_name_value'
+    request.sink_name = "sink_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6011,9 +6011,9 @@ def test__update_sink_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._update_sink(
-            sink_name='sink_name_value',
-            sink=logging_config.LogSink(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            sink_name="sink_name_value",
+            sink=logging_config.LogSink(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -6021,13 +6021,13 @@ def test__update_sink_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].sink_name
-        mock_val = 'sink_name_value'
+        mock_val = "sink_name_value"
         assert arg == mock_val
         arg = args[0].sink
-        mock_val = logging_config.LogSink(name='name_value')
+        mock_val = logging_config.LogSink(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
@@ -6041,9 +6041,9 @@ def test__update_sink_flattened_error():
     with pytest.raises(ValueError):
         client._update_sink(
             logging_config.UpdateSinkRequest(),
-            sink_name='sink_name_value',
-            sink=logging_config.LogSink(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            sink_name="sink_name_value",
+            sink=logging_config.LogSink(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 @pytest.mark.asyncio
@@ -6063,9 +6063,9 @@ async def test__update_sink_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._update_sink(
-            sink_name='sink_name_value',
-            sink=logging_config.LogSink(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            sink_name="sink_name_value",
+            sink=logging_config.LogSink(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -6073,13 +6073,13 @@ async def test__update_sink_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].sink_name
-        mock_val = 'sink_name_value'
+        mock_val = "sink_name_value"
         assert arg == mock_val
         arg = args[0].sink
-        mock_val = logging_config.LogSink(name='name_value')
+        mock_val = logging_config.LogSink(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -6093,9 +6093,9 @@ async def test__update_sink_flattened_error_async():
     with pytest.raises(ValueError):
         await client._update_sink(
             logging_config.UpdateSinkRequest(),
-            sink_name='sink_name_value',
-            sink=logging_config.LogSink(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            sink_name="sink_name_value",
+            sink=logging_config.LogSink(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -6143,7 +6143,7 @@ def test__delete_sink_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.DeleteSinkRequest(
-        sink_name='sink_name_value',
+        sink_name="sink_name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6155,7 +6155,7 @@ def test__delete_sink_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteSinkRequest(
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
 def test__delete_sink_use_cached_wrapped_rpc():
@@ -6266,7 +6266,7 @@ def test__delete_sink_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.DeleteSinkRequest()
 
-    request.sink_name = 'sink_name_value'
+    request.sink_name = "sink_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6298,7 +6298,7 @@ async def test__delete_sink_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.DeleteSinkRequest()
 
-    request.sink_name = 'sink_name_value'
+    request.sink_name = "sink_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6334,7 +6334,7 @@ def test__delete_sink_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._delete_sink(
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6342,7 +6342,7 @@ def test__delete_sink_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].sink_name
-        mock_val = 'sink_name_value'
+        mock_val = "sink_name_value"
         assert arg == mock_val
 
 
@@ -6356,7 +6356,7 @@ def test__delete_sink_flattened_error():
     with pytest.raises(ValueError):
         client._delete_sink(
             logging_config.DeleteSinkRequest(),
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
 @pytest.mark.asyncio
@@ -6376,7 +6376,7 @@ async def test__delete_sink_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._delete_sink(
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6384,7 +6384,7 @@ async def test__delete_sink_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].sink_name
-        mock_val = 'sink_name_value'
+        mock_val = "sink_name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -6398,7 +6398,7 @@ async def test__delete_sink_flattened_error_async():
     with pytest.raises(ValueError):
         await client._delete_sink(
             logging_config.DeleteSinkRequest(),
-            sink_name='sink_name_value',
+            sink_name="sink_name_value",
         )
 
 
@@ -6446,8 +6446,8 @@ def test__create_link_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.CreateLinkRequest(
-        parent='parent_value',
-        link_id='link_id_value',
+        parent="parent_value",
+        link_id="link_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6459,8 +6459,8 @@ def test__create_link_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateLinkRequest(
-            parent='parent_value',
-            link_id='link_id_value',
+            parent="parent_value",
+            link_id="link_id_value",
         )
 
 def test__create_link_use_cached_wrapped_rpc():
@@ -6583,7 +6583,7 @@ def test__create_link_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateLinkRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6615,7 +6615,7 @@ async def test__create_link_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateLinkRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6651,9 +6651,9 @@ def test__create_link_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._create_link(
-            parent='parent_value',
-            link=logging_config.Link(name='name_value'),
-            link_id='link_id_value',
+            parent="parent_value",
+            link=logging_config.Link(name="name_value"),
+            link_id="link_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6661,13 +6661,13 @@ def test__create_link_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].link
-        mock_val = logging_config.Link(name='name_value')
+        mock_val = logging_config.Link(name="name_value")
         assert arg == mock_val
         arg = args[0].link_id
-        mock_val = 'link_id_value'
+        mock_val = "link_id_value"
         assert arg == mock_val
 
 
@@ -6681,9 +6681,9 @@ def test__create_link_flattened_error():
     with pytest.raises(ValueError):
         client._create_link(
             logging_config.CreateLinkRequest(),
-            parent='parent_value',
-            link=logging_config.Link(name='name_value'),
-            link_id='link_id_value',
+            parent="parent_value",
+            link=logging_config.Link(name="name_value"),
+            link_id="link_id_value",
         )
 
 @pytest.mark.asyncio
@@ -6705,9 +6705,9 @@ async def test__create_link_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._create_link(
-            parent='parent_value',
-            link=logging_config.Link(name='name_value'),
-            link_id='link_id_value',
+            parent="parent_value",
+            link=logging_config.Link(name="name_value"),
+            link_id="link_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6715,13 +6715,13 @@ async def test__create_link_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].link
-        mock_val = logging_config.Link(name='name_value')
+        mock_val = logging_config.Link(name="name_value")
         assert arg == mock_val
         arg = args[0].link_id
-        mock_val = 'link_id_value'
+        mock_val = "link_id_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -6735,9 +6735,9 @@ async def test__create_link_flattened_error_async():
     with pytest.raises(ValueError):
         await client._create_link(
             logging_config.CreateLinkRequest(),
-            parent='parent_value',
-            link=logging_config.Link(name='name_value'),
-            link_id='link_id_value',
+            parent="parent_value",
+            link=logging_config.Link(name="name_value"),
+            link_id="link_id_value",
         )
 
 
@@ -6785,7 +6785,7 @@ def test__delete_link_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.DeleteLinkRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6797,7 +6797,7 @@ def test__delete_link_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteLinkRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__delete_link_use_cached_wrapped_rpc():
@@ -6920,7 +6920,7 @@ def test__delete_link_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.DeleteLinkRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6952,7 +6952,7 @@ async def test__delete_link_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.DeleteLinkRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6988,7 +6988,7 @@ def test__delete_link_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._delete_link(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6996,7 +6996,7 @@ def test__delete_link_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -7010,7 +7010,7 @@ def test__delete_link_flattened_error():
     with pytest.raises(ValueError):
         client._delete_link(
             logging_config.DeleteLinkRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -7032,7 +7032,7 @@ async def test__delete_link_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._delete_link(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7040,7 +7040,7 @@ async def test__delete_link_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -7054,7 +7054,7 @@ async def test__delete_link_flattened_error_async():
     with pytest.raises(ValueError):
         await client._delete_link(
             logging_config.DeleteLinkRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -7078,7 +7078,7 @@ def test__list_links(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListLinksResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client._list_links(request)
 
@@ -7090,7 +7090,7 @@ def test__list_links(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLinksPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test__list_links_non_empty_request_with_auto_populated_field():
@@ -7105,8 +7105,8 @@ def test__list_links_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.ListLinksRequest(
-        parent='parent_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7118,8 +7118,8 @@ def test__list_links_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListLinksRequest(
-            parent='parent_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            page_token="page_token_value",
         )
 
 def test__list_links_use_cached_wrapped_rpc():
@@ -7205,7 +7205,7 @@ async def test__list_links_async(transport: str = 'grpc_asyncio', request_type=l
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client._list_links(request)
 
@@ -7217,7 +7217,7 @@ async def test__list_links_async(transport: str = 'grpc_asyncio', request_type=l
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLinksAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -7233,7 +7233,7 @@ def test__list_links_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.ListLinksRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7265,7 +7265,7 @@ async def test__list_links_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.ListLinksRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7301,7 +7301,7 @@ def test__list_links_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._list_links(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7309,7 +7309,7 @@ def test__list_links_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -7323,7 +7323,7 @@ def test__list_links_flattened_error():
     with pytest.raises(ValueError):
         client._list_links(
             logging_config.ListLinksRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -7343,7 +7343,7 @@ async def test__list_links_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._list_links(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7351,7 +7351,7 @@ async def test__list_links_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -7365,7 +7365,7 @@ async def test__list_links_flattened_error_async():
     with pytest.raises(ValueError):
         await client._list_links(
             logging_config.ListLinksRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -7585,8 +7585,8 @@ def test__get_link(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Link(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
         )
         response = client._get_link(request)
@@ -7599,8 +7599,8 @@ def test__get_link(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.Link)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
 
 
@@ -7616,7 +7616,7 @@ def test__get_link_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.GetLinkRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7628,7 +7628,7 @@ def test__get_link_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetLinkRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__get_link_use_cached_wrapped_rpc():
@@ -7714,8 +7714,8 @@ async def test__get_link_async(transport: str = 'grpc_asyncio', request_type=log
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Link(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
         ))
         response = await client._get_link(request)
@@ -7728,8 +7728,8 @@ async def test__get_link_async(transport: str = 'grpc_asyncio', request_type=log
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.Link)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
 
 
@@ -7746,7 +7746,7 @@ def test__get_link_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetLinkRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7778,7 +7778,7 @@ async def test__get_link_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetLinkRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7814,7 +7814,7 @@ def test__get_link_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._get_link(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7822,7 +7822,7 @@ def test__get_link_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -7836,7 +7836,7 @@ def test__get_link_flattened_error():
     with pytest.raises(ValueError):
         client._get_link(
             logging_config.GetLinkRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -7856,7 +7856,7 @@ async def test__get_link_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._get_link(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7864,7 +7864,7 @@ async def test__get_link_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -7878,7 +7878,7 @@ async def test__get_link_flattened_error_async():
     with pytest.raises(ValueError):
         await client._get_link(
             logging_config.GetLinkRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -7902,7 +7902,7 @@ def test__list_exclusions(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.ListExclusionsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client._list_exclusions(request)
 
@@ -7914,7 +7914,7 @@ def test__list_exclusions(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExclusionsPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test__list_exclusions_non_empty_request_with_auto_populated_field():
@@ -7929,8 +7929,8 @@ def test__list_exclusions_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.ListExclusionsRequest(
-        parent='parent_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7942,8 +7942,8 @@ def test__list_exclusions_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListExclusionsRequest(
-            parent='parent_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            page_token="page_token_value",
         )
 
 def test__list_exclusions_use_cached_wrapped_rpc():
@@ -8029,7 +8029,7 @@ async def test__list_exclusions_async(transport: str = 'grpc_asyncio', request_t
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListExclusionsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client._list_exclusions(request)
 
@@ -8041,7 +8041,7 @@ async def test__list_exclusions_async(transport: str = 'grpc_asyncio', request_t
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExclusionsAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -8057,7 +8057,7 @@ def test__list_exclusions_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.ListExclusionsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8089,7 +8089,7 @@ async def test__list_exclusions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.ListExclusionsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8125,7 +8125,7 @@ def test__list_exclusions_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._list_exclusions(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -8133,7 +8133,7 @@ def test__list_exclusions_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -8147,7 +8147,7 @@ def test__list_exclusions_flattened_error():
     with pytest.raises(ValueError):
         client._list_exclusions(
             logging_config.ListExclusionsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -8167,7 +8167,7 @@ async def test__list_exclusions_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._list_exclusions(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -8175,7 +8175,7 @@ async def test__list_exclusions_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -8189,7 +8189,7 @@ async def test__list_exclusions_flattened_error_async():
     with pytest.raises(ValueError):
         await client._list_exclusions(
             logging_config.ListExclusionsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -8409,9 +8409,9 @@ def test__get_exclusion(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
             disabled=True,
         )
         response = client._get_exclusion(request)
@@ -8424,9 +8424,9 @@ def test__get_exclusion(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogExclusion)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
     assert response.disabled is True
 
 
@@ -8442,7 +8442,7 @@ def test__get_exclusion_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.GetExclusionRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8454,7 +8454,7 @@ def test__get_exclusion_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetExclusionRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__get_exclusion_use_cached_wrapped_rpc():
@@ -8540,9 +8540,9 @@ async def test__get_exclusion_async(transport: str = 'grpc_asyncio', request_typ
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
             disabled=True,
         ))
         response = await client._get_exclusion(request)
@@ -8555,9 +8555,9 @@ async def test__get_exclusion_async(transport: str = 'grpc_asyncio', request_typ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogExclusion)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
     assert response.disabled is True
 
 
@@ -8574,7 +8574,7 @@ def test__get_exclusion_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetExclusionRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8606,7 +8606,7 @@ async def test__get_exclusion_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetExclusionRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8642,7 +8642,7 @@ def test__get_exclusion_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._get_exclusion(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -8650,7 +8650,7 @@ def test__get_exclusion_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -8664,7 +8664,7 @@ def test__get_exclusion_flattened_error():
     with pytest.raises(ValueError):
         client._get_exclusion(
             logging_config.GetExclusionRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -8684,7 +8684,7 @@ async def test__get_exclusion_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._get_exclusion(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -8692,7 +8692,7 @@ async def test__get_exclusion_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -8706,7 +8706,7 @@ async def test__get_exclusion_flattened_error_async():
     with pytest.raises(ValueError):
         await client._get_exclusion(
             logging_config.GetExclusionRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -8730,9 +8730,9 @@ def test__create_exclusion(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
             disabled=True,
         )
         response = client._create_exclusion(request)
@@ -8745,9 +8745,9 @@ def test__create_exclusion(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogExclusion)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
     assert response.disabled is True
 
 
@@ -8763,7 +8763,7 @@ def test__create_exclusion_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.CreateExclusionRequest(
-        parent='parent_value',
+        parent="parent_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8775,7 +8775,7 @@ def test__create_exclusion_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateExclusionRequest(
-            parent='parent_value',
+            parent="parent_value",
         )
 
 def test__create_exclusion_use_cached_wrapped_rpc():
@@ -8861,9 +8861,9 @@ async def test__create_exclusion_async(transport: str = 'grpc_asyncio', request_
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
             disabled=True,
         ))
         response = await client._create_exclusion(request)
@@ -8876,9 +8876,9 @@ async def test__create_exclusion_async(transport: str = 'grpc_asyncio', request_
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogExclusion)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
     assert response.disabled is True
 
 
@@ -8895,7 +8895,7 @@ def test__create_exclusion_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateExclusionRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8927,7 +8927,7 @@ async def test__create_exclusion_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.CreateExclusionRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8963,8 +8963,8 @@ def test__create_exclusion_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._create_exclusion(
-            parent='parent_value',
-            exclusion=logging_config.LogExclusion(name='name_value'),
+            parent="parent_value",
+            exclusion=logging_config.LogExclusion(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -8972,10 +8972,10 @@ def test__create_exclusion_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].exclusion
-        mock_val = logging_config.LogExclusion(name='name_value')
+        mock_val = logging_config.LogExclusion(name="name_value")
         assert arg == mock_val
 
 
@@ -8989,8 +8989,8 @@ def test__create_exclusion_flattened_error():
     with pytest.raises(ValueError):
         client._create_exclusion(
             logging_config.CreateExclusionRequest(),
-            parent='parent_value',
-            exclusion=logging_config.LogExclusion(name='name_value'),
+            parent="parent_value",
+            exclusion=logging_config.LogExclusion(name="name_value"),
         )
 
 @pytest.mark.asyncio
@@ -9010,8 +9010,8 @@ async def test__create_exclusion_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._create_exclusion(
-            parent='parent_value',
-            exclusion=logging_config.LogExclusion(name='name_value'),
+            parent="parent_value",
+            exclusion=logging_config.LogExclusion(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -9019,10 +9019,10 @@ async def test__create_exclusion_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].exclusion
-        mock_val = logging_config.LogExclusion(name='name_value')
+        mock_val = logging_config.LogExclusion(name="name_value")
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -9036,8 +9036,8 @@ async def test__create_exclusion_flattened_error_async():
     with pytest.raises(ValueError):
         await client._create_exclusion(
             logging_config.CreateExclusionRequest(),
-            parent='parent_value',
-            exclusion=logging_config.LogExclusion(name='name_value'),
+            parent="parent_value",
+            exclusion=logging_config.LogExclusion(name="name_value"),
         )
 
 
@@ -9061,9 +9061,9 @@ def test__update_exclusion(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.LogExclusion(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
             disabled=True,
         )
         response = client._update_exclusion(request)
@@ -9076,9 +9076,9 @@ def test__update_exclusion(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogExclusion)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
     assert response.disabled is True
 
 
@@ -9094,7 +9094,7 @@ def test__update_exclusion_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.UpdateExclusionRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9106,7 +9106,7 @@ def test__update_exclusion_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateExclusionRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__update_exclusion_use_cached_wrapped_rpc():
@@ -9192,9 +9192,9 @@ async def test__update_exclusion_async(transport: str = 'grpc_asyncio', request_
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
             disabled=True,
         ))
         response = await client._update_exclusion(request)
@@ -9207,9 +9207,9 @@ async def test__update_exclusion_async(transport: str = 'grpc_asyncio', request_
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.LogExclusion)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
     assert response.disabled is True
 
 
@@ -9226,7 +9226,7 @@ def test__update_exclusion_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateExclusionRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9258,7 +9258,7 @@ async def test__update_exclusion_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateExclusionRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9294,9 +9294,9 @@ def test__update_exclusion_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._update_exclusion(
-            name='name_value',
-            exclusion=logging_config.LogExclusion(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            name="name_value",
+            exclusion=logging_config.LogExclusion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -9304,13 +9304,13 @@ def test__update_exclusion_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].exclusion
-        mock_val = logging_config.LogExclusion(name='name_value')
+        mock_val = logging_config.LogExclusion(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
@@ -9324,9 +9324,9 @@ def test__update_exclusion_flattened_error():
     with pytest.raises(ValueError):
         client._update_exclusion(
             logging_config.UpdateExclusionRequest(),
-            name='name_value',
-            exclusion=logging_config.LogExclusion(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            name="name_value",
+            exclusion=logging_config.LogExclusion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 @pytest.mark.asyncio
@@ -9346,9 +9346,9 @@ async def test__update_exclusion_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._update_exclusion(
-            name='name_value',
-            exclusion=logging_config.LogExclusion(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            name="name_value",
+            exclusion=logging_config.LogExclusion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -9356,13 +9356,13 @@ async def test__update_exclusion_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].exclusion
-        mock_val = logging_config.LogExclusion(name='name_value')
+        mock_val = logging_config.LogExclusion(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -9376,9 +9376,9 @@ async def test__update_exclusion_flattened_error_async():
     with pytest.raises(ValueError):
         await client._update_exclusion(
             logging_config.UpdateExclusionRequest(),
-            name='name_value',
-            exclusion=logging_config.LogExclusion(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            name="name_value",
+            exclusion=logging_config.LogExclusion(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -9426,7 +9426,7 @@ def test__delete_exclusion_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.DeleteExclusionRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9438,7 +9438,7 @@ def test__delete_exclusion_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteExclusionRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__delete_exclusion_use_cached_wrapped_rpc():
@@ -9549,7 +9549,7 @@ def test__delete_exclusion_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.DeleteExclusionRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9581,7 +9581,7 @@ async def test__delete_exclusion_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.DeleteExclusionRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9617,7 +9617,7 @@ def test__delete_exclusion_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._delete_exclusion(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -9625,7 +9625,7 @@ def test__delete_exclusion_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -9639,7 +9639,7 @@ def test__delete_exclusion_flattened_error():
     with pytest.raises(ValueError):
         client._delete_exclusion(
             logging_config.DeleteExclusionRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -9659,7 +9659,7 @@ async def test__delete_exclusion_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._delete_exclusion(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -9667,7 +9667,7 @@ async def test__delete_exclusion_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -9681,7 +9681,7 @@ async def test__delete_exclusion_flattened_error_async():
     with pytest.raises(ValueError):
         await client._delete_exclusion(
             logging_config.DeleteExclusionRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -9705,10 +9705,10 @@ def test__get_cmek_settings(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.CmekSettings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_key_version_name='kms_key_version_name_value',
-            service_account_id='service_account_id_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_key_version_name="kms_key_version_name_value",
+            service_account_id="service_account_id_value",
         )
         response = client._get_cmek_settings(request)
 
@@ -9720,10 +9720,10 @@ def test__get_cmek_settings(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.CmekSettings)
-    assert response.name == 'name_value'
-    assert response.kms_key_name == 'kms_key_name_value'
-    assert response.kms_key_version_name == 'kms_key_version_name_value'
-    assert response.service_account_id == 'service_account_id_value'
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_key_version_name == "kms_key_version_name_value"
+    assert response.service_account_id == "service_account_id_value"
 
 
 def test__get_cmek_settings_non_empty_request_with_auto_populated_field():
@@ -9738,7 +9738,7 @@ def test__get_cmek_settings_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.GetCmekSettingsRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9750,7 +9750,7 @@ def test__get_cmek_settings_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetCmekSettingsRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__get_cmek_settings_use_cached_wrapped_rpc():
@@ -9836,10 +9836,10 @@ async def test__get_cmek_settings_async(transport: str = 'grpc_asyncio', request
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_key_version_name='kms_key_version_name_value',
-            service_account_id='service_account_id_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_key_version_name="kms_key_version_name_value",
+            service_account_id="service_account_id_value",
         ))
         response = await client._get_cmek_settings(request)
 
@@ -9851,10 +9851,10 @@ async def test__get_cmek_settings_async(transport: str = 'grpc_asyncio', request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.CmekSettings)
-    assert response.name == 'name_value'
-    assert response.kms_key_name == 'kms_key_name_value'
-    assert response.kms_key_version_name == 'kms_key_version_name_value'
-    assert response.service_account_id == 'service_account_id_value'
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_key_version_name == "kms_key_version_name_value"
+    assert response.service_account_id == "service_account_id_value"
 
 
 @pytest.mark.asyncio
@@ -9870,7 +9870,7 @@ def test__get_cmek_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetCmekSettingsRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9902,7 +9902,7 @@ async def test__get_cmek_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetCmekSettingsRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9944,10 +9944,10 @@ def test__update_cmek_settings(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.CmekSettings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_key_version_name='kms_key_version_name_value',
-            service_account_id='service_account_id_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_key_version_name="kms_key_version_name_value",
+            service_account_id="service_account_id_value",
         )
         response = client._update_cmek_settings(request)
 
@@ -9959,10 +9959,10 @@ def test__update_cmek_settings(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.CmekSettings)
-    assert response.name == 'name_value'
-    assert response.kms_key_name == 'kms_key_name_value'
-    assert response.kms_key_version_name == 'kms_key_version_name_value'
-    assert response.service_account_id == 'service_account_id_value'
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_key_version_name == "kms_key_version_name_value"
+    assert response.service_account_id == "service_account_id_value"
 
 
 def test__update_cmek_settings_non_empty_request_with_auto_populated_field():
@@ -9977,7 +9977,7 @@ def test__update_cmek_settings_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.UpdateCmekSettingsRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9989,7 +9989,7 @@ def test__update_cmek_settings_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateCmekSettingsRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__update_cmek_settings_use_cached_wrapped_rpc():
@@ -10075,10 +10075,10 @@ async def test__update_cmek_settings_async(transport: str = 'grpc_asyncio', requ
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_key_version_name='kms_key_version_name_value',
-            service_account_id='service_account_id_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_key_version_name="kms_key_version_name_value",
+            service_account_id="service_account_id_value",
         ))
         response = await client._update_cmek_settings(request)
 
@@ -10090,10 +10090,10 @@ async def test__update_cmek_settings_async(transport: str = 'grpc_asyncio', requ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.CmekSettings)
-    assert response.name == 'name_value'
-    assert response.kms_key_name == 'kms_key_name_value'
-    assert response.kms_key_version_name == 'kms_key_version_name_value'
-    assert response.service_account_id == 'service_account_id_value'
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_key_version_name == "kms_key_version_name_value"
+    assert response.service_account_id == "service_account_id_value"
 
 
 @pytest.mark.asyncio
@@ -10109,7 +10109,7 @@ def test__update_cmek_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateCmekSettingsRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10141,7 +10141,7 @@ async def test__update_cmek_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateCmekSettingsRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10183,10 +10183,10 @@ def test__get_settings(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Settings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_service_account_id='kms_service_account_id_value',
-            storage_location='storage_location_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_service_account_id="kms_service_account_id_value",
+            storage_location="storage_location_value",
             disable_default_sink=True,
         )
         response = client._get_settings(request)
@@ -10199,10 +10199,10 @@ def test__get_settings(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.Settings)
-    assert response.name == 'name_value'
-    assert response.kms_key_name == 'kms_key_name_value'
-    assert response.kms_service_account_id == 'kms_service_account_id_value'
-    assert response.storage_location == 'storage_location_value'
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_service_account_id == "kms_service_account_id_value"
+    assert response.storage_location == "storage_location_value"
     assert response.disable_default_sink is True
 
 
@@ -10218,7 +10218,7 @@ def test__get_settings_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.GetSettingsRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10230,7 +10230,7 @@ def test__get_settings_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetSettingsRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__get_settings_use_cached_wrapped_rpc():
@@ -10316,10 +10316,10 @@ async def test__get_settings_async(transport: str = 'grpc_asyncio', request_type
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_service_account_id='kms_service_account_id_value',
-            storage_location='storage_location_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_service_account_id="kms_service_account_id_value",
+            storage_location="storage_location_value",
             disable_default_sink=True,
         ))
         response = await client._get_settings(request)
@@ -10332,10 +10332,10 @@ async def test__get_settings_async(transport: str = 'grpc_asyncio', request_type
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.Settings)
-    assert response.name == 'name_value'
-    assert response.kms_key_name == 'kms_key_name_value'
-    assert response.kms_service_account_id == 'kms_service_account_id_value'
-    assert response.storage_location == 'storage_location_value'
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_service_account_id == "kms_service_account_id_value"
+    assert response.storage_location == "storage_location_value"
     assert response.disable_default_sink is True
 
 
@@ -10352,7 +10352,7 @@ def test__get_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetSettingsRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10384,7 +10384,7 @@ async def test__get_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.GetSettingsRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10420,7 +10420,7 @@ def test__get_settings_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._get_settings(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -10428,7 +10428,7 @@ def test__get_settings_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -10442,7 +10442,7 @@ def test__get_settings_flattened_error():
     with pytest.raises(ValueError):
         client._get_settings(
             logging_config.GetSettingsRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -10462,7 +10462,7 @@ async def test__get_settings_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._get_settings(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -10470,7 +10470,7 @@ async def test__get_settings_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -10484,7 +10484,7 @@ async def test__get_settings_flattened_error_async():
     with pytest.raises(ValueError):
         await client._get_settings(
             logging_config.GetSettingsRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -10508,10 +10508,10 @@ def test__update_settings(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_config.Settings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_service_account_id='kms_service_account_id_value',
-            storage_location='storage_location_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_service_account_id="kms_service_account_id_value",
+            storage_location="storage_location_value",
             disable_default_sink=True,
         )
         response = client._update_settings(request)
@@ -10524,10 +10524,10 @@ def test__update_settings(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.Settings)
-    assert response.name == 'name_value'
-    assert response.kms_key_name == 'kms_key_name_value'
-    assert response.kms_service_account_id == 'kms_service_account_id_value'
-    assert response.storage_location == 'storage_location_value'
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_service_account_id == "kms_service_account_id_value"
+    assert response.storage_location == "storage_location_value"
     assert response.disable_default_sink is True
 
 
@@ -10543,7 +10543,7 @@ def test__update_settings_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.UpdateSettingsRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10555,7 +10555,7 @@ def test__update_settings_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateSettingsRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test__update_settings_use_cached_wrapped_rpc():
@@ -10641,10 +10641,10 @@ async def test__update_settings_async(transport: str = 'grpc_asyncio', request_t
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_service_account_id='kms_service_account_id_value',
-            storage_location='storage_location_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_service_account_id="kms_service_account_id_value",
+            storage_location="storage_location_value",
             disable_default_sink=True,
         ))
         response = await client._update_settings(request)
@@ -10657,10 +10657,10 @@ async def test__update_settings_async(transport: str = 'grpc_asyncio', request_t
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_config.Settings)
-    assert response.name == 'name_value'
-    assert response.kms_key_name == 'kms_key_name_value'
-    assert response.kms_service_account_id == 'kms_service_account_id_value'
-    assert response.storage_location == 'storage_location_value'
+    assert response.name == "name_value"
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.kms_service_account_id == "kms_service_account_id_value"
+    assert response.storage_location == "storage_location_value"
     assert response.disable_default_sink is True
 
 
@@ -10677,7 +10677,7 @@ def test__update_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateSettingsRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10709,7 +10709,7 @@ async def test__update_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_config.UpdateSettingsRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10745,8 +10745,8 @@ def test__update_settings_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client._update_settings(
-            settings=logging_config.Settings(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            settings=logging_config.Settings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -10754,10 +10754,10 @@ def test__update_settings_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].settings
-        mock_val = logging_config.Settings(name='name_value')
+        mock_val = logging_config.Settings(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
@@ -10771,8 +10771,8 @@ def test__update_settings_flattened_error():
     with pytest.raises(ValueError):
         client._update_settings(
             logging_config.UpdateSettingsRequest(),
-            settings=logging_config.Settings(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            settings=logging_config.Settings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 @pytest.mark.asyncio
@@ -10792,8 +10792,8 @@ async def test__update_settings_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client._update_settings(
-            settings=logging_config.Settings(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            settings=logging_config.Settings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -10801,10 +10801,10 @@ async def test__update_settings_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].settings
-        mock_val = logging_config.Settings(name='name_value')
+        mock_val = logging_config.Settings(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -10818,8 +10818,8 @@ async def test__update_settings_flattened_error_async():
     with pytest.raises(ValueError):
         await client._update_settings(
             logging_config.UpdateSettingsRequest(),
-            settings=logging_config.Settings(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            settings=logging_config.Settings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -10867,9 +10867,9 @@ def test__copy_log_entries_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_config.CopyLogEntriesRequest(
-        name='name_value',
-        filter='filter_value',
-        destination='destination_value',
+        name="name_value",
+        filter="filter_value",
+        destination="destination_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10881,9 +10881,9 @@ def test__copy_log_entries_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CopyLogEntriesRequest(
-            name='name_value',
-            filter='filter_value',
-            destination='destination_value',
+            name="name_value",
+            filter="filter_value",
+            destination="destination_value",
         )
 
 def test__copy_log_entries_use_cached_wrapped_rpc():
@@ -11865,7 +11865,7 @@ async def test_list_buckets_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListBucketsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.list_buckets(request=None)
 
@@ -11892,13 +11892,13 @@ async def test_get_bucket_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
             analytics_enabled=True,
-            restricted_fields=['restricted_fields_value'],
+            restricted_fields=["restricted_fields_value"],
         ))
         await client.get_bucket(request=None)
 
@@ -11979,13 +11979,13 @@ async def test_create_bucket_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
             analytics_enabled=True,
-            restricted_fields=['restricted_fields_value'],
+            restricted_fields=["restricted_fields_value"],
         ))
         await client.create_bucket(request=None)
 
@@ -12012,13 +12012,13 @@ async def test_update_bucket_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogBucket(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             retention_days=1512,
             locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
             analytics_enabled=True,
-            restricted_fields=['restricted_fields_value'],
+            restricted_fields=["restricted_fields_value"],
         ))
         await client.update_bucket(request=None)
 
@@ -12095,7 +12095,7 @@ async def test__list_views_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListViewsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client._list_views(request=None)
 
@@ -12122,9 +12122,9 @@ async def test__get_view_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
         ))
         await client._get_view(request=None)
 
@@ -12151,9 +12151,9 @@ async def test__create_view_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
         ))
         await client._create_view(request=None)
 
@@ -12180,9 +12180,9 @@ async def test__update_view_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogView(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
         ))
         await client._update_view(request=None)
 
@@ -12234,7 +12234,7 @@ async def test__list_sinks_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListSinksResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client._list_sinks(request=None)
 
@@ -12261,13 +12261,13 @@ async def test__get_sink_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
-            name='name_value',
-            destination='destination_value',
-            filter='filter_value',
-            description='description_value',
+            name="name_value",
+            destination="destination_value",
+            filter="filter_value",
+            description="description_value",
             disabled=True,
             output_version_format=logging_config.LogSink.VersionFormat.V2,
-            writer_identity='writer_identity_value',
+            writer_identity="writer_identity_value",
             include_children=True,
         ))
         await client._get_sink(request=None)
@@ -12295,13 +12295,13 @@ async def test__create_sink_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
-            name='name_value',
-            destination='destination_value',
-            filter='filter_value',
-            description='description_value',
+            name="name_value",
+            destination="destination_value",
+            filter="filter_value",
+            description="description_value",
             disabled=True,
             output_version_format=logging_config.LogSink.VersionFormat.V2,
-            writer_identity='writer_identity_value',
+            writer_identity="writer_identity_value",
             include_children=True,
         ))
         await client._create_sink(request=None)
@@ -12329,13 +12329,13 @@ async def test__update_sink_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogSink(
-            name='name_value',
-            destination='destination_value',
-            filter='filter_value',
-            description='description_value',
+            name="name_value",
+            destination="destination_value",
+            filter="filter_value",
+            description="description_value",
             disabled=True,
             output_version_format=logging_config.LogSink.VersionFormat.V2,
-            writer_identity='writer_identity_value',
+            writer_identity="writer_identity_value",
             include_children=True,
         ))
         await client._update_sink(request=None)
@@ -12442,7 +12442,7 @@ async def test__list_links_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListLinksResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client._list_links(request=None)
 
@@ -12469,8 +12469,8 @@ async def test__get_link_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Link(
-            name='name_value',
-            description='description_value',
+            name="name_value",
+            description="description_value",
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
         ))
         await client._get_link(request=None)
@@ -12498,7 +12498,7 @@ async def test__list_exclusions_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.ListExclusionsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client._list_exclusions(request=None)
 
@@ -12525,9 +12525,9 @@ async def test__get_exclusion_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
             disabled=True,
         ))
         await client._get_exclusion(request=None)
@@ -12555,9 +12555,9 @@ async def test__create_exclusion_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
             disabled=True,
         ))
         await client._create_exclusion(request=None)
@@ -12585,9 +12585,9 @@ async def test__update_exclusion_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.LogExclusion(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
             disabled=True,
         ))
         await client._update_exclusion(request=None)
@@ -12640,10 +12640,10 @@ async def test__get_cmek_settings_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_key_version_name='kms_key_version_name_value',
-            service_account_id='service_account_id_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_key_version_name="kms_key_version_name_value",
+            service_account_id="service_account_id_value",
         ))
         await client._get_cmek_settings(request=None)
 
@@ -12670,10 +12670,10 @@ async def test__update_cmek_settings_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.CmekSettings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_key_version_name='kms_key_version_name_value',
-            service_account_id='service_account_id_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_key_version_name="kms_key_version_name_value",
+            service_account_id="service_account_id_value",
         ))
         await client._update_cmek_settings(request=None)
 
@@ -12700,10 +12700,10 @@ async def test__get_settings_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_service_account_id='kms_service_account_id_value',
-            storage_location='storage_location_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_service_account_id="kms_service_account_id_value",
+            storage_location="storage_location_value",
             disable_default_sink=True,
         ))
         await client._get_settings(request=None)
@@ -12731,10 +12731,10 @@ async def test__update_settings_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_config.Settings(
-            name='name_value',
-            kms_key_name='kms_key_name_value',
-            kms_service_account_id='kms_service_account_id_value',
-            storage_location='storage_location_value',
+            name="name_value",
+            kms_key_name="kms_key_name_value",
+            kms_service_account_id="kms_service_account_id_value",
+            storage_location="storage_location_value",
             disable_default_sink=True,
         ))
         await client._update_settings(request=None)

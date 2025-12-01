@@ -16,7 +16,18 @@
 import logging as std_logging
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Callable,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.cloud.asset_v1 import gapic_version as package_version
 
@@ -24,8 +35,8 @@ from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials   # type: ignore
-from google.oauth2 import service_account              # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 
@@ -39,7 +50,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.asset_v1.services.asset_service import pagers
 from google.cloud.asset_v1.types import asset_service
 from google.cloud.asset_v1.types import assets
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -50,11 +61,13 @@ from .client import AssetServiceClient
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
+
 
 class AssetServiceAsyncClient:
     """Asset service definition."""
@@ -190,12 +203,14 @@ class AssetServiceAsyncClient:
 
     get_transport_class = AssetServiceClient.get_transport_class
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, AssetServiceTransport, Callable[..., AssetServiceTransport]]] = "grpc_asyncio",
-            client_options: Optional[ClientOptions] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[Union[str, AssetServiceTransport, Callable[..., AssetServiceTransport]]] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the asset service async client.
 
         Args:
@@ -253,30 +268,32 @@ class AssetServiceAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
-
         )
 
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.asset_v1.AssetServiceAsyncClient`.",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.asset.v1.AssetService",
                     "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                } if hasattr(self._client._transport, "_credentials") else {
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
                     "serviceName": "google.cloud.asset.v1.AssetService",
                     "credentialsType": None,
-                }
+                },
             )
 
-    async def export_assets(self,
-            request: Optional[Union[asset_service.ExportAssetsRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def export_assets(
+        self,
+        request: Optional[Union[asset_service.ExportAssetsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Exports assets with time and resource types to a given Cloud
         Storage location/BigQuery table. For Cloud Storage location
         destinations, the output format is newline-delimited JSON. Each
@@ -359,11 +376,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -387,14 +406,15 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_assets(self,
-            request: Optional[Union[asset_service.ListAssetsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListAssetsAsyncPager:
+    async def list_assets(
+        self,
+        request: Optional[Union[asset_service.ListAssetsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListAssetsAsyncPager:
         r"""Lists assets with time and resource types and returns
         paged results in response.
 
@@ -463,8 +483,7 @@ class AssetServiceAsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -482,11 +501,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -513,13 +534,14 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def batch_get_assets_history(self,
-            request: Optional[Union[asset_service.BatchGetAssetsHistoryRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.BatchGetAssetsHistoryResponse:
+    async def batch_get_assets_history(
+        self,
+        request: Optional[Union[asset_service.BatchGetAssetsHistoryRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.BatchGetAssetsHistoryResponse:
         r"""Batch gets the update history of assets that overlap a time
         window. For IAM_POLICY content, this API outputs history when
         the asset and its attached IAM POLICY both exist. This can
@@ -581,11 +603,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -601,14 +625,15 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_feed(self,
-            request: Optional[Union[asset_service.CreateFeedRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.Feed:
+    async def create_feed(
+        self,
+        request: Optional[Union[asset_service.CreateFeedRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.Feed:
         r"""Creates a feed in a parent
         project/folder/organization to listen to its asset
         updates.
@@ -687,8 +712,7 @@ class AssetServiceAsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -706,11 +730,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -726,14 +752,15 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_feed(self,
-            request: Optional[Union[asset_service.GetFeedRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.Feed:
+    async def get_feed(
+        self,
+        request: Optional[Union[asset_service.GetFeedRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
         .. code-block:: python
@@ -800,8 +827,7 @@ class AssetServiceAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -819,11 +845,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -839,14 +867,15 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_feeds(self,
-            request: Optional[Union[asset_service.ListFeedsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.ListFeedsResponse:
+    async def list_feeds(
+        self,
+        request: Optional[Union[asset_service.ListFeedsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.ListFeedsResponse:
         r"""Lists all asset feeds in a parent
         project/folder/organization.
 
@@ -908,8 +937,7 @@ class AssetServiceAsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -927,11 +955,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -947,14 +977,15 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_feed(self,
-            request: Optional[Union[asset_service.UpdateFeedRequest, dict]] = None,
-            *,
-            feed: Optional[asset_service.Feed] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.Feed:
+    async def update_feed(
+        self,
+        request: Optional[Union[asset_service.UpdateFeedRequest, dict]] = None,
+        *,
+        feed: Optional[asset_service.Feed] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
         .. code-block:: python
@@ -1025,8 +1056,7 @@ class AssetServiceAsyncClient:
         flattened_params = [feed]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1044,11 +1074,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("feed.name", request.feed.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1064,14 +1096,15 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_feed(self,
-            request: Optional[Union[asset_service.DeleteFeedRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    async def delete_feed(
+        self,
+        request: Optional[Union[asset_service.DeleteFeedRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes an asset feed.
 
         .. code-block:: python
@@ -1123,8 +1156,7 @@ class AssetServiceAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1142,11 +1174,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1159,16 +1193,17 @@ class AssetServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def search_all_resources(self,
-            request: Optional[Union[asset_service.SearchAllResourcesRequest, dict]] = None,
-            *,
-            scope: Optional[str] = None,
-            query: Optional[str] = None,
-            asset_types: Optional[MutableSequence[str]] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.SearchAllResourcesAsyncPager:
+    async def search_all_resources(
+        self,
+        request: Optional[Union[asset_service.SearchAllResourcesRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        query: Optional[str] = None,
+        asset_types: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.SearchAllResourcesAsyncPager:
         r"""Searches all Google Cloud resources within the specified scope,
         such as a project, folder, or organization. The caller must be
         granted the ``cloudasset.assets.searchAllResources`` permission
@@ -1338,8 +1373,7 @@ class AssetServiceAsyncClient:
         flattened_params = [scope, query, asset_types]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1361,11 +1395,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1392,15 +1428,16 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def search_all_iam_policies(self,
-            request: Optional[Union[asset_service.SearchAllIamPoliciesRequest, dict]] = None,
-            *,
-            scope: Optional[str] = None,
-            query: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.SearchAllIamPoliciesAsyncPager:
+    async def search_all_iam_policies(
+        self,
+        request: Optional[Union[asset_service.SearchAllIamPoliciesRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        query: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.SearchAllIamPoliciesAsyncPager:
         r"""Searches all IAM policies within the specified scope, such as a
         project, folder, or organization. The caller must be granted the
         ``cloudasset.assets.searchAllIamPolicies`` permission on the
@@ -1532,8 +1569,7 @@ class AssetServiceAsyncClient:
         flattened_params = [scope, query]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1553,11 +1589,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1584,13 +1622,14 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def analyze_iam_policy(self,
-            request: Optional[Union[asset_service.AnalyzeIamPolicyRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.AnalyzeIamPolicyResponse:
+    async def analyze_iam_policy(
+        self,
+        request: Optional[Union[asset_service.AnalyzeIamPolicyRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.AnalyzeIamPolicyResponse:
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
 
@@ -1653,11 +1692,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("analysis_query.scope", request.analysis_query.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1673,13 +1714,14 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def analyze_iam_policy_longrunning(self,
-            request: Optional[Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def analyze_iam_policy_longrunning(
+        self,
+        request: Optional[Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Analyzes IAM policies asynchronously to answer which identities
         have what accesses on which resources, and writes the analysis
         results to a Google Cloud Storage or a BigQuery destination. For
@@ -1762,11 +1804,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("analysis_query.scope", request.analysis_query.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1790,13 +1834,14 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def analyze_move(self,
-            request: Optional[Union[asset_service.AnalyzeMoveRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.AnalyzeMoveResponse:
+    async def analyze_move(
+        self,
+        request: Optional[Union[asset_service.AnalyzeMoveRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.AnalyzeMoveResponse:
         r"""Analyze moving a resource to a specified destination
         without kicking off the actual move. The analysis is
         best effort depending on the user's permissions of
@@ -1862,11 +1907,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("resource", request.resource),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1882,13 +1929,14 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def query_assets(self,
-            request: Optional[Union[asset_service.QueryAssetsRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.QueryAssetsResponse:
+    async def query_assets(
+        self,
+        request: Optional[Union[asset_service.QueryAssetsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.QueryAssetsResponse:
         r"""Issue a job that queries assets using a SQL statement compatible
         with `BigQuery Standard
         SQL <http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>`__.
@@ -1960,11 +2008,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1980,16 +2030,17 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_saved_query(self,
-            request: Optional[Union[asset_service.CreateSavedQueryRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            saved_query: Optional[asset_service.SavedQuery] = None,
-            saved_query_id: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.SavedQuery:
+    async def create_saved_query(
+        self,
+        request: Optional[Union[asset_service.CreateSavedQueryRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        saved_query: Optional[asset_service.SavedQuery] = None,
+        saved_query_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.SavedQuery:
         r"""Creates a saved query in a parent
         project/folder/organization.
 
@@ -2077,8 +2128,7 @@ class AssetServiceAsyncClient:
         flattened_params = [parent, saved_query, saved_query_id]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2100,11 +2150,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2120,14 +2172,15 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_saved_query(self,
-            request: Optional[Union[asset_service.GetSavedQueryRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.SavedQuery:
+    async def get_saved_query(
+        self,
+        request: Optional[Union[asset_service.GetSavedQueryRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.SavedQuery:
         r"""Gets details about a saved query.
 
         .. code-block:: python
@@ -2190,8 +2243,7 @@ class AssetServiceAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2209,11 +2261,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2229,14 +2283,15 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_saved_queries(self,
-            request: Optional[Union[asset_service.ListSavedQueriesRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListSavedQueriesAsyncPager:
+    async def list_saved_queries(
+        self,
+        request: Optional[Union[asset_service.ListSavedQueriesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListSavedQueriesAsyncPager:
         r"""Lists all saved queries in a parent
         project/folder/organization.
 
@@ -2305,8 +2360,7 @@ class AssetServiceAsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2324,11 +2378,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2355,15 +2411,16 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_saved_query(self,
-            request: Optional[Union[asset_service.UpdateSavedQueryRequest, dict]] = None,
-            *,
-            saved_query: Optional[asset_service.SavedQuery] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.SavedQuery:
+    async def update_saved_query(
+        self,
+        request: Optional[Union[asset_service.UpdateSavedQueryRequest, dict]] = None,
+        *,
+        saved_query: Optional[asset_service.SavedQuery] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.SavedQuery:
         r"""Updates a saved query.
 
         .. code-block:: python
@@ -2434,8 +2491,7 @@ class AssetServiceAsyncClient:
         flattened_params = [saved_query, update_mask]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2455,11 +2511,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("saved_query.name", request.saved_query.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2475,14 +2533,15 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_saved_query(self,
-            request: Optional[Union[asset_service.DeleteSavedQueryRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    async def delete_saved_query(
+        self,
+        request: Optional[Union[asset_service.DeleteSavedQueryRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes a saved query.
 
         .. code-block:: python
@@ -2536,8 +2595,7 @@ class AssetServiceAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2555,11 +2613,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2572,13 +2632,14 @@ class AssetServiceAsyncClient:
             metadata=metadata,
         )
 
-    async def batch_get_effective_iam_policies(self,
-            request: Optional[Union[asset_service.BatchGetEffectiveIamPoliciesRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
+    async def batch_get_effective_iam_policies(
+        self,
+        request: Optional[Union[asset_service.BatchGetEffectiveIamPoliciesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
         r"""Gets effective IAM policies for a batch of resources.
 
         .. code-block:: python
@@ -2638,11 +2699,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2658,16 +2721,17 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def analyze_org_policies(self,
-            request: Optional[Union[asset_service.AnalyzeOrgPoliciesRequest, dict]] = None,
-            *,
-            scope: Optional[str] = None,
-            constraint: Optional[str] = None,
-            filter: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.AnalyzeOrgPoliciesAsyncPager:
+    async def analyze_org_policies(
+        self,
+        request: Optional[Union[asset_service.AnalyzeOrgPoliciesRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        constraint: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.AnalyzeOrgPoliciesAsyncPager:
         r"""Analyzes organization policies under a scope.
 
         .. code-block:: python
@@ -2759,8 +2823,7 @@ class AssetServiceAsyncClient:
         flattened_params = [scope, constraint, filter]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2782,11 +2845,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2813,16 +2878,17 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def analyze_org_policy_governed_containers(self,
-            request: Optional[Union[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, dict]] = None,
-            *,
-            scope: Optional[str] = None,
-            constraint: Optional[str] = None,
-            filter: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager:
+    async def analyze_org_policy_governed_containers(
+        self,
+        request: Optional[Union[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        constraint: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager:
         r"""Analyzes organization policies governed containers
         (projects, folders or organization) under a scope.
 
@@ -2914,8 +2980,7 @@ class AssetServiceAsyncClient:
         flattened_params = [scope, constraint, filter]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2937,11 +3002,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2968,16 +3035,17 @@ class AssetServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def analyze_org_policy_governed_assets(self,
-            request: Optional[Union[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, dict]] = None,
-            *,
-            scope: Optional[str] = None,
-            constraint: Optional[str] = None,
-            filter: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager:
+    async def analyze_org_policy_governed_assets(
+        self,
+        request: Optional[Union[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        constraint: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager:
         r"""Analyzes organization policies governed assets (Google Cloud
         resources or policies) under a scope. This RPC supports custom
         constraints and the following 10 canned constraints:
@@ -3098,8 +3166,7 @@ class AssetServiceAsyncClient:
         flattened_params = [scope, constraint, filter]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3121,11 +3188,13 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3189,17 +3258,18 @@ class AssetServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3210,12 +3280,11 @@ class AssetServiceAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = (
-    "AssetServiceAsyncClient",
-)
+__all__ = ("AssetServiceAsyncClient",)

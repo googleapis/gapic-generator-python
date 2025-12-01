@@ -16,11 +16,13 @@
 import proto  # type: ignore
 
 
+# fmt: off
 __protobuf__ = proto.module(
-    package='google.iam.credentials.v1',
+    package="google.iam.credentials.v1",
     manifest={
     },
 )
+# fmt: on
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

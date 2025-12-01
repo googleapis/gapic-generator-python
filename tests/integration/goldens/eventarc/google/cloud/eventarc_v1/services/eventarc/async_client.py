@@ -16,7 +16,18 @@
 import logging as std_logging
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Callable,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.cloud.eventarc_v1 import gapic_version as package_version
 
@@ -24,8 +35,8 @@ from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials   # type: ignore
-from google.oauth2 import service_account              # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 
@@ -47,10 +58,10 @@ from google.cloud.eventarc_v1.types import google_channel_config
 from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
-from google.cloud.location import locations_pb2 # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import EventarcTransport, DEFAULT_CLIENT_INFO
@@ -59,11 +70,13 @@ from .client import EventarcClient
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
+
 
 class EventarcAsyncClient:
     """Eventarc allows users to subscribe to various events that are
@@ -208,12 +221,14 @@ class EventarcAsyncClient:
 
     get_transport_class = EventarcClient.get_transport_class
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, EventarcTransport, Callable[..., EventarcTransport]]] = "grpc_asyncio",
-            client_options: Optional[ClientOptions] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[Union[str, EventarcTransport, Callable[..., EventarcTransport]]] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the eventarc async client.
 
         Args:
@@ -271,31 +286,33 @@ class EventarcAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
-
         )
 
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.eventarc_v1.EventarcAsyncClient`.",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.eventarc.v1.Eventarc",
                     "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                } if hasattr(self._client._transport, "_credentials") else {
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
                     "serviceName": "google.cloud.eventarc.v1.Eventarc",
                     "credentialsType": None,
-                }
+                },
             )
 
-    async def get_trigger(self,
-            request: Optional[Union[eventarc.GetTriggerRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> trigger.Trigger:
+    async def get_trigger(
+        self,
+        request: Optional[Union[eventarc.GetTriggerRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> trigger.Trigger:
         r"""Get a single trigger.
 
         .. code-block:: python
@@ -355,8 +372,7 @@ class EventarcAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -374,11 +390,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -394,14 +412,15 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_triggers(self,
-            request: Optional[Union[eventarc.ListTriggersRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListTriggersAsyncPager:
+    async def list_triggers(
+        self,
+        request: Optional[Union[eventarc.ListTriggersRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListTriggersAsyncPager:
         r"""List triggers.
 
         .. code-block:: python
@@ -464,8 +483,7 @@ class EventarcAsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -483,11 +501,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -514,16 +534,17 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_trigger(self,
-            request: Optional[Union[eventarc.CreateTriggerRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            trigger: Optional[gce_trigger.Trigger] = None,
-            trigger_id: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def create_trigger(
+        self,
+        request: Optional[Union[eventarc.CreateTriggerRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        trigger: Optional[gce_trigger.Trigger] = None,
+        trigger_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Create a new trigger in a particular project and
         location.
 
@@ -613,8 +634,7 @@ class EventarcAsyncClient:
         flattened_params = [parent, trigger, trigger_id]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -636,11 +656,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -664,16 +686,17 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_trigger(self,
-            request: Optional[Union[eventarc.UpdateTriggerRequest, dict]] = None,
-            *,
-            trigger: Optional[gce_trigger.Trigger] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            allow_missing: Optional[bool] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def update_trigger(
+        self,
+        request: Optional[Union[eventarc.UpdateTriggerRequest, dict]] = None,
+        *,
+        trigger: Optional[gce_trigger.Trigger] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        allow_missing: Optional[bool] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Update a single trigger.
 
         .. code-block:: python
@@ -755,8 +778,7 @@ class EventarcAsyncClient:
         flattened_params = [trigger, update_mask, allow_missing]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -778,11 +800,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("trigger.name", request.trigger.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -806,15 +830,16 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_trigger(self,
-            request: Optional[Union[eventarc.DeleteTriggerRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            allow_missing: Optional[bool] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def delete_trigger(
+        self,
+        request: Optional[Union[eventarc.DeleteTriggerRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        allow_missing: Optional[bool] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Delete a single trigger.
 
         .. code-block:: python
@@ -890,8 +915,7 @@ class EventarcAsyncClient:
         flattened_params = [name, allow_missing]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -911,11 +935,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -939,14 +965,15 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_channel(self,
-            request: Optional[Union[eventarc.GetChannelRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> channel.Channel:
+    async def get_channel(
+        self,
+        request: Optional[Union[eventarc.GetChannelRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> channel.Channel:
         r"""Get a single Channel.
 
         .. code-block:: python
@@ -1012,8 +1039,7 @@ class EventarcAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1031,11 +1057,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1051,14 +1079,15 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_channels(self,
-            request: Optional[Union[eventarc.ListChannelsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListChannelsAsyncPager:
+    async def list_channels(
+        self,
+        request: Optional[Union[eventarc.ListChannelsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListChannelsAsyncPager:
         r"""List channels.
 
         .. code-block:: python
@@ -1121,8 +1150,7 @@ class EventarcAsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1140,11 +1168,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1171,16 +1201,17 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_channel(self,
-            request: Optional[Union[eventarc.CreateChannelRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            channel: Optional[gce_channel.Channel] = None,
-            channel_id: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def create_channel(
+        self,
+        request: Optional[Union[eventarc.CreateChannelRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        channel: Optional[gce_channel.Channel] = None,
+        channel_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Create a new channel in a particular project and
         location.
 
@@ -1270,8 +1301,7 @@ class EventarcAsyncClient:
         flattened_params = [parent, channel, channel_id]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1293,11 +1323,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1321,15 +1353,16 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_channel(self,
-            request: Optional[Union[eventarc.UpdateChannelRequest, dict]] = None,
-            *,
-            channel: Optional[gce_channel.Channel] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def update_channel(
+        self,
+        request: Optional[Union[eventarc.UpdateChannelRequest, dict]] = None,
+        *,
+        channel: Optional[gce_channel.Channel] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Update a single channel.
 
         .. code-block:: python
@@ -1406,8 +1439,7 @@ class EventarcAsyncClient:
         flattened_params = [channel, update_mask]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1427,11 +1459,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("channel.name", request.channel.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1455,14 +1489,15 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_channel(self,
-            request: Optional[Union[eventarc.DeleteChannelRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def delete_channel(
+        self,
+        request: Optional[Union[eventarc.DeleteChannelRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Delete a single channel.
 
         .. code-block:: python
@@ -1533,8 +1568,7 @@ class EventarcAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1552,11 +1586,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1580,14 +1616,15 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_provider(self,
-            request: Optional[Union[eventarc.GetProviderRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> discovery.Provider:
+    async def get_provider(
+        self,
+        request: Optional[Union[eventarc.GetProviderRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> discovery.Provider:
         r"""Get a single Provider.
 
         .. code-block:: python
@@ -1647,8 +1684,7 @@ class EventarcAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1666,11 +1702,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1686,14 +1724,15 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_providers(self,
-            request: Optional[Union[eventarc.ListProvidersRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListProvidersAsyncPager:
+    async def list_providers(
+        self,
+        request: Optional[Union[eventarc.ListProvidersRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListProvidersAsyncPager:
         r"""List providers.
 
         .. code-block:: python
@@ -1756,8 +1795,7 @@ class EventarcAsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1775,11 +1813,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1806,14 +1846,15 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_channel_connection(self,
-            request: Optional[Union[eventarc.GetChannelConnectionRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> channel_connection.ChannelConnection:
+    async def get_channel_connection(
+        self,
+        request: Optional[Union[eventarc.GetChannelConnectionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> channel_connection.ChannelConnection:
         r"""Get a single ChannelConnection.
 
         .. code-block:: python
@@ -1878,8 +1919,7 @@ class EventarcAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1897,11 +1937,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1917,14 +1959,15 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_channel_connections(self,
-            request: Optional[Union[eventarc.ListChannelConnectionsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListChannelConnectionsAsyncPager:
+    async def list_channel_connections(
+        self,
+        request: Optional[Union[eventarc.ListChannelConnectionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListChannelConnectionsAsyncPager:
         r"""List channel connections.
 
         .. code-block:: python
@@ -1988,8 +2031,7 @@ class EventarcAsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2007,11 +2049,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2038,16 +2082,17 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def create_channel_connection(self,
-            request: Optional[Union[eventarc.CreateChannelConnectionRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            channel_connection: Optional[gce_channel_connection.ChannelConnection] = None,
-            channel_connection_id: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def create_channel_connection(
+        self,
+        request: Optional[Union[eventarc.CreateChannelConnectionRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        channel_connection: Optional[gce_channel_connection.ChannelConnection] = None,
+        channel_connection_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Create a new ChannelConnection in a particular
         project and location.
 
@@ -2137,8 +2182,7 @@ class EventarcAsyncClient:
         flattened_params = [parent, channel_connection, channel_connection_id]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2160,11 +2204,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2188,14 +2234,15 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_channel_connection(self,
-            request: Optional[Union[eventarc.DeleteChannelConnectionRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def delete_channel_connection(
+        self,
+        request: Optional[Union[eventarc.DeleteChannelConnectionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Delete a single ChannelConnection.
 
         .. code-block:: python
@@ -2264,8 +2311,7 @@ class EventarcAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2283,11 +2329,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2311,14 +2359,15 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_google_channel_config(self,
-            request: Optional[Union[eventarc.GetGoogleChannelConfigRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> google_channel_config.GoogleChannelConfig:
+    async def get_google_channel_config(
+        self,
+        request: Optional[Union[eventarc.GetGoogleChannelConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> google_channel_config.GoogleChannelConfig:
         r"""Get a GoogleChannelConfig
 
         .. code-block:: python
@@ -2384,8 +2433,7 @@ class EventarcAsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2403,11 +2451,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2423,15 +2473,16 @@ class EventarcAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_google_channel_config(self,
-            request: Optional[Union[eventarc.UpdateGoogleChannelConfigRequest, dict]] = None,
-            *,
-            google_channel_config: Optional[gce_google_channel_config.GoogleChannelConfig] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> gce_google_channel_config.GoogleChannelConfig:
+    async def update_google_channel_config(
+        self,
+        request: Optional[Union[eventarc.UpdateGoogleChannelConfigRequest, dict]] = None,
+        *,
+        google_channel_config: Optional[gce_google_channel_config.GoogleChannelConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> gce_google_channel_config.GoogleChannelConfig:
         r"""Update a single GoogleChannelConfig
 
         .. code-block:: python
@@ -2507,8 +2558,7 @@ class EventarcAsyncClient:
         flattened_params = [google_channel_config, update_mask]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2528,11 +2578,13 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("google_channel_config.name", request.google_channel_config.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2585,17 +2637,18 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2637,17 +2690,18 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2693,16 +2747,18 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def cancel_operation(
         self,
@@ -2744,16 +2800,18 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def set_iam_policy(
         self,
@@ -2858,17 +2916,18 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2977,17 +3036,18 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3034,17 +3094,18 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3086,17 +3147,18 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3138,17 +3200,18 @@ class EventarcAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3159,12 +3222,11 @@ class EventarcAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = (
-    "EventarcAsyncClient",
-)
+__all__ = ("EventarcAsyncClient",)

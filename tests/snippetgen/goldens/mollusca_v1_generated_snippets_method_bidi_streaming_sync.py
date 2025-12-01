@@ -44,7 +44,7 @@ def sample_method_bidi_streaming():
     )
 
     # This method expects an iterator which contains
-    # 'mollusca_v1.SignatureRequestOneRequiredField' objects
+    # "mollusca_v1.SignatureRequestOneRequiredField" objects
     # Here we create a generator that yields a single `request` for
     # demonstrative purposes.
     requests = [request]

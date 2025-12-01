@@ -29,72 +29,74 @@ from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
 
+# fmt: off
 __protobuf__ = proto.module(
-    package='google.cloud.asset.v1',
+    package="google.cloud.asset.v1",
     manifest={
-        'ContentType',
-        'AnalyzeIamPolicyLongrunningMetadata',
-        'ExportAssetsRequest',
-        'ExportAssetsResponse',
-        'ListAssetsRequest',
-        'ListAssetsResponse',
-        'BatchGetAssetsHistoryRequest',
-        'BatchGetAssetsHistoryResponse',
-        'CreateFeedRequest',
-        'GetFeedRequest',
-        'ListFeedsRequest',
-        'ListFeedsResponse',
-        'UpdateFeedRequest',
-        'DeleteFeedRequest',
-        'OutputConfig',
-        'OutputResult',
-        'GcsOutputResult',
-        'GcsDestination',
-        'BigQueryDestination',
-        'PartitionSpec',
-        'PubsubDestination',
-        'FeedOutputConfig',
-        'Feed',
-        'SearchAllResourcesRequest',
-        'SearchAllResourcesResponse',
-        'SearchAllIamPoliciesRequest',
-        'SearchAllIamPoliciesResponse',
-        'IamPolicyAnalysisQuery',
-        'AnalyzeIamPolicyRequest',
-        'AnalyzeIamPolicyResponse',
-        'IamPolicyAnalysisOutputConfig',
-        'AnalyzeIamPolicyLongrunningRequest',
-        'AnalyzeIamPolicyLongrunningResponse',
-        'SavedQuery',
-        'CreateSavedQueryRequest',
-        'GetSavedQueryRequest',
-        'ListSavedQueriesRequest',
-        'ListSavedQueriesResponse',
-        'UpdateSavedQueryRequest',
-        'DeleteSavedQueryRequest',
-        'AnalyzeMoveRequest',
-        'AnalyzeMoveResponse',
-        'MoveAnalysis',
-        'MoveAnalysisResult',
-        'MoveImpact',
-        'QueryAssetsOutputConfig',
-        'QueryAssetsRequest',
-        'QueryAssetsResponse',
-        'QueryResult',
-        'TableSchema',
-        'TableFieldSchema',
-        'BatchGetEffectiveIamPoliciesRequest',
-        'BatchGetEffectiveIamPoliciesResponse',
-        'AnalyzerOrgPolicy',
-        'AnalyzerOrgPolicyConstraint',
-        'AnalyzeOrgPoliciesRequest',
-        'AnalyzeOrgPoliciesResponse',
-        'AnalyzeOrgPolicyGovernedContainersRequest',
-        'AnalyzeOrgPolicyGovernedContainersResponse',
-        'AnalyzeOrgPolicyGovernedAssetsRequest',
-        'AnalyzeOrgPolicyGovernedAssetsResponse',
+        "ContentType",
+        "AnalyzeIamPolicyLongrunningMetadata",
+        "ExportAssetsRequest",
+        "ExportAssetsResponse",
+        "ListAssetsRequest",
+        "ListAssetsResponse",
+        "BatchGetAssetsHistoryRequest",
+        "BatchGetAssetsHistoryResponse",
+        "CreateFeedRequest",
+        "GetFeedRequest",
+        "ListFeedsRequest",
+        "ListFeedsResponse",
+        "UpdateFeedRequest",
+        "DeleteFeedRequest",
+        "OutputConfig",
+        "OutputResult",
+        "GcsOutputResult",
+        "GcsDestination",
+        "BigQueryDestination",
+        "PartitionSpec",
+        "PubsubDestination",
+        "FeedOutputConfig",
+        "Feed",
+        "SearchAllResourcesRequest",
+        "SearchAllResourcesResponse",
+        "SearchAllIamPoliciesRequest",
+        "SearchAllIamPoliciesResponse",
+        "IamPolicyAnalysisQuery",
+        "AnalyzeIamPolicyRequest",
+        "AnalyzeIamPolicyResponse",
+        "IamPolicyAnalysisOutputConfig",
+        "AnalyzeIamPolicyLongrunningRequest",
+        "AnalyzeIamPolicyLongrunningResponse",
+        "SavedQuery",
+        "CreateSavedQueryRequest",
+        "GetSavedQueryRequest",
+        "ListSavedQueriesRequest",
+        "ListSavedQueriesResponse",
+        "UpdateSavedQueryRequest",
+        "DeleteSavedQueryRequest",
+        "AnalyzeMoveRequest",
+        "AnalyzeMoveResponse",
+        "MoveAnalysis",
+        "MoveAnalysisResult",
+        "MoveImpact",
+        "QueryAssetsOutputConfig",
+        "QueryAssetsRequest",
+        "QueryAssetsResponse",
+        "QueryResult",
+        "TableSchema",
+        "TableFieldSchema",
+        "BatchGetEffectiveIamPoliciesRequest",
+        "BatchGetEffectiveIamPoliciesResponse",
+        "AnalyzerOrgPolicy",
+        "AnalyzerOrgPolicyConstraint",
+        "AnalyzeOrgPoliciesRequest",
+        "AnalyzeOrgPoliciesResponse",
+        "AnalyzeOrgPolicyGovernedContainersRequest",
+        "AnalyzeOrgPolicyGovernedContainersResponse",
+        "AnalyzeOrgPolicyGovernedAssetsRequest",
+        "AnalyzeOrgPolicyGovernedAssetsResponse",
     },
 )
+# fmt: on
 
 
 class ContentType(proto.Enum):
@@ -224,15 +226,15 @@ class ExportAssetsRequest(proto.Message):
         proto.STRING,
         number=3,
     )
-    content_type: 'ContentType' = proto.Field(
+    content_type: "ContentType" = proto.Field(
         proto.ENUM,
         number=4,
-        enum='ContentType',
+        enum="ContentType",
     )
-    output_config: 'OutputConfig' = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
-        message='OutputConfig',
+        message="OutputConfig",
     )
     relationship_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -267,15 +269,15 @@ class ExportAssetsResponse(proto.Message):
         number=1,
         message=timestamp_pb2.Timestamp,
     )
-    output_config: 'OutputConfig' = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='OutputConfig',
+        message="OutputConfig",
     )
-    output_result: 'OutputResult' = proto.Field(
+    output_result: "OutputResult" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='OutputResult',
+        message="OutputResult",
     )
 
 
@@ -368,10 +370,10 @@ class ListAssetsRequest(proto.Message):
         proto.STRING,
         number=3,
     )
-    content_type: 'ContentType' = proto.Field(
+    content_type: "ContentType" = proto.Field(
         proto.ENUM,
         number=4,
-        enum='ContentType',
+        enum="ContentType",
     )
     page_size: int = proto.Field(
         proto.INT32,
@@ -479,10 +481,10 @@ class BatchGetAssetsHistoryRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    content_type: 'ContentType' = proto.Field(
+    content_type: "ContentType" = proto.Field(
         proto.ENUM,
         number=3,
-        enum='ContentType',
+        enum="ContentType",
     )
     read_time_window: gca_assets.TimeWindow = proto.Field(
         proto.MESSAGE,
@@ -543,10 +545,10 @@ class CreateFeedRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    feed: 'Feed' = proto.Field(
+    feed: "Feed" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='Feed',
+        message="Feed",
     )
 
 
@@ -594,10 +596,10 @@ class ListFeedsResponse(proto.Message):
             A list of feeds.
     """
 
-    feeds: MutableSequence['Feed'] = proto.RepeatedField(
+    feeds: MutableSequence["Feed"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Feed',
+        message="Feed",
     )
 
 
@@ -617,10 +619,10 @@ class UpdateFeedRequest(proto.Message):
             contain fields that are immutable or only set by the server.
     """
 
-    feed: 'Feed' = proto.Field(
+    feed: "Feed" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='Feed',
+        message="Feed",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -669,17 +671,17 @@ class OutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_destination: 'GcsDestination' = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof='destination',
-        message='GcsDestination',
+        oneof="destination",
+        message="GcsDestination",
     )
-    bigquery_destination: 'BigQueryDestination' = proto.Field(
+    bigquery_destination: "BigQueryDestination" = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof='destination',
-        message='BigQueryDestination',
+        oneof="destination",
+        message="BigQueryDestination",
     )
 
 
@@ -695,11 +697,11 @@ class OutputResult(proto.Message):
             This field is a member of `oneof`_ ``result``.
     """
 
-    gcs_result: 'GcsOutputResult' = proto.Field(
+    gcs_result: "GcsOutputResult" = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof='result',
-        message='GcsOutputResult',
+        oneof="result",
+        message="GcsOutputResult",
     )
 
 
@@ -759,12 +761,12 @@ class GcsDestination(proto.Message):
     uri: str = proto.Field(
         proto.STRING,
         number=1,
-        oneof='object_uri',
+        oneof="object_uri",
     )
     uri_prefix: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof='object_uri',
+        oneof="object_uri",
     )
 
 
@@ -864,10 +866,10 @@ class BigQueryDestination(proto.Message):
         proto.BOOL,
         number=3,
     )
-    partition_spec: 'PartitionSpec' = proto.Field(
+    partition_spec: "PartitionSpec" = proto.Field(
         proto.MESSAGE,
         number=4,
-        message='PartitionSpec',
+        message="PartitionSpec",
     )
     separate_tables_per_asset_type: bool = proto.Field(
         proto.BOOL,
@@ -884,6 +886,7 @@ class PartitionSpec(proto.Message):
             The partition key for BigQuery partitioned
             table.
     """
+
     class PartitionKey(proto.Enum):
         r"""This enum is used to determine the partition key column when
         exporting assets to BigQuery partitioned table(s). Note that, if the
@@ -948,11 +951,11 @@ class FeedOutputConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    pubsub_destination: 'PubsubDestination' = proto.Field(
+    pubsub_destination: "PubsubDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof='destination',
-        message='PubsubDestination',
+        oneof="destination",
+        message="PubsubDestination",
     )
 
 
@@ -1048,15 +1051,15 @@ class Feed(proto.Message):
         proto.STRING,
         number=3,
     )
-    content_type: 'ContentType' = proto.Field(
+    content_type: "ContentType" = proto.Field(
         proto.ENUM,
         number=4,
-        enum='ContentType',
+        enum="ContentType",
     )
-    feed_output_config: 'FeedOutputConfig' = proto.Field(
+    feed_output_config: "FeedOutputConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
-        message='FeedOutputConfig',
+        message="FeedOutputConfig",
     )
     condition: expr_pb2.Expr = proto.Field(
         proto.MESSAGE,
@@ -1726,7 +1729,7 @@ class IamPolicyAnalysisQuery(proto.Message):
         access_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof='TimeContext',
+            oneof="TimeContext",
             message=timestamp_pb2.Timestamp,
         )
 
@@ -1802,10 +1805,10 @@ class AnalyzeIamPolicyRequest(proto.Message):
             Default is empty.
     """
 
-    analysis_query: 'IamPolicyAnalysisQuery' = proto.Field(
+    analysis_query: "IamPolicyAnalysisQuery" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='IamPolicyAnalysisQuery',
+        message="IamPolicyAnalysisQuery",
     )
     saved_analysis_query: str = proto.Field(
         proto.STRING,
@@ -1858,10 +1861,10 @@ class AnalyzeIamPolicyResponse(proto.Message):
                 the query handling.
         """
 
-        analysis_query: 'IamPolicyAnalysisQuery' = proto.Field(
+        analysis_query: "IamPolicyAnalysisQuery" = proto.Field(
             proto.MESSAGE,
             number=1,
-            message='IamPolicyAnalysisQuery',
+            message="IamPolicyAnalysisQuery",
         )
         analysis_results: MutableSequence[gca_assets.IamPolicyAnalysisResult] = proto.RepeatedField(
             proto.MESSAGE,
@@ -1982,6 +1985,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
                 successfully. Details are at
                 https://cloud.google.com/bigquery/docs/loading-data-local#appending_to_or_overwriting_a_table_using_a_local_file.
         """
+
         class PartitionKey(proto.Enum):
             r"""This enum determines the partition key column for the
             bigquery tables. Partitioning can improve query performance and
@@ -2011,10 +2015,10 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
             proto.STRING,
             number=2,
         )
-        partition_key: 'IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey' = proto.Field(
+        partition_key: "IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey" = proto.Field(
             proto.ENUM,
             number=3,
-            enum='IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey',
+            enum="IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey",
         )
         write_disposition: str = proto.Field(
             proto.STRING,
@@ -2024,13 +2028,13 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
     gcs_destination: GcsDestination = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof='destination',
+        oneof="destination",
         message=GcsDestination,
     )
     bigquery_destination: BigQueryDestination = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof='destination',
+        oneof="destination",
         message=BigQueryDestination,
     )
 
@@ -2066,26 +2070,25 @@ class AnalyzeIamPolicyLongrunningRequest(proto.Message):
             where the results will be output to.
     """
 
-    analysis_query: 'IamPolicyAnalysisQuery' = proto.Field(
+    analysis_query: "IamPolicyAnalysisQuery" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='IamPolicyAnalysisQuery',
+        message="IamPolicyAnalysisQuery",
     )
     saved_analysis_query: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    output_config: 'IamPolicyAnalysisOutputConfig' = proto.Field(
+    output_config: "IamPolicyAnalysisOutputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='IamPolicyAnalysisOutputConfig',
+        message="IamPolicyAnalysisOutputConfig",
     )
 
 
 class AnalyzeIamPolicyLongrunningResponse(proto.Message):
     r"""A response message for
     [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
-
     """
 
 
@@ -2139,11 +2142,11 @@ class SavedQuery(proto.Message):
                 This field is a member of `oneof`_ ``query_content``.
         """
 
-        iam_policy_analysis_query: 'IamPolicyAnalysisQuery' = proto.Field(
+        iam_policy_analysis_query: "IamPolicyAnalysisQuery" = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof='query_content',
-            message='IamPolicyAnalysisQuery',
+            oneof="query_content",
+            message="IamPolicyAnalysisQuery",
         )
 
     name: str = proto.Field(
@@ -2216,10 +2219,10 @@ class CreateSavedQueryRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    saved_query: 'SavedQuery' = proto.Field(
+    saved_query: "SavedQuery" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='SavedQuery',
+        message="SavedQuery",
     )
     saved_query_id: str = proto.Field(
         proto.STRING,
@@ -2317,10 +2320,10 @@ class ListSavedQueriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    saved_queries: MutableSequence['SavedQuery'] = proto.RepeatedField(
+    saved_queries: MutableSequence["SavedQuery"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='SavedQuery',
+        message="SavedQuery",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -2345,10 +2348,10 @@ class UpdateSavedQueryRequest(proto.Message):
             Required. The list of fields to update.
     """
 
-    saved_query: 'SavedQuery' = proto.Field(
+    saved_query: "SavedQuery" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='SavedQuery',
+        message="SavedQuery",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -2400,6 +2403,7 @@ class AnalyzeMoveRequest(proto.Message):
             should be included in the analysis response. If
             unspecified, the default view is FULL.
     """
+
     class AnalysisView(proto.Enum):
         r"""View enum for supporting partial analysis responses.
 
@@ -2445,10 +2449,10 @@ class AnalyzeMoveResponse(proto.Message):
             services.
     """
 
-    move_analysis: MutableSequence['MoveAnalysis'] = proto.RepeatedField(
+    move_analysis: MutableSequence["MoveAnalysis"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='MoveAnalysis',
+        message="MoveAnalysis",
     )
 
 
@@ -2482,16 +2486,16 @@ class MoveAnalysis(proto.Message):
         proto.STRING,
         number=1,
     )
-    analysis: 'MoveAnalysisResult' = proto.Field(
+    analysis: "MoveAnalysisResult" = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof='result',
-        message='MoveAnalysisResult',
+        oneof="result",
+        message="MoveAnalysisResult",
     )
     error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof='result',
+        oneof="result",
         message=status_pb2.Status,
     )
 
@@ -2512,15 +2516,15 @@ class MoveAnalysisResult(proto.Message):
             but will not block moves at runtime.
     """
 
-    blockers: MutableSequence['MoveImpact'] = proto.RepeatedField(
+    blockers: MutableSequence["MoveImpact"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='MoveImpact',
+        message="MoveImpact",
     )
-    warnings: MutableSequence['MoveImpact'] = proto.RepeatedField(
+    warnings: MutableSequence["MoveImpact"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='MoveImpact',
+        message="MoveImpact",
     )
 
 
@@ -2688,12 +2692,12 @@ class QueryAssetsRequest(proto.Message):
     statement: str = proto.Field(
         proto.STRING,
         number=2,
-        oneof='query',
+        oneof="query",
     )
     job_reference: str = proto.Field(
         proto.STRING,
         number=3,
-        oneof='query',
+        oneof="query",
     )
     page_size: int = proto.Field(
         proto.INT32,
@@ -2711,19 +2715,19 @@ class QueryAssetsRequest(proto.Message):
     read_time_window: gca_assets.TimeWindow = proto.Field(
         proto.MESSAGE,
         number=7,
-        oneof='time',
+        oneof="time",
         message=gca_assets.TimeWindow,
     )
     read_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
-        oneof='time',
+        oneof="time",
         message=timestamp_pb2.Timestamp,
     )
-    output_config: 'QueryAssetsOutputConfig' = proto.Field(
+    output_config: "QueryAssetsOutputConfig" = proto.Field(
         proto.MESSAGE,
         number=9,
-        message='QueryAssetsOutputConfig',
+        message="QueryAssetsOutputConfig",
     )
 
 
@@ -2776,20 +2780,20 @@ class QueryAssetsResponse(proto.Message):
     error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=3,
-        oneof='response',
+        oneof="response",
         message=status_pb2.Status,
     )
-    query_result: 'QueryResult' = proto.Field(
+    query_result: "QueryResult" = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='response',
-        message='QueryResult',
+        oneof="response",
+        message="QueryResult",
     )
-    output_config: 'QueryAssetsOutputConfig' = proto.Field(
+    output_config: "QueryAssetsOutputConfig" = proto.Field(
         proto.MESSAGE,
         number=5,
-        oneof='response',
-        message='QueryAssetsOutputConfig',
+        oneof="response",
+        message="QueryAssetsOutputConfig",
     )
 
 
@@ -2821,10 +2825,10 @@ class QueryResult(proto.Message):
         number=1,
         message=struct_pb2.Struct,
     )
-    schema: 'TableSchema' = proto.Field(
+    schema: "TableSchema" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='TableSchema',
+        message="TableSchema",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -2844,10 +2848,10 @@ class TableSchema(proto.Message):
             Describes the fields in a table.
     """
 
-    fields: MutableSequence['TableFieldSchema'] = proto.RepeatedField(
+    fields: MutableSequence["TableFieldSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='TableFieldSchema',
+        message="TableFieldSchema",
     )
 
 
@@ -2898,10 +2902,10 @@ class TableFieldSchema(proto.Message):
         proto.STRING,
         number=3,
     )
-    fields: MutableSequence['TableFieldSchema'] = proto.RepeatedField(
+    fields: MutableSequence["TableFieldSchema"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
-        message='TableFieldSchema',
+        message="TableFieldSchema",
     )
 
 
@@ -3020,10 +3024,10 @@ class BatchGetEffectiveIamPoliciesResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        policies: MutableSequence['BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo'] = proto.RepeatedField(
+        policies: MutableSequence["BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message='BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo',
+            message="BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo",
         )
 
     policy_results: MutableSequence[EffectiveIamPolicy] = proto.RepeatedField(
@@ -3131,26 +3135,26 @@ class AnalyzerOrgPolicy(proto.Message):
                 number=2,
             )
 
-        values: 'AnalyzerOrgPolicy.Rule.StringValues' = proto.Field(
+        values: "AnalyzerOrgPolicy.Rule.StringValues" = proto.Field(
             proto.MESSAGE,
             number=3,
-            oneof='kind',
-            message='AnalyzerOrgPolicy.Rule.StringValues',
+            oneof="kind",
+            message="AnalyzerOrgPolicy.Rule.StringValues",
         )
         allow_all: bool = proto.Field(
             proto.BOOL,
             number=4,
-            oneof='kind',
+            oneof="kind",
         )
         deny_all: bool = proto.Field(
             proto.BOOL,
             number=5,
-            oneof='kind',
+            oneof="kind",
         )
         enforce: bool = proto.Field(
             proto.BOOL,
             number=6,
-            oneof='kind',
+            oneof="kind",
         )
         condition: expr_pb2.Expr = proto.Field(
             proto.MESSAGE,
@@ -3241,6 +3245,7 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
 
                 This field is a member of `oneof`_ ``constraint_type``.
         """
+
         class ConstraintDefault(proto.Enum):
             r"""Specifies the default behavior in the absence of any ``Policy`` for
             the ``Constraint``. This must not be
@@ -3298,7 +3303,6 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             ``constraints/compute.disableSerialPortAccess``. If it is enforced
             on a VM instance, serial port connections will not be opened to that
             instance.
-
             """
 
         name: str = proto.Field(
@@ -3313,22 +3317,22 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             proto.STRING,
             number=3,
         )
-        constraint_default: 'AnalyzerOrgPolicyConstraint.Constraint.ConstraintDefault' = proto.Field(
+        constraint_default: "AnalyzerOrgPolicyConstraint.Constraint.ConstraintDefault" = proto.Field(
             proto.ENUM,
             number=4,
-            enum='AnalyzerOrgPolicyConstraint.Constraint.ConstraintDefault',
+            enum="AnalyzerOrgPolicyConstraint.Constraint.ConstraintDefault",
         )
-        list_constraint: 'AnalyzerOrgPolicyConstraint.Constraint.ListConstraint' = proto.Field(
+        list_constraint: "AnalyzerOrgPolicyConstraint.Constraint.ListConstraint" = proto.Field(
             proto.MESSAGE,
             number=5,
-            oneof='constraint_type',
-            message='AnalyzerOrgPolicyConstraint.Constraint.ListConstraint',
+            oneof="constraint_type",
+            message="AnalyzerOrgPolicyConstraint.Constraint.ListConstraint",
         )
-        boolean_constraint: 'AnalyzerOrgPolicyConstraint.Constraint.BooleanConstraint' = proto.Field(
+        boolean_constraint: "AnalyzerOrgPolicyConstraint.Constraint.BooleanConstraint" = proto.Field(
             proto.MESSAGE,
             number=6,
-            oneof='constraint_type',
-            message='AnalyzerOrgPolicyConstraint.Constraint.BooleanConstraint',
+            oneof="constraint_type",
+            message="AnalyzerOrgPolicyConstraint.Constraint.BooleanConstraint",
         )
 
     class CustomConstraint(proto.Message):
@@ -3363,6 +3367,7 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
                 Detailed information about this custom policy
                 constraint.
         """
+
         class MethodType(proto.Enum):
             r"""The operation in which this constraint will be applied. For example:
             If the constraint applies only when create VMs, the method_types
@@ -3410,19 +3415,19 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
             proto.STRING,
             number=2,
         )
-        method_types: MutableSequence['AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType'] = proto.RepeatedField(
+        method_types: MutableSequence["AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType"] = proto.RepeatedField(
             proto.ENUM,
             number=3,
-            enum='AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType',
+            enum="AnalyzerOrgPolicyConstraint.CustomConstraint.MethodType",
         )
         condition: str = proto.Field(
             proto.STRING,
             number=4,
         )
-        action_type: 'AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType' = proto.Field(
+        action_type: "AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType" = proto.Field(
             proto.ENUM,
             number=5,
-            enum='AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType',
+            enum="AnalyzerOrgPolicyConstraint.CustomConstraint.ActionType",
         )
         display_name: str = proto.Field(
             proto.STRING,
@@ -3436,13 +3441,13 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
     google_defined_constraint: Constraint = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof='constraint_definition',
+        oneof="constraint_definition",
         message=Constraint,
     )
     custom_constraint: CustomConstraint = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof='constraint_definition',
+        oneof="constraint_definition",
         message=CustomConstraint,
     )
 
@@ -3549,15 +3554,15 @@ class AnalyzeOrgPoliciesResponse(proto.Message):
                 also appear in the list.
         """
 
-        consolidated_policy: 'AnalyzerOrgPolicy' = proto.Field(
+        consolidated_policy: "AnalyzerOrgPolicy" = proto.Field(
             proto.MESSAGE,
             number=1,
-            message='AnalyzerOrgPolicy',
+            message="AnalyzerOrgPolicy",
         )
-        policy_bundle: MutableSequence['AnalyzerOrgPolicy'] = proto.RepeatedField(
+        policy_bundle: MutableSequence["AnalyzerOrgPolicy"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message='AnalyzerOrgPolicy',
+            message="AnalyzerOrgPolicy",
         )
 
     @property
@@ -3569,10 +3574,10 @@ class AnalyzeOrgPoliciesResponse(proto.Message):
         number=1,
         message=OrgPolicyResult,
     )
-    constraint: 'AnalyzerOrgPolicyConstraint' = proto.Field(
+    constraint: "AnalyzerOrgPolicyConstraint" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='AnalyzerOrgPolicyConstraint',
+        message="AnalyzerOrgPolicyConstraint",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -3699,15 +3704,15 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
             proto.STRING,
             number=2,
         )
-        consolidated_policy: 'AnalyzerOrgPolicy' = proto.Field(
+        consolidated_policy: "AnalyzerOrgPolicy" = proto.Field(
             proto.MESSAGE,
             number=3,
-            message='AnalyzerOrgPolicy',
+            message="AnalyzerOrgPolicy",
         )
-        policy_bundle: MutableSequence['AnalyzerOrgPolicy'] = proto.RepeatedField(
+        policy_bundle: MutableSequence["AnalyzerOrgPolicy"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
-            message='AnalyzerOrgPolicy',
+            message="AnalyzerOrgPolicy",
         )
 
     @property
@@ -3719,10 +3724,10 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
         number=1,
         message=GovernedContainer,
     )
-    constraint: 'AnalyzerOrgPolicyConstraint' = proto.Field(
+    constraint: "AnalyzerOrgPolicyConstraint" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='AnalyzerOrgPolicyConstraint',
+        message="AnalyzerOrgPolicyConstraint",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -3963,27 +3968,27 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 also appear in the list.
         """
 
-        governed_resource: 'AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource' = proto.Field(
+        governed_resource: "AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource" = proto.Field(
             proto.MESSAGE,
             number=1,
-            oneof='governed_asset',
-            message='AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource',
+            oneof="governed_asset",
+            message="AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource",
         )
-        governed_iam_policy: 'AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy' = proto.Field(
+        governed_iam_policy: "AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy" = proto.Field(
             proto.MESSAGE,
             number=2,
-            oneof='governed_asset',
-            message='AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy',
+            oneof="governed_asset",
+            message="AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy",
         )
-        consolidated_policy: 'AnalyzerOrgPolicy' = proto.Field(
+        consolidated_policy: "AnalyzerOrgPolicy" = proto.Field(
             proto.MESSAGE,
             number=3,
-            message='AnalyzerOrgPolicy',
+            message="AnalyzerOrgPolicy",
         )
-        policy_bundle: MutableSequence['AnalyzerOrgPolicy'] = proto.RepeatedField(
+        policy_bundle: MutableSequence["AnalyzerOrgPolicy"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
-            message='AnalyzerOrgPolicy',
+            message="AnalyzerOrgPolicy",
         )
 
     @property
@@ -3995,10 +4000,10 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
         number=1,
         message=GovernedAsset,
     )
-    constraint: 'AnalyzerOrgPolicyConstraint' = proto.Field(
+    constraint: "AnalyzerOrgPolicyConstraint" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='AnalyzerOrgPolicyConstraint',
+        message="AnalyzerOrgPolicyConstraint",
     )
     next_page_token: str = proto.Field(
         proto.STRING,

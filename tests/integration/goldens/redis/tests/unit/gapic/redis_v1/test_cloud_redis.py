@@ -993,8 +993,8 @@ def test_list_instances(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_redis.ListInstancesResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_instances(request)
 
@@ -1006,8 +1006,8 @@ def test_list_instances(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_instances_non_empty_request_with_auto_populated_field():
@@ -1022,8 +1022,8 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.ListInstancesRequest(
-        parent='parent_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1035,8 +1035,8 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ListInstancesRequest(
-            parent='parent_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            page_token="page_token_value",
         )
 
 def test_list_instances_use_cached_wrapped_rpc():
@@ -1122,8 +1122,8 @@ async def test_list_instances_async(transport: str = 'grpc_asyncio', request_typ
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         ))
         response = await client.list_instances(request)
 
@@ -1135,8 +1135,8 @@ async def test_list_instances_async(transport: str = 'grpc_asyncio', request_typ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -1152,7 +1152,7 @@ def test_list_instances_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ListInstancesRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1184,7 +1184,7 @@ async def test_list_instances_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ListInstancesRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1220,7 +1220,7 @@ def test_list_instances_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_instances(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1228,7 +1228,7 @@ def test_list_instances_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -1242,7 +1242,7 @@ def test_list_instances_flattened_error():
     with pytest.raises(ValueError):
         client.list_instances(
             cloud_redis.ListInstancesRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -1262,7 +1262,7 @@ async def test_list_instances_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_instances(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1270,7 +1270,7 @@ async def test_list_instances_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1284,7 +1284,7 @@ async def test_list_instances_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_instances(
             cloud_redis.ListInstancesRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -1504,33 +1504,33 @@ def test_get_instance(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_redis.Instance(
-            name='name_value',
-            display_name='display_name_value',
-            location_id='location_id_value',
-            alternative_location_id='alternative_location_id_value',
-            redis_version='redis_version_value',
-            reserved_ip_range='reserved_ip_range_value',
-            secondary_ip_range='secondary_ip_range_value',
-            host='host_value',
+            name="name_value",
+            display_name="display_name_value",
+            location_id="location_id_value",
+            alternative_location_id="alternative_location_id_value",
+            redis_version="redis_version_value",
+            reserved_ip_range="reserved_ip_range_value",
+            secondary_ip_range="secondary_ip_range_value",
+            host="host_value",
             port=453,
-            current_location_id='current_location_id_value',
+            current_location_id="current_location_id_value",
             state=cloud_redis.Instance.State.CREATING,
-            status_message='status_message_value',
+            status_message="status_message_value",
             tier=cloud_redis.Instance.Tier.BASIC,
             memory_size_gb=1499,
-            authorized_network='authorized_network_value',
-            persistence_iam_identity='persistence_iam_identity_value',
+            authorized_network="authorized_network_value",
+            persistence_iam_identity="persistence_iam_identity_value",
             connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
             auth_enabled=True,
             transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
             replica_count=1384,
-            read_endpoint='read_endpoint_value',
+            read_endpoint="read_endpoint_value",
             read_endpoint_port=1920,
             read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
-            customer_managed_key='customer_managed_key_value',
+            customer_managed_key="customer_managed_key_value",
             suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
-            maintenance_version='maintenance_version_value',
-            available_maintenance_versions=['available_maintenance_versions_value'],
+            maintenance_version="maintenance_version_value",
+            available_maintenance_versions=["available_maintenance_versions_value"],
         )
         response = client.get_instance(request)
 
@@ -1542,33 +1542,33 @@ def test_get_instance(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.Instance)
-    assert response.name == 'name_value'
-    assert response.display_name == 'display_name_value'
-    assert response.location_id == 'location_id_value'
-    assert response.alternative_location_id == 'alternative_location_id_value'
-    assert response.redis_version == 'redis_version_value'
-    assert response.reserved_ip_range == 'reserved_ip_range_value'
-    assert response.secondary_ip_range == 'secondary_ip_range_value'
-    assert response.host == 'host_value'
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.location_id == "location_id_value"
+    assert response.alternative_location_id == "alternative_location_id_value"
+    assert response.redis_version == "redis_version_value"
+    assert response.reserved_ip_range == "reserved_ip_range_value"
+    assert response.secondary_ip_range == "secondary_ip_range_value"
+    assert response.host == "host_value"
     assert response.port == 453
-    assert response.current_location_id == 'current_location_id_value'
+    assert response.current_location_id == "current_location_id_value"
     assert response.state == cloud_redis.Instance.State.CREATING
-    assert response.status_message == 'status_message_value'
+    assert response.status_message == "status_message_value"
     assert response.tier == cloud_redis.Instance.Tier.BASIC
     assert response.memory_size_gb == 1499
-    assert response.authorized_network == 'authorized_network_value'
-    assert response.persistence_iam_identity == 'persistence_iam_identity_value'
+    assert response.authorized_network == "authorized_network_value"
+    assert response.persistence_iam_identity == "persistence_iam_identity_value"
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
     assert response.auth_enabled is True
     assert response.transit_encryption_mode == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
     assert response.replica_count == 1384
-    assert response.read_endpoint == 'read_endpoint_value'
+    assert response.read_endpoint == "read_endpoint_value"
     assert response.read_endpoint_port == 1920
     assert response.read_replicas_mode == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
-    assert response.customer_managed_key == 'customer_managed_key_value'
+    assert response.customer_managed_key == "customer_managed_key_value"
     assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
-    assert response.maintenance_version == 'maintenance_version_value'
-    assert response.available_maintenance_versions == ['available_maintenance_versions_value']
+    assert response.maintenance_version == "maintenance_version_value"
+    assert response.available_maintenance_versions == ["available_maintenance_versions_value"]
 
 
 def test_get_instance_non_empty_request_with_auto_populated_field():
@@ -1583,7 +1583,7 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.GetInstanceRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1595,7 +1595,7 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.GetInstanceRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_get_instance_use_cached_wrapped_rpc():
@@ -1681,33 +1681,33 @@ async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance(
-            name='name_value',
-            display_name='display_name_value',
-            location_id='location_id_value',
-            alternative_location_id='alternative_location_id_value',
-            redis_version='redis_version_value',
-            reserved_ip_range='reserved_ip_range_value',
-            secondary_ip_range='secondary_ip_range_value',
-            host='host_value',
+            name="name_value",
+            display_name="display_name_value",
+            location_id="location_id_value",
+            alternative_location_id="alternative_location_id_value",
+            redis_version="redis_version_value",
+            reserved_ip_range="reserved_ip_range_value",
+            secondary_ip_range="secondary_ip_range_value",
+            host="host_value",
             port=453,
-            current_location_id='current_location_id_value',
+            current_location_id="current_location_id_value",
             state=cloud_redis.Instance.State.CREATING,
-            status_message='status_message_value',
+            status_message="status_message_value",
             tier=cloud_redis.Instance.Tier.BASIC,
             memory_size_gb=1499,
-            authorized_network='authorized_network_value',
-            persistence_iam_identity='persistence_iam_identity_value',
+            authorized_network="authorized_network_value",
+            persistence_iam_identity="persistence_iam_identity_value",
             connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
             auth_enabled=True,
             transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
             replica_count=1384,
-            read_endpoint='read_endpoint_value',
+            read_endpoint="read_endpoint_value",
             read_endpoint_port=1920,
             read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
-            customer_managed_key='customer_managed_key_value',
+            customer_managed_key="customer_managed_key_value",
             suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
-            maintenance_version='maintenance_version_value',
-            available_maintenance_versions=['available_maintenance_versions_value'],
+            maintenance_version="maintenance_version_value",
+            available_maintenance_versions=["available_maintenance_versions_value"],
         ))
         response = await client.get_instance(request)
 
@@ -1719,33 +1719,33 @@ async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.Instance)
-    assert response.name == 'name_value'
-    assert response.display_name == 'display_name_value'
-    assert response.location_id == 'location_id_value'
-    assert response.alternative_location_id == 'alternative_location_id_value'
-    assert response.redis_version == 'redis_version_value'
-    assert response.reserved_ip_range == 'reserved_ip_range_value'
-    assert response.secondary_ip_range == 'secondary_ip_range_value'
-    assert response.host == 'host_value'
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.location_id == "location_id_value"
+    assert response.alternative_location_id == "alternative_location_id_value"
+    assert response.redis_version == "redis_version_value"
+    assert response.reserved_ip_range == "reserved_ip_range_value"
+    assert response.secondary_ip_range == "secondary_ip_range_value"
+    assert response.host == "host_value"
     assert response.port == 453
-    assert response.current_location_id == 'current_location_id_value'
+    assert response.current_location_id == "current_location_id_value"
     assert response.state == cloud_redis.Instance.State.CREATING
-    assert response.status_message == 'status_message_value'
+    assert response.status_message == "status_message_value"
     assert response.tier == cloud_redis.Instance.Tier.BASIC
     assert response.memory_size_gb == 1499
-    assert response.authorized_network == 'authorized_network_value'
-    assert response.persistence_iam_identity == 'persistence_iam_identity_value'
+    assert response.authorized_network == "authorized_network_value"
+    assert response.persistence_iam_identity == "persistence_iam_identity_value"
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
     assert response.auth_enabled is True
     assert response.transit_encryption_mode == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
     assert response.replica_count == 1384
-    assert response.read_endpoint == 'read_endpoint_value'
+    assert response.read_endpoint == "read_endpoint_value"
     assert response.read_endpoint_port == 1920
     assert response.read_replicas_mode == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
-    assert response.customer_managed_key == 'customer_managed_key_value'
+    assert response.customer_managed_key == "customer_managed_key_value"
     assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
-    assert response.maintenance_version == 'maintenance_version_value'
-    assert response.available_maintenance_versions == ['available_maintenance_versions_value']
+    assert response.maintenance_version == "maintenance_version_value"
+    assert response.available_maintenance_versions == ["available_maintenance_versions_value"]
 
 
 @pytest.mark.asyncio
@@ -1761,7 +1761,7 @@ def test_get_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.GetInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1793,7 +1793,7 @@ async def test_get_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.GetInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1829,7 +1829,7 @@ def test_get_instance_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_instance(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1837,7 +1837,7 @@ def test_get_instance_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -1851,7 +1851,7 @@ def test_get_instance_flattened_error():
     with pytest.raises(ValueError):
         client.get_instance(
             cloud_redis.GetInstanceRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -1871,7 +1871,7 @@ async def test_get_instance_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_instance(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1879,7 +1879,7 @@ async def test_get_instance_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1893,7 +1893,7 @@ async def test_get_instance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_instance(
             cloud_redis.GetInstanceRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -1917,7 +1917,7 @@ def test_get_instance_auth_string(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_redis.InstanceAuthString(
-            auth_string='auth_string_value',
+            auth_string="auth_string_value",
         )
         response = client.get_instance_auth_string(request)
 
@@ -1929,7 +1929,7 @@ def test_get_instance_auth_string(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.InstanceAuthString)
-    assert response.auth_string == 'auth_string_value'
+    assert response.auth_string == "auth_string_value"
 
 
 def test_get_instance_auth_string_non_empty_request_with_auto_populated_field():
@@ -1944,7 +1944,7 @@ def test_get_instance_auth_string_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.GetInstanceAuthStringRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1956,7 +1956,7 @@ def test_get_instance_auth_string_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.GetInstanceAuthStringRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_get_instance_auth_string_use_cached_wrapped_rpc():
@@ -2042,7 +2042,7 @@ async def test_get_instance_auth_string_async(transport: str = 'grpc_asyncio', r
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
-            auth_string='auth_string_value',
+            auth_string="auth_string_value",
         ))
         response = await client.get_instance_auth_string(request)
 
@@ -2054,7 +2054,7 @@ async def test_get_instance_auth_string_async(transport: str = 'grpc_asyncio', r
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.InstanceAuthString)
-    assert response.auth_string == 'auth_string_value'
+    assert response.auth_string == "auth_string_value"
 
 
 @pytest.mark.asyncio
@@ -2070,7 +2070,7 @@ def test_get_instance_auth_string_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.GetInstanceAuthStringRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2102,7 +2102,7 @@ async def test_get_instance_auth_string_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.GetInstanceAuthStringRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2138,7 +2138,7 @@ def test_get_instance_auth_string_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_instance_auth_string(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2146,7 +2146,7 @@ def test_get_instance_auth_string_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -2160,7 +2160,7 @@ def test_get_instance_auth_string_flattened_error():
     with pytest.raises(ValueError):
         client.get_instance_auth_string(
             cloud_redis.GetInstanceAuthStringRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -2180,7 +2180,7 @@ async def test_get_instance_auth_string_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_instance_auth_string(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2188,7 +2188,7 @@ async def test_get_instance_auth_string_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2202,7 +2202,7 @@ async def test_get_instance_auth_string_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_instance_auth_string(
             cloud_redis.GetInstanceAuthStringRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -2250,8 +2250,8 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.CreateInstanceRequest(
-        parent='parent_value',
-        instance_id='instance_id_value',
+        parent="parent_value",
+        instance_id="instance_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2263,8 +2263,8 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.CreateInstanceRequest(
-            parent='parent_value',
-            instance_id='instance_id_value',
+            parent="parent_value",
+            instance_id="instance_id_value",
         )
 
 def test_create_instance_use_cached_wrapped_rpc():
@@ -2387,7 +2387,7 @@ def test_create_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.CreateInstanceRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2419,7 +2419,7 @@ async def test_create_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.CreateInstanceRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2455,9 +2455,9 @@ def test_create_instance_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_instance(
-            parent='parent_value',
-            instance_id='instance_id_value',
-            instance=cloud_redis.Instance(name='name_value'),
+            parent="parent_value",
+            instance_id="instance_id_value",
+            instance=cloud_redis.Instance(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2465,13 +2465,13 @@ def test_create_instance_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].instance_id
-        mock_val = 'instance_id_value'
+        mock_val = "instance_id_value"
         assert arg == mock_val
         arg = args[0].instance
-        mock_val = cloud_redis.Instance(name='name_value')
+        mock_val = cloud_redis.Instance(name="name_value")
         assert arg == mock_val
 
 
@@ -2485,9 +2485,9 @@ def test_create_instance_flattened_error():
     with pytest.raises(ValueError):
         client.create_instance(
             cloud_redis.CreateInstanceRequest(),
-            parent='parent_value',
-            instance_id='instance_id_value',
-            instance=cloud_redis.Instance(name='name_value'),
+            parent="parent_value",
+            instance_id="instance_id_value",
+            instance=cloud_redis.Instance(name="name_value"),
         )
 
 @pytest.mark.asyncio
@@ -2509,9 +2509,9 @@ async def test_create_instance_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_instance(
-            parent='parent_value',
-            instance_id='instance_id_value',
-            instance=cloud_redis.Instance(name='name_value'),
+            parent="parent_value",
+            instance_id="instance_id_value",
+            instance=cloud_redis.Instance(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2519,13 +2519,13 @@ async def test_create_instance_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].instance_id
-        mock_val = 'instance_id_value'
+        mock_val = "instance_id_value"
         assert arg == mock_val
         arg = args[0].instance
-        mock_val = cloud_redis.Instance(name='name_value')
+        mock_val = cloud_redis.Instance(name="name_value")
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2539,9 +2539,9 @@ async def test_create_instance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.create_instance(
             cloud_redis.CreateInstanceRequest(),
-            parent='parent_value',
-            instance_id='instance_id_value',
-            instance=cloud_redis.Instance(name='name_value'),
+            parent="parent_value",
+            instance_id="instance_id_value",
+            instance=cloud_redis.Instance(name="name_value"),
         )
 
 
@@ -2722,7 +2722,7 @@ def test_update_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.UpdateInstanceRequest()
 
-    request.instance.name = 'name_value'
+    request.instance.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2754,7 +2754,7 @@ async def test_update_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.UpdateInstanceRequest()
 
-    request.instance.name = 'name_value'
+    request.instance.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2790,8 +2790,8 @@ def test_update_instance_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_instance(
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
-            instance=cloud_redis.Instance(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+            instance=cloud_redis.Instance(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2799,10 +2799,10 @@ def test_update_instance_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
         arg = args[0].instance
-        mock_val = cloud_redis.Instance(name='name_value')
+        mock_val = cloud_redis.Instance(name="name_value")
         assert arg == mock_val
 
 
@@ -2816,8 +2816,8 @@ def test_update_instance_flattened_error():
     with pytest.raises(ValueError):
         client.update_instance(
             cloud_redis.UpdateInstanceRequest(),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
-            instance=cloud_redis.Instance(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+            instance=cloud_redis.Instance(name="name_value"),
         )
 
 @pytest.mark.asyncio
@@ -2839,8 +2839,8 @@ async def test_update_instance_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_instance(
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
-            instance=cloud_redis.Instance(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+            instance=cloud_redis.Instance(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2848,10 +2848,10 @@ async def test_update_instance_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
         arg = args[0].instance
-        mock_val = cloud_redis.Instance(name='name_value')
+        mock_val = cloud_redis.Instance(name="name_value")
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2865,8 +2865,8 @@ async def test_update_instance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_instance(
             cloud_redis.UpdateInstanceRequest(),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
-            instance=cloud_redis.Instance(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+            instance=cloud_redis.Instance(name="name_value"),
         )
 
 
@@ -2914,8 +2914,8 @@ def test_upgrade_instance_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.UpgradeInstanceRequest(
-        name='name_value',
-        redis_version='redis_version_value',
+        name="name_value",
+        redis_version="redis_version_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2927,8 +2927,8 @@ def test_upgrade_instance_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.UpgradeInstanceRequest(
-            name='name_value',
-            redis_version='redis_version_value',
+            name="name_value",
+            redis_version="redis_version_value",
         )
 
 def test_upgrade_instance_use_cached_wrapped_rpc():
@@ -3051,7 +3051,7 @@ def test_upgrade_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.UpgradeInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3083,7 +3083,7 @@ async def test_upgrade_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.UpgradeInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3119,8 +3119,8 @@ def test_upgrade_instance_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.upgrade_instance(
-            name='name_value',
-            redis_version='redis_version_value',
+            name="name_value",
+            redis_version="redis_version_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3128,10 +3128,10 @@ def test_upgrade_instance_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].redis_version
-        mock_val = 'redis_version_value'
+        mock_val = "redis_version_value"
         assert arg == mock_val
 
 
@@ -3145,8 +3145,8 @@ def test_upgrade_instance_flattened_error():
     with pytest.raises(ValueError):
         client.upgrade_instance(
             cloud_redis.UpgradeInstanceRequest(),
-            name='name_value',
-            redis_version='redis_version_value',
+            name="name_value",
+            redis_version="redis_version_value",
         )
 
 @pytest.mark.asyncio
@@ -3168,8 +3168,8 @@ async def test_upgrade_instance_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.upgrade_instance(
-            name='name_value',
-            redis_version='redis_version_value',
+            name="name_value",
+            redis_version="redis_version_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3177,10 +3177,10 @@ async def test_upgrade_instance_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].redis_version
-        mock_val = 'redis_version_value'
+        mock_val = "redis_version_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -3194,8 +3194,8 @@ async def test_upgrade_instance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.upgrade_instance(
             cloud_redis.UpgradeInstanceRequest(),
-            name='name_value',
-            redis_version='redis_version_value',
+            name="name_value",
+            redis_version="redis_version_value",
         )
 
 
@@ -3243,7 +3243,7 @@ def test_import_instance_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.ImportInstanceRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3255,7 +3255,7 @@ def test_import_instance_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ImportInstanceRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_import_instance_use_cached_wrapped_rpc():
@@ -3378,7 +3378,7 @@ def test_import_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ImportInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3410,7 +3410,7 @@ async def test_import_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ImportInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3446,8 +3446,8 @@ def test_import_instance_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.import_instance(
-            name='name_value',
-            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value')),
+            name="name_value",
+            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri="uri_value")),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3455,10 +3455,10 @@ def test_import_instance_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].input_config
-        mock_val = cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value'))
+        mock_val = cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri="uri_value"))
         assert arg == mock_val
 
 
@@ -3472,8 +3472,8 @@ def test_import_instance_flattened_error():
     with pytest.raises(ValueError):
         client.import_instance(
             cloud_redis.ImportInstanceRequest(),
-            name='name_value',
-            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value')),
+            name="name_value",
+            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri="uri_value")),
         )
 
 @pytest.mark.asyncio
@@ -3495,8 +3495,8 @@ async def test_import_instance_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.import_instance(
-            name='name_value',
-            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value')),
+            name="name_value",
+            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri="uri_value")),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3504,10 +3504,10 @@ async def test_import_instance_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].input_config
-        mock_val = cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value'))
+        mock_val = cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri="uri_value"))
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -3521,8 +3521,8 @@ async def test_import_instance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.import_instance(
             cloud_redis.ImportInstanceRequest(),
-            name='name_value',
-            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value')),
+            name="name_value",
+            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri="uri_value")),
         )
 
 
@@ -3570,7 +3570,7 @@ def test_export_instance_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.ExportInstanceRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3582,7 +3582,7 @@ def test_export_instance_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.ExportInstanceRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_export_instance_use_cached_wrapped_rpc():
@@ -3705,7 +3705,7 @@ def test_export_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ExportInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3737,7 +3737,7 @@ async def test_export_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.ExportInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3773,8 +3773,8 @@ def test_export_instance_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.export_instance(
-            name='name_value',
-            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value')),
+            name="name_value",
+            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri="uri_value")),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3782,10 +3782,10 @@ def test_export_instance_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].output_config
-        mock_val = cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value'))
+        mock_val = cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri="uri_value"))
         assert arg == mock_val
 
 
@@ -3799,8 +3799,8 @@ def test_export_instance_flattened_error():
     with pytest.raises(ValueError):
         client.export_instance(
             cloud_redis.ExportInstanceRequest(),
-            name='name_value',
-            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value')),
+            name="name_value",
+            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri="uri_value")),
         )
 
 @pytest.mark.asyncio
@@ -3822,8 +3822,8 @@ async def test_export_instance_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.export_instance(
-            name='name_value',
-            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value')),
+            name="name_value",
+            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri="uri_value")),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3831,10 +3831,10 @@ async def test_export_instance_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].output_config
-        mock_val = cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value'))
+        mock_val = cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri="uri_value"))
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -3848,8 +3848,8 @@ async def test_export_instance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.export_instance(
             cloud_redis.ExportInstanceRequest(),
-            name='name_value',
-            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value')),
+            name="name_value",
+            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri="uri_value")),
         )
 
 
@@ -3897,7 +3897,7 @@ def test_failover_instance_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.FailoverInstanceRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3909,7 +3909,7 @@ def test_failover_instance_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.FailoverInstanceRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_failover_instance_use_cached_wrapped_rpc():
@@ -4032,7 +4032,7 @@ def test_failover_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.FailoverInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4064,7 +4064,7 @@ async def test_failover_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.FailoverInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4100,7 +4100,7 @@ def test_failover_instance_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.failover_instance(
-            name='name_value',
+            name="name_value",
             data_protection_mode=cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS,
         )
 
@@ -4109,7 +4109,7 @@ def test_failover_instance_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].data_protection_mode
         mock_val = cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS
@@ -4126,7 +4126,7 @@ def test_failover_instance_flattened_error():
     with pytest.raises(ValueError):
         client.failover_instance(
             cloud_redis.FailoverInstanceRequest(),
-            name='name_value',
+            name="name_value",
             data_protection_mode=cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS,
         )
 
@@ -4149,7 +4149,7 @@ async def test_failover_instance_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.failover_instance(
-            name='name_value',
+            name="name_value",
             data_protection_mode=cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS,
         )
 
@@ -4158,7 +4158,7 @@ async def test_failover_instance_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].data_protection_mode
         mock_val = cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS
@@ -4175,7 +4175,7 @@ async def test_failover_instance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.failover_instance(
             cloud_redis.FailoverInstanceRequest(),
-            name='name_value',
+            name="name_value",
             data_protection_mode=cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS,
         )
 
@@ -4224,7 +4224,7 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.DeleteInstanceRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4236,7 +4236,7 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.DeleteInstanceRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_delete_instance_use_cached_wrapped_rpc():
@@ -4359,7 +4359,7 @@ def test_delete_instance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.DeleteInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4391,7 +4391,7 @@ async def test_delete_instance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.DeleteInstanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4427,7 +4427,7 @@ def test_delete_instance_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_instance(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4435,7 +4435,7 @@ def test_delete_instance_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -4449,7 +4449,7 @@ def test_delete_instance_flattened_error():
     with pytest.raises(ValueError):
         client.delete_instance(
             cloud_redis.DeleteInstanceRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -4471,7 +4471,7 @@ async def test_delete_instance_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_instance(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4479,7 +4479,7 @@ async def test_delete_instance_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -4493,7 +4493,7 @@ async def test_delete_instance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_instance(
             cloud_redis.DeleteInstanceRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -4541,7 +4541,7 @@ def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = cloud_redis.RescheduleMaintenanceRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4553,7 +4553,7 @@ def test_reschedule_maintenance_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_redis.RescheduleMaintenanceRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_reschedule_maintenance_use_cached_wrapped_rpc():
@@ -4676,7 +4676,7 @@ def test_reschedule_maintenance_field_headers():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.RescheduleMaintenanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4708,7 +4708,7 @@ async def test_reschedule_maintenance_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = cloud_redis.RescheduleMaintenanceRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4744,7 +4744,7 @@ def test_reschedule_maintenance_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.reschedule_maintenance(
-            name='name_value',
+            name="name_value",
             reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
             schedule_time=timestamp_pb2.Timestamp(seconds=751),
         )
@@ -4754,7 +4754,7 @@ def test_reschedule_maintenance_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].reschedule_type
         mock_val = cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE
@@ -4772,7 +4772,7 @@ def test_reschedule_maintenance_flattened_error():
     with pytest.raises(ValueError):
         client.reschedule_maintenance(
             cloud_redis.RescheduleMaintenanceRequest(),
-            name='name_value',
+            name="name_value",
             reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
             schedule_time=timestamp_pb2.Timestamp(seconds=751),
         )
@@ -4796,7 +4796,7 @@ async def test_reschedule_maintenance_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.reschedule_maintenance(
-            name='name_value',
+            name="name_value",
             reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
             schedule_time=timestamp_pb2.Timestamp(seconds=751),
         )
@@ -4806,7 +4806,7 @@ async def test_reschedule_maintenance_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].reschedule_type
         mock_val = cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE
@@ -4824,7 +4824,7 @@ async def test_reschedule_maintenance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.reschedule_maintenance(
             cloud_redis.RescheduleMaintenanceRequest(),
-            name='name_value',
+            name="name_value",
             reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
             schedule_time=timestamp_pb2.Timestamp(seconds=751),
         )
@@ -4883,7 +4883,7 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -4892,7 +4892,7 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4960,7 +4960,7 @@ def test_list_instances_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
+            parent="parent_value",
         )
         mock_args.update(sample_request)
 
@@ -4994,7 +4994,7 @@ def test_list_instances_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.list_instances(
             cloud_redis.ListInstancesRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -5113,14 +5113,14 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5188,7 +5188,7 @@ def test_get_instance_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -5222,7 +5222,7 @@ def test_get_instance_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.get_instance(
             cloud_redis.GetInstanceRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -5279,14 +5279,14 @@ def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_instance_auth_string._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5354,7 +5354,7 @@ def test_get_instance_auth_string_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -5388,7 +5388,7 @@ def test_get_instance_auth_string_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.get_instance_auth_string(
             cloud_redis.GetInstanceAuthStringRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -5453,8 +5453,8 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
     assert "instanceId" in jsonified_request
     assert jsonified_request["instanceId"] == request_init["instance_id"]
 
-    jsonified_request["parent"] = 'parent_value'
-    jsonified_request["instanceId"] = 'instance_id_value'
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["instanceId"] = "instance_id_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_instance._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -5463,9 +5463,9 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
     assert "instanceId" in jsonified_request
-    assert jsonified_request["instanceId"] == 'instance_id_value'
+    assert jsonified_request["instanceId"] == "instance_id_value"
 
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5535,9 +5535,9 @@ def test_create_instance_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
-            instance_id='instance_id_value',
-            instance=cloud_redis.Instance(name='name_value'),
+            parent="parent_value",
+            instance_id="instance_id_value",
+            instance=cloud_redis.Instance(name="name_value"),
         )
         mock_args.update(sample_request)
 
@@ -5569,9 +5569,9 @@ def test_create_instance_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.create_instance(
             cloud_redis.CreateInstanceRequest(),
-            parent='parent_value',
-            instance_id='instance_id_value',
-            instance=cloud_redis.Instance(name='name_value'),
+            parent="parent_value",
+            instance_id="instance_id_value",
+            instance=cloud_redis.Instance(name="name_value"),
         )
 
 
@@ -5702,8 +5702,8 @@ def test_update_instance_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
-            instance=cloud_redis.Instance(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+            instance=cloud_redis.Instance(name="name_value"),
         )
         mock_args.update(sample_request)
 
@@ -5735,8 +5735,8 @@ def test_update_instance_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.update_instance(
             cloud_redis.UpdateInstanceRequest(),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
-            instance=cloud_redis.Instance(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+            instance=cloud_redis.Instance(name="name_value"),
         )
 
 
@@ -5798,17 +5798,17 @@ def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeI
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
-    jsonified_request["redisVersion"] = 'redis_version_value'
+    jsonified_request["name"] = "name_value"
+    jsonified_request["redisVersion"] = "redis_version_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).upgrade_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
     assert "redisVersion" in jsonified_request
-    assert jsonified_request["redisVersion"] == 'redis_version_value'
+    assert jsonified_request["redisVersion"] == "redis_version_value"
 
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5874,8 +5874,8 @@ def test_upgrade_instance_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
-            redis_version='redis_version_value',
+            name="name_value",
+            redis_version="redis_version_value",
         )
         mock_args.update(sample_request)
 
@@ -5907,8 +5907,8 @@ def test_upgrade_instance_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.upgrade_instance(
             cloud_redis.UpgradeInstanceRequest(),
-            name='name_value',
-            redis_version='redis_version_value',
+            name="name_value",
+            redis_version="redis_version_value",
         )
 
 
@@ -5969,14 +5969,14 @@ def test_import_instance_rest_required_fields(request_type=cloud_redis.ImportIns
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).import_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6042,8 +6042,8 @@ def test_import_instance_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
-            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value')),
+            name="name_value",
+            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri="uri_value")),
         )
         mock_args.update(sample_request)
 
@@ -6075,8 +6075,8 @@ def test_import_instance_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.import_instance(
             cloud_redis.ImportInstanceRequest(),
-            name='name_value',
-            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value')),
+            name="name_value",
+            input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri="uri_value")),
         )
 
 
@@ -6137,14 +6137,14 @@ def test_export_instance_rest_required_fields(request_type=cloud_redis.ExportIns
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6210,8 +6210,8 @@ def test_export_instance_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
-            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value')),
+            name="name_value",
+            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri="uri_value")),
         )
         mock_args.update(sample_request)
 
@@ -6243,8 +6243,8 @@ def test_export_instance_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.export_instance(
             cloud_redis.ExportInstanceRequest(),
-            name='name_value',
-            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value')),
+            name="name_value",
+            output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri="uri_value")),
         )
 
 
@@ -6305,14 +6305,14 @@ def test_failover_instance_rest_required_fields(request_type=cloud_redis.Failove
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).failover_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6378,7 +6378,7 @@ def test_failover_instance_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
             data_protection_mode=cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS,
         )
         mock_args.update(sample_request)
@@ -6411,7 +6411,7 @@ def test_failover_instance_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.failover_instance(
             cloud_redis.FailoverInstanceRequest(),
-            name='name_value',
+            name="name_value",
             data_protection_mode=cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS,
         )
 
@@ -6473,14 +6473,14 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6545,7 +6545,7 @@ def test_delete_instance_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -6577,7 +6577,7 @@ def test_delete_instance_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.delete_instance(
             cloud_redis.DeleteInstanceRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -6638,14 +6638,14 @@ def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.Re
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).reschedule_maintenance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = CloudRedisClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6711,7 +6711,7 @@ def test_reschedule_maintenance_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
             reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
             schedule_time=timestamp_pb2.Timestamp(seconds=751),
         )
@@ -6745,7 +6745,7 @@ def test_reschedule_maintenance_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.reschedule_maintenance(
             cloud_redis.RescheduleMaintenanceRequest(),
-            name='name_value',
+            name="name_value",
             reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
             schedule_time=timestamp_pb2.Timestamp(seconds=751),
         )
@@ -7136,8 +7136,8 @@ async def test_list_instances_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.ListInstancesResponse(
-            next_page_token='next_page_token_value',
-            unreachable=['unreachable_value'],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         ))
         await client.list_instances(request=None)
 
@@ -7164,33 +7164,33 @@ async def test_get_instance_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.Instance(
-            name='name_value',
-            display_name='display_name_value',
-            location_id='location_id_value',
-            alternative_location_id='alternative_location_id_value',
-            redis_version='redis_version_value',
-            reserved_ip_range='reserved_ip_range_value',
-            secondary_ip_range='secondary_ip_range_value',
-            host='host_value',
+            name="name_value",
+            display_name="display_name_value",
+            location_id="location_id_value",
+            alternative_location_id="alternative_location_id_value",
+            redis_version="redis_version_value",
+            reserved_ip_range="reserved_ip_range_value",
+            secondary_ip_range="secondary_ip_range_value",
+            host="host_value",
             port=453,
-            current_location_id='current_location_id_value',
+            current_location_id="current_location_id_value",
             state=cloud_redis.Instance.State.CREATING,
-            status_message='status_message_value',
+            status_message="status_message_value",
             tier=cloud_redis.Instance.Tier.BASIC,
             memory_size_gb=1499,
-            authorized_network='authorized_network_value',
-            persistence_iam_identity='persistence_iam_identity_value',
+            authorized_network="authorized_network_value",
+            persistence_iam_identity="persistence_iam_identity_value",
             connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
             auth_enabled=True,
             transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
             replica_count=1384,
-            read_endpoint='read_endpoint_value',
+            read_endpoint="read_endpoint_value",
             read_endpoint_port=1920,
             read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
-            customer_managed_key='customer_managed_key_value',
+            customer_managed_key="customer_managed_key_value",
             suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
-            maintenance_version='maintenance_version_value',
-            available_maintenance_versions=['available_maintenance_versions_value'],
+            maintenance_version="maintenance_version_value",
+            available_maintenance_versions=["available_maintenance_versions_value"],
         ))
         await client.get_instance(request=None)
 
@@ -7217,7 +7217,7 @@ async def test_get_instance_auth_string_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
-            auth_string='auth_string_value',
+            auth_string="auth_string_value",
         ))
         await client.get_instance_auth_string(request=None)
 
@@ -7492,8 +7492,8 @@ def test_list_instances_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = cloud_redis.ListInstancesResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
+              next_page_token="next_page_token_value",
+              unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -7510,8 +7510,8 @@ def test_list_instances_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7600,33 +7600,33 @@ def test_get_instance_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = cloud_redis.Instance(
-              name='name_value',
-              display_name='display_name_value',
-              location_id='location_id_value',
-              alternative_location_id='alternative_location_id_value',
-              redis_version='redis_version_value',
-              reserved_ip_range='reserved_ip_range_value',
-              secondary_ip_range='secondary_ip_range_value',
-              host='host_value',
+              name="name_value",
+              display_name="display_name_value",
+              location_id="location_id_value",
+              alternative_location_id="alternative_location_id_value",
+              redis_version="redis_version_value",
+              reserved_ip_range="reserved_ip_range_value",
+              secondary_ip_range="secondary_ip_range_value",
+              host="host_value",
               port=453,
-              current_location_id='current_location_id_value',
+              current_location_id="current_location_id_value",
               state=cloud_redis.Instance.State.CREATING,
-              status_message='status_message_value',
+              status_message="status_message_value",
               tier=cloud_redis.Instance.Tier.BASIC,
               memory_size_gb=1499,
-              authorized_network='authorized_network_value',
-              persistence_iam_identity='persistence_iam_identity_value',
+              authorized_network="authorized_network_value",
+              persistence_iam_identity="persistence_iam_identity_value",
               connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
               auth_enabled=True,
               transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
               replica_count=1384,
-              read_endpoint='read_endpoint_value',
+              read_endpoint="read_endpoint_value",
               read_endpoint_port=1920,
               read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
-              customer_managed_key='customer_managed_key_value',
+              customer_managed_key="customer_managed_key_value",
               suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
-              maintenance_version='maintenance_version_value',
-              available_maintenance_versions=['available_maintenance_versions_value'],
+              maintenance_version="maintenance_version_value",
+              available_maintenance_versions=["available_maintenance_versions_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -7643,33 +7643,33 @@ def test_get_instance_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.Instance)
-    assert response.name == 'name_value'
-    assert response.display_name == 'display_name_value'
-    assert response.location_id == 'location_id_value'
-    assert response.alternative_location_id == 'alternative_location_id_value'
-    assert response.redis_version == 'redis_version_value'
-    assert response.reserved_ip_range == 'reserved_ip_range_value'
-    assert response.secondary_ip_range == 'secondary_ip_range_value'
-    assert response.host == 'host_value'
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.location_id == "location_id_value"
+    assert response.alternative_location_id == "alternative_location_id_value"
+    assert response.redis_version == "redis_version_value"
+    assert response.reserved_ip_range == "reserved_ip_range_value"
+    assert response.secondary_ip_range == "secondary_ip_range_value"
+    assert response.host == "host_value"
     assert response.port == 453
-    assert response.current_location_id == 'current_location_id_value'
+    assert response.current_location_id == "current_location_id_value"
     assert response.state == cloud_redis.Instance.State.CREATING
-    assert response.status_message == 'status_message_value'
+    assert response.status_message == "status_message_value"
     assert response.tier == cloud_redis.Instance.Tier.BASIC
     assert response.memory_size_gb == 1499
-    assert response.authorized_network == 'authorized_network_value'
-    assert response.persistence_iam_identity == 'persistence_iam_identity_value'
+    assert response.authorized_network == "authorized_network_value"
+    assert response.persistence_iam_identity == "persistence_iam_identity_value"
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
     assert response.auth_enabled is True
     assert response.transit_encryption_mode == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
     assert response.replica_count == 1384
-    assert response.read_endpoint == 'read_endpoint_value'
+    assert response.read_endpoint == "read_endpoint_value"
     assert response.read_endpoint_port == 1920
     assert response.read_replicas_mode == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
-    assert response.customer_managed_key == 'customer_managed_key_value'
+    assert response.customer_managed_key == "customer_managed_key_value"
     assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
-    assert response.maintenance_version == 'maintenance_version_value'
-    assert response.available_maintenance_versions == ['available_maintenance_versions_value']
+    assert response.maintenance_version == "maintenance_version_value"
+    assert response.available_maintenance_versions == ["available_maintenance_versions_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7758,7 +7758,7 @@ def test_get_instance_auth_string_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = cloud_redis.InstanceAuthString(
-              auth_string='auth_string_value',
+              auth_string="auth_string_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -7775,7 +7775,7 @@ def test_get_instance_auth_string_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.InstanceAuthString)
-    assert response.auth_string == 'auth_string_value'
+    assert response.auth_string == "auth_string_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9450,8 +9450,8 @@ async def test_list_instances_rest_asyncio_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = cloud_redis.ListInstancesResponse(
-              next_page_token='next_page_token_value',
-              unreachable=['unreachable_value'],
+              next_page_token="next_page_token_value",
+              unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -9468,8 +9468,8 @@ async def test_list_instances_rest_asyncio_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
-    assert response.unreachable == ['unreachable_value']
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -9565,33 +9565,33 @@ async def test_get_instance_rest_asyncio_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = cloud_redis.Instance(
-              name='name_value',
-              display_name='display_name_value',
-              location_id='location_id_value',
-              alternative_location_id='alternative_location_id_value',
-              redis_version='redis_version_value',
-              reserved_ip_range='reserved_ip_range_value',
-              secondary_ip_range='secondary_ip_range_value',
-              host='host_value',
+              name="name_value",
+              display_name="display_name_value",
+              location_id="location_id_value",
+              alternative_location_id="alternative_location_id_value",
+              redis_version="redis_version_value",
+              reserved_ip_range="reserved_ip_range_value",
+              secondary_ip_range="secondary_ip_range_value",
+              host="host_value",
               port=453,
-              current_location_id='current_location_id_value',
+              current_location_id="current_location_id_value",
               state=cloud_redis.Instance.State.CREATING,
-              status_message='status_message_value',
+              status_message="status_message_value",
               tier=cloud_redis.Instance.Tier.BASIC,
               memory_size_gb=1499,
-              authorized_network='authorized_network_value',
-              persistence_iam_identity='persistence_iam_identity_value',
+              authorized_network="authorized_network_value",
+              persistence_iam_identity="persistence_iam_identity_value",
               connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
               auth_enabled=True,
               transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
               replica_count=1384,
-              read_endpoint='read_endpoint_value',
+              read_endpoint="read_endpoint_value",
               read_endpoint_port=1920,
               read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
-              customer_managed_key='customer_managed_key_value',
+              customer_managed_key="customer_managed_key_value",
               suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
-              maintenance_version='maintenance_version_value',
-              available_maintenance_versions=['available_maintenance_versions_value'],
+              maintenance_version="maintenance_version_value",
+              available_maintenance_versions=["available_maintenance_versions_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -9608,33 +9608,33 @@ async def test_get_instance_rest_asyncio_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.Instance)
-    assert response.name == 'name_value'
-    assert response.display_name == 'display_name_value'
-    assert response.location_id == 'location_id_value'
-    assert response.alternative_location_id == 'alternative_location_id_value'
-    assert response.redis_version == 'redis_version_value'
-    assert response.reserved_ip_range == 'reserved_ip_range_value'
-    assert response.secondary_ip_range == 'secondary_ip_range_value'
-    assert response.host == 'host_value'
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.location_id == "location_id_value"
+    assert response.alternative_location_id == "alternative_location_id_value"
+    assert response.redis_version == "redis_version_value"
+    assert response.reserved_ip_range == "reserved_ip_range_value"
+    assert response.secondary_ip_range == "secondary_ip_range_value"
+    assert response.host == "host_value"
     assert response.port == 453
-    assert response.current_location_id == 'current_location_id_value'
+    assert response.current_location_id == "current_location_id_value"
     assert response.state == cloud_redis.Instance.State.CREATING
-    assert response.status_message == 'status_message_value'
+    assert response.status_message == "status_message_value"
     assert response.tier == cloud_redis.Instance.Tier.BASIC
     assert response.memory_size_gb == 1499
-    assert response.authorized_network == 'authorized_network_value'
-    assert response.persistence_iam_identity == 'persistence_iam_identity_value'
+    assert response.authorized_network == "authorized_network_value"
+    assert response.persistence_iam_identity == "persistence_iam_identity_value"
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
     assert response.auth_enabled is True
     assert response.transit_encryption_mode == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
     assert response.replica_count == 1384
-    assert response.read_endpoint == 'read_endpoint_value'
+    assert response.read_endpoint == "read_endpoint_value"
     assert response.read_endpoint_port == 1920
     assert response.read_replicas_mode == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
-    assert response.customer_managed_key == 'customer_managed_key_value'
+    assert response.customer_managed_key == "customer_managed_key_value"
     assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
-    assert response.maintenance_version == 'maintenance_version_value'
-    assert response.available_maintenance_versions == ['available_maintenance_versions_value']
+    assert response.maintenance_version == "maintenance_version_value"
+    assert response.available_maintenance_versions == ["available_maintenance_versions_value"]
 
 
 @pytest.mark.asyncio
@@ -9730,7 +9730,7 @@ async def test_get_instance_auth_string_rest_asyncio_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = cloud_redis.InstanceAuthString(
-              auth_string='auth_string_value',
+              auth_string="auth_string_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9747,7 +9747,7 @@ async def test_get_instance_auth_string_rest_asyncio_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.InstanceAuthString)
-    assert response.auth_string == 'auth_string_value'
+    assert response.auth_string == "auth_string_value"
 
 
 @pytest.mark.asyncio

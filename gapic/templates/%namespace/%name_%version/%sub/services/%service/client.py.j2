@@ -15,7 +15,25 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Callable,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    {% if service.any_server_streaming %}
+    Iterable,
+    {% endif %}
+    {% if service.any_client_streaming %}
+    Iterator,
+    {% endif %}
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
 import uuid
 {% endif %}
@@ -31,11 +49,11 @@ from google.api_core import extended_operation
 {% endif %}
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials             # type: ignore
-from google.auth.transport import mtls                            # type: ignore
-from google.auth.transport.grpc import SslCredentials             # type: ignore
-from google.auth.exceptions import MutualTLSChannelError          # type: ignore
-from google.oauth2 import service_account                         # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 {{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 try:
@@ -45,6 +63,7 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -63,10 +82,10 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% if api.has_location_mixin %}
-from google.cloud.location import locations_pb2 # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 {% endif %}
 {% if api.has_operations_mixin %}
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
@@ -78,11 +97,13 @@ from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 from .transports.rest import {{ service.name }}RestTransport
 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
 {% if rest_async_io_enabled %}
+
 try:
     from .transports.rest_asyncio import Async{{ service.name }}RestTransport
+
     HAS_ASYNC_REST_DEPENDENCIES = True
 {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
-except ImportError as e: # pragma: NO COVER
+except ImportError as e:  # pragma: NO COVER
     HAS_ASYNC_REST_DEPENDENCIES = False
     ASYNC_REST_EXCEPTION = e
 
@@ -97,6 +118,7 @@ class {{ service.client_name }}Meta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
+
     _transport_registry = OrderedDict()  # type: Dict[str, Type[{{ service.name }}Transport]]
     {% if "grpc" in opts.transport %}
     _transport_registry["grpc"] = {{ service.grpc_transport_name }}
@@ -111,9 +133,10 @@ class {{ service.client_name }}Meta(type):
     {% endif %}{# if rest_async_io_enabled #}
     {% endif %}
 
-    def get_transport_class(cls,
-            label: Optional[str] = None,
-        ) -> Type[{{ service.name }}Transport]:
+    def get_transport_class(
+        cls,
+        label: Optional[str] = None,
+    ) -> Type[{{ service.name }}Transport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -156,9 +179,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         if not api_endpoint:
             return api_endpoint
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
+        mtls_endpoint_re = re.compile(r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?")
 
         m = mtls_endpoint_re.match(api_endpoint)
         name, mtls, sandbox, googledomain = m.groups()
@@ -167,7 +188,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         if sandbox:
             return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
+                "sandbox.googleapis.com",
+                "mtls.sandbox.googleapis.com",
             )
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
@@ -175,9 +197,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = {% if service.host %}"{{ service.host }}"{% else %}None{% endif %}
 
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(DEFAULT_ENDPOINT)  # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = {% if service.host %}"{{ service.host.replace("googleapis.com", "{UNIVERSE_DOMAIN}") }}"{% else %}None{% endif %}
 
@@ -192,21 +212,19 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         Returns:
             bool: whether client certificate should be used for mTLS
+
         Raises:
-            ValueError: (If using a version of google-auth without should_use_client_cert and
-	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+            ValueError: If using a version of google-auth without should_use_client_cert
+                and GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.
         """
         # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
         if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
             return mtls.should_use_client_cert()
-        else: # pragma: NO COVER
+        else:  # pragma: NO COVER
             # if unsupported, fallback to reading from env var
             use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
             if use_client_cert_str not in ("true", "false"):
-                raise ValueError(
-                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
-                    " either `true` or `false`"
-                )
+                raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
             return use_client_cert_str == "true"
 
     @classmethod
@@ -241,7 +259,8 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             {{ service.client_name }}: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(
-            filename)
+            filename,
+        )
         kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
@@ -260,13 +279,29 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     {% for message in service.resource_messages|sort(attribute="resource_type") %}
     @staticmethod
-    def {{ message.resource_type|snake_case }}_path({% for arg in message.resource_path_args %}{{ arg }}: str,{% endfor %}) -> str:
+    {% if message.resource_path_args|length > 0 %}
+    def {{ message.resource_type|snake_case }}_path(
+        {% for arg in message.resource_path_args %}
+        {{ arg }}: str,
+        {% endfor %}
+    ) -> str:
         """Returns a fully-qualified {{ message.resource_type|snake_case }} string."""
-        return "{{ message.resource_path_formatted }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+        return "{{ message.resource_path_formatted }}".format(
+            {% for arg in message.resource_path_args %}
+            {{ arg }}={{ arg }},
+            {% endfor %}
+        )
+    {% else %}
+    def {{ message.resource_type|snake_case }}_path() -> str:
+        """Returns a fully-qualified {{ message.resource_type|snake_case }} string."""
+        return "{{ message.resource_path_formatted }}".format()
+    {% endif %}
 
 
     @staticmethod
-    def parse_{{ message.resource_type|snake_case }}_path(path: str) -> Dict[str,str]:
+    def parse_{{ message.resource_type|snake_case }}_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parses a {{ message.resource_type|snake_case }} path into its component segments."""
         m = re.match(r"{{ message.path_regex_str }}", path)
         return m.groupdict() if m else {}
@@ -274,12 +309,28 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% endfor %}{# resources #}
     {% for resource_msg in service.common_resources.values()|sort(attribute="type_name") %}
     @staticmethod
-    def common_{{ resource_msg.message_type.resource_type|snake_case }}_path({% for arg in resource_msg.message_type.resource_path_args %}{{ arg }}: str, {%endfor %}) -> str:
+    {% if resource_msg.message_type.resource_path_args|length > 0 %}
+    def common_{{ resource_msg.message_type.resource_type|snake_case }}_path(
+        {% for arg in resource_msg.message_type.resource_path_args %}
+        {{ arg }}: str,
+        {% endfor %}
+    ) -> str:
         """Returns a fully-qualified {{ resource_msg.message_type.resource_type|snake_case }} string."""
-        return "{{ resource_msg.message_type.resource_path }}".format({% for arg in resource_msg.message_type.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+        return "{{ resource_msg.message_type.resource_path }}".format(
+            {% for arg in resource_msg.message_type.resource_path_args %}
+            {{ arg }}={{ arg }},
+            {% endfor %}
+        )
+    {% else %}
+    def common_{{ resource_msg.message_type.resource_type|snake_case }}_path() -> str:
+        """Returns a fully-qualified {{ resource_msg.message_type.resource_type|snake_case }} string."""
+        return "{{ resource_msg.message_type.resource_path }}".format()
+    {% endif %}
 
     @staticmethod
-    def parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path(path: str) -> Dict[str,str]:
+    def parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parse a {{ resource_msg.message_type.resource_type|snake_case }} path into its component segments."""
         m = re.match(r"{{ resource_msg.message_type.path_regex_str }}", path)
         return m.groupdict() if m else {}
@@ -287,7 +338,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% endfor %}{# common resources #}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
+    def get_mtls_endpoint_and_cert_source(
+        cls,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
+    ):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -319,8 +373,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning)
+        warnings.warn(
+            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+            DeprecationWarning,
+        )
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
         use_client_cert = {{ service.client_name }}._use_client_cert_effective()
@@ -450,7 +506,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     def _add_cred_info_for_auth_errors(
         self,
-        error: core_exceptions.GoogleAPICallError
+        error: core_exceptions.GoogleAPICallError,
     ) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
@@ -490,12 +546,14 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         """
         return self._universe_domain
     
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, {{ service.name }}Transport, Callable[..., {{ service.name }}Transport]]] = None,
-            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[Union[str, {{ service.name }}Transport, Callable[..., {{ service.name }}Transport]]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the {{ (service.client_name|snake_case).replace('_', ' ') }}.
 
         Args:
@@ -558,12 +616,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             self._client_options = client_options_lib.ClientOptions()
         self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
-        universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
+        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = {{ service.client_name }}._read_environment_variables()
         self._client_cert_source = {{ service.client_name }}._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = {{ service.client_name }}._get_universe_domain(universe_domain_opt, self._universe_domain_env)
-        self._api_endpoint = None # updated below, depending on `transport`
+        self._api_endpoint = None  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -583,22 +641,22 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         if transport_provided:
             # transport is a {{ service.name }}Transport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError("When providing a transport instance, "
-                                 "provide its credentials directly.")
+                raise ValueError(
+                    "When providing a transport instance, provide its credentials directly.",
+                )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly.",
                 )
             self._transport = cast({{ service.name }}Transport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (self._api_endpoint or
-            {{ service.client_name }}._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint))
+        self._api_endpoint = self._api_endpoint or {{ service.client_name }}._get_api_endpoint(
+            self._client_options.api_endpoint,
+            self._client_cert_source,
+            self._universe_domain,
+            self._use_mtls_endpoint,
+        )
 
         if not transport_provided:
             {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
@@ -617,7 +675,6 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                     "google.api_core.client_options.ClientOptions.quota_project_id": self._client_options.quota_project_id,
                     "google.api_core.client_options.ClientOptions.client_cert_source": self._client_options.client_cert_source,
                     "google.api_core.client_options.ClientOptions.api_audience": self._client_options.api_audience,
-
                 }
                 provided_unsupported_params = [name for name, value in unsupported_params.items() if value is not None]
                 if provided_unsupported_params:
@@ -663,15 +720,17 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}`.",
-                    extra = {
+                    extra={
                         "serviceName": "{{ service.meta.address.proto }}",
                         "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
                         "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                    } if hasattr(self._transport, "_credentials") else {
+                    }
+                    if hasattr(self._transport, "_credentials")
+                    else {
                         "serviceName": "{{ service.meta.address.proto }}",
                         "credentialsType": None,
-                    }
+                    },
                 )
 
 
@@ -697,11 +756,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             and may cause errors in other clients!
         """
         self.transport.close()
-
     {% include '%namespace/%name_%version/%sub/services/%service/_mixins.py.j2' %}
-
     {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if opts.add_iam_methods %}
+
     def set_iam_policy(
         self,
         request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
@@ -806,10 +864,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -817,7 +872,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -930,10 +989,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
         
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -941,7 +997,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -992,10 +1052,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1003,7 +1060,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                            request,
+                            retry=retry,
+                            timeout=timeout,
+                            metadata=metadata,
+                        )
 
             # Done; return the response.
             return response
@@ -1012,12 +1073,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             raise e
     {% endif %}
 
+
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = (
-    "{{ service.client_name }}",
-)
+__all__ = ("{{ service.client_name }}",)
 {% endblock %}

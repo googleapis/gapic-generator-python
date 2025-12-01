@@ -16,11 +16,13 @@ from .grpc_asyncio import {{ service.name }}GrpcAsyncIOTransport
 from .rest import {{ service.name }}RestTransport
 from .rest import {{ service.name }}RestInterceptor
 {% if rest_async_io_enabled %}
+
 ASYNC_REST_CLASSES: Tuple[str, ...]
 try:
     from .rest_asyncio import Async{{ service.name }}RestTransport
     from .rest_asyncio import Async{{ service.name }}RestInterceptor
-    ASYNC_REST_CLASSES = ('Async{{ service.name }}RestTransport', 'Async{{ service.name }}RestInterceptor')
+
+    ASYNC_REST_CLASSES = ("Async{{ service.name }}RestTransport", "Async{{ service.name }}RestInterceptor")
     HAS_REST_ASYNC = True
 except ImportError:  # pragma: NO COVER
     ASYNC_REST_CLASSES = ()
@@ -33,26 +35,26 @@ except ImportError:  # pragma: NO COVER
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[{{ service.name }}Transport]]
 {% if 'grpc' in opts.transport %}
-_transport_registry['grpc'] = {{ service.name }}GrpcTransport
-_transport_registry['grpc_asyncio'] = {{ service.name }}GrpcAsyncIOTransport
+_transport_registry["grpc"] = {{ service.name }}GrpcTransport
+_transport_registry["grpc_asyncio"] = {{ service.name }}GrpcAsyncIOTransport
 {% endif %}
 {% if 'rest' in opts.transport %}
-_transport_registry['rest'] = {{ service.name }}RestTransport
+_transport_registry["rest"] = {{ service.name }}RestTransport
 {% if rest_async_io_enabled %}
 if HAS_REST_ASYNC:  # pragma: NO COVER
-    _transport_registry['rest_asyncio'] = Async{{ service.name }}RestTransport
+    _transport_registry["rest_asyncio"] = Async{{ service.name }}RestTransport
 {% endif %}{# if rest_async_io_enabled #}
 {% endif %}
 
 __all__ = (
-    '{{ service.name }}Transport',
+    "{{ service.name }}Transport",
     {% if 'grpc' in opts.transport %}
-    '{{ service.name }}GrpcTransport',
-    '{{ service.name }}GrpcAsyncIOTransport',
+    "{{ service.name }}GrpcTransport",
+    "{{ service.name }}GrpcAsyncIOTransport",
     {% endif %}
     {% if 'rest' in opts.transport %}
-    '{{ service.name }}RestTransport',
-    '{{ service.name }}RestInterceptor',
+    "{{ service.name }}RestTransport",
+    "{{ service.name }}RestInterceptor",
     {% endif %}
 ){% if 'rest' in opts.transport and rest_async_io_enabled%} + ASYNC_REST_CLASSES{%endif%}
 {% endblock %}

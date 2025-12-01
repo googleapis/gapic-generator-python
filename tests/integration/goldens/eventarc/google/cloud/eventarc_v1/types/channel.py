@@ -22,12 +22,14 @@ import proto  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
+# fmt: off
 __protobuf__ = proto.module(
-    package='google.cloud.eventarc.v1',
+    package="google.cloud.eventarc.v1",
     manifest={
-        'Channel',
+        "Channel",
     },
 )
+# fmt: on
 
 
 class Channel(proto.Message):
@@ -79,6 +81,7 @@ class Channel(proto.Message):
             It must match the pattern
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
     """
+
     class State(proto.Enum):
         r"""State lists all the possible states of a Channel
 
@@ -140,7 +143,7 @@ class Channel(proto.Message):
     pubsub_topic: str = proto.Field(
         proto.STRING,
         number=8,
-        oneof='transport',
+        oneof="transport",
     )
     state: State = proto.Field(
         proto.ENUM,

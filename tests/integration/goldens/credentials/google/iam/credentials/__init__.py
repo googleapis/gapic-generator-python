@@ -30,14 +30,15 @@ from google.iam.credentials_v1.types.common import SignBlobResponse
 from google.iam.credentials_v1.types.common import SignJwtRequest
 from google.iam.credentials_v1.types.common import SignJwtResponse
 
-__all__ = ('IAMCredentialsClient',
-    'IAMCredentialsAsyncClient',
-    'GenerateAccessTokenRequest',
-    'GenerateAccessTokenResponse',
-    'GenerateIdTokenRequest',
-    'GenerateIdTokenResponse',
-    'SignBlobRequest',
-    'SignBlobResponse',
-    'SignJwtRequest',
-    'SignJwtResponse',
+__all__ = (
+    "IAMCredentialsClient",
+    "IAMCredentialsAsyncClient",
+    "GenerateAccessTokenRequest",
+    "GenerateAccessTokenResponse",
+    "GenerateIdTokenRequest",
+    "GenerateIdTokenResponse",
+    "SignBlobRequest",
+    "SignBlobResponse",
+    "SignJwtRequest",
+    "SignJwtResponse",
 )

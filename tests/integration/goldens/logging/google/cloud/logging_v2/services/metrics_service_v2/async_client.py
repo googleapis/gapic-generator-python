@@ -16,7 +16,18 @@
 import logging as std_logging
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Callable,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
@@ -24,8 +35,8 @@ from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials   # type: ignore
-from google.oauth2 import service_account              # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 
@@ -38,7 +49,7 @@ from google.api import distribution_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
 from google.cloud.logging_v2.services.metrics_service_v2 import pagers
 from google.cloud.logging_v2.types import logging_metrics
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import MetricsServiceV2GrpcAsyncIOTransport
@@ -46,11 +57,13 @@ from .client import MetricsServiceV2Client
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
+
 
 class MetricsServiceV2AsyncClient:
     """Service for configuring logs-based metrics."""
@@ -174,12 +187,14 @@ class MetricsServiceV2AsyncClient:
 
     get_transport_class = MetricsServiceV2Client.get_transport_class
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, MetricsServiceV2Transport, Callable[..., MetricsServiceV2Transport]]] = "grpc_asyncio",
-            client_options: Optional[ClientOptions] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[Union[str, MetricsServiceV2Transport, Callable[..., MetricsServiceV2Transport]]] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the metrics service v2 async client.
 
         Args:
@@ -234,31 +249,33 @@ class MetricsServiceV2AsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
-
         )
 
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.logging_v2.MetricsServiceV2AsyncClient`.",
-                extra = {
+                extra={
                     "serviceName": "google.logging.v2.MetricsServiceV2",
                     "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                } if hasattr(self._client._transport, "_credentials") else {
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
                     "serviceName": "google.logging.v2.MetricsServiceV2",
                     "credentialsType": None,
-                }
+                },
             )
 
-    async def list_log_metrics(self,
-            request: Optional[Union[logging_metrics.ListLogMetricsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListLogMetricsAsyncPager:
+    async def list_log_metrics(
+        self,
+        request: Optional[Union[logging_metrics.ListLogMetricsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListLogMetricsAsyncPager:
         r"""Lists logs-based metrics.
 
         .. code-block:: python
@@ -325,8 +342,7 @@ class MetricsServiceV2AsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -344,11 +360,13 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -375,14 +393,15 @@ class MetricsServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def get_log_metric(self,
-            request: Optional[Union[logging_metrics.GetLogMetricRequest, dict]] = None,
-            *,
-            metric_name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_metrics.LogMetric:
+    async def get_log_metric(
+        self,
+        request: Optional[Union[logging_metrics.GetLogMetricRequest, dict]] = None,
+        *,
+        metric_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_metrics.LogMetric:
         r"""Gets a logs-based metric.
 
         .. code-block:: python
@@ -454,8 +473,7 @@ class MetricsServiceV2AsyncClient:
         flattened_params = [metric_name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -473,11 +491,13 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("metric_name", request.metric_name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -493,15 +513,16 @@ class MetricsServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def create_log_metric(self,
-            request: Optional[Union[logging_metrics.CreateLogMetricRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            metric: Optional[logging_metrics.LogMetric] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_metrics.LogMetric:
+    async def create_log_metric(
+        self,
+        request: Optional[Union[logging_metrics.CreateLogMetricRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        metric: Optional[logging_metrics.LogMetric] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_metrics.LogMetric:
         r"""Creates a logs-based metric.
 
         .. code-block:: python
@@ -589,8 +610,7 @@ class MetricsServiceV2AsyncClient:
         flattened_params = [parent, metric]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -610,11 +630,13 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -630,15 +652,16 @@ class MetricsServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def update_log_metric(self,
-            request: Optional[Union[logging_metrics.UpdateLogMetricRequest, dict]] = None,
-            *,
-            metric_name: Optional[str] = None,
-            metric: Optional[logging_metrics.LogMetric] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_metrics.LogMetric:
+    async def update_log_metric(
+        self,
+        request: Optional[Union[logging_metrics.UpdateLogMetricRequest, dict]] = None,
+        *,
+        metric_name: Optional[str] = None,
+        metric: Optional[logging_metrics.LogMetric] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_metrics.LogMetric:
         r"""Creates or updates a logs-based metric.
 
         .. code-block:: python
@@ -725,8 +748,7 @@ class MetricsServiceV2AsyncClient:
         flattened_params = [metric_name, metric]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -746,11 +768,13 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("metric_name", request.metric_name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -766,14 +790,15 @@ class MetricsServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_log_metric(self,
-            request: Optional[Union[logging_metrics.DeleteLogMetricRequest, dict]] = None,
-            *,
-            metric_name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    async def delete_log_metric(
+        self,
+        request: Optional[Union[logging_metrics.DeleteLogMetricRequest, dict]] = None,
+        *,
+        metric_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes a logs-based metric.
 
         .. code-block:: python
@@ -826,8 +851,7 @@ class MetricsServiceV2AsyncClient:
         flattened_params = [metric_name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -845,11 +869,13 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("metric_name", request.metric_name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -899,17 +925,18 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -951,17 +978,18 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1006,16 +1034,18 @@ class MetricsServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def __aenter__(self) -> "MetricsServiceV2AsyncClient":
         return self
@@ -1023,12 +1053,11 @@ class MetricsServiceV2AsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = (
-    "MetricsServiceV2AsyncClient",
-)
+__all__ = ("MetricsServiceV2AsyncClient",)

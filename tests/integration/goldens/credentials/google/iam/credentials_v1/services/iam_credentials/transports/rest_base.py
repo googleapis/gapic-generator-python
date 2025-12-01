@@ -40,18 +40,20 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(self, *,
-            host: str = 'iamcredentials.googleapis.com',
-            credentials: Optional[Any] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            url_scheme: str = 'https',
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "iamcredentials.googleapis.com",
+        credentials: Optional[Any] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
         Args:
             host (Optional[str]):
-                 The hostname to connect to (default: 'iamcredentials.googleapis.com').
+                 The hostname to connect to (default: "iamcredentials.googleapis.com").
             credentials (Optional[Any]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -82,15 +84,17 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience
+            api_audience=api_audience,
         )
 
     class _BaseGenerateAccessToken:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        # fmt: off
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
         }
+        # fmt: on
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -98,11 +102,12 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/serviceAccounts/*}:generateAccessToken',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/serviceAccounts/*}:generateAccessToken",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -117,16 +122,19 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
+                transcoded_request["body"],
+                use_integers_for_enums=False,
             )
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(_BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_unset_required_fields(query_params))
 
             return query_params
@@ -135,8 +143,10 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        # fmt: off
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
         }
+        # fmt: on
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -144,11 +154,12 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/serviceAccounts/*}:generateIdToken',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/serviceAccounts/*}:generateIdToken",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -163,16 +174,19 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
+                transcoded_request["body"],
+                use_integers_for_enums=False,
             )
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(_BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_unset_required_fields(query_params))
 
             return query_params
@@ -181,8 +195,10 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        # fmt: off
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
         }
+        # fmt: on
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -190,11 +206,12 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/serviceAccounts/*}:signBlob',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/serviceAccounts/*}:signBlob",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -209,16 +226,19 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
+                transcoded_request["body"],
+                use_integers_for_enums=False,
             )
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(_BaseIAMCredentialsRestTransport._BaseSignBlob._get_unset_required_fields(query_params))
 
             return query_params
@@ -227,8 +247,10 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        # fmt: off
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
         }
+        # fmt: on
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -236,11 +258,12 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{name=projects/*/serviceAccounts/*}:signJwt',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/serviceAccounts/*}:signJwt",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -255,21 +278,22 @@ class _BaseIAMCredentialsRestTransport(IAMCredentialsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                use_integers_for_enums=False
+                transcoded_request["body"],
+                use_integers_for_enums=False,
             )
             return body
+
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                use_integers_for_enums=False,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=False,
+                )
+            )
             query_params.update(_BaseIAMCredentialsRestTransport._BaseSignJwt._get_unset_required_fields(query_params))
 
             return query_params
 
 
-__all__=(
-    '_BaseIAMCredentialsRestTransport',
-)
+__all__ = ("_BaseIAMCredentialsRestTransport",)

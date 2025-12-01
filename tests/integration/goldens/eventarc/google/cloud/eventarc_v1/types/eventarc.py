@@ -28,34 +28,36 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
+# fmt: off
 __protobuf__ = proto.module(
-    package='google.cloud.eventarc.v1',
+    package="google.cloud.eventarc.v1",
     manifest={
-        'GetTriggerRequest',
-        'ListTriggersRequest',
-        'ListTriggersResponse',
-        'CreateTriggerRequest',
-        'UpdateTriggerRequest',
-        'DeleteTriggerRequest',
-        'GetChannelRequest',
-        'ListChannelsRequest',
-        'ListChannelsResponse',
-        'CreateChannelRequest',
-        'UpdateChannelRequest',
-        'DeleteChannelRequest',
-        'GetProviderRequest',
-        'ListProvidersRequest',
-        'ListProvidersResponse',
-        'GetChannelConnectionRequest',
-        'ListChannelConnectionsRequest',
-        'ListChannelConnectionsResponse',
-        'CreateChannelConnectionRequest',
-        'DeleteChannelConnectionRequest',
-        'UpdateGoogleChannelConfigRequest',
-        'GetGoogleChannelConfigRequest',
-        'OperationMetadata',
+        "GetTriggerRequest",
+        "ListTriggersRequest",
+        "ListTriggersResponse",
+        "CreateTriggerRequest",
+        "UpdateTriggerRequest",
+        "DeleteTriggerRequest",
+        "GetChannelRequest",
+        "ListChannelsRequest",
+        "ListChannelsResponse",
+        "CreateChannelRequest",
+        "UpdateChannelRequest",
+        "DeleteChannelRequest",
+        "GetProviderRequest",
+        "ListProvidersRequest",
+        "ListProvidersResponse",
+        "GetChannelConnectionRequest",
+        "ListChannelConnectionsRequest",
+        "ListChannelConnectionsResponse",
+        "CreateChannelConnectionRequest",
+        "DeleteChannelConnectionRequest",
+        "UpdateGoogleChannelConfigRequest",
+        "GetGoogleChannelConfigRequest",
+        "OperationMetadata",
     },
 )
+# fmt: on
 
 
 class GetTriggerRequest(proto.Message):

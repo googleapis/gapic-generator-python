@@ -990,7 +990,7 @@ def test_delete_log_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging.DeleteLogRequest(
-        log_name='log_name_value',
+        log_name="log_name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1002,7 +1002,7 @@ def test_delete_log_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.DeleteLogRequest(
-            log_name='log_name_value',
+            log_name="log_name_value",
         )
 
 def test_delete_log_use_cached_wrapped_rpc():
@@ -1113,7 +1113,7 @@ def test_delete_log_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging.DeleteLogRequest()
 
-    request.log_name = 'log_name_value'
+    request.log_name = "log_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1145,7 +1145,7 @@ async def test_delete_log_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging.DeleteLogRequest()
 
-    request.log_name = 'log_name_value'
+    request.log_name = "log_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1181,7 +1181,7 @@ def test_delete_log_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_log(
-            log_name='log_name_value',
+            log_name="log_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1189,7 +1189,7 @@ def test_delete_log_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].log_name
-        mock_val = 'log_name_value'
+        mock_val = "log_name_value"
         assert arg == mock_val
 
 
@@ -1203,7 +1203,7 @@ def test_delete_log_flattened_error():
     with pytest.raises(ValueError):
         client.delete_log(
             logging.DeleteLogRequest(),
-            log_name='log_name_value',
+            log_name="log_name_value",
         )
 
 @pytest.mark.asyncio
@@ -1223,7 +1223,7 @@ async def test_delete_log_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_log(
-            log_name='log_name_value',
+            log_name="log_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1231,7 +1231,7 @@ async def test_delete_log_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].log_name
-        mock_val = 'log_name_value'
+        mock_val = "log_name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1245,7 +1245,7 @@ async def test_delete_log_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_log(
             logging.DeleteLogRequest(),
-            log_name='log_name_value',
+            log_name="log_name_value",
         )
 
 
@@ -1294,7 +1294,7 @@ def test_write_log_entries_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging.WriteLogEntriesRequest(
-        log_name='log_name_value',
+        log_name="log_name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1306,7 +1306,7 @@ def test_write_log_entries_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.WriteLogEntriesRequest(
-            log_name='log_name_value',
+            log_name="log_name_value",
         )
 
 def test_write_log_entries_use_cached_wrapped_rpc():
@@ -1424,10 +1424,10 @@ def test_write_log_entries_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.write_log_entries(
-            log_name='log_name_value',
-            resource=monitored_resource_pb2.MonitoredResource(type='type_value'),
-            labels={'key_value': 'value_value'},
-            entries=[log_entry.LogEntry(log_name='log_name_value')],
+            log_name="log_name_value",
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
+            labels={"key_value": "value_value"},
+            entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
 
         # Establish that the underlying call was made with the expected
@@ -1435,16 +1435,16 @@ def test_write_log_entries_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].log_name
-        mock_val = 'log_name_value'
+        mock_val = "log_name_value"
         assert arg == mock_val
         arg = args[0].resource
-        mock_val = monitored_resource_pb2.MonitoredResource(type='type_value')
+        mock_val = monitored_resource_pb2.MonitoredResource(type="type_value")
         assert arg == mock_val
         arg = args[0].labels
-        mock_val = {'key_value': 'value_value'}
+        mock_val = {"key_value": "value_value"}
         assert arg == mock_val
         arg = args[0].entries
-        mock_val = [log_entry.LogEntry(log_name='log_name_value')]
+        mock_val = [log_entry.LogEntry(log_name="log_name_value")]
         assert arg == mock_val
 
 
@@ -1458,10 +1458,10 @@ def test_write_log_entries_flattened_error():
     with pytest.raises(ValueError):
         client.write_log_entries(
             logging.WriteLogEntriesRequest(),
-            log_name='log_name_value',
-            resource=monitored_resource_pb2.MonitoredResource(type='type_value'),
-            labels={'key_value': 'value_value'},
-            entries=[log_entry.LogEntry(log_name='log_name_value')],
+            log_name="log_name_value",
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
+            labels={"key_value": "value_value"},
+            entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
 
 @pytest.mark.asyncio
@@ -1481,10 +1481,10 @@ async def test_write_log_entries_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.write_log_entries(
-            log_name='log_name_value',
-            resource=monitored_resource_pb2.MonitoredResource(type='type_value'),
-            labels={'key_value': 'value_value'},
-            entries=[log_entry.LogEntry(log_name='log_name_value')],
+            log_name="log_name_value",
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
+            labels={"key_value": "value_value"},
+            entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
 
         # Establish that the underlying call was made with the expected
@@ -1492,16 +1492,16 @@ async def test_write_log_entries_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].log_name
-        mock_val = 'log_name_value'
+        mock_val = "log_name_value"
         assert arg == mock_val
         arg = args[0].resource
-        mock_val = monitored_resource_pb2.MonitoredResource(type='type_value')
+        mock_val = monitored_resource_pb2.MonitoredResource(type="type_value")
         assert arg == mock_val
         arg = args[0].labels
-        mock_val = {'key_value': 'value_value'}
+        mock_val = {"key_value": "value_value"}
         assert arg == mock_val
         arg = args[0].entries
-        mock_val = [log_entry.LogEntry(log_name='log_name_value')]
+        mock_val = [log_entry.LogEntry(log_name="log_name_value")]
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1515,10 +1515,10 @@ async def test_write_log_entries_flattened_error_async():
     with pytest.raises(ValueError):
         await client.write_log_entries(
             logging.WriteLogEntriesRequest(),
-            log_name='log_name_value',
-            resource=monitored_resource_pb2.MonitoredResource(type='type_value'),
-            labels={'key_value': 'value_value'},
-            entries=[log_entry.LogEntry(log_name='log_name_value')],
+            log_name="log_name_value",
+            resource=monitored_resource_pb2.MonitoredResource(type="type_value"),
+            labels={"key_value": "value_value"},
+            entries=[log_entry.LogEntry(log_name="log_name_value")],
         )
 
 
@@ -1542,7 +1542,7 @@ def test_list_log_entries(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging.ListLogEntriesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.list_log_entries(request)
 
@@ -1554,7 +1554,7 @@ def test_list_log_entries(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogEntriesPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_log_entries_non_empty_request_with_auto_populated_field():
@@ -1569,9 +1569,9 @@ def test_list_log_entries_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging.ListLogEntriesRequest(
-        filter='filter_value',
-        order_by='order_by_value',
-        page_token='page_token_value',
+        filter="filter_value",
+        order_by="order_by_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1583,9 +1583,9 @@ def test_list_log_entries_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.ListLogEntriesRequest(
-            filter='filter_value',
-            order_by='order_by_value',
-            page_token='page_token_value',
+            filter="filter_value",
+            order_by="order_by_value",
+            page_token="page_token_value",
         )
 
 def test_list_log_entries_use_cached_wrapped_rpc():
@@ -1671,7 +1671,7 @@ async def test_list_log_entries_async(transport: str = 'grpc_asyncio', request_t
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging.ListLogEntriesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.list_log_entries(request)
 
@@ -1683,7 +1683,7 @@ async def test_list_log_entries_async(transport: str = 'grpc_asyncio', request_t
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogEntriesAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -1705,9 +1705,9 @@ def test_list_log_entries_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_log_entries(
-            resource_names=['resource_names_value'],
-            filter='filter_value',
-            order_by='order_by_value',
+            resource_names=["resource_names_value"],
+            filter="filter_value",
+            order_by="order_by_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1715,13 +1715,13 @@ def test_list_log_entries_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].resource_names
-        mock_val = ['resource_names_value']
+        mock_val = ["resource_names_value"]
         assert arg == mock_val
         arg = args[0].filter
-        mock_val = 'filter_value'
+        mock_val = "filter_value"
         assert arg == mock_val
         arg = args[0].order_by
-        mock_val = 'order_by_value'
+        mock_val = "order_by_value"
         assert arg == mock_val
 
 
@@ -1735,9 +1735,9 @@ def test_list_log_entries_flattened_error():
     with pytest.raises(ValueError):
         client.list_log_entries(
             logging.ListLogEntriesRequest(),
-            resource_names=['resource_names_value'],
-            filter='filter_value',
-            order_by='order_by_value',
+            resource_names=["resource_names_value"],
+            filter="filter_value",
+            order_by="order_by_value",
         )
 
 @pytest.mark.asyncio
@@ -1757,9 +1757,9 @@ async def test_list_log_entries_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_log_entries(
-            resource_names=['resource_names_value'],
-            filter='filter_value',
-            order_by='order_by_value',
+            resource_names=["resource_names_value"],
+            filter="filter_value",
+            order_by="order_by_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1767,13 +1767,13 @@ async def test_list_log_entries_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].resource_names
-        mock_val = ['resource_names_value']
+        mock_val = ["resource_names_value"]
         assert arg == mock_val
         arg = args[0].filter
-        mock_val = 'filter_value'
+        mock_val = "filter_value"
         assert arg == mock_val
         arg = args[0].order_by
-        mock_val = 'order_by_value'
+        mock_val = "order_by_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1787,9 +1787,9 @@ async def test_list_log_entries_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_log_entries(
             logging.ListLogEntriesRequest(),
-            resource_names=['resource_names_value'],
-            filter='filter_value',
-            order_by='order_by_value',
+            resource_names=["resource_names_value"],
+            filter="filter_value",
+            order_by="order_by_value",
         )
 
 
@@ -2004,7 +2004,7 @@ def test_list_monitored_resource_descriptors(request_type, transport: str = 'grp
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging.ListMonitoredResourceDescriptorsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.list_monitored_resource_descriptors(request)
 
@@ -2016,7 +2016,7 @@ def test_list_monitored_resource_descriptors(request_type, transport: str = 'grp
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMonitoredResourceDescriptorsPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_monitored_resource_descriptors_non_empty_request_with_auto_populated_field():
@@ -2031,7 +2031,7 @@ def test_list_monitored_resource_descriptors_non_empty_request_with_auto_populat
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging.ListMonitoredResourceDescriptorsRequest(
-        page_token='page_token_value',
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2043,7 +2043,7 @@ def test_list_monitored_resource_descriptors_non_empty_request_with_auto_populat
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.ListMonitoredResourceDescriptorsRequest(
-            page_token='page_token_value',
+            page_token="page_token_value",
         )
 
 def test_list_monitored_resource_descriptors_use_cached_wrapped_rpc():
@@ -2129,7 +2129,7 @@ async def test_list_monitored_resource_descriptors_async(transport: str = 'grpc_
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging.ListMonitoredResourceDescriptorsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.list_monitored_resource_descriptors(request)
 
@@ -2141,7 +2141,7 @@ async def test_list_monitored_resource_descriptors_async(transport: str = 'grpc_
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMonitoredResourceDescriptorsAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -2360,8 +2360,8 @@ def test_list_logs(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging.ListLogsResponse(
-            log_names=['log_names_value'],
-            next_page_token='next_page_token_value',
+            log_names=["log_names_value"],
+            next_page_token="next_page_token_value",
         )
         response = client.list_logs(request)
 
@@ -2373,8 +2373,8 @@ def test_list_logs(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogsPager)
-    assert response.log_names == ['log_names_value']
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.log_names == ["log_names_value"]
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_logs_non_empty_request_with_auto_populated_field():
@@ -2389,8 +2389,8 @@ def test_list_logs_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging.ListLogsRequest(
-        parent='parent_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2402,8 +2402,8 @@ def test_list_logs_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.ListLogsRequest(
-            parent='parent_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            page_token="page_token_value",
         )
 
 def test_list_logs_use_cached_wrapped_rpc():
@@ -2489,8 +2489,8 @@ async def test_list_logs_async(transport: str = 'grpc_asyncio', request_type=log
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging.ListLogsResponse(
-            log_names=['log_names_value'],
-            next_page_token='next_page_token_value',
+            log_names=["log_names_value"],
+            next_page_token="next_page_token_value",
         ))
         response = await client.list_logs(request)
 
@@ -2502,8 +2502,8 @@ async def test_list_logs_async(transport: str = 'grpc_asyncio', request_type=log
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogsAsyncPager)
-    assert response.log_names == ['log_names_value']
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.log_names == ["log_names_value"]
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -2519,7 +2519,7 @@ def test_list_logs_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging.ListLogsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2551,7 +2551,7 @@ async def test_list_logs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging.ListLogsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2587,7 +2587,7 @@ def test_list_logs_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_logs(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2595,7 +2595,7 @@ def test_list_logs_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -2609,7 +2609,7 @@ def test_list_logs_flattened_error():
     with pytest.raises(ValueError):
         client.list_logs(
             logging.ListLogsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -2629,7 +2629,7 @@ async def test_list_logs_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_logs(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2637,7 +2637,7 @@ async def test_list_logs_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2651,7 +2651,7 @@ async def test_list_logs_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_logs(
             logging.ListLogsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -3283,7 +3283,7 @@ async def test_list_log_entries_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging.ListLogEntriesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.list_log_entries(request=None)
 
@@ -3310,7 +3310,7 @@ async def test_list_monitored_resource_descriptors_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging.ListMonitoredResourceDescriptorsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.list_monitored_resource_descriptors(request=None)
 
@@ -3337,8 +3337,8 @@ async def test_list_logs_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging.ListLogsResponse(
-            log_names=['log_names_value'],
-            next_page_token='next_page_token_value',
+            log_names=["log_names_value"],
+            next_page_token="next_page_token_value",
         ))
         await client.list_logs(request=None)
 

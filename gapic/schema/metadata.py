@@ -313,7 +313,7 @@ class Address(BaseAddress):
             # created, so there is no way for one nested class to reference
             # another at class instantiation time.
             if self.parent and address.parent and self.parent[0] == address.parent[0]:
-                return f"'{'.'.join(self.parent)}.{self.name}'"
+                return f"\"{'.'.join(self.parent)}.{self.name}\""
 
             # Edge case: Similar to above, if this is a message that is
             # referencing a nested message that it contains, we need
@@ -333,7 +333,7 @@ class Address(BaseAddress):
             # identifier. It is guaranteed to work all the time because
             # it bumps name resolution until a time when all types in a module
             # are guaranteed to be fully defined.
-            return f"'{'.'.join(self.parent + (self.name,))}'"
+            return f"\"{'.'.join(self.parent + (self.name,))}\""
 
         # Return the usual `module.Name`.
         return str(self)

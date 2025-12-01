@@ -18,20 +18,23 @@ import proto{% if p != 'proto' %} as {{ p }}{% endif %}  # type: ignore
 {% endfilter %}
 
 
+{# Omit formatting for this code block to avoid keeping track of whether the manifest is empty #}
+# fmt: off
 __protobuf__ = {{ p }}.module(
-    package='{{ '.'.join(proto.meta.address.package) }}',
+    package="{{ '.'.join(proto.meta.address.package) }}",
     {% if api.naming.proto_package != '.'.join(proto.meta.address.package) %}
-    marshal='{{ api.naming.proto_package }}',
+    marshal="{{ api.naming.proto_package }}",
     {% endif %}
     manifest={
     {% for enum in proto.enums.values() %}
-        '{{ enum.name }}',
+        "{{ enum.name }}",
     {% endfor %}
     {% for message in proto.messages.values() %}
-        '{{ message.name }}',
+        "{{ message.name }}",
     {% endfor %}
     },
 )
+# fmt: on
 
 
 {% for enum in proto.enums.values() %}

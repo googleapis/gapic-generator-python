@@ -16,7 +16,21 @@
 import logging as std_logging
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, AsyncIterable, Awaitable, AsyncIterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Callable,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    AsyncIterable,
+    Awaitable,
+    AsyncIterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
@@ -24,8 +38,8 @@ from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials   # type: ignore
-from google.oauth2 import service_account              # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 
@@ -38,18 +52,20 @@ from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from .transports.base import LoggingServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import LoggingServiceV2GrpcAsyncIOTransport
 from .client import LoggingServiceV2Client
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
+
 
 class LoggingServiceV2AsyncClient:
     """Service for ingesting and querying logs."""
@@ -173,12 +189,14 @@ class LoggingServiceV2AsyncClient:
 
     get_transport_class = LoggingServiceV2Client.get_transport_class
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, LoggingServiceV2Transport, Callable[..., LoggingServiceV2Transport]]] = "grpc_asyncio",
-            client_options: Optional[ClientOptions] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[Union[str, LoggingServiceV2Transport, Callable[..., LoggingServiceV2Transport]]] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the logging service v2 async client.
 
         Args:
@@ -233,31 +251,33 @@ class LoggingServiceV2AsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
-
         )
 
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.logging_v2.LoggingServiceV2AsyncClient`.",
-                extra = {
+                extra={
                     "serviceName": "google.logging.v2.LoggingServiceV2",
                     "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                } if hasattr(self._client._transport, "_credentials") else {
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
                     "serviceName": "google.logging.v2.LoggingServiceV2",
                     "credentialsType": None,
-                }
+                },
             )
 
-    async def delete_log(self,
-            request: Optional[Union[logging.DeleteLogRequest, dict]] = None,
-            *,
-            log_name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    async def delete_log(
+        self,
+        request: Optional[Union[logging.DeleteLogRequest, dict]] = None,
+        *,
+        log_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes all the log entries in a log for the \_Default Log
         Bucket. The log reappears if it receives new entries. Log
         entries written shortly before the delete operation might not be
@@ -322,8 +342,7 @@ class LoggingServiceV2AsyncClient:
         flattened_params = [log_name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -341,11 +360,13 @@ class LoggingServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("log_name", request.log_name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -358,17 +379,18 @@ class LoggingServiceV2AsyncClient:
             metadata=metadata,
         )
 
-    async def write_log_entries(self,
-            request: Optional[Union[logging.WriteLogEntriesRequest, dict]] = None,
-            *,
-            log_name: Optional[str] = None,
-            resource: Optional[monitored_resource_pb2.MonitoredResource] = None,
-            labels: Optional[MutableMapping[str, str]] = None,
-            entries: Optional[MutableSequence[log_entry.LogEntry]] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging.WriteLogEntriesResponse:
+    async def write_log_entries(
+        self,
+        request: Optional[Union[logging.WriteLogEntriesRequest, dict]] = None,
+        *,
+        log_name: Optional[str] = None,
+        resource: Optional[monitored_resource_pb2.MonitoredResource] = None,
+        labels: Optional[MutableMapping[str, str]] = None,
+        entries: Optional[MutableSequence[log_entry.LogEntry]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging.WriteLogEntriesResponse:
         r"""Writes log entries to Logging. This API method is the
         only way to send log entries to Logging. This method is
         used, directly or indirectly, by the Logging agent
@@ -513,8 +535,7 @@ class LoggingServiceV2AsyncClient:
         flattened_params = [log_name, resource, labels, entries]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -551,16 +572,17 @@ class LoggingServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def list_log_entries(self,
-            request: Optional[Union[logging.ListLogEntriesRequest, dict]] = None,
-            *,
-            resource_names: Optional[MutableSequence[str]] = None,
-            filter: Optional[str] = None,
-            order_by: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListLogEntriesAsyncPager:
+    async def list_log_entries(
+        self,
+        request: Optional[Union[logging.ListLogEntriesRequest, dict]] = None,
+        *,
+        resource_names: Optional[MutableSequence[str]] = None,
+        filter: Optional[str] = None,
+        order_by: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListLogEntriesAsyncPager:
         r"""Lists log entries. Use this method to retrieve log entries that
         originated from a project/folder/organization/billing account.
         For ways to export log entries, see `Exporting
@@ -665,8 +687,7 @@ class LoggingServiceV2AsyncClient:
         flattened_params = [resource_names, filter, order_by]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -711,13 +732,14 @@ class LoggingServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def list_monitored_resource_descriptors(self,
-            request: Optional[Union[logging.ListMonitoredResourceDescriptorsRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListMonitoredResourceDescriptorsAsyncPager:
+    async def list_monitored_resource_descriptors(
+        self,
+        request: Optional[Union[logging.ListMonitoredResourceDescriptorsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListMonitoredResourceDescriptorsAsyncPager:
         r"""Lists the descriptors for monitored resource types
         used by Logging.
 
@@ -803,14 +825,15 @@ class LoggingServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def list_logs(self,
-            request: Optional[Union[logging.ListLogsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListLogsAsyncPager:
+    async def list_logs(
+        self,
+        request: Optional[Union[logging.ListLogsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListLogsAsyncPager:
         r"""Lists the logs in projects, organizations, folders,
         or billing accounts. Only logs that have entries are
         listed.
@@ -879,8 +902,7 @@ class LoggingServiceV2AsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -898,11 +920,13 @@ class LoggingServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -929,13 +953,14 @@ class LoggingServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    def tail_log_entries(self,
-            requests: Optional[AsyncIterator[logging.TailLogEntriesRequest]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> Awaitable[AsyncIterable[logging.TailLogEntriesResponse]]:
+    def tail_log_entries(
+        self,
+        requests: Optional[AsyncIterator[logging.TailLogEntriesRequest]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> Awaitable[AsyncIterable[logging.TailLogEntriesResponse]]:
         r"""Streaming read of log entries as they are ingested.
         Until the stream is terminated, it will continue reading
         logs.
@@ -961,7 +986,7 @@ class LoggingServiceV2AsyncClient:
                 )
 
                 # This method expects an iterator which contains
-                # 'logging_v2.TailLogEntriesRequest' objects
+                # "logging_v2.TailLogEntriesRequest" objects
                 # Here we create a generator that yields a single `request` for
                 # demonstrative purposes.
                 requests = [request]
@@ -1048,17 +1073,18 @@ class LoggingServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1100,17 +1126,18 @@ class LoggingServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1155,16 +1182,18 @@ class LoggingServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def __aenter__(self) -> "LoggingServiceV2AsyncClient":
         return self
@@ -1172,12 +1201,11 @@ class LoggingServiceV2AsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = (
-    "LoggingServiceV2AsyncClient",
-)
+__all__ = ("LoggingServiceV2AsyncClient",)
