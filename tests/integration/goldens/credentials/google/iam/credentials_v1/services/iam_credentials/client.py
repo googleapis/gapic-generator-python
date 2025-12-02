@@ -725,7 +725,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 # Initialize request argument(s)
                 request = credentials_v1.GenerateAccessTokenRequest(
                     name="name_value",
-                    scope=['scope_value1', 'scope_value2'],
+                    scope=["scope_value1", "scope_value2"],
                 )
 
                 # Make the request
@@ -1036,7 +1036,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 # Initialize request argument(s)
                 request = credentials_v1.SignBlobRequest(
                     name="name_value",
-                    payload=b'payload_blob',
+                    payload=b"payload_blob",
                 )
 
                 # Make the request

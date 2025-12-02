@@ -56,12 +56,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeIamPolicyLongrunning_async",
       "segments": [
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "SHORT"
         },
@@ -81,7 +81,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 63,
+          "end": 64,
           "start": 60,
           "type": "RESPONSE_HANDLING"
         }
@@ -132,12 +132,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeIamPolicyLongrunning_sync",
       "segments": [
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "SHORT"
         },
@@ -157,7 +157,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 63,
+          "end": 64,
           "start": 60,
           "type": "RESPONSE_HANDLING"
         }
@@ -209,12 +209,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeIamPolicy_async",
       "segments": [
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -234,7 +234,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
@@ -285,12 +285,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeIamPolicy_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -310,7 +310,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
@@ -362,12 +362,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeMove_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -387,7 +387,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -438,12 +438,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeMove_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -463,7 +463,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -527,12 +527,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeOrgPolicies_async",
       "segments": [
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -552,7 +552,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -615,12 +615,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeOrgPolicies_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -640,7 +640,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -704,12 +704,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeOrgPolicyGovernedAssets_async",
       "segments": [
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -729,7 +729,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -792,12 +792,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeOrgPolicyGovernedAssets_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -817,7 +817,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -881,12 +881,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeOrgPolicyGovernedContainers_async",
       "segments": [
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -906,7 +906,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -969,12 +969,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_AnalyzeOrgPolicyGovernedContainers_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -994,7 +994,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -1046,12 +1046,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_BatchGetAssetsHistory_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1071,7 +1071,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1122,12 +1122,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_BatchGetAssetsHistory_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1147,7 +1147,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1199,12 +1199,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_BatchGetEffectiveIamPolicies_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -1224,7 +1224,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -1275,12 +1275,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_BatchGetEffectiveIamPolicies_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -1300,7 +1300,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -1356,12 +1356,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_CreateFeed_async",
       "segments": [
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -1381,7 +1381,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
+          "end": 58,
           "start": 54,
           "type": "RESPONSE_HANDLING"
         }
@@ -1436,12 +1436,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_CreateFeed_sync",
       "segments": [
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -1461,7 +1461,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
+          "end": 58,
           "start": 54,
           "type": "RESPONSE_HANDLING"
         }
@@ -1525,12 +1525,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_CreateSavedQuery_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -1550,7 +1550,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -1613,12 +1613,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_CreateSavedQuery_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -1638,7 +1638,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -2000,12 +2000,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_ExportAssets_async",
       "segments": [
         {
-          "end": 59,
+          "end": 60,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 59,
+          "end": 60,
           "start": 27,
           "type": "SHORT"
         },
@@ -2025,7 +2025,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 60,
+          "end": 61,
           "start": 57,
           "type": "RESPONSE_HANDLING"
         }
@@ -2076,12 +2076,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_ExportAssets_sync",
       "segments": [
         {
-          "end": 59,
+          "end": 60,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 59,
+          "end": 60,
           "start": 27,
           "type": "SHORT"
         },
@@ -2101,7 +2101,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 60,
+          "end": 61,
           "start": 57,
           "type": "RESPONSE_HANDLING"
         }
@@ -2157,12 +2157,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_GetFeed_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -2182,7 +2182,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2237,12 +2237,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_GetFeed_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -2262,7 +2262,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2318,12 +2318,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_GetSavedQuery_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -2343,7 +2343,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2398,12 +2398,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_GetSavedQuery_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -2423,7 +2423,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2479,12 +2479,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_ListAssets_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2504,7 +2504,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2559,12 +2559,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_ListAssets_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2584,7 +2584,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2640,12 +2640,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_ListFeeds_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -2665,7 +2665,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2720,12 +2720,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_ListFeeds_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -2745,7 +2745,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2801,12 +2801,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_ListSavedQueries_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2826,7 +2826,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2881,12 +2881,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_ListSavedQueries_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2906,7 +2906,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2958,12 +2958,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_QueryAssets_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2983,7 +2983,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -3034,12 +3034,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_QueryAssets_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -3059,7 +3059,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
@@ -3119,12 +3119,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_SearchAllIamPolicies_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -3144,7 +3144,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -3203,12 +3203,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_SearchAllIamPolicies_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -3228,7 +3228,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -3292,12 +3292,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_SearchAllResources_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -3317,7 +3317,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -3380,12 +3380,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_SearchAllResources_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -3405,7 +3405,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -3461,12 +3461,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_UpdateFeed_async",
       "segments": [
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -3486,7 +3486,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
@@ -3541,12 +3541,12 @@
       "regionTag": "cloudasset_v1_generated_AssetService_UpdateFeed_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -3566,7 +3566,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
@@ -3641,18 +3641,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 43,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
           "end": 51,
-          "start": 48,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3725,18 +3725,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 43,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
           "end": 51,
-          "start": 48,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ],

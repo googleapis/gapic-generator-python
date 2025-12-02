@@ -68,12 +68,12 @@
       "regionTag": "redis_v1_generated_CloudRedis_CreateInstance_async",
       "segments": [
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "SHORT"
         },
@@ -93,7 +93,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 63,
+          "end": 64,
           "start": 60,
           "type": "RESPONSE_HANDLING"
         }
@@ -156,12 +156,12 @@
       "regionTag": "redis_v1_generated_CloudRedis_CreateInstance_sync",
       "segments": [
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "SHORT"
         },
@@ -181,7 +181,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 63,
+          "end": 64,
           "start": 60,
           "type": "RESPONSE_HANDLING"
         }
@@ -237,12 +237,12 @@
       "regionTag": "redis_v1_generated_CloudRedis_DeleteInstance_async",
       "segments": [
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -262,7 +262,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
@@ -317,12 +317,12 @@
       "regionTag": "redis_v1_generated_CloudRedis_DeleteInstance_sync",
       "segments": [
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -342,7 +342,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
@@ -398,12 +398,12 @@
       "regionTag": "redis_v1_generated_CloudRedis_GetInstance_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -423,7 +423,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -478,12 +478,12 @@
       "regionTag": "redis_v1_generated_CloudRedis_GetInstance_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -503,7 +503,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -559,12 +559,12 @@
       "regionTag": "redis_v1_generated_CloudRedis_ListInstances_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -584,7 +584,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -639,12 +639,12 @@
       "regionTag": "redis_v1_generated_CloudRedis_ListInstances_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -664,7 +664,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -724,12 +724,12 @@
       "regionTag": "redis_v1_generated_CloudRedis_UpdateInstance_async",
       "segments": [
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "SHORT"
         },
@@ -749,7 +749,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 61,
+          "end": 62,
           "start": 58,
           "type": "RESPONSE_HANDLING"
         }
@@ -808,12 +808,12 @@
       "regionTag": "redis_v1_generated_CloudRedis_UpdateInstance_sync",
       "segments": [
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "SHORT"
         },
@@ -833,7 +833,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 61,
+          "end": 62,
           "start": 58,
           "type": "RESPONSE_HANDLING"
         }

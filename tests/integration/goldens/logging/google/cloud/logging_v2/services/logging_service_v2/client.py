@@ -1014,7 +1014,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Initialize request argument(s)
                 request = logging_v2.ListLogEntriesRequest(
-                    resource_names=['resource_names_value1', 'resource_names_value2'],
+                    resource_names=["resource_names_value1", "resource_names_value2"],
                 )
 
                 # Make the request
@@ -1167,8 +1167,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
-                request = logging_v2.ListMonitoredResourceDescriptorsRequest(
-                )
+                request = logging_v2.ListMonitoredResourceDescriptorsRequest()
 
                 # Make the request
                 page_result = client.list_monitored_resource_descriptors(request=request)
@@ -1389,7 +1388,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
                 # Initialize request argument(s)
                 request = logging_v2.TailLogEntriesRequest(
-                    resource_names=['resource_names_value1', 'resource_names_value2'],
+                    resource_names=["resource_names_value1", "resource_names_value2"],
                 )
 
                 # This method expects an iterator which contains
