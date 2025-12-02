@@ -20,14 +20,16 @@ from typing import MutableMapping, MutableSequence
 import proto  # type: ignore
 
 
+# fmt: off
 __protobuf__ = proto.module(
-    package='google.cloud.eventarc.v1',
+    package="google.cloud.eventarc.v1",
     manifest={
-        'Provider',
-        'EventType',
-        'FilteringAttribute',
+        "Provider",
+        "EventType",
+        "FilteringAttribute",
     },
 )
+# fmt: on
 
 
 class Provider(proto.Message):
@@ -53,10 +55,10 @@ class Provider(proto.Message):
         proto.STRING,
         number=2,
     )
-    event_types: MutableSequence['EventType'] = proto.RepeatedField(
+    event_types: MutableSequence["EventType"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message='EventType',
+        message="EventType",
     )
 
 
@@ -95,10 +97,10 @@ class EventType(proto.Message):
         proto.STRING,
         number=2,
     )
-    filtering_attributes: MutableSequence['FilteringAttribute'] = proto.RepeatedField(
+    filtering_attributes: MutableSequence["FilteringAttribute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message='FilteringAttribute',
+        message="FilteringAttribute",
     )
     event_schema_uri: str = proto.Field(
         proto.STRING,

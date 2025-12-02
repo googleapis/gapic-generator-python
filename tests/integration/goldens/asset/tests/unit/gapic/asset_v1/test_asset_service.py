@@ -1009,7 +1009,7 @@ def test_export_assets_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.ExportAssetsRequest(
-        parent='parent_value',
+        parent="parent_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1021,7 +1021,7 @@ def test_export_assets_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ExportAssetsRequest(
-            parent='parent_value',
+            parent="parent_value",
         )
 
 def test_export_assets_use_cached_wrapped_rpc():
@@ -1144,7 +1144,7 @@ def test_export_assets_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.ExportAssetsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1176,7 +1176,7 @@ async def test_export_assets_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.ExportAssetsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1218,7 +1218,7 @@ def test_list_assets(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.ListAssetsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.list_assets(request)
 
@@ -1230,7 +1230,7 @@ def test_list_assets(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_assets_non_empty_request_with_auto_populated_field():
@@ -1245,8 +1245,8 @@ def test_list_assets_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.ListAssetsRequest(
-        parent='parent_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1258,8 +1258,8 @@ def test_list_assets_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListAssetsRequest(
-            parent='parent_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            page_token="page_token_value",
         )
 
 def test_list_assets_use_cached_wrapped_rpc():
@@ -1345,7 +1345,7 @@ async def test_list_assets_async(transport: str = 'grpc_asyncio', request_type=a
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListAssetsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.list_assets(request)
 
@@ -1357,7 +1357,7 @@ async def test_list_assets_async(transport: str = 'grpc_asyncio', request_type=a
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -1373,7 +1373,7 @@ def test_list_assets_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.ListAssetsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1405,7 +1405,7 @@ async def test_list_assets_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.ListAssetsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1441,7 +1441,7 @@ def test_list_assets_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_assets(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1449,7 +1449,7 @@ def test_list_assets_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -1463,7 +1463,7 @@ def test_list_assets_flattened_error():
     with pytest.raises(ValueError):
         client.list_assets(
             asset_service.ListAssetsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -1483,7 +1483,7 @@ async def test_list_assets_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_assets(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1491,7 +1491,7 @@ async def test_list_assets_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1505,7 +1505,7 @@ async def test_list_assets_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_assets(
             asset_service.ListAssetsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -1750,7 +1750,7 @@ def test_batch_get_assets_history_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.BatchGetAssetsHistoryRequest(
-        parent='parent_value',
+        parent="parent_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1762,7 +1762,7 @@ def test_batch_get_assets_history_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetAssetsHistoryRequest(
-            parent='parent_value',
+            parent="parent_value",
         )
 
 def test_batch_get_assets_history_use_cached_wrapped_rpc():
@@ -1874,7 +1874,7 @@ def test_batch_get_assets_history_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.BatchGetAssetsHistoryRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1906,7 +1906,7 @@ async def test_batch_get_assets_history_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.BatchGetAssetsHistoryRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1948,11 +1948,11 @@ def test_create_feed(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.Feed(
-            name='name_value',
-            asset_names=['asset_names_value'],
-            asset_types=['asset_types_value'],
+            name="name_value",
+            asset_names=["asset_names_value"],
+            asset_types=["asset_types_value"],
             content_type=asset_service.ContentType.RESOURCE,
-            relationship_types=['relationship_types_value'],
+            relationship_types=["relationship_types_value"],
         )
         response = client.create_feed(request)
 
@@ -1964,11 +1964,11 @@ def test_create_feed(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
+    assert response.name == "name_value"
+    assert response.asset_names == ["asset_names_value"]
+    assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
+    assert response.relationship_types == ["relationship_types_value"]
 
 
 def test_create_feed_non_empty_request_with_auto_populated_field():
@@ -1983,8 +1983,8 @@ def test_create_feed_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.CreateFeedRequest(
-        parent='parent_value',
-        feed_id='feed_id_value',
+        parent="parent_value",
+        feed_id="feed_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1996,8 +1996,8 @@ def test_create_feed_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateFeedRequest(
-            parent='parent_value',
-            feed_id='feed_id_value',
+            parent="parent_value",
+            feed_id="feed_id_value",
         )
 
 def test_create_feed_use_cached_wrapped_rpc():
@@ -2083,11 +2083,11 @@ async def test_create_feed_async(transport: str = 'grpc_asyncio', request_type=a
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
-            name='name_value',
-            asset_names=['asset_names_value'],
-            asset_types=['asset_types_value'],
+            name="name_value",
+            asset_names=["asset_names_value"],
+            asset_types=["asset_types_value"],
             content_type=asset_service.ContentType.RESOURCE,
-            relationship_types=['relationship_types_value'],
+            relationship_types=["relationship_types_value"],
         ))
         response = await client.create_feed(request)
 
@@ -2099,11 +2099,11 @@ async def test_create_feed_async(transport: str = 'grpc_asyncio', request_type=a
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
+    assert response.name == "name_value"
+    assert response.asset_names == ["asset_names_value"]
+    assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
+    assert response.relationship_types == ["relationship_types_value"]
 
 
 @pytest.mark.asyncio
@@ -2119,7 +2119,7 @@ def test_create_feed_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.CreateFeedRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2151,7 +2151,7 @@ async def test_create_feed_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.CreateFeedRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2187,7 +2187,7 @@ def test_create_feed_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_feed(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2195,7 +2195,7 @@ def test_create_feed_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -2209,7 +2209,7 @@ def test_create_feed_flattened_error():
     with pytest.raises(ValueError):
         client.create_feed(
             asset_service.CreateFeedRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -2229,7 +2229,7 @@ async def test_create_feed_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_feed(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2237,7 +2237,7 @@ async def test_create_feed_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2251,7 +2251,7 @@ async def test_create_feed_flattened_error_async():
     with pytest.raises(ValueError):
         await client.create_feed(
             asset_service.CreateFeedRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -2275,11 +2275,11 @@ def test_get_feed(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.Feed(
-            name='name_value',
-            asset_names=['asset_names_value'],
-            asset_types=['asset_types_value'],
+            name="name_value",
+            asset_names=["asset_names_value"],
+            asset_types=["asset_types_value"],
             content_type=asset_service.ContentType.RESOURCE,
-            relationship_types=['relationship_types_value'],
+            relationship_types=["relationship_types_value"],
         )
         response = client.get_feed(request)
 
@@ -2291,11 +2291,11 @@ def test_get_feed(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
+    assert response.name == "name_value"
+    assert response.asset_names == ["asset_names_value"]
+    assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
+    assert response.relationship_types == ["relationship_types_value"]
 
 
 def test_get_feed_non_empty_request_with_auto_populated_field():
@@ -2310,7 +2310,7 @@ def test_get_feed_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.GetFeedRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2322,7 +2322,7 @@ def test_get_feed_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetFeedRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_get_feed_use_cached_wrapped_rpc():
@@ -2408,11 +2408,11 @@ async def test_get_feed_async(transport: str = 'grpc_asyncio', request_type=asse
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
-            name='name_value',
-            asset_names=['asset_names_value'],
-            asset_types=['asset_types_value'],
+            name="name_value",
+            asset_names=["asset_names_value"],
+            asset_types=["asset_types_value"],
             content_type=asset_service.ContentType.RESOURCE,
-            relationship_types=['relationship_types_value'],
+            relationship_types=["relationship_types_value"],
         ))
         response = await client.get_feed(request)
 
@@ -2424,11 +2424,11 @@ async def test_get_feed_async(transport: str = 'grpc_asyncio', request_type=asse
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
+    assert response.name == "name_value"
+    assert response.asset_names == ["asset_names_value"]
+    assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
+    assert response.relationship_types == ["relationship_types_value"]
 
 
 @pytest.mark.asyncio
@@ -2444,7 +2444,7 @@ def test_get_feed_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.GetFeedRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2476,7 +2476,7 @@ async def test_get_feed_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.GetFeedRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2512,7 +2512,7 @@ def test_get_feed_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_feed(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2520,7 +2520,7 @@ def test_get_feed_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -2534,7 +2534,7 @@ def test_get_feed_flattened_error():
     with pytest.raises(ValueError):
         client.get_feed(
             asset_service.GetFeedRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -2554,7 +2554,7 @@ async def test_get_feed_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_feed(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2562,7 +2562,7 @@ async def test_get_feed_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2576,7 +2576,7 @@ async def test_get_feed_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_feed(
             asset_service.GetFeedRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -2625,7 +2625,7 @@ def test_list_feeds_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.ListFeedsRequest(
-        parent='parent_value',
+        parent="parent_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2637,7 +2637,7 @@ def test_list_feeds_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListFeedsRequest(
-            parent='parent_value',
+            parent="parent_value",
         )
 
 def test_list_feeds_use_cached_wrapped_rpc():
@@ -2749,7 +2749,7 @@ def test_list_feeds_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.ListFeedsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2781,7 +2781,7 @@ async def test_list_feeds_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.ListFeedsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2817,7 +2817,7 @@ def test_list_feeds_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_feeds(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2825,7 +2825,7 @@ def test_list_feeds_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -2839,7 +2839,7 @@ def test_list_feeds_flattened_error():
     with pytest.raises(ValueError):
         client.list_feeds(
             asset_service.ListFeedsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -2859,7 +2859,7 @@ async def test_list_feeds_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_feeds(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2867,7 +2867,7 @@ async def test_list_feeds_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2881,7 +2881,7 @@ async def test_list_feeds_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_feeds(
             asset_service.ListFeedsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -2905,11 +2905,11 @@ def test_update_feed(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.Feed(
-            name='name_value',
-            asset_names=['asset_names_value'],
-            asset_types=['asset_types_value'],
+            name="name_value",
+            asset_names=["asset_names_value"],
+            asset_types=["asset_types_value"],
             content_type=asset_service.ContentType.RESOURCE,
-            relationship_types=['relationship_types_value'],
+            relationship_types=["relationship_types_value"],
         )
         response = client.update_feed(request)
 
@@ -2921,11 +2921,11 @@ def test_update_feed(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
+    assert response.name == "name_value"
+    assert response.asset_names == ["asset_names_value"]
+    assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
+    assert response.relationship_types == ["relationship_types_value"]
 
 
 def test_update_feed_non_empty_request_with_auto_populated_field():
@@ -3036,11 +3036,11 @@ async def test_update_feed_async(transport: str = 'grpc_asyncio', request_type=a
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
-            name='name_value',
-            asset_names=['asset_names_value'],
-            asset_types=['asset_types_value'],
+            name="name_value",
+            asset_names=["asset_names_value"],
+            asset_types=["asset_types_value"],
             content_type=asset_service.ContentType.RESOURCE,
-            relationship_types=['relationship_types_value'],
+            relationship_types=["relationship_types_value"],
         ))
         response = await client.update_feed(request)
 
@@ -3052,11 +3052,11 @@ async def test_update_feed_async(transport: str = 'grpc_asyncio', request_type=a
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
+    assert response.name == "name_value"
+    assert response.asset_names == ["asset_names_value"]
+    assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
+    assert response.relationship_types == ["relationship_types_value"]
 
 
 @pytest.mark.asyncio
@@ -3072,7 +3072,7 @@ def test_update_feed_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.UpdateFeedRequest()
 
-    request.feed.name = 'name_value'
+    request.feed.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3104,7 +3104,7 @@ async def test_update_feed_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.UpdateFeedRequest()
 
-    request.feed.name = 'name_value'
+    request.feed.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3140,7 +3140,7 @@ def test_update_feed_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_feed(
-            feed=asset_service.Feed(name='name_value'),
+            feed=asset_service.Feed(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3148,7 +3148,7 @@ def test_update_feed_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].feed
-        mock_val = asset_service.Feed(name='name_value')
+        mock_val = asset_service.Feed(name="name_value")
         assert arg == mock_val
 
 
@@ -3162,7 +3162,7 @@ def test_update_feed_flattened_error():
     with pytest.raises(ValueError):
         client.update_feed(
             asset_service.UpdateFeedRequest(),
-            feed=asset_service.Feed(name='name_value'),
+            feed=asset_service.Feed(name="name_value"),
         )
 
 @pytest.mark.asyncio
@@ -3182,7 +3182,7 @@ async def test_update_feed_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_feed(
-            feed=asset_service.Feed(name='name_value'),
+            feed=asset_service.Feed(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -3190,7 +3190,7 @@ async def test_update_feed_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].feed
-        mock_val = asset_service.Feed(name='name_value')
+        mock_val = asset_service.Feed(name="name_value")
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -3204,7 +3204,7 @@ async def test_update_feed_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_feed(
             asset_service.UpdateFeedRequest(),
-            feed=asset_service.Feed(name='name_value'),
+            feed=asset_service.Feed(name="name_value"),
         )
 
 
@@ -3252,7 +3252,7 @@ def test_delete_feed_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.DeleteFeedRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3264,7 +3264,7 @@ def test_delete_feed_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteFeedRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_delete_feed_use_cached_wrapped_rpc():
@@ -3375,7 +3375,7 @@ def test_delete_feed_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.DeleteFeedRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3407,7 +3407,7 @@ async def test_delete_feed_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.DeleteFeedRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3443,7 +3443,7 @@ def test_delete_feed_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_feed(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3451,7 +3451,7 @@ def test_delete_feed_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -3465,7 +3465,7 @@ def test_delete_feed_flattened_error():
     with pytest.raises(ValueError):
         client.delete_feed(
             asset_service.DeleteFeedRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -3485,7 +3485,7 @@ async def test_delete_feed_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_feed(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3493,7 +3493,7 @@ async def test_delete_feed_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -3507,7 +3507,7 @@ async def test_delete_feed_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_feed(
             asset_service.DeleteFeedRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -3531,7 +3531,7 @@ def test_search_all_resources(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.SearchAllResourcesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.search_all_resources(request)
 
@@ -3543,7 +3543,7 @@ def test_search_all_resources(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllResourcesPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_search_all_resources_non_empty_request_with_auto_populated_field():
@@ -3558,10 +3558,10 @@ def test_search_all_resources_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.SearchAllResourcesRequest(
-        scope='scope_value',
-        query='query_value',
-        page_token='page_token_value',
-        order_by='order_by_value',
+        scope="scope_value",
+        query="query_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3573,10 +3573,10 @@ def test_search_all_resources_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllResourcesRequest(
-            scope='scope_value',
-            query='query_value',
-            page_token='page_token_value',
-            order_by='order_by_value',
+            scope="scope_value",
+            query="query_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
         )
 
 def test_search_all_resources_use_cached_wrapped_rpc():
@@ -3662,7 +3662,7 @@ async def test_search_all_resources_async(transport: str = 'grpc_asyncio', reque
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllResourcesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.search_all_resources(request)
 
@@ -3674,7 +3674,7 @@ async def test_search_all_resources_async(transport: str = 'grpc_asyncio', reque
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllResourcesAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -3690,7 +3690,7 @@ def test_search_all_resources_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.SearchAllResourcesRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3722,7 +3722,7 @@ async def test_search_all_resources_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.SearchAllResourcesRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3758,9 +3758,9 @@ def test_search_all_resources_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.search_all_resources(
-            scope='scope_value',
-            query='query_value',
-            asset_types=['asset_types_value'],
+            scope="scope_value",
+            query="query_value",
+            asset_types=["asset_types_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -3768,13 +3768,13 @@ def test_search_all_resources_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].scope
-        mock_val = 'scope_value'
+        mock_val = "scope_value"
         assert arg == mock_val
         arg = args[0].query
-        mock_val = 'query_value'
+        mock_val = "query_value"
         assert arg == mock_val
         arg = args[0].asset_types
-        mock_val = ['asset_types_value']
+        mock_val = ["asset_types_value"]
         assert arg == mock_val
 
 
@@ -3788,9 +3788,9 @@ def test_search_all_resources_flattened_error():
     with pytest.raises(ValueError):
         client.search_all_resources(
             asset_service.SearchAllResourcesRequest(),
-            scope='scope_value',
-            query='query_value',
-            asset_types=['asset_types_value'],
+            scope="scope_value",
+            query="query_value",
+            asset_types=["asset_types_value"],
         )
 
 @pytest.mark.asyncio
@@ -3810,9 +3810,9 @@ async def test_search_all_resources_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.search_all_resources(
-            scope='scope_value',
-            query='query_value',
-            asset_types=['asset_types_value'],
+            scope="scope_value",
+            query="query_value",
+            asset_types=["asset_types_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -3820,13 +3820,13 @@ async def test_search_all_resources_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].scope
-        mock_val = 'scope_value'
+        mock_val = "scope_value"
         assert arg == mock_val
         arg = args[0].query
-        mock_val = 'query_value'
+        mock_val = "query_value"
         assert arg == mock_val
         arg = args[0].asset_types
-        mock_val = ['asset_types_value']
+        mock_val = ["asset_types_value"]
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -3840,9 +3840,9 @@ async def test_search_all_resources_flattened_error_async():
     with pytest.raises(ValueError):
         await client.search_all_resources(
             asset_service.SearchAllResourcesRequest(),
-            scope='scope_value',
-            query='query_value',
-            asset_types=['asset_types_value'],
+            scope="scope_value",
+            query="query_value",
+            asset_types=["asset_types_value"],
         )
 
 
@@ -4062,7 +4062,7 @@ def test_search_all_iam_policies(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.SearchAllIamPoliciesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.search_all_iam_policies(request)
 
@@ -4074,7 +4074,7 @@ def test_search_all_iam_policies(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllIamPoliciesPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_search_all_iam_policies_non_empty_request_with_auto_populated_field():
@@ -4089,10 +4089,10 @@ def test_search_all_iam_policies_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.SearchAllIamPoliciesRequest(
-        scope='scope_value',
-        query='query_value',
-        page_token='page_token_value',
-        order_by='order_by_value',
+        scope="scope_value",
+        query="query_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4104,10 +4104,10 @@ def test_search_all_iam_policies_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.SearchAllIamPoliciesRequest(
-            scope='scope_value',
-            query='query_value',
-            page_token='page_token_value',
-            order_by='order_by_value',
+            scope="scope_value",
+            query="query_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
         )
 
 def test_search_all_iam_policies_use_cached_wrapped_rpc():
@@ -4193,7 +4193,7 @@ async def test_search_all_iam_policies_async(transport: str = 'grpc_asyncio', re
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllIamPoliciesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.search_all_iam_policies(request)
 
@@ -4205,7 +4205,7 @@ async def test_search_all_iam_policies_async(transport: str = 'grpc_asyncio', re
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllIamPoliciesAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -4221,7 +4221,7 @@ def test_search_all_iam_policies_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.SearchAllIamPoliciesRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4253,7 +4253,7 @@ async def test_search_all_iam_policies_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.SearchAllIamPoliciesRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4289,8 +4289,8 @@ def test_search_all_iam_policies_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.search_all_iam_policies(
-            scope='scope_value',
-            query='query_value',
+            scope="scope_value",
+            query="query_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4298,10 +4298,10 @@ def test_search_all_iam_policies_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].scope
-        mock_val = 'scope_value'
+        mock_val = "scope_value"
         assert arg == mock_val
         arg = args[0].query
-        mock_val = 'query_value'
+        mock_val = "query_value"
         assert arg == mock_val
 
 
@@ -4315,8 +4315,8 @@ def test_search_all_iam_policies_flattened_error():
     with pytest.raises(ValueError):
         client.search_all_iam_policies(
             asset_service.SearchAllIamPoliciesRequest(),
-            scope='scope_value',
-            query='query_value',
+            scope="scope_value",
+            query="query_value",
         )
 
 @pytest.mark.asyncio
@@ -4336,8 +4336,8 @@ async def test_search_all_iam_policies_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.search_all_iam_policies(
-            scope='scope_value',
-            query='query_value',
+            scope="scope_value",
+            query="query_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -4345,10 +4345,10 @@ async def test_search_all_iam_policies_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].scope
-        mock_val = 'scope_value'
+        mock_val = "scope_value"
         assert arg == mock_val
         arg = args[0].query
-        mock_val = 'query_value'
+        mock_val = "query_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -4362,8 +4362,8 @@ async def test_search_all_iam_policies_flattened_error_async():
     with pytest.raises(ValueError):
         await client.search_all_iam_policies(
             asset_service.SearchAllIamPoliciesRequest(),
-            scope='scope_value',
-            query='query_value',
+            scope="scope_value",
+            query="query_value",
         )
 
 
@@ -4610,7 +4610,7 @@ def test_analyze_iam_policy_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.AnalyzeIamPolicyRequest(
-        saved_analysis_query='saved_analysis_query_value',
+        saved_analysis_query="saved_analysis_query_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4622,7 +4622,7 @@ def test_analyze_iam_policy_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyRequest(
-            saved_analysis_query='saved_analysis_query_value',
+            saved_analysis_query="saved_analysis_query_value",
         )
 
 def test_analyze_iam_policy_use_cached_wrapped_rpc():
@@ -4736,7 +4736,7 @@ def test_analyze_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeIamPolicyRequest()
 
-    request.analysis_query.scope = 'scope_value'
+    request.analysis_query.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4768,7 +4768,7 @@ async def test_analyze_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeIamPolicyRequest()
 
-    request.analysis_query.scope = 'scope_value'
+    request.analysis_query.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4834,7 +4834,7 @@ def test_analyze_iam_policy_longrunning_non_empty_request_with_auto_populated_fi
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.AnalyzeIamPolicyLongrunningRequest(
-        saved_analysis_query='saved_analysis_query_value',
+        saved_analysis_query="saved_analysis_query_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4846,7 +4846,7 @@ def test_analyze_iam_policy_longrunning_non_empty_request_with_auto_populated_fi
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeIamPolicyLongrunningRequest(
-            saved_analysis_query='saved_analysis_query_value',
+            saved_analysis_query="saved_analysis_query_value",
         )
 
 def test_analyze_iam_policy_longrunning_use_cached_wrapped_rpc():
@@ -4969,7 +4969,7 @@ def test_analyze_iam_policy_longrunning_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeIamPolicyLongrunningRequest()
 
-    request.analysis_query.scope = 'scope_value'
+    request.analysis_query.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5001,7 +5001,7 @@ async def test_analyze_iam_policy_longrunning_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeIamPolicyLongrunningRequest()
 
-    request.analysis_query.scope = 'scope_value'
+    request.analysis_query.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5068,8 +5068,8 @@ def test_analyze_move_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.AnalyzeMoveRequest(
-        resource='resource_value',
-        destination_parent='destination_parent_value',
+        resource="resource_value",
+        destination_parent="destination_parent_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5081,8 +5081,8 @@ def test_analyze_move_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeMoveRequest(
-            resource='resource_value',
-            destination_parent='destination_parent_value',
+            resource="resource_value",
+            destination_parent="destination_parent_value",
         )
 
 def test_analyze_move_use_cached_wrapped_rpc():
@@ -5194,7 +5194,7 @@ def test_analyze_move_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeMoveRequest()
 
-    request.resource = 'resource_value'
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5226,7 +5226,7 @@ async def test_analyze_move_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeMoveRequest()
 
-    request.resource = 'resource_value'
+    request.resource = "resource_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5268,7 +5268,7 @@ def test_query_assets(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.QueryAssetsResponse(
-            job_reference='job_reference_value',
+            job_reference="job_reference_value",
             done=True,
         )
         response = client.query_assets(request)
@@ -5281,7 +5281,7 @@ def test_query_assets(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.QueryAssetsResponse)
-    assert response.job_reference == 'job_reference_value'
+    assert response.job_reference == "job_reference_value"
     assert response.done is True
 
 
@@ -5297,10 +5297,10 @@ def test_query_assets_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.QueryAssetsRequest(
-        parent='parent_value',
-        statement='statement_value',
-        job_reference='job_reference_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        statement="statement_value",
+        job_reference="job_reference_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5312,10 +5312,10 @@ def test_query_assets_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.QueryAssetsRequest(
-            parent='parent_value',
-            statement='statement_value',
-            job_reference='job_reference_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            statement="statement_value",
+            job_reference="job_reference_value",
+            page_token="page_token_value",
         )
 
 def test_query_assets_use_cached_wrapped_rpc():
@@ -5401,7 +5401,7 @@ async def test_query_assets_async(transport: str = 'grpc_asyncio', request_type=
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.QueryAssetsResponse(
-            job_reference='job_reference_value',
+            job_reference="job_reference_value",
             done=True,
         ))
         response = await client.query_assets(request)
@@ -5414,7 +5414,7 @@ async def test_query_assets_async(transport: str = 'grpc_asyncio', request_type=
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.QueryAssetsResponse)
-    assert response.job_reference == 'job_reference_value'
+    assert response.job_reference == "job_reference_value"
     assert response.done is True
 
 
@@ -5431,7 +5431,7 @@ def test_query_assets_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.QueryAssetsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5463,7 +5463,7 @@ async def test_query_assets_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.QueryAssetsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5505,10 +5505,10 @@ def test_create_saved_query(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.SavedQuery(
-            name='name_value',
-            description='description_value',
-            creator='creator_value',
-            last_updater='last_updater_value',
+            name="name_value",
+            description="description_value",
+            creator="creator_value",
+            last_updater="last_updater_value",
         )
         response = client.create_saved_query(request)
 
@@ -5520,10 +5520,10 @@ def test_create_saved_query(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.creator == "creator_value"
+    assert response.last_updater == "last_updater_value"
 
 
 def test_create_saved_query_non_empty_request_with_auto_populated_field():
@@ -5538,8 +5538,8 @@ def test_create_saved_query_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.CreateSavedQueryRequest(
-        parent='parent_value',
-        saved_query_id='saved_query_id_value',
+        parent="parent_value",
+        saved_query_id="saved_query_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5551,8 +5551,8 @@ def test_create_saved_query_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.CreateSavedQueryRequest(
-            parent='parent_value',
-            saved_query_id='saved_query_id_value',
+            parent="parent_value",
+            saved_query_id="saved_query_id_value",
         )
 
 def test_create_saved_query_use_cached_wrapped_rpc():
@@ -5638,10 +5638,10 @@ async def test_create_saved_query_async(transport: str = 'grpc_asyncio', request
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
-            name='name_value',
-            description='description_value',
-            creator='creator_value',
-            last_updater='last_updater_value',
+            name="name_value",
+            description="description_value",
+            creator="creator_value",
+            last_updater="last_updater_value",
         ))
         response = await client.create_saved_query(request)
 
@@ -5653,10 +5653,10 @@ async def test_create_saved_query_async(transport: str = 'grpc_asyncio', request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.creator == "creator_value"
+    assert response.last_updater == "last_updater_value"
 
 
 @pytest.mark.asyncio
@@ -5672,7 +5672,7 @@ def test_create_saved_query_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.CreateSavedQueryRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5704,7 +5704,7 @@ async def test_create_saved_query_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.CreateSavedQueryRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5740,9 +5740,9 @@ def test_create_saved_query_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_saved_query(
-            parent='parent_value',
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            saved_query_id='saved_query_id_value',
+            parent="parent_value",
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            saved_query_id="saved_query_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5750,13 +5750,13 @@ def test_create_saved_query_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].saved_query
-        mock_val = asset_service.SavedQuery(name='name_value')
+        mock_val = asset_service.SavedQuery(name="name_value")
         assert arg == mock_val
         arg = args[0].saved_query_id
-        mock_val = 'saved_query_id_value'
+        mock_val = "saved_query_id_value"
         assert arg == mock_val
 
 
@@ -5770,9 +5770,9 @@ def test_create_saved_query_flattened_error():
     with pytest.raises(ValueError):
         client.create_saved_query(
             asset_service.CreateSavedQueryRequest(),
-            parent='parent_value',
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            saved_query_id='saved_query_id_value',
+            parent="parent_value",
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            saved_query_id="saved_query_id_value",
         )
 
 @pytest.mark.asyncio
@@ -5792,9 +5792,9 @@ async def test_create_saved_query_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_saved_query(
-            parent='parent_value',
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            saved_query_id='saved_query_id_value',
+            parent="parent_value",
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            saved_query_id="saved_query_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5802,13 +5802,13 @@ async def test_create_saved_query_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].saved_query
-        mock_val = asset_service.SavedQuery(name='name_value')
+        mock_val = asset_service.SavedQuery(name="name_value")
         assert arg == mock_val
         arg = args[0].saved_query_id
-        mock_val = 'saved_query_id_value'
+        mock_val = "saved_query_id_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -5822,9 +5822,9 @@ async def test_create_saved_query_flattened_error_async():
     with pytest.raises(ValueError):
         await client.create_saved_query(
             asset_service.CreateSavedQueryRequest(),
-            parent='parent_value',
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            saved_query_id='saved_query_id_value',
+            parent="parent_value",
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            saved_query_id="saved_query_id_value",
         )
 
 
@@ -5848,10 +5848,10 @@ def test_get_saved_query(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.SavedQuery(
-            name='name_value',
-            description='description_value',
-            creator='creator_value',
-            last_updater='last_updater_value',
+            name="name_value",
+            description="description_value",
+            creator="creator_value",
+            last_updater="last_updater_value",
         )
         response = client.get_saved_query(request)
 
@@ -5863,10 +5863,10 @@ def test_get_saved_query(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.creator == "creator_value"
+    assert response.last_updater == "last_updater_value"
 
 
 def test_get_saved_query_non_empty_request_with_auto_populated_field():
@@ -5881,7 +5881,7 @@ def test_get_saved_query_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.GetSavedQueryRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5893,7 +5893,7 @@ def test_get_saved_query_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.GetSavedQueryRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_get_saved_query_use_cached_wrapped_rpc():
@@ -5979,10 +5979,10 @@ async def test_get_saved_query_async(transport: str = 'grpc_asyncio', request_ty
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
-            name='name_value',
-            description='description_value',
-            creator='creator_value',
-            last_updater='last_updater_value',
+            name="name_value",
+            description="description_value",
+            creator="creator_value",
+            last_updater="last_updater_value",
         ))
         response = await client.get_saved_query(request)
 
@@ -5994,10 +5994,10 @@ async def test_get_saved_query_async(transport: str = 'grpc_asyncio', request_ty
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.creator == "creator_value"
+    assert response.last_updater == "last_updater_value"
 
 
 @pytest.mark.asyncio
@@ -6013,7 +6013,7 @@ def test_get_saved_query_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.GetSavedQueryRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6045,7 +6045,7 @@ async def test_get_saved_query_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.GetSavedQueryRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6081,7 +6081,7 @@ def test_get_saved_query_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_saved_query(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6089,7 +6089,7 @@ def test_get_saved_query_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -6103,7 +6103,7 @@ def test_get_saved_query_flattened_error():
     with pytest.raises(ValueError):
         client.get_saved_query(
             asset_service.GetSavedQueryRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -6123,7 +6123,7 @@ async def test_get_saved_query_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_saved_query(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6131,7 +6131,7 @@ async def test_get_saved_query_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -6145,7 +6145,7 @@ async def test_get_saved_query_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_saved_query(
             asset_service.GetSavedQueryRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -6169,7 +6169,7 @@ def test_list_saved_queries(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.ListSavedQueriesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.list_saved_queries(request)
 
@@ -6181,7 +6181,7 @@ def test_list_saved_queries(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSavedQueriesPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_saved_queries_non_empty_request_with_auto_populated_field():
@@ -6196,9 +6196,9 @@ def test_list_saved_queries_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.ListSavedQueriesRequest(
-        parent='parent_value',
-        filter='filter_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6210,9 +6210,9 @@ def test_list_saved_queries_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.ListSavedQueriesRequest(
-            parent='parent_value',
-            filter='filter_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
         )
 
 def test_list_saved_queries_use_cached_wrapped_rpc():
@@ -6298,7 +6298,7 @@ async def test_list_saved_queries_async(transport: str = 'grpc_asyncio', request
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.list_saved_queries(request)
 
@@ -6310,7 +6310,7 @@ async def test_list_saved_queries_async(transport: str = 'grpc_asyncio', request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSavedQueriesAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -6326,7 +6326,7 @@ def test_list_saved_queries_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.ListSavedQueriesRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6358,7 +6358,7 @@ async def test_list_saved_queries_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.ListSavedQueriesRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6394,7 +6394,7 @@ def test_list_saved_queries_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_saved_queries(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6402,7 +6402,7 @@ def test_list_saved_queries_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -6416,7 +6416,7 @@ def test_list_saved_queries_flattened_error():
     with pytest.raises(ValueError):
         client.list_saved_queries(
             asset_service.ListSavedQueriesRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -6436,7 +6436,7 @@ async def test_list_saved_queries_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_saved_queries(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6444,7 +6444,7 @@ async def test_list_saved_queries_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -6458,7 +6458,7 @@ async def test_list_saved_queries_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_saved_queries(
             asset_service.ListSavedQueriesRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -6678,10 +6678,10 @@ def test_update_saved_query(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.SavedQuery(
-            name='name_value',
-            description='description_value',
-            creator='creator_value',
-            last_updater='last_updater_value',
+            name="name_value",
+            description="description_value",
+            creator="creator_value",
+            last_updater="last_updater_value",
         )
         response = client.update_saved_query(request)
 
@@ -6693,10 +6693,10 @@ def test_update_saved_query(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.creator == "creator_value"
+    assert response.last_updater == "last_updater_value"
 
 
 def test_update_saved_query_non_empty_request_with_auto_populated_field():
@@ -6807,10 +6807,10 @@ async def test_update_saved_query_async(transport: str = 'grpc_asyncio', request
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
-            name='name_value',
-            description='description_value',
-            creator='creator_value',
-            last_updater='last_updater_value',
+            name="name_value",
+            description="description_value",
+            creator="creator_value",
+            last_updater="last_updater_value",
         ))
         response = await client.update_saved_query(request)
 
@@ -6822,10 +6822,10 @@ async def test_update_saved_query_async(transport: str = 'grpc_asyncio', request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.creator == "creator_value"
+    assert response.last_updater == "last_updater_value"
 
 
 @pytest.mark.asyncio
@@ -6841,7 +6841,7 @@ def test_update_saved_query_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.UpdateSavedQueryRequest()
 
-    request.saved_query.name = 'name_value'
+    request.saved_query.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6873,7 +6873,7 @@ async def test_update_saved_query_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.UpdateSavedQueryRequest()
 
-    request.saved_query.name = 'name_value'
+    request.saved_query.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6909,8 +6909,8 @@ def test_update_saved_query_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_saved_query(
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -6918,10 +6918,10 @@ def test_update_saved_query_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].saved_query
-        mock_val = asset_service.SavedQuery(name='name_value')
+        mock_val = asset_service.SavedQuery(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
@@ -6935,8 +6935,8 @@ def test_update_saved_query_flattened_error():
     with pytest.raises(ValueError):
         client.update_saved_query(
             asset_service.UpdateSavedQueryRequest(),
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 @pytest.mark.asyncio
@@ -6956,8 +6956,8 @@ async def test_update_saved_query_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_saved_query(
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
@@ -6965,10 +6965,10 @@ async def test_update_saved_query_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].saved_query
-        mock_val = asset_service.SavedQuery(name='name_value')
+        mock_val = asset_service.SavedQuery(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
-        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -6982,8 +6982,8 @@ async def test_update_saved_query_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_saved_query(
             asset_service.UpdateSavedQueryRequest(),
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -7031,7 +7031,7 @@ def test_delete_saved_query_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.DeleteSavedQueryRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7043,7 +7043,7 @@ def test_delete_saved_query_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.DeleteSavedQueryRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_delete_saved_query_use_cached_wrapped_rpc():
@@ -7154,7 +7154,7 @@ def test_delete_saved_query_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.DeleteSavedQueryRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7186,7 +7186,7 @@ async def test_delete_saved_query_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.DeleteSavedQueryRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7222,7 +7222,7 @@ def test_delete_saved_query_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_saved_query(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7230,7 +7230,7 @@ def test_delete_saved_query_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 
@@ -7244,7 +7244,7 @@ def test_delete_saved_query_flattened_error():
     with pytest.raises(ValueError):
         client.delete_saved_query(
             asset_service.DeleteSavedQueryRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 @pytest.mark.asyncio
@@ -7264,7 +7264,7 @@ async def test_delete_saved_query_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_saved_query(
-            name='name_value',
+            name="name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7272,7 +7272,7 @@ async def test_delete_saved_query_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -7286,7 +7286,7 @@ async def test_delete_saved_query_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_saved_query(
             asset_service.DeleteSavedQueryRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -7335,7 +7335,7 @@ def test_batch_get_effective_iam_policies_non_empty_request_with_auto_populated_
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.BatchGetEffectiveIamPoliciesRequest(
-        scope='scope_value',
+        scope="scope_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7347,7 +7347,7 @@ def test_batch_get_effective_iam_policies_non_empty_request_with_auto_populated_
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest(
-            scope='scope_value',
+            scope="scope_value",
         )
 
 def test_batch_get_effective_iam_policies_use_cached_wrapped_rpc():
@@ -7459,7 +7459,7 @@ def test_batch_get_effective_iam_policies_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.BatchGetEffectiveIamPoliciesRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7491,7 +7491,7 @@ async def test_batch_get_effective_iam_policies_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.BatchGetEffectiveIamPoliciesRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7533,7 +7533,7 @@ def test_analyze_org_policies(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.AnalyzeOrgPoliciesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.analyze_org_policies(request)
 
@@ -7545,7 +7545,7 @@ def test_analyze_org_policies(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_analyze_org_policies_non_empty_request_with_auto_populated_field():
@@ -7560,10 +7560,10 @@ def test_analyze_org_policies_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.AnalyzeOrgPoliciesRequest(
-        scope='scope_value',
-        constraint='constraint_value',
-        filter='filter_value',
-        page_token='page_token_value',
+        scope="scope_value",
+        constraint="constraint_value",
+        filter="filter_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7575,10 +7575,10 @@ def test_analyze_org_policies_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPoliciesRequest(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
-            page_token='page_token_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+            page_token="page_token_value",
         )
 
 def test_analyze_org_policies_use_cached_wrapped_rpc():
@@ -7664,7 +7664,7 @@ async def test_analyze_org_policies_async(transport: str = 'grpc_asyncio', reque
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPoliciesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.analyze_org_policies(request)
 
@@ -7676,7 +7676,7 @@ async def test_analyze_org_policies_async(transport: str = 'grpc_asyncio', reque
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPoliciesAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -7692,7 +7692,7 @@ def test_analyze_org_policies_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeOrgPoliciesRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7724,7 +7724,7 @@ async def test_analyze_org_policies_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeOrgPoliciesRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7760,9 +7760,9 @@ def test_analyze_org_policies_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.analyze_org_policies(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7770,13 +7770,13 @@ def test_analyze_org_policies_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].scope
-        mock_val = 'scope_value'
+        mock_val = "scope_value"
         assert arg == mock_val
         arg = args[0].constraint
-        mock_val = 'constraint_value'
+        mock_val = "constraint_value"
         assert arg == mock_val
         arg = args[0].filter
-        mock_val = 'filter_value'
+        mock_val = "filter_value"
         assert arg == mock_val
 
 
@@ -7790,9 +7790,9 @@ def test_analyze_org_policies_flattened_error():
     with pytest.raises(ValueError):
         client.analyze_org_policies(
             asset_service.AnalyzeOrgPoliciesRequest(),
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
 @pytest.mark.asyncio
@@ -7812,9 +7812,9 @@ async def test_analyze_org_policies_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.analyze_org_policies(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7822,13 +7822,13 @@ async def test_analyze_org_policies_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].scope
-        mock_val = 'scope_value'
+        mock_val = "scope_value"
         assert arg == mock_val
         arg = args[0].constraint
-        mock_val = 'constraint_value'
+        mock_val = "constraint_value"
         assert arg == mock_val
         arg = args[0].filter
-        mock_val = 'filter_value'
+        mock_val = "filter_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -7842,9 +7842,9 @@ async def test_analyze_org_policies_flattened_error_async():
     with pytest.raises(ValueError):
         await client.analyze_org_policies(
             asset_service.AnalyzeOrgPoliciesRequest(),
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
 
@@ -8064,7 +8064,7 @@ def test_analyze_org_policy_governed_containers(request_type, transport: str = '
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.analyze_org_policy_governed_containers(request)
 
@@ -8076,7 +8076,7 @@ def test_analyze_org_policy_governed_containers(request_type, transport: str = '
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_analyze_org_policy_governed_containers_non_empty_request_with_auto_populated_field():
@@ -8091,10 +8091,10 @@ def test_analyze_org_policy_governed_containers_non_empty_request_with_auto_popu
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest(
-        scope='scope_value',
-        constraint='constraint_value',
-        filter='filter_value',
-        page_token='page_token_value',
+        scope="scope_value",
+        constraint="constraint_value",
+        filter="filter_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8106,10 +8106,10 @@ def test_analyze_org_policy_governed_containers_non_empty_request_with_auto_popu
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
-            page_token='page_token_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+            page_token="page_token_value",
         )
 
 def test_analyze_org_policy_governed_containers_use_cached_wrapped_rpc():
@@ -8195,7 +8195,7 @@ async def test_analyze_org_policy_governed_containers_async(transport: str = 'gr
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.analyze_org_policy_governed_containers(request)
 
@@ -8207,7 +8207,7 @@ async def test_analyze_org_policy_governed_containers_async(transport: str = 'gr
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -8223,7 +8223,7 @@ def test_analyze_org_policy_governed_containers_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8255,7 +8255,7 @@ async def test_analyze_org_policy_governed_containers_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8291,9 +8291,9 @@ def test_analyze_org_policy_governed_containers_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.analyze_org_policy_governed_containers(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -8301,13 +8301,13 @@ def test_analyze_org_policy_governed_containers_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].scope
-        mock_val = 'scope_value'
+        mock_val = "scope_value"
         assert arg == mock_val
         arg = args[0].constraint
-        mock_val = 'constraint_value'
+        mock_val = "constraint_value"
         assert arg == mock_val
         arg = args[0].filter
-        mock_val = 'filter_value'
+        mock_val = "filter_value"
         assert arg == mock_val
 
 
@@ -8321,9 +8321,9 @@ def test_analyze_org_policy_governed_containers_flattened_error():
     with pytest.raises(ValueError):
         client.analyze_org_policy_governed_containers(
             asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
 @pytest.mark.asyncio
@@ -8343,9 +8343,9 @@ async def test_analyze_org_policy_governed_containers_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.analyze_org_policy_governed_containers(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -8353,13 +8353,13 @@ async def test_analyze_org_policy_governed_containers_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].scope
-        mock_val = 'scope_value'
+        mock_val = "scope_value"
         assert arg == mock_val
         arg = args[0].constraint
-        mock_val = 'constraint_value'
+        mock_val = "constraint_value"
         assert arg == mock_val
         arg = args[0].filter
-        mock_val = 'filter_value'
+        mock_val = "filter_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -8373,9 +8373,9 @@ async def test_analyze_org_policy_governed_containers_flattened_error_async():
     with pytest.raises(ValueError):
         await client.analyze_org_policy_governed_containers(
             asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
 
@@ -8595,7 +8595,7 @@ def test_analyze_org_policy_governed_assets(request_type, transport: str = 'grpc
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.analyze_org_policy_governed_assets(request)
 
@@ -8607,7 +8607,7 @@ def test_analyze_org_policy_governed_assets(request_type, transport: str = 'grpc
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_analyze_org_policy_governed_assets_non_empty_request_with_auto_populated_field():
@@ -8622,10 +8622,10 @@ def test_analyze_org_policy_governed_assets_non_empty_request_with_auto_populate
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(
-        scope='scope_value',
-        constraint='constraint_value',
-        filter='filter_value',
-        page_token='page_token_value',
+        scope="scope_value",
+        constraint="constraint_value",
+        filter="filter_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8637,10 +8637,10 @@ def test_analyze_org_policy_governed_assets_non_empty_request_with_auto_populate
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
-            page_token='page_token_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
+            page_token="page_token_value",
         )
 
 def test_analyze_org_policy_governed_assets_use_cached_wrapped_rpc():
@@ -8726,7 +8726,7 @@ async def test_analyze_org_policy_governed_assets_async(transport: str = 'grpc_a
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.analyze_org_policy_governed_assets(request)
 
@@ -8738,7 +8738,7 @@ async def test_analyze_org_policy_governed_assets_async(transport: str = 'grpc_a
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -8754,7 +8754,7 @@ def test_analyze_org_policy_governed_assets_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8786,7 +8786,7 @@ async def test_analyze_org_policy_governed_assets_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
 
-    request.scope = 'scope_value'
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8822,9 +8822,9 @@ def test_analyze_org_policy_governed_assets_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.analyze_org_policy_governed_assets(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -8832,13 +8832,13 @@ def test_analyze_org_policy_governed_assets_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].scope
-        mock_val = 'scope_value'
+        mock_val = "scope_value"
         assert arg == mock_val
         arg = args[0].constraint
-        mock_val = 'constraint_value'
+        mock_val = "constraint_value"
         assert arg == mock_val
         arg = args[0].filter
-        mock_val = 'filter_value'
+        mock_val = "filter_value"
         assert arg == mock_val
 
 
@@ -8852,9 +8852,9 @@ def test_analyze_org_policy_governed_assets_flattened_error():
     with pytest.raises(ValueError):
         client.analyze_org_policy_governed_assets(
             asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
 @pytest.mark.asyncio
@@ -8874,9 +8874,9 @@ async def test_analyze_org_policy_governed_assets_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.analyze_org_policy_governed_assets(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -8884,13 +8884,13 @@ async def test_analyze_org_policy_governed_assets_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].scope
-        mock_val = 'scope_value'
+        mock_val = "scope_value"
         assert arg == mock_val
         arg = args[0].constraint
-        mock_val = 'constraint_value'
+        mock_val = "constraint_value"
         assert arg == mock_val
         arg = args[0].filter
-        mock_val = 'filter_value'
+        mock_val = "filter_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -8904,9 +8904,9 @@ async def test_analyze_org_policy_governed_assets_flattened_error_async():
     with pytest.raises(ValueError):
         await client.analyze_org_policy_governed_assets(
             asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
 
@@ -9164,14 +9164,14 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_assets._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9274,7 +9274,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_assets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -9283,7 +9283,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9351,7 +9351,7 @@ def test_list_assets_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
+            parent="parent_value",
         )
         mock_args.update(sample_request)
 
@@ -9385,7 +9385,7 @@ def test_list_assets_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.list_assets(
             asset_service.ListAssetsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -9504,7 +9504,7 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_assets_history._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -9513,7 +9513,7 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9619,17 +9619,17 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
-    jsonified_request["feedId"] = 'feed_id_value'
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["feedId"] = "feed_id_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
     assert "feedId" in jsonified_request
-    assert jsonified_request["feedId"] == 'feed_id_value'
+    assert jsonified_request["feedId"] == "feed_id_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9698,7 +9698,7 @@ def test_create_feed_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
+            parent="parent_value",
         )
         mock_args.update(sample_request)
 
@@ -9732,7 +9732,7 @@ def test_create_feed_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.create_feed(
             asset_service.CreateFeedRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -9789,14 +9789,14 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9864,7 +9864,7 @@ def test_get_feed_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -9898,7 +9898,7 @@ def test_get_feed_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.get_feed(
             asset_service.GetFeedRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -9955,14 +9955,14 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_feeds._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10030,7 +10030,7 @@ def test_list_feeds_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
+            parent="parent_value",
         )
         mock_args.update(sample_request)
 
@@ -10064,7 +10064,7 @@ def test_list_feeds_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.list_feeds(
             asset_service.ListFeedsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -10192,7 +10192,7 @@ def test_update_feed_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            feed=asset_service.Feed(name='name_value'),
+            feed=asset_service.Feed(name="name_value"),
         )
         mock_args.update(sample_request)
 
@@ -10226,7 +10226,7 @@ def test_update_feed_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.update_feed(
             asset_service.UpdateFeedRequest(),
-            feed=asset_service.Feed(name='name_value'),
+            feed=asset_service.Feed(name="name_value"),
         )
 
 
@@ -10283,14 +10283,14 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_feed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10355,7 +10355,7 @@ def test_delete_feed_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -10387,7 +10387,7 @@ def test_delete_feed_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.delete_feed(
             asset_service.DeleteFeedRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -10444,7 +10444,7 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
 
     # verify required fields with default values are now present
 
-    jsonified_request["scope"] = 'scope_value'
+    jsonified_request["scope"] = "scope_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_resources._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -10453,7 +10453,7 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
-    assert jsonified_request["scope"] == 'scope_value'
+    assert jsonified_request["scope"] == "scope_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10521,9 +10521,9 @@ def test_search_all_resources_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            scope='scope_value',
-            query='query_value',
-            asset_types=['asset_types_value'],
+            scope="scope_value",
+            query="query_value",
+            asset_types=["asset_types_value"],
         )
         mock_args.update(sample_request)
 
@@ -10557,9 +10557,9 @@ def test_search_all_resources_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.search_all_resources(
             asset_service.SearchAllResourcesRequest(),
-            scope='scope_value',
-            query='query_value',
-            asset_types=['asset_types_value'],
+            scope="scope_value",
+            query="query_value",
+            asset_types=["asset_types_value"],
         )
 
 
@@ -10678,7 +10678,7 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
 
     # verify required fields with default values are now present
 
-    jsonified_request["scope"] = 'scope_value'
+    jsonified_request["scope"] = "scope_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_iam_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -10687,7 +10687,7 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
-    assert jsonified_request["scope"] == 'scope_value'
+    assert jsonified_request["scope"] == "scope_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10755,8 +10755,8 @@ def test_search_all_iam_policies_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            scope='scope_value',
-            query='query_value',
+            scope="scope_value",
+            query="query_value",
         )
         mock_args.update(sample_request)
 
@@ -10790,8 +10790,8 @@ def test_search_all_iam_policies_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.search_all_iam_policies(
             asset_service.SearchAllIamPoliciesRequest(),
-            scope='scope_value',
-            query='query_value',
+            scope="scope_value",
+            query="query_value",
         )
 
 
@@ -11132,8 +11132,8 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     assert "destinationParent" in jsonified_request
     assert jsonified_request["destinationParent"] == request_init["destination_parent"]
 
-    jsonified_request["resource"] = 'resource_value'
-    jsonified_request["destinationParent"] = 'destination_parent_value'
+    jsonified_request["resource"] = "resource_value"
+    jsonified_request["destinationParent"] = "destination_parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_move._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -11142,9 +11142,9 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
 
     # verify required fields with non-default values are left alone
     assert "resource" in jsonified_request
-    assert jsonified_request["resource"] == 'resource_value'
+    assert jsonified_request["resource"] == "resource_value"
     assert "destinationParent" in jsonified_request
-    assert jsonified_request["destinationParent"] == 'destination_parent_value'
+    assert jsonified_request["destinationParent"] == "destination_parent_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11253,14 +11253,14 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).query_assets._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11370,8 +11370,8 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     assert "savedQueryId" in jsonified_request
     assert jsonified_request["savedQueryId"] == request_init["saved_query_id"]
 
-    jsonified_request["parent"] = 'parent_value'
-    jsonified_request["savedQueryId"] = 'saved_query_id_value'
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["savedQueryId"] = "saved_query_id_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_saved_query._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -11380,9 +11380,9 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
     assert "savedQueryId" in jsonified_request
-    assert jsonified_request["savedQueryId"] == 'saved_query_id_value'
+    assert jsonified_request["savedQueryId"] == "saved_query_id_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11455,9 +11455,9 @@ def test_create_saved_query_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            saved_query_id='saved_query_id_value',
+            parent="parent_value",
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            saved_query_id="saved_query_id_value",
         )
         mock_args.update(sample_request)
 
@@ -11491,9 +11491,9 @@ def test_create_saved_query_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.create_saved_query(
             asset_service.CreateSavedQueryRequest(),
-            parent='parent_value',
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            saved_query_id='saved_query_id_value',
+            parent="parent_value",
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            saved_query_id="saved_query_id_value",
         )
 
 
@@ -11550,14 +11550,14 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_saved_query._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11625,7 +11625,7 @@ def test_get_saved_query_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -11659,7 +11659,7 @@ def test_get_saved_query_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.get_saved_query(
             asset_service.GetSavedQueryRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -11716,7 +11716,7 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
 
     # verify required fields with default values are now present
 
-    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_saved_queries._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -11725,7 +11725,7 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
+    assert jsonified_request["parent"] == "parent_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11793,7 +11793,7 @@ def test_list_saved_queries_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent='parent_value',
+            parent="parent_value",
         )
         mock_args.update(sample_request)
 
@@ -11827,7 +11827,7 @@ def test_list_saved_queries_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.list_saved_queries(
             asset_service.ListSavedQueriesRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -12019,8 +12019,8 @@ def test_update_saved_query_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
 
@@ -12054,8 +12054,8 @@ def test_update_saved_query_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.update_saved_query(
             asset_service.UpdateSavedQueryRequest(),
-            saved_query=asset_service.SavedQuery(name='name_value'),
-            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+            saved_query=asset_service.SavedQuery(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -12112,14 +12112,14 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_saved_query._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12184,7 +12184,7 @@ def test_delete_saved_query_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
+            name="name_value",
         )
         mock_args.update(sample_request)
 
@@ -12216,7 +12216,7 @@ def test_delete_saved_query_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.delete_saved_query(
             asset_service.DeleteSavedQueryRequest(),
-            name='name_value',
+            name="name_value",
         )
 
 
@@ -12277,8 +12277,8 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
     assert "names" in jsonified_request
     assert jsonified_request["names"] == request_init["names"]
 
-    jsonified_request["scope"] = 'scope_value'
-    jsonified_request["names"] = 'names_value'
+    jsonified_request["scope"] = "scope_value"
+    jsonified_request["names"] = "names_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -12287,9 +12287,9 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
-    assert jsonified_request["scope"] == 'scope_value'
+    assert jsonified_request["scope"] == "scope_value"
     assert "names" in jsonified_request
-    assert jsonified_request["names"] == 'names_value'
+    assert jsonified_request["names"] == "names_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12402,8 +12402,8 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     assert "constraint" in jsonified_request
     assert jsonified_request["constraint"] == request_init["constraint"]
 
-    jsonified_request["scope"] = 'scope_value'
-    jsonified_request["constraint"] = 'constraint_value'
+    jsonified_request["scope"] = "scope_value"
+    jsonified_request["constraint"] = "constraint_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policies._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -12412,9 +12412,9 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
-    assert jsonified_request["scope"] == 'scope_value'
+    assert jsonified_request["scope"] == "scope_value"
     assert "constraint" in jsonified_request
-    assert jsonified_request["constraint"] == 'constraint_value'
+    assert jsonified_request["constraint"] == "constraint_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12486,9 +12486,9 @@ def test_analyze_org_policies_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
         mock_args.update(sample_request)
 
@@ -12522,9 +12522,9 @@ def test_analyze_org_policies_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.analyze_org_policies(
             asset_service.AnalyzeOrgPoliciesRequest(),
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
 
@@ -12647,8 +12647,8 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     assert "constraint" in jsonified_request
     assert jsonified_request["constraint"] == request_init["constraint"]
 
-    jsonified_request["scope"] = 'scope_value'
-    jsonified_request["constraint"] = 'constraint_value'
+    jsonified_request["scope"] = "scope_value"
+    jsonified_request["constraint"] = "constraint_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -12657,9 +12657,9 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
-    assert jsonified_request["scope"] == 'scope_value'
+    assert jsonified_request["scope"] == "scope_value"
     assert "constraint" in jsonified_request
-    assert jsonified_request["constraint"] == 'constraint_value'
+    assert jsonified_request["constraint"] == "constraint_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12731,9 +12731,9 @@ def test_analyze_org_policy_governed_containers_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
         mock_args.update(sample_request)
 
@@ -12767,9 +12767,9 @@ def test_analyze_org_policy_governed_containers_rest_flattened_error(transport: 
     with pytest.raises(ValueError):
         client.analyze_org_policy_governed_containers(
             asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
 
@@ -12892,8 +12892,8 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     assert "constraint" in jsonified_request
     assert jsonified_request["constraint"] == request_init["constraint"]
 
-    jsonified_request["scope"] = 'scope_value'
-    jsonified_request["constraint"] = 'constraint_value'
+    jsonified_request["scope"] = "scope_value"
+    jsonified_request["constraint"] = "constraint_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
@@ -12902,9 +12902,9 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
 
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
-    assert jsonified_request["scope"] == 'scope_value'
+    assert jsonified_request["scope"] == "scope_value"
     assert "constraint" in jsonified_request
-    assert jsonified_request["constraint"] == 'constraint_value'
+    assert jsonified_request["constraint"] == "constraint_value"
 
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12976,9 +12976,9 @@ def test_analyze_org_policy_governed_assets_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
         mock_args.update(sample_request)
 
@@ -13012,9 +13012,9 @@ def test_analyze_org_policy_governed_assets_rest_flattened_error(transport: str 
     with pytest.raises(ValueError):
         client.analyze_org_policy_governed_assets(
             asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
-            scope='scope_value',
-            constraint='constraint_value',
-            filter='filter_value',
+            scope="scope_value",
+            constraint="constraint_value",
+            filter="filter_value",
         )
 
 
@@ -13768,7 +13768,7 @@ async def test_list_assets_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListAssetsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.list_assets(request=None)
 
@@ -13821,11 +13821,11 @@ async def test_create_feed_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
-            name='name_value',
-            asset_names=['asset_names_value'],
-            asset_types=['asset_types_value'],
+            name="name_value",
+            asset_names=["asset_names_value"],
+            asset_types=["asset_types_value"],
             content_type=asset_service.ContentType.RESOURCE,
-            relationship_types=['relationship_types_value'],
+            relationship_types=["relationship_types_value"],
         ))
         await client.create_feed(request=None)
 
@@ -13852,11 +13852,11 @@ async def test_get_feed_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
-            name='name_value',
-            asset_names=['asset_names_value'],
-            asset_types=['asset_types_value'],
+            name="name_value",
+            asset_names=["asset_names_value"],
+            asset_types=["asset_types_value"],
             content_type=asset_service.ContentType.RESOURCE,
-            relationship_types=['relationship_types_value'],
+            relationship_types=["relationship_types_value"],
         ))
         await client.get_feed(request=None)
 
@@ -13909,11 +13909,11 @@ async def test_update_feed_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.Feed(
-            name='name_value',
-            asset_names=['asset_names_value'],
-            asset_types=['asset_types_value'],
+            name="name_value",
+            asset_names=["asset_names_value"],
+            asset_types=["asset_types_value"],
             content_type=asset_service.ContentType.RESOURCE,
-            relationship_types=['relationship_types_value'],
+            relationship_types=["relationship_types_value"],
         ))
         await client.update_feed(request=None)
 
@@ -13965,7 +13965,7 @@ async def test_search_all_resources_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllResourcesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.search_all_resources(request=None)
 
@@ -13992,7 +13992,7 @@ async def test_search_all_iam_policies_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SearchAllIamPoliciesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.search_all_iam_policies(request=None)
 
@@ -14099,7 +14099,7 @@ async def test_query_assets_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.QueryAssetsResponse(
-            job_reference='job_reference_value',
+            job_reference="job_reference_value",
             done=True,
         ))
         await client.query_assets(request=None)
@@ -14127,10 +14127,10 @@ async def test_create_saved_query_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
-            name='name_value',
-            description='description_value',
-            creator='creator_value',
-            last_updater='last_updater_value',
+            name="name_value",
+            description="description_value",
+            creator="creator_value",
+            last_updater="last_updater_value",
         ))
         await client.create_saved_query(request=None)
 
@@ -14157,10 +14157,10 @@ async def test_get_saved_query_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
-            name='name_value',
-            description='description_value',
-            creator='creator_value',
-            last_updater='last_updater_value',
+            name="name_value",
+            description="description_value",
+            creator="creator_value",
+            last_updater="last_updater_value",
         ))
         await client.get_saved_query(request=None)
 
@@ -14187,7 +14187,7 @@ async def test_list_saved_queries_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.list_saved_queries(request=None)
 
@@ -14214,10 +14214,10 @@ async def test_update_saved_query_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
-            name='name_value',
-            description='description_value',
-            creator='creator_value',
-            last_updater='last_updater_value',
+            name="name_value",
+            description="description_value",
+            creator="creator_value",
+            last_updater="last_updater_value",
         ))
         await client.update_saved_query(request=None)
 
@@ -14295,7 +14295,7 @@ async def test_analyze_org_policies_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPoliciesResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.analyze_org_policies(request=None)
 
@@ -14322,7 +14322,7 @@ async def test_analyze_org_policy_governed_containers_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.analyze_org_policy_governed_containers(request=None)
 
@@ -14349,7 +14349,7 @@ async def test_analyze_org_policy_governed_assets_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.analyze_org_policy_governed_assets(request=None)
 
@@ -14509,7 +14509,7 @@ def test_list_assets_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.ListAssetsResponse(
-              next_page_token='next_page_token_value',
+              next_page_token="next_page_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -14526,7 +14526,7 @@ def test_list_assets_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -14719,11 +14719,11 @@ def test_create_feed_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.Feed(
-              name='name_value',
-              asset_names=['asset_names_value'],
-              asset_types=['asset_types_value'],
+              name="name_value",
+              asset_names=["asset_names_value"],
+              asset_types=["asset_types_value"],
               content_type=asset_service.ContentType.RESOURCE,
-              relationship_types=['relationship_types_value'],
+              relationship_types=["relationship_types_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -14740,11 +14740,11 @@ def test_create_feed_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
+    assert response.name == "name_value"
+    assert response.asset_names == ["asset_names_value"]
+    assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
+    assert response.relationship_types == ["relationship_types_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -14833,11 +14833,11 @@ def test_get_feed_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.Feed(
-              name='name_value',
-              asset_names=['asset_names_value'],
-              asset_types=['asset_types_value'],
+              name="name_value",
+              asset_names=["asset_names_value"],
+              asset_types=["asset_types_value"],
               content_type=asset_service.ContentType.RESOURCE,
-              relationship_types=['relationship_types_value'],
+              relationship_types=["relationship_types_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -14854,11 +14854,11 @@ def test_get_feed_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
+    assert response.name == "name_value"
+    assert response.asset_names == ["asset_names_value"]
+    assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
+    assert response.relationship_types == ["relationship_types_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -15051,11 +15051,11 @@ def test_update_feed_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.Feed(
-              name='name_value',
-              asset_names=['asset_names_value'],
-              asset_types=['asset_types_value'],
+              name="name_value",
+              asset_names=["asset_names_value"],
+              asset_types=["asset_types_value"],
               content_type=asset_service.ContentType.RESOURCE,
-              relationship_types=['relationship_types_value'],
+              relationship_types=["relationship_types_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -15072,11 +15072,11 @@ def test_update_feed_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.Feed)
-    assert response.name == 'name_value'
-    assert response.asset_names == ['asset_names_value']
-    assert response.asset_types == ['asset_types_value']
+    assert response.name == "name_value"
+    assert response.asset_names == ["asset_names_value"]
+    assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-    assert response.relationship_types == ['relationship_types_value']
+    assert response.relationship_types == ["relationship_types_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -15255,7 +15255,7 @@ def test_search_all_resources_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.SearchAllResourcesResponse(
-              next_page_token='next_page_token_value',
+              next_page_token="next_page_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -15272,7 +15272,7 @@ def test_search_all_resources_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllResourcesPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -15361,7 +15361,7 @@ def test_search_all_iam_policies_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.SearchAllIamPoliciesResponse(
-              next_page_token='next_page_token_value',
+              next_page_token="next_page_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -15378,7 +15378,7 @@ def test_search_all_iam_policies_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllIamPoliciesPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -15778,7 +15778,7 @@ def test_query_assets_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.QueryAssetsResponse(
-              job_reference='job_reference_value',
+              job_reference="job_reference_value",
               done=True,
         )
 
@@ -15796,7 +15796,7 @@ def test_query_assets_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.QueryAssetsResponse)
-    assert response.job_reference == 'job_reference_value'
+    assert response.job_reference == "job_reference_value"
     assert response.done is True
 
 
@@ -15950,10 +15950,10 @@ def test_create_saved_query_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.SavedQuery(
-              name='name_value',
-              description='description_value',
-              creator='creator_value',
-              last_updater='last_updater_value',
+              name="name_value",
+              description="description_value",
+              creator="creator_value",
+              last_updater="last_updater_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -15970,10 +15970,10 @@ def test_create_saved_query_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.creator == "creator_value"
+    assert response.last_updater == "last_updater_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -16062,10 +16062,10 @@ def test_get_saved_query_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.SavedQuery(
-              name='name_value',
-              description='description_value',
-              creator='creator_value',
-              last_updater='last_updater_value',
+              name="name_value",
+              description="description_value",
+              creator="creator_value",
+              last_updater="last_updater_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16082,10 +16082,10 @@ def test_get_saved_query_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.creator == "creator_value"
+    assert response.last_updater == "last_updater_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -16174,7 +16174,7 @@ def test_list_saved_queries_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.ListSavedQueriesResponse(
-              next_page_token='next_page_token_value',
+              next_page_token="next_page_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16191,7 +16191,7 @@ def test_list_saved_queries_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSavedQueriesPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -16344,10 +16344,10 @@ def test_update_saved_query_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.SavedQuery(
-              name='name_value',
-              description='description_value',
-              creator='creator_value',
-              last_updater='last_updater_value',
+              name="name_value",
+              description="description_value",
+              creator="creator_value",
+              last_updater="last_updater_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16364,10 +16364,10 @@ def test_update_saved_query_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.SavedQuery)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.creator == 'creator_value'
-    assert response.last_updater == 'last_updater_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.creator == "creator_value"
+    assert response.last_updater == "last_updater_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -16650,7 +16650,7 @@ def test_analyze_org_policies_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.AnalyzeOrgPoliciesResponse(
-              next_page_token='next_page_token_value',
+              next_page_token="next_page_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16667,7 +16667,7 @@ def test_analyze_org_policies_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -16756,7 +16756,7 @@ def test_analyze_org_policy_governed_containers_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
-              next_page_token='next_page_token_value',
+              next_page_token="next_page_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16773,7 +16773,7 @@ def test_analyze_org_policy_governed_containers_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -16862,7 +16862,7 @@ def test_analyze_org_policy_governed_assets_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
-              next_page_token='next_page_token_value',
+              next_page_token="next_page_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -16879,7 +16879,7 @@ def test_analyze_org_policy_governed_assets_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

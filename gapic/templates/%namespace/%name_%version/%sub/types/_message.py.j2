@@ -1,6 +1,6 @@
 class {{ message.name }}({{ p }}.Message):
-    r"""{{ message.meta.doc|rst(indent=4) }}
     {% if message.fields|length %}
+    r"""{{ message.meta.doc|rst(indent=4) }}
     {# Only include note if a oneof has more than one member field. #} 
     {% if message.oneof_fields() %}
     {% if message.oneof_fields().values() | map('length') | max > 1 %}
@@ -25,8 +25,11 @@ class {{ message.name }}({{ p }}.Message):
             This field is a member of `oneof`_ ``{{ field.oneof }}``.
             {% endif %}
     {% endfor %}
-    {% endif %}
     """
+    {% else %}
+    r"""{{ message.meta.doc|rst(indent=4) }}"""
+    {% endif %}
+
     {# Iterate over nested enums. -#}
     {% for enum in message.nested_enums.values() %}
         {% filter indent(first=True) %}
@@ -52,7 +55,7 @@ class {{ message.name }}({{ p }}.Message):
     {# Iterate over fields. -#}
     {% for field in message.fields.values() %}
     {% if field.map %}
-    {% with key_field = field.message.fields['key'], value_field = field.message.fields['value'] %}
+    {% with key_field = field.message.fields["key"], value_field = field.message.fields["value"] %}
     {{ field.name }}: MutableMapping[{{ key_field.type.ident.rel(message.ident) }}, {{ value_field.type.ident.rel(message.ident) }}] = {{ p }}.MapField(
         {{ p }}.{{ key_field.proto_type }},
         {{ p }}.{{ value_field.proto_type }},
@@ -69,7 +72,7 @@ class {{ message.name }}({{ p }}.Message):
     {% if field.proto3_optional %}
         optional=True,
     {% elif field.oneof %}
-        oneof='{{ field.oneof }}',
+        oneof="{{ field.oneof }}",
     {% endif %}
     {% if field.enum or field.message %}
         {{ field.proto_type.lower() }}={{ field.type.ident.rel(message.ident) }},

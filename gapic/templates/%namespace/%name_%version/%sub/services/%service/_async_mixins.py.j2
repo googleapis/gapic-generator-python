@@ -37,17 +37,18 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -89,17 +90,18 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -144,16 +146,18 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
     {% endif %}
 
     {% if "CancelOperation" in api.mixin_api_methods %}
@@ -194,16 +198,18 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
     {% endif %}
 
     {% if "WaitOperation" in api.mixin_api_methods %}
@@ -247,17 +253,18 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -369,17 +376,18 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -487,17 +495,18 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -543,17 +552,18 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -598,17 +608,18 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -649,17 +660,18 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

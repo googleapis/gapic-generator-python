@@ -16,7 +16,18 @@
 import logging as std_logging
 from collections import OrderedDict
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Callable,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
 from google.cloud.logging_v2 import gapic_version as package_version
 
@@ -24,8 +35,8 @@ from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.auth import credentials as ga_credentials   # type: ignore
-from google.oauth2 import service_account              # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 
@@ -38,7 +49,7 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.logging_v2.services.config_service_v2 import pagers
 from google.cloud.logging_v2.types import logging_config
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -48,11 +59,13 @@ from .client import BaseConfigServiceV2Client
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
+
 
 class BaseConfigServiceV2AsyncClient:
     """Service for configuring sinks used to route log entries."""
@@ -188,12 +201,14 @@ class BaseConfigServiceV2AsyncClient:
 
     get_transport_class = BaseConfigServiceV2Client.get_transport_class
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, ConfigServiceV2Transport, Callable[..., ConfigServiceV2Transport]]] = "grpc_asyncio",
-            client_options: Optional[ClientOptions] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[Union[str, ConfigServiceV2Transport, Callable[..., ConfigServiceV2Transport]]] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the base config service v2 async client.
 
         Args:
@@ -248,31 +263,33 @@ class BaseConfigServiceV2AsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
-
         )
 
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.logging_v2.BaseConfigServiceV2AsyncClient`.",
-                extra = {
+                extra={
                     "serviceName": "google.logging.v2.ConfigServiceV2",
                     "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
                     "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                } if hasattr(self._client._transport, "_credentials") else {
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
                     "serviceName": "google.logging.v2.ConfigServiceV2",
                     "credentialsType": None,
-                }
+                },
             )
 
-    async def list_buckets(self,
-            request: Optional[Union[logging_config.ListBucketsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListBucketsAsyncPager:
+    async def list_buckets(
+        self,
+        request: Optional[Union[logging_config.ListBucketsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListBucketsAsyncPager:
         r"""Lists log buckets.
 
         .. code-block:: python
@@ -346,8 +363,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -365,11 +381,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -396,13 +414,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def get_bucket(self,
-            request: Optional[Union[logging_config.GetBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogBucket:
+    async def get_bucket(
+        self,
+        request: Optional[Union[logging_config.GetBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogBucket:
         r"""Gets a log bucket.
 
         .. code-block:: python
@@ -460,11 +479,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -480,13 +501,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def create_bucket_async(self,
-            request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def create_bucket_async(
+        self,
+        request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Creates a log bucket asynchronously that can be used
         to store log entries.
         After a bucket has been created, the bucket's location
@@ -555,11 +577,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -583,13 +607,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def update_bucket_async(self,
-            request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def update_bucket_async(
+        self,
+        request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Updates a log bucket asynchronously.
 
         If the bucket has a ``lifecycle_state`` of ``DELETE_REQUESTED``,
@@ -660,11 +685,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -688,13 +715,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def create_bucket(self,
-            request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogBucket:
+    async def create_bucket(
+        self,
+        request: Optional[Union[logging_config.CreateBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogBucket:
         r"""Creates a log bucket that can be used to store log
         entries. After a bucket has been created, the bucket's
         location cannot be changed.
@@ -755,11 +783,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -775,13 +805,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def update_bucket(self,
-            request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogBucket:
+    async def update_bucket(
+        self,
+        request: Optional[Union[logging_config.UpdateBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogBucket:
         r"""Updates a log bucket.
 
         If the bucket has a ``lifecycle_state`` of ``DELETE_REQUESTED``,
@@ -845,11 +876,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -865,13 +898,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_bucket(self,
-            request: Optional[Union[logging_config.DeleteBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    async def delete_bucket(
+        self,
+        request: Optional[Union[logging_config.DeleteBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes a log bucket.
 
         Changes the bucket's ``lifecycle_state`` to the
@@ -925,11 +959,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -942,13 +978,14 @@ class BaseConfigServiceV2AsyncClient:
             metadata=metadata,
         )
 
-    async def undelete_bucket(self,
-            request: Optional[Union[logging_config.UndeleteBucketRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    async def undelete_bucket(
+        self,
+        request: Optional[Union[logging_config.UndeleteBucketRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Undeletes a log bucket. A bucket that has been
         deleted can be undeleted within the grace period of 7
         days.
@@ -999,11 +1036,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1016,14 +1055,15 @@ class BaseConfigServiceV2AsyncClient:
             metadata=metadata,
         )
 
-    async def _list_views(self,
-            request: Optional[Union[logging_config.ListViewsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListViewsAsyncPager:
+    async def _list_views(
+        self,
+        request: Optional[Union[logging_config.ListViewsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListViewsAsyncPager:
         r"""Lists views on a log bucket.
 
         .. code-block:: python
@@ -1089,8 +1129,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1108,11 +1147,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1139,13 +1180,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _get_view(self,
-            request: Optional[Union[logging_config.GetViewRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogView:
+    async def _get_view(
+        self,
+        request: Optional[Union[logging_config.GetViewRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogView:
         r"""Gets a view on a log bucket..
 
         .. code-block:: python
@@ -1203,11 +1245,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1223,13 +1267,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _create_view(self,
-            request: Optional[Union[logging_config.CreateViewRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogView:
+    async def _create_view(
+        self,
+        request: Optional[Union[logging_config.CreateViewRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogView:
         r"""Creates a view over log entries in a log bucket. A
         bucket may contain a maximum of 30 views.
 
@@ -1289,11 +1334,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1309,13 +1356,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _update_view(self,
-            request: Optional[Union[logging_config.UpdateViewRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogView:
+    async def _update_view(
+        self,
+        request: Optional[Union[logging_config.UpdateViewRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogView:
         r"""Updates a view on a log bucket. This method replaces the
         following fields in the existing view with values from the new
         view: ``filter``. If an ``UNAVAILABLE`` error is returned, this
@@ -1377,11 +1425,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1397,13 +1447,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _delete_view(self,
-            request: Optional[Union[logging_config.DeleteViewRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    async def _delete_view(
+        self,
+        request: Optional[Union[logging_config.DeleteViewRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes a view on a log bucket. If an ``UNAVAILABLE`` error is
         returned, this indicates that system is not in a state where it
         can delete the view. If this occurs, please try again in a few
@@ -1455,11 +1506,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1472,14 +1525,15 @@ class BaseConfigServiceV2AsyncClient:
             metadata=metadata,
         )
 
-    async def _list_sinks(self,
-            request: Optional[Union[logging_config.ListSinksRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListSinksAsyncPager:
+    async def _list_sinks(
+        self,
+        request: Optional[Union[logging_config.ListSinksRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListSinksAsyncPager:
         r"""Lists sinks.
 
         .. code-block:: python
@@ -1548,8 +1602,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1567,11 +1620,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1598,14 +1653,15 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _get_sink(self,
-            request: Optional[Union[logging_config.GetSinkRequest, dict]] = None,
-            *,
-            sink_name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogSink:
+    async def _get_sink(
+        self,
+        request: Optional[Union[logging_config.GetSinkRequest, dict]] = None,
+        *,
+        sink_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogSink:
         r"""Gets a sink.
 
         .. code-block:: python
@@ -1681,8 +1737,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [sink_name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1700,11 +1755,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("sink_name", request.sink_name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1720,15 +1777,16 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _create_sink(self,
-            request: Optional[Union[logging_config.CreateSinkRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            sink: Optional[logging_config.LogSink] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogSink:
+    async def _create_sink(
+        self,
+        request: Optional[Union[logging_config.CreateSinkRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        sink: Optional[logging_config.LogSink] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogSink:
         r"""Creates a sink that exports specified log entries to a
         destination. The export of newly-ingested log entries begins
         immediately, unless the sink's ``writer_identity`` is not
@@ -1820,8 +1878,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [parent, sink]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1841,11 +1898,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1861,16 +1920,17 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _update_sink(self,
-            request: Optional[Union[logging_config.UpdateSinkRequest, dict]] = None,
-            *,
-            sink_name: Optional[str] = None,
-            sink: Optional[logging_config.LogSink] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogSink:
+    async def _update_sink(
+        self,
+        request: Optional[Union[logging_config.UpdateSinkRequest, dict]] = None,
+        *,
+        sink_name: Optional[str] = None,
+        sink: Optional[logging_config.LogSink] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogSink:
         r"""Updates a sink. This method replaces the following fields in the
         existing sink with values from the new sink: ``destination``,
         and ``filter``.
@@ -1986,8 +2046,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [sink_name, sink, update_mask]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2009,11 +2068,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("sink_name", request.sink_name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2029,14 +2090,15 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _delete_sink(self,
-            request: Optional[Union[logging_config.DeleteSinkRequest, dict]] = None,
-            *,
-            sink_name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    async def _delete_sink(
+        self,
+        request: Optional[Union[logging_config.DeleteSinkRequest, dict]] = None,
+        *,
+        sink_name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes a sink. If the sink has a unique ``writer_identity``,
         then that service account is also deleted.
 
@@ -2098,8 +2160,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [sink_name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2117,11 +2178,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("sink_name", request.sink_name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2134,16 +2197,17 @@ class BaseConfigServiceV2AsyncClient:
             metadata=metadata,
         )
 
-    async def _create_link(self,
-            request: Optional[Union[logging_config.CreateLinkRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            link: Optional[logging_config.Link] = None,
-            link_id: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def _create_link(
+        self,
+        request: Optional[Union[logging_config.CreateLinkRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        link: Optional[logging_config.Link] = None,
+        link_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Asynchronously creates a linked dataset in BigQuery
         which makes it possible to use BigQuery to read the logs
         stored in the log bucket. A log bucket may currently
@@ -2233,8 +2297,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [parent, link, link_id]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2256,11 +2319,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2284,14 +2349,15 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _delete_link(self,
-            request: Optional[Union[logging_config.DeleteLinkRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def _delete_link(
+        self,
+        request: Optional[Union[logging_config.DeleteLinkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Deletes a link. This will also delete the
         corresponding BigQuery linked dataset.
 
@@ -2369,8 +2435,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2388,11 +2453,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2416,14 +2483,15 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _list_links(self,
-            request: Optional[Union[logging_config.ListLinksRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListLinksAsyncPager:
+    async def _list_links(
+        self,
+        request: Optional[Union[logging_config.ListLinksRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListLinksAsyncPager:
         r"""Lists links.
 
         .. code-block:: python
@@ -2491,8 +2559,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2510,11 +2577,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2541,14 +2610,15 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _get_link(self,
-            request: Optional[Union[logging_config.GetLinkRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.Link:
+    async def _get_link(
+        self,
+        request: Optional[Union[logging_config.GetLinkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.Link:
         r"""Gets a link.
 
         .. code-block:: python
@@ -2611,8 +2681,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2630,11 +2699,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2650,14 +2721,15 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _list_exclusions(self,
-            request: Optional[Union[logging_config.ListExclusionsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListExclusionsAsyncPager:
+    async def _list_exclusions(
+        self,
+        request: Optional[Union[logging_config.ListExclusionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListExclusionsAsyncPager:
         r"""Lists all the exclusions on the \_Default sink in a parent
         resource.
 
@@ -2727,8 +2799,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2746,11 +2817,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2777,14 +2850,15 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _get_exclusion(self,
-            request: Optional[Union[logging_config.GetExclusionRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogExclusion:
+    async def _get_exclusion(
+        self,
+        request: Optional[Union[logging_config.GetExclusionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogExclusion:
         r"""Gets the description of an exclusion in the \_Default sink.
 
         .. code-block:: python
@@ -2858,8 +2932,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2877,11 +2950,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2897,15 +2972,16 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _create_exclusion(self,
-            request: Optional[Union[logging_config.CreateExclusionRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            exclusion: Optional[logging_config.LogExclusion] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogExclusion:
+    async def _create_exclusion(
+        self,
+        request: Optional[Union[logging_config.CreateExclusionRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        exclusion: Optional[logging_config.LogExclusion] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogExclusion:
         r"""Creates a new exclusion in the \_Default sink in a specified
         parent resource. Only log entries belonging to that resource can
         be excluded. You can have up to 10 exclusions in a resource.
@@ -2996,8 +3072,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [parent, exclusion]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3017,11 +3092,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3037,16 +3114,17 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _update_exclusion(self,
-            request: Optional[Union[logging_config.UpdateExclusionRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            exclusion: Optional[logging_config.LogExclusion] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.LogExclusion:
+    async def _update_exclusion(
+        self,
+        request: Optional[Union[logging_config.UpdateExclusionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        exclusion: Optional[logging_config.LogExclusion] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.LogExclusion:
         r"""Changes one or more properties of an existing exclusion in the
         \_Default sink.
 
@@ -3148,8 +3226,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [name, exclusion, update_mask]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3171,11 +3248,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3191,14 +3270,15 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _delete_exclusion(self,
-            request: Optional[Union[logging_config.DeleteExclusionRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    async def _delete_exclusion(
+        self,
+        request: Optional[Union[logging_config.DeleteExclusionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes an exclusion in the \_Default sink.
 
         .. code-block:: python
@@ -3259,8 +3339,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3278,11 +3357,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3295,13 +3376,14 @@ class BaseConfigServiceV2AsyncClient:
             metadata=metadata,
         )
 
-    async def _get_cmek_settings(self,
-            request: Optional[Union[logging_config.GetCmekSettingsRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.CmekSettings:
+    async def _get_cmek_settings(
+        self,
+        request: Optional[Union[logging_config.GetCmekSettingsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.CmekSettings:
         r"""Gets the Logging CMEK settings for the given resource.
 
         Note: CMEK for the Log Router can be configured for Google Cloud
@@ -3383,11 +3465,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3403,13 +3487,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _update_cmek_settings(self,
-            request: Optional[Union[logging_config.UpdateCmekSettingsRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.CmekSettings:
+    async def _update_cmek_settings(
+        self,
+        request: Optional[Union[logging_config.UpdateCmekSettingsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.CmekSettings:
         r"""Updates the Log Router CMEK settings for the given resource.
 
         Note: CMEK for the Log Router can currently only be configured
@@ -3496,11 +3581,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3516,14 +3603,15 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _get_settings(self,
-            request: Optional[Union[logging_config.GetSettingsRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.Settings:
+    async def _get_settings(
+        self,
+        request: Optional[Union[logging_config.GetSettingsRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.Settings:
         r"""Gets the Log Router settings for the given resource.
 
         Note: Settings for the Log Router can be get for Google Cloud
@@ -3615,8 +3703,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3634,11 +3721,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3654,15 +3743,16 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _update_settings(self,
-            request: Optional[Union[logging_config.UpdateSettingsRequest, dict]] = None,
-            *,
-            settings: Optional[logging_config.Settings] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> logging_config.Settings:
+    async def _update_settings(
+        self,
+        request: Optional[Union[logging_config.UpdateSettingsRequest, dict]] = None,
+        *,
+        settings: Optional[logging_config.Settings] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> logging_config.Settings:
         r"""Updates the Log Router settings for the given resource.
 
         Note: Settings for the Log Router can currently only be
@@ -3761,8 +3851,7 @@ class BaseConfigServiceV2AsyncClient:
         flattened_params = [settings, update_mask]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError("If the `request` argument is set, then none of "
-                             "the individual field arguments should be set.")
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3782,11 +3871,13 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3802,13 +3893,14 @@ class BaseConfigServiceV2AsyncClient:
         # Done; return the response.
         return response
 
-    async def _copy_log_entries(self,
-            request: Optional[Union[logging_config.CopyLogEntriesRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation_async.AsyncOperation:
+    async def _copy_log_entries(
+        self,
+        request: Optional[Union[logging_config.CopyLogEntriesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
         r"""Copies a set of log entries from a log bucket to a
         Cloud Storage bucket.
 
@@ -3933,17 +4025,18 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3985,17 +4078,18 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4040,16 +4134,18 @@ class BaseConfigServiceV2AsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def __aenter__(self) -> "BaseConfigServiceV2AsyncClient":
         return self
@@ -4057,12 +4153,11 @@ class BaseConfigServiceV2AsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = (
-    "BaseConfigServiceV2AsyncClient",
-)
+__all__ = ("BaseConfigServiceV2AsyncClient",)

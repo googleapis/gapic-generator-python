@@ -17,27 +17,28 @@
 {% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 {% macro client_method(method, name, snippet_index, api, service, full_extended_lro=False) %}
-    def {{ name }}(self,
-            {% if not method.client_streaming %}
-            request: Optional[Union[{{ method.input.ident }}, dict]] = None,
-            *,
-            {% for field in method.flattened_fields.values() %}
-            {{ field.name }}: Optional[{{ field.ident }}] = None,
-            {% endfor %}
-            {% else %}
-            requests: Optional[Iterator[{{ method.input.ident }}]] = None,
-            *,
-            {% endif %}
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            {{ shared_macros.client_method_metadata_argument()|indent(8) }} = {{ shared_macros.client_method_metadata_default_value() }},
-            {% if method.extended_lro and not full_extended_lro %}{# This is a hack to preserve backwards compatibility with the "unary" surfaces #}
-            ) -> {{ method.extended_lro.operation_type.ident }}:
-            {% elif not method.server_streaming %}
-            ) -> {{ method.client_output.ident }}:
-            {% else %}
-            ) -> Iterable[{{ method.client_output.ident }}]:
-            {% endif %}
+    def {{ name }}(
+        self,
+        {% if not method.client_streaming %}
+        request: Optional[Union[{{ method.input.ident }}, dict]] = None,
+        *,
+        {% for field in method.flattened_fields.values() %}
+        {{ field.name }}: Optional[{{ field.ident }}] = None,
+        {% endfor %}
+        {% else %}
+        requests: Optional[Iterator[{{ method.input.ident }}]] = None,
+        *,
+        {% endif %}
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        {{ shared_macros.client_method_metadata_argument()|indent(8) }} = {{ shared_macros.client_method_metadata_default_value() }},
+    {% if method.extended_lro and not full_extended_lro %}{# This is a hack to preserve backwards compatibility with the "unary" surfaces #}
+    ) -> {{ method.extended_lro.operation_type.ident }}:
+    {% elif not method.server_streaming %}
+    ) -> {{ method.client_output.ident }}:
+    {% else %}
+    ) -> Iterable[{{ method.client_output.ident }}]:
+    {% endif %}
         r"""{{ method.meta.doc|rst(width=72, indent=8)|trim }}
 
         {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=True) %}
@@ -93,8 +94,7 @@
         flattened_params = [{{ method.flattened_fields.values()|join(", ", attribute="name") }}]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         {% endif %}
         {% if method.input.ident.package != method.ident.package %}{# request lives in a different package, so there is no proto wrapper #}

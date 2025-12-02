@@ -132,7 +132,7 @@ def test_address_rel():
         addr.rel(
             metadata.Address(package=("foo", "bar"), module="baz"),
         )
-        == "'Bacon'"
+        == '"Bacon"'
     )
 
 
@@ -165,7 +165,7 @@ def test_address_rel_later():
         name="Ham",
         package=("foo", "bar"),
     )
-    assert addr.rel(other) == "'Bacon'"
+    assert addr.rel(other) == '"Bacon"'
 
 
 def test_address_rel_nested_sibling():
@@ -175,7 +175,7 @@ def test_address_rel_nested_sibling():
     other = metadata.Address(
         module="baz", name="Ham", package=("foo", "bar"), parent=("Spam",)
     )
-    assert addr.rel(other) == "'Spam.Bacon'"
+    assert addr.rel(other) == '"Spam.Bacon"'
 
 
 def test_address_rel_nested_sibling_later():
@@ -193,7 +193,7 @@ def test_address_rel_nested_sibling_later():
         package=("foo", "bar"),
         parent=("Spam",),
     )
-    assert addr.rel(other) == "'Spam.Bacon'"
+    assert addr.rel(other) == '"Spam.Bacon"'
 
 
 def test_address_rel_nested_parent():

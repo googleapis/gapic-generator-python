@@ -964,7 +964,7 @@ def test_list_log_metrics(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.ListLogMetricsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         )
         response = client.list_log_metrics(request)
 
@@ -976,7 +976,7 @@ def test_list_log_metrics(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_log_metrics_non_empty_request_with_auto_populated_field():
@@ -991,8 +991,8 @@ def test_list_log_metrics_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_metrics.ListLogMetricsRequest(
-        parent='parent_value',
-        page_token='page_token_value',
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1004,8 +1004,8 @@ def test_list_log_metrics_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.ListLogMetricsRequest(
-            parent='parent_value',
-            page_token='page_token_value',
+            parent="parent_value",
+            page_token="page_token_value",
         )
 
 def test_list_log_metrics_use_cached_wrapped_rpc():
@@ -1091,7 +1091,7 @@ async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_t
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         response = await client.list_log_metrics(request)
 
@@ -1103,7 +1103,7 @@ async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_t
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogMetricsAsyncPager)
-    assert response.next_page_token == 'next_page_token_value'
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -1119,7 +1119,7 @@ def test_list_log_metrics_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.ListLogMetricsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1151,7 +1151,7 @@ async def test_list_log_metrics_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.ListLogMetricsRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1187,7 +1187,7 @@ def test_list_log_metrics_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_log_metrics(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1195,7 +1195,7 @@ def test_list_log_metrics_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 
@@ -1209,7 +1209,7 @@ def test_list_log_metrics_flattened_error():
     with pytest.raises(ValueError):
         client.list_log_metrics(
             logging_metrics.ListLogMetricsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 @pytest.mark.asyncio
@@ -1229,7 +1229,7 @@ async def test_list_log_metrics_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_log_metrics(
-            parent='parent_value',
+            parent="parent_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1237,7 +1237,7 @@ async def test_list_log_metrics_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1251,7 +1251,7 @@ async def test_list_log_metrics_flattened_error_async():
     with pytest.raises(ValueError):
         await client.list_log_metrics(
             logging_metrics.ListLogMetricsRequest(),
-            parent='parent_value',
+            parent="parent_value",
         )
 
 
@@ -1471,12 +1471,12 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
-            bucket_name='bucket_name_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            bucket_name="bucket_name_value",
             disabled=True,
-            value_extractor='value_extractor_value',
+            value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
         response = client.get_log_metric(request)
@@ -1489,12 +1489,12 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.bucket_name == "bucket_name_value"
     assert response.disabled is True
-    assert response.value_extractor == 'value_extractor_value'
+    assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
 
@@ -1510,7 +1510,7 @@ def test_get_log_metric_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_metrics.GetLogMetricRequest(
-        metric_name='metric_name_value',
+        metric_name="metric_name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1522,7 +1522,7 @@ def test_get_log_metric_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.GetLogMetricRequest(
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
 def test_get_log_metric_use_cached_wrapped_rpc():
@@ -1608,12 +1608,12 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
-            bucket_name='bucket_name_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            bucket_name="bucket_name_value",
             disabled=True,
-            value_extractor='value_extractor_value',
+            value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
         response = await client.get_log_metric(request)
@@ -1626,12 +1626,12 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.bucket_name == "bucket_name_value"
     assert response.disabled is True
-    assert response.value_extractor == 'value_extractor_value'
+    assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
 
@@ -1648,7 +1648,7 @@ def test_get_log_metric_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.GetLogMetricRequest()
 
-    request.metric_name = 'metric_name_value'
+    request.metric_name = "metric_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1680,7 +1680,7 @@ async def test_get_log_metric_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.GetLogMetricRequest()
 
-    request.metric_name = 'metric_name_value'
+    request.metric_name = "metric_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1716,7 +1716,7 @@ def test_get_log_metric_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_log_metric(
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1724,7 +1724,7 @@ def test_get_log_metric_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].metric_name
-        mock_val = 'metric_name_value'
+        mock_val = "metric_name_value"
         assert arg == mock_val
 
 
@@ -1738,7 +1738,7 @@ def test_get_log_metric_flattened_error():
     with pytest.raises(ValueError):
         client.get_log_metric(
             logging_metrics.GetLogMetricRequest(),
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
 @pytest.mark.asyncio
@@ -1758,7 +1758,7 @@ async def test_get_log_metric_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_log_metric(
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1766,7 +1766,7 @@ async def test_get_log_metric_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].metric_name
-        mock_val = 'metric_name_value'
+        mock_val = "metric_name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -1780,7 +1780,7 @@ async def test_get_log_metric_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_log_metric(
             logging_metrics.GetLogMetricRequest(),
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
 
@@ -1804,12 +1804,12 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
-            bucket_name='bucket_name_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            bucket_name="bucket_name_value",
             disabled=True,
-            value_extractor='value_extractor_value',
+            value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
         response = client.create_log_metric(request)
@@ -1822,12 +1822,12 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.bucket_name == "bucket_name_value"
     assert response.disabled is True
-    assert response.value_extractor == 'value_extractor_value'
+    assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
 
@@ -1843,7 +1843,7 @@ def test_create_log_metric_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_metrics.CreateLogMetricRequest(
-        parent='parent_value',
+        parent="parent_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1855,7 +1855,7 @@ def test_create_log_metric_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.CreateLogMetricRequest(
-            parent='parent_value',
+            parent="parent_value",
         )
 
 def test_create_log_metric_use_cached_wrapped_rpc():
@@ -1941,12 +1941,12 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
-            bucket_name='bucket_name_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            bucket_name="bucket_name_value",
             disabled=True,
-            value_extractor='value_extractor_value',
+            value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
         response = await client.create_log_metric(request)
@@ -1959,12 +1959,12 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.bucket_name == "bucket_name_value"
     assert response.disabled is True
-    assert response.value_extractor == 'value_extractor_value'
+    assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
 
@@ -1981,7 +1981,7 @@ def test_create_log_metric_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.CreateLogMetricRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2013,7 +2013,7 @@ async def test_create_log_metric_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.CreateLogMetricRequest()
 
-    request.parent = 'parent_value'
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2049,8 +2049,8 @@ def test_create_log_metric_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_log_metric(
-            parent='parent_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
+            parent="parent_value",
+            metric=logging_metrics.LogMetric(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2058,10 +2058,10 @@ def test_create_log_metric_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].metric
-        mock_val = logging_metrics.LogMetric(name='name_value')
+        mock_val = logging_metrics.LogMetric(name="name_value")
         assert arg == mock_val
 
 
@@ -2075,8 +2075,8 @@ def test_create_log_metric_flattened_error():
     with pytest.raises(ValueError):
         client.create_log_metric(
             logging_metrics.CreateLogMetricRequest(),
-            parent='parent_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
+            parent="parent_value",
+            metric=logging_metrics.LogMetric(name="name_value"),
         )
 
 @pytest.mark.asyncio
@@ -2096,8 +2096,8 @@ async def test_create_log_metric_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_log_metric(
-            parent='parent_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
+            parent="parent_value",
+            metric=logging_metrics.LogMetric(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2105,10 +2105,10 @@ async def test_create_log_metric_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
-        mock_val = 'parent_value'
+        mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].metric
-        mock_val = logging_metrics.LogMetric(name='name_value')
+        mock_val = logging_metrics.LogMetric(name="name_value")
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2122,8 +2122,8 @@ async def test_create_log_metric_flattened_error_async():
     with pytest.raises(ValueError):
         await client.create_log_metric(
             logging_metrics.CreateLogMetricRequest(),
-            parent='parent_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
+            parent="parent_value",
+            metric=logging_metrics.LogMetric(name="name_value"),
         )
 
 
@@ -2147,12 +2147,12 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging_metrics.LogMetric(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
-            bucket_name='bucket_name_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            bucket_name="bucket_name_value",
             disabled=True,
-            value_extractor='value_extractor_value',
+            value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
         response = client.update_log_metric(request)
@@ -2165,12 +2165,12 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.bucket_name == "bucket_name_value"
     assert response.disabled is True
-    assert response.value_extractor == 'value_extractor_value'
+    assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
 
@@ -2186,7 +2186,7 @@ def test_update_log_metric_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_metrics.UpdateLogMetricRequest(
-        metric_name='metric_name_value',
+        metric_name="metric_name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2198,7 +2198,7 @@ def test_update_log_metric_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.UpdateLogMetricRequest(
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
 def test_update_log_metric_use_cached_wrapped_rpc():
@@ -2284,12 +2284,12 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
-            bucket_name='bucket_name_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            bucket_name="bucket_name_value",
             disabled=True,
-            value_extractor='value_extractor_value',
+            value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
         response = await client.update_log_metric(request)
@@ -2302,12 +2302,12 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging_metrics.LogMetric)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
-    assert response.bucket_name == 'bucket_name_value'
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.filter == "filter_value"
+    assert response.bucket_name == "bucket_name_value"
     assert response.disabled is True
-    assert response.value_extractor == 'value_extractor_value'
+    assert response.value_extractor == "value_extractor_value"
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
 
@@ -2324,7 +2324,7 @@ def test_update_log_metric_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.UpdateLogMetricRequest()
 
-    request.metric_name = 'metric_name_value'
+    request.metric_name = "metric_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2356,7 +2356,7 @@ async def test_update_log_metric_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.UpdateLogMetricRequest()
 
-    request.metric_name = 'metric_name_value'
+    request.metric_name = "metric_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2392,8 +2392,8 @@ def test_update_log_metric_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_log_metric(
-            metric_name='metric_name_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
+            metric_name="metric_name_value",
+            metric=logging_metrics.LogMetric(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2401,10 +2401,10 @@ def test_update_log_metric_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].metric_name
-        mock_val = 'metric_name_value'
+        mock_val = "metric_name_value"
         assert arg == mock_val
         arg = args[0].metric
-        mock_val = logging_metrics.LogMetric(name='name_value')
+        mock_val = logging_metrics.LogMetric(name="name_value")
         assert arg == mock_val
 
 
@@ -2418,8 +2418,8 @@ def test_update_log_metric_flattened_error():
     with pytest.raises(ValueError):
         client.update_log_metric(
             logging_metrics.UpdateLogMetricRequest(),
-            metric_name='metric_name_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
+            metric_name="metric_name_value",
+            metric=logging_metrics.LogMetric(name="name_value"),
         )
 
 @pytest.mark.asyncio
@@ -2439,8 +2439,8 @@ async def test_update_log_metric_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_log_metric(
-            metric_name='metric_name_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
+            metric_name="metric_name_value",
+            metric=logging_metrics.LogMetric(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2448,10 +2448,10 @@ async def test_update_log_metric_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].metric_name
-        mock_val = 'metric_name_value'
+        mock_val = "metric_name_value"
         assert arg == mock_val
         arg = args[0].metric
-        mock_val = logging_metrics.LogMetric(name='name_value')
+        mock_val = logging_metrics.LogMetric(name="name_value")
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2465,8 +2465,8 @@ async def test_update_log_metric_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_log_metric(
             logging_metrics.UpdateLogMetricRequest(),
-            metric_name='metric_name_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
+            metric_name="metric_name_value",
+            metric=logging_metrics.LogMetric(name="name_value"),
         )
 
 
@@ -2514,7 +2514,7 @@ def test_delete_log_metric_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = logging_metrics.DeleteLogMetricRequest(
-        metric_name='metric_name_value',
+        metric_name="metric_name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2526,7 +2526,7 @@ def test_delete_log_metric_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.DeleteLogMetricRequest(
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
 def test_delete_log_metric_use_cached_wrapped_rpc():
@@ -2637,7 +2637,7 @@ def test_delete_log_metric_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.DeleteLogMetricRequest()
 
-    request.metric_name = 'metric_name_value'
+    request.metric_name = "metric_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2669,7 +2669,7 @@ async def test_delete_log_metric_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.DeleteLogMetricRequest()
 
-    request.metric_name = 'metric_name_value'
+    request.metric_name = "metric_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2705,7 +2705,7 @@ def test_delete_log_metric_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_log_metric(
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2713,7 +2713,7 @@ def test_delete_log_metric_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].metric_name
-        mock_val = 'metric_name_value'
+        mock_val = "metric_name_value"
         assert arg == mock_val
 
 
@@ -2727,7 +2727,7 @@ def test_delete_log_metric_flattened_error():
     with pytest.raises(ValueError):
         client.delete_log_metric(
             logging_metrics.DeleteLogMetricRequest(),
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
 @pytest.mark.asyncio
@@ -2747,7 +2747,7 @@ async def test_delete_log_metric_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_log_metric(
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2755,7 +2755,7 @@ async def test_delete_log_metric_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].metric_name
-        mock_val = 'metric_name_value'
+        mock_val = "metric_name_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2769,7 +2769,7 @@ async def test_delete_log_metric_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_log_metric(
             logging_metrics.DeleteLogMetricRequest(),
-            metric_name='metric_name_value',
+            metric_name="metric_name_value",
         )
 
 
@@ -3019,7 +3019,7 @@ async def test_list_log_metrics_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.ListLogMetricsResponse(
-            next_page_token='next_page_token_value',
+            next_page_token="next_page_token_value",
         ))
         await client.list_log_metrics(request=None)
 
@@ -3046,12 +3046,12 @@ async def test_get_log_metric_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
-            bucket_name='bucket_name_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            bucket_name="bucket_name_value",
             disabled=True,
-            value_extractor='value_extractor_value',
+            value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
         await client.get_log_metric(request=None)
@@ -3079,12 +3079,12 @@ async def test_create_log_metric_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
-            bucket_name='bucket_name_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            bucket_name="bucket_name_value",
             disabled=True,
-            value_extractor='value_extractor_value',
+            value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
         await client.create_log_metric(request=None)
@@ -3112,12 +3112,12 @@ async def test_update_log_metric_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(logging_metrics.LogMetric(
-            name='name_value',
-            description='description_value',
-            filter='filter_value',
-            bucket_name='bucket_name_value',
+            name="name_value",
+            description="description_value",
+            filter="filter_value",
+            bucket_name="bucket_name_value",
             disabled=True,
-            value_extractor='value_extractor_value',
+            value_extractor="value_extractor_value",
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
         await client.update_log_metric(request=None)

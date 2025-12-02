@@ -19,13 +19,13 @@ from google.api_core import retry_async as retries
 {% if service.has_lro %}
 from google.api_core import operations_v1
 {% endif %}
-from google.auth import credentials as ga_credentials   # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 
-import grpc                        # type: ignore
-import proto                       # type: ignore
+import grpc  # type: ignore
+import proto  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 {% filter sort_lines %}
@@ -43,13 +43,13 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% if api.has_location_mixin %}
-from google.cloud.location import locations_pb2 # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 {% endif %}
 {% if api.has_operations_mixin %}
 {% set import_ns.has_operations_mixin = True %}
 {% endif %}
 {% if import_ns.has_operations_mixin %}
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
@@ -57,6 +57,7 @@ from .grpc import {{ service.name }}GrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -89,7 +90,7 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
             }
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
-                extra = {
+                extra={
                     "serviceName": "{{ service.meta.address.proto }}",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
@@ -117,13 +118,15 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(cls,
-                       host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-                       credentials: Optional[ga_credentials.Credentials] = None,
-                       credentials_file: Optional[str] = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       quota_project_id: Optional[str] = None,
-                       **kwargs) -> aio.Channel:
+    def create_channel(
+        cls,
+        host: str{% if service.host %} = "{{ service.host }}"{% endif %},
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -154,29 +157,31 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs
+            **kwargs,
         )
 
-    def __init__(self, *,
-            host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
-            api_mtls_endpoint: Optional[str] = None,
-            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str{% if service.host %} = "{{ service.host }}"{% endif %},
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
-                {{ ' ' }}The hostname to connect to {% if service.host %}(default: '{{ service.host }}'){% endif %}.
+                {{ " " }}The hostname to connect to {% if service.host %}(default: "{{ service.host }}"){% endif %}.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -253,7 +258,8 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                 if client_cert_source:
                     cert, key = client_cert_source()
                     self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
+                        certificate_chain=cert,
+                        private_key=key,
                     )
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
@@ -262,7 +268,8 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
                     self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
+                        certificate_chain=cert,
+                        private_key=key,
                     )
 
         # The base transport sets the host, credentials and scopes
@@ -323,9 +330,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -333,13 +338,13 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
     {% for method in service.methods.values() %}
 
     @property
-    def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
-            [{{ method.input.ident }}],
-            Awaitable[{{ method.output.ident }}]]:
-        r"""Return a callable for the{{ ' ' }}
+    def {{ method.transport_safe_name|snake_case }}(
+        self,
+    ) -> Callable[[{{ method.input.ident }}], Awaitable[{{ method.output.ident }}]]:
+        r"""Return a callable for the{{ " " }}
         {{- (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=40, indent=8) -}}
-        {{ ' ' }}method over gRPC.
+        {{ " " }}method over gRPC.
 
         {{ method.meta.doc|rst(width=72, indent=8) }}
 
@@ -353,13 +358,13 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '{{ method.transport_safe_name|snake_case }}' not in self._stubs:
-            self._stubs['{{ method.transport_safe_name|snake_case }}'] = self._logged_channel.{{ method.grpc_stub_type }}(
-                '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
+        if "{{ method.transport_safe_name|snake_case }}" not in self._stubs:
+            self._stubs["{{ method.transport_safe_name|snake_case }}"] = self._logged_channel.{{ method.grpc_stub_type }}(
+                "/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}",
                 request_serializer={{ method.input.ident }}.{% if method.input.ident.python_import.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
                 response_deserializer={{ method.output.ident }}.{% if method.output.ident.python_import.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
             )
-        return self._stubs['{{ method.transport_safe_name|snake_case }}']
+        return self._stubs["{{ method.transport_safe_name|snake_case }}"]
     {% endfor %}
 
     {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
@@ -459,7 +464,5 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
     {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
 
 
-__all__ = (
-    '{{ service.name }}GrpcAsyncIOTransport',
-)
+__all__ = ("{{ service.name }}GrpcAsyncIOTransport",)
 {% endblock %}

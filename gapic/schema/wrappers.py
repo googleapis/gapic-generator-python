@@ -309,7 +309,7 @@ class Field:
         answer = self.primitive_mock()
 
         if isinstance(answer, str):
-            answer = f"'{answer}'"
+            answer = f'"{answer}"'
         else:
             answer = str(answer)
 

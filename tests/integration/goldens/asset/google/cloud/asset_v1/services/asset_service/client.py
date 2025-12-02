@@ -19,7 +19,19 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Callable,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 import warnings
 
 from google.cloud.asset_v1 import gapic_version as package_version
@@ -28,11 +40,11 @@ from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials             # type: ignore
-from google.auth.transport import mtls                            # type: ignore
-from google.auth.transport.grpc import SslCredentials             # type: ignore
-from google.auth.exceptions import MutualTLSChannelError          # type: ignore
-from google.oauth2 import service_account                         # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 try:
@@ -42,6 +54,7 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -53,7 +66,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.asset_v1.services.asset_service import pagers
 from google.cloud.asset_v1.types import asset_service
 from google.cloud.asset_v1.types import assets
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -71,14 +84,16 @@ class AssetServiceClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
+
     _transport_registry = OrderedDict()  # type: Dict[str, Type[AssetServiceTransport]]
     _transport_registry["grpc"] = AssetServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AssetServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = AssetServiceRestTransport
 
-    def get_transport_class(cls,
-            label: Optional[str] = None,
-        ) -> Type[AssetServiceTransport]:
+    def get_transport_class(
+        cls,
+        label: Optional[str] = None,
+    ) -> Type[AssetServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -114,9 +129,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         if not api_endpoint:
             return api_endpoint
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
+        mtls_endpoint_re = re.compile(r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?")
 
         m = mtls_endpoint_re.match(api_endpoint)
         name, mtls, sandbox, googledomain = m.groups()
@@ -125,16 +138,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         if sandbox:
             return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
+                "sandbox.googleapis.com",
+                "mtls.sandbox.googleapis.com",
             )
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "cloudasset.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(DEFAULT_ENDPOINT)  # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = "cloudasset.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
@@ -148,21 +160,19 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         Returns:
             bool: whether client certificate should be used for mTLS
+
         Raises:
-            ValueError: (If using a version of google-auth without should_use_client_cert and
-	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+            ValueError: If using a version of google-auth without should_use_client_cert
+                and GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.
         """
         # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
         if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
             return mtls.should_use_client_cert()
-        else: # pragma: NO COVER
+        else:  # pragma: NO COVER
             # if unsupported, fallback to reading from env var
             use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
             if use_client_cert_str not in ("true", "false"):
-                raise ValueError(
-                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
-                    " either `true` or `false`"
-                )
+                raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
             return use_client_cert_str == "true"
 
     @classmethod
@@ -197,7 +207,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             AssetServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(
-            filename)
+            filename,
+        )
         kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
@@ -214,23 +225,37 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def access_level_path(access_policy: str,access_level: str,) -> str:
+    def access_level_path(
+        access_policy: str,
+        access_level: str,
+    ) -> str:
         """Returns a fully-qualified access_level string."""
-        return "accessPolicies/{access_policy}/accessLevels/{access_level}".format(access_policy=access_policy, access_level=access_level, )
+        return "accessPolicies/{access_policy}/accessLevels/{access_level}".format(
+            access_policy=access_policy,
+            access_level=access_level,
+        )
 
     @staticmethod
-    def parse_access_level_path(path: str) -> Dict[str,str]:
+    def parse_access_level_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parses a access_level path into its component segments."""
         m = re.match(r"^accessPolicies/(?P<access_policy>.+?)/accessLevels/(?P<access_level>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def access_policy_path(access_policy: str,) -> str:
+    def access_policy_path(
+        access_policy: str,
+    ) -> str:
         """Returns a fully-qualified access_policy string."""
-        return "accessPolicies/{access_policy}".format(access_policy=access_policy, )
+        return "accessPolicies/{access_policy}".format(
+            access_policy=access_policy,
+        )
 
     @staticmethod
-    def parse_access_policy_path(path: str) -> Dict[str,str]:
+    def parse_access_policy_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parses a access_policy path into its component segments."""
         m = re.match(r"^accessPolicies/(?P<access_policy>.+?)$", path)
         return m.groupdict() if m else {}
@@ -241,112 +266,183 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return "*".format()
 
     @staticmethod
-    def parse_asset_path(path: str) -> Dict[str,str]:
+    def parse_asset_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parses a asset path into its component segments."""
         m = re.match(r"^.*$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def feed_path(project: str,feed: str,) -> str:
+    def feed_path(
+        project: str,
+        feed: str,
+    ) -> str:
         """Returns a fully-qualified feed string."""
-        return "projects/{project}/feeds/{feed}".format(project=project, feed=feed, )
+        return "projects/{project}/feeds/{feed}".format(
+            project=project,
+            feed=feed,
+        )
 
     @staticmethod
-    def parse_feed_path(path: str) -> Dict[str,str]:
+    def parse_feed_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parses a feed path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/feeds/(?P<feed>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def inventory_path(project: str,location: str,instance: str,) -> str:
+    def inventory_path(
+        project: str,
+        location: str,
+        instance: str,
+    ) -> str:
         """Returns a fully-qualified inventory string."""
-        return "projects/{project}/locations/{location}/instances/{instance}/inventory".format(project=project, location=location, instance=instance, )
+        return "projects/{project}/locations/{location}/instances/{instance}/inventory".format(
+            project=project,
+            location=location,
+            instance=instance,
+        )
 
     @staticmethod
-    def parse_inventory_path(path: str) -> Dict[str,str]:
+    def parse_inventory_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parses a inventory path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)/inventory$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def saved_query_path(project: str,saved_query: str,) -> str:
+    def saved_query_path(
+        project: str,
+        saved_query: str,
+    ) -> str:
         """Returns a fully-qualified saved_query string."""
-        return "projects/{project}/savedQueries/{saved_query}".format(project=project, saved_query=saved_query, )
+        return "projects/{project}/savedQueries/{saved_query}".format(
+            project=project,
+            saved_query=saved_query,
+        )
 
     @staticmethod
-    def parse_saved_query_path(path: str) -> Dict[str,str]:
+    def parse_saved_query_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parses a saved_query path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/savedQueries/(?P<saved_query>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def service_perimeter_path(access_policy: str,service_perimeter: str,) -> str:
+    def service_perimeter_path(
+        access_policy: str,
+        service_perimeter: str,
+    ) -> str:
         """Returns a fully-qualified service_perimeter string."""
-        return "accessPolicies/{access_policy}/servicePerimeters/{service_perimeter}".format(access_policy=access_policy, service_perimeter=service_perimeter, )
+        return "accessPolicies/{access_policy}/servicePerimeters/{service_perimeter}".format(
+            access_policy=access_policy,
+            service_perimeter=service_perimeter,
+        )
 
     @staticmethod
-    def parse_service_perimeter_path(path: str) -> Dict[str,str]:
+    def parse_service_perimeter_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parses a service_perimeter path into its component segments."""
         m = re.match(r"^accessPolicies/(?P<access_policy>.+?)/servicePerimeters/(?P<service_perimeter>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str, ) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(billing_account=billing_account, )
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
 
     @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str,str]:
+    def parse_common_billing_account_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parse a billing_account path into its component segments."""
         m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str, ) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder, )
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str,str]:
+    def parse_common_folder_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parse a folder path into its component segments."""
         m = re.match(r"^folders/(?P<folder>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str, ) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization, )
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str,str]:
+    def parse_common_organization_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parse a organization path into its component segments."""
         m = re.match(r"^organizations/(?P<organization>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str, ) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project, )
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str,str]:
+    def parse_common_project_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parse a project path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str, ) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(project=project, location=location, )
+        return "projects/{project}/locations/{location}".format(
+            project=project,
+            location=location,
+        )
 
     @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str,str]:
+    def parse_common_location_path(
+        path: str,
+    ) -> Dict[str, str]:
         """Parse a location path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
+    def get_mtls_endpoint_and_cert_source(
+        cls,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
+    ):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -378,8 +474,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning)
+        warnings.warn(
+            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+            DeprecationWarning,
+        )
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
         use_client_cert = AssetServiceClient._use_client_cert_effective()
@@ -509,7 +607,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def _add_cred_info_for_auth_errors(
         self,
-        error: core_exceptions.GoogleAPICallError
+        error: core_exceptions.GoogleAPICallError,
     ) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
@@ -549,12 +647,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         """
         return self._universe_domain
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Optional[Union[str, AssetServiceTransport, Callable[..., AssetServiceTransport]]] = None,
-            client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Optional[Union[str, AssetServiceTransport, Callable[..., AssetServiceTransport]]] = None,
+        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the asset service client.
 
         Args:
@@ -614,12 +714,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             self._client_options = client_options_lib.ClientOptions()
         self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
-        universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
+        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = AssetServiceClient._read_environment_variables()
         self._client_cert_source = AssetServiceClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = AssetServiceClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
-        self._api_endpoint = None # updated below, depending on `transport`
+        self._api_endpoint = None  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -639,22 +739,22 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         if transport_provided:
             # transport is a AssetServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError("When providing a transport instance, "
-                                 "provide its credentials directly.")
+                raise ValueError(
+                    "When providing a transport instance, provide its credentials directly.",
+                )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly.",
                 )
             self._transport = cast(AssetServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (self._api_endpoint or
-            AssetServiceClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint))
+        self._api_endpoint = self._api_endpoint or AssetServiceClient._get_api_endpoint(
+            self._client_options.api_endpoint,
+            self._client_cert_source,
+            self._universe_domain,
+            self._use_mtls_endpoint,
+        )
 
         if not transport_provided:
             import google.auth._default  # type: ignore
@@ -684,24 +784,27 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.cloud.asset_v1.AssetServiceClient`.",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
                         "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
-                    } if hasattr(self._transport, "_credentials") else {
+                    }
+                    if hasattr(self._transport, "_credentials")
+                    else {
                         "serviceName": "google.cloud.asset.v1.AssetService",
                         "credentialsType": None,
-                    }
+                    },
                 )
 
-    def export_assets(self,
-            request: Optional[Union[asset_service.ExportAssetsRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation.Operation:
+    def export_assets(
+        self,
+        request: Optional[Union[asset_service.ExportAssetsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
         r"""Exports assets with time and resource types to a given Cloud
         Storage location/BigQuery table. For Cloud Storage location
         destinations, the output format is newline-delimited JSON. Each
@@ -784,11 +887,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -812,14 +917,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_assets(self,
-            request: Optional[Union[asset_service.ListAssetsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListAssetsPager:
+    def list_assets(
+        self,
+        request: Optional[Union[asset_service.ListAssetsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListAssetsPager:
         r"""Lists assets with time and resource types and returns
         paged results in response.
 
@@ -888,8 +994,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -906,11 +1011,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -937,13 +1044,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def batch_get_assets_history(self,
-            request: Optional[Union[asset_service.BatchGetAssetsHistoryRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.BatchGetAssetsHistoryResponse:
+    def batch_get_assets_history(
+        self,
+        request: Optional[Union[asset_service.BatchGetAssetsHistoryRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.BatchGetAssetsHistoryResponse:
         r"""Batch gets the update history of assets that overlap a time
         window. For IAM_POLICY content, this API outputs history when
         the asset and its attached IAM POLICY both exist. This can
@@ -1005,11 +1113,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1025,14 +1135,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def create_feed(self,
-            request: Optional[Union[asset_service.CreateFeedRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.Feed:
+    def create_feed(
+        self,
+        request: Optional[Union[asset_service.CreateFeedRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.Feed:
         r"""Creates a feed in a parent
         project/folder/organization to listen to its asset
         updates.
@@ -1111,8 +1222,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1129,11 +1239,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1149,14 +1261,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_feed(self,
-            request: Optional[Union[asset_service.GetFeedRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.Feed:
+    def get_feed(
+        self,
+        request: Optional[Union[asset_service.GetFeedRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
         .. code-block:: python
@@ -1223,8 +1336,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1241,11 +1353,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1261,14 +1375,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_feeds(self,
-            request: Optional[Union[asset_service.ListFeedsRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.ListFeedsResponse:
+    def list_feeds(
+        self,
+        request: Optional[Union[asset_service.ListFeedsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.ListFeedsResponse:
         r"""Lists all asset feeds in a parent
         project/folder/organization.
 
@@ -1330,8 +1445,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1348,11 +1462,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1368,14 +1484,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def update_feed(self,
-            request: Optional[Union[asset_service.UpdateFeedRequest, dict]] = None,
-            *,
-            feed: Optional[asset_service.Feed] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.Feed:
+    def update_feed(
+        self,
+        request: Optional[Union[asset_service.UpdateFeedRequest, dict]] = None,
+        *,
+        feed: Optional[asset_service.Feed] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
         .. code-block:: python
@@ -1446,8 +1563,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [feed]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1464,11 +1580,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("feed.name", request.feed.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1484,14 +1602,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def delete_feed(self,
-            request: Optional[Union[asset_service.DeleteFeedRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    def delete_feed(
+        self,
+        request: Optional[Union[asset_service.DeleteFeedRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes an asset feed.
 
         .. code-block:: python
@@ -1543,8 +1662,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1561,11 +1679,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1578,16 +1698,17 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             metadata=metadata,
         )
 
-    def search_all_resources(self,
-            request: Optional[Union[asset_service.SearchAllResourcesRequest, dict]] = None,
-            *,
-            scope: Optional[str] = None,
-            query: Optional[str] = None,
-            asset_types: Optional[MutableSequence[str]] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.SearchAllResourcesPager:
+    def search_all_resources(
+        self,
+        request: Optional[Union[asset_service.SearchAllResourcesRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        query: Optional[str] = None,
+        asset_types: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.SearchAllResourcesPager:
         r"""Searches all Google Cloud resources within the specified scope,
         such as a project, folder, or organization. The caller must be
         granted the ``cloudasset.assets.searchAllResources`` permission
@@ -1757,8 +1878,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [scope, query, asset_types]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1779,11 +1899,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1810,15 +1932,16 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def search_all_iam_policies(self,
-            request: Optional[Union[asset_service.SearchAllIamPoliciesRequest, dict]] = None,
-            *,
-            scope: Optional[str] = None,
-            query: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.SearchAllIamPoliciesPager:
+    def search_all_iam_policies(
+        self,
+        request: Optional[Union[asset_service.SearchAllIamPoliciesRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        query: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.SearchAllIamPoliciesPager:
         r"""Searches all IAM policies within the specified scope, such as a
         project, folder, or organization. The caller must be granted the
         ``cloudasset.assets.searchAllIamPolicies`` permission on the
@@ -1950,8 +2073,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [scope, query]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1970,11 +2092,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2001,13 +2125,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def analyze_iam_policy(self,
-            request: Optional[Union[asset_service.AnalyzeIamPolicyRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.AnalyzeIamPolicyResponse:
+    def analyze_iam_policy(
+        self,
+        request: Optional[Union[asset_service.AnalyzeIamPolicyRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.AnalyzeIamPolicyResponse:
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
 
@@ -2070,11 +2195,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("analysis_query.scope", request.analysis_query.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2090,13 +2217,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def analyze_iam_policy_longrunning(self,
-            request: Optional[Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> operation.Operation:
+    def analyze_iam_policy_longrunning(
+        self,
+        request: Optional[Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
         r"""Analyzes IAM policies asynchronously to answer which identities
         have what accesses on which resources, and writes the analysis
         results to a Google Cloud Storage or a BigQuery destination. For
@@ -2179,11 +2307,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("analysis_query.scope", request.analysis_query.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2207,13 +2337,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def analyze_move(self,
-            request: Optional[Union[asset_service.AnalyzeMoveRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.AnalyzeMoveResponse:
+    def analyze_move(
+        self,
+        request: Optional[Union[asset_service.AnalyzeMoveRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.AnalyzeMoveResponse:
         r"""Analyze moving a resource to a specified destination
         without kicking off the actual move. The analysis is
         best effort depending on the user's permissions of
@@ -2279,11 +2410,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("resource", request.resource),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2299,13 +2432,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def query_assets(self,
-            request: Optional[Union[asset_service.QueryAssetsRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.QueryAssetsResponse:
+    def query_assets(
+        self,
+        request: Optional[Union[asset_service.QueryAssetsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.QueryAssetsResponse:
         r"""Issue a job that queries assets using a SQL statement compatible
         with `BigQuery Standard
         SQL <http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>`__.
@@ -2377,11 +2511,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2397,16 +2533,17 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def create_saved_query(self,
-            request: Optional[Union[asset_service.CreateSavedQueryRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            saved_query: Optional[asset_service.SavedQuery] = None,
-            saved_query_id: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.SavedQuery:
+    def create_saved_query(
+        self,
+        request: Optional[Union[asset_service.CreateSavedQueryRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        saved_query: Optional[asset_service.SavedQuery] = None,
+        saved_query_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.SavedQuery:
         r"""Creates a saved query in a parent
         project/folder/organization.
 
@@ -2494,8 +2631,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [parent, saved_query, saved_query_id]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2516,11 +2652,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2536,14 +2674,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_saved_query(self,
-            request: Optional[Union[asset_service.GetSavedQueryRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.SavedQuery:
+    def get_saved_query(
+        self,
+        request: Optional[Union[asset_service.GetSavedQueryRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.SavedQuery:
         r"""Gets details about a saved query.
 
         .. code-block:: python
@@ -2606,8 +2745,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2624,11 +2762,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2644,14 +2784,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_saved_queries(self,
-            request: Optional[Union[asset_service.ListSavedQueriesRequest, dict]] = None,
-            *,
-            parent: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.ListSavedQueriesPager:
+    def list_saved_queries(
+        self,
+        request: Optional[Union[asset_service.ListSavedQueriesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListSavedQueriesPager:
         r"""Lists all saved queries in a parent
         project/folder/organization.
 
@@ -2720,8 +2861,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [parent]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2738,11 +2878,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("parent", request.parent),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2769,15 +2911,16 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def update_saved_query(self,
-            request: Optional[Union[asset_service.UpdateSavedQueryRequest, dict]] = None,
-            *,
-            saved_query: Optional[asset_service.SavedQuery] = None,
-            update_mask: Optional[field_mask_pb2.FieldMask] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.SavedQuery:
+    def update_saved_query(
+        self,
+        request: Optional[Union[asset_service.UpdateSavedQueryRequest, dict]] = None,
+        *,
+        saved_query: Optional[asset_service.SavedQuery] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.SavedQuery:
         r"""Updates a saved query.
 
         .. code-block:: python
@@ -2848,8 +2991,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [saved_query, update_mask]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2868,11 +3010,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("saved_query.name", request.saved_query.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2888,14 +3032,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def delete_saved_query(self,
-            request: Optional[Union[asset_service.DeleteSavedQueryRequest, dict]] = None,
-            *,
-            name: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> None:
+    def delete_saved_query(
+        self,
+        request: Optional[Union[asset_service.DeleteSavedQueryRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
         r"""Deletes a saved query.
 
         .. code-block:: python
@@ -2949,8 +3094,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [name]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2967,11 +3111,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("name", request.name),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2984,13 +3130,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             metadata=metadata,
         )
 
-    def batch_get_effective_iam_policies(self,
-            request: Optional[Union[asset_service.BatchGetEffectiveIamPoliciesRequest, dict]] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
+    def batch_get_effective_iam_policies(
+        self,
+        request: Optional[Union[asset_service.BatchGetEffectiveIamPoliciesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> asset_service.BatchGetEffectiveIamPoliciesResponse:
         r"""Gets effective IAM policies for a batch of resources.
 
         .. code-block:: python
@@ -3050,11 +3197,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3070,16 +3219,17 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def analyze_org_policies(self,
-            request: Optional[Union[asset_service.AnalyzeOrgPoliciesRequest, dict]] = None,
-            *,
-            scope: Optional[str] = None,
-            constraint: Optional[str] = None,
-            filter: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.AnalyzeOrgPoliciesPager:
+    def analyze_org_policies(
+        self,
+        request: Optional[Union[asset_service.AnalyzeOrgPoliciesRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        constraint: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.AnalyzeOrgPoliciesPager:
         r"""Analyzes organization policies under a scope.
 
         .. code-block:: python
@@ -3171,8 +3321,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [scope, constraint, filter]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3193,11 +3342,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3224,16 +3375,17 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def analyze_org_policy_governed_containers(self,
-            request: Optional[Union[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, dict]] = None,
-            *,
-            scope: Optional[str] = None,
-            constraint: Optional[str] = None,
-            filter: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.AnalyzeOrgPolicyGovernedContainersPager:
+    def analyze_org_policy_governed_containers(
+        self,
+        request: Optional[Union[asset_service.AnalyzeOrgPolicyGovernedContainersRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        constraint: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.AnalyzeOrgPolicyGovernedContainersPager:
         r"""Analyzes organization policies governed containers
         (projects, folders or organization) under a scope.
 
@@ -3325,8 +3477,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [scope, constraint, filter]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3347,11 +3498,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3378,16 +3531,17 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
-    def analyze_org_policy_governed_assets(self,
-            request: Optional[Union[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, dict]] = None,
-            *,
-            scope: Optional[str] = None,
-            constraint: Optional[str] = None,
-            filter: Optional[str] = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-            ) -> pagers.AnalyzeOrgPolicyGovernedAssetsPager:
+    def analyze_org_policy_governed_assets(
+        self,
+        request: Optional[Union[asset_service.AnalyzeOrgPolicyGovernedAssetsRequest, dict]] = None,
+        *,
+        scope: Optional[str] = None,
+        constraint: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.AnalyzeOrgPolicyGovernedAssetsPager:
         r"""Analyzes organization policies governed assets (Google Cloud
         resources or policies) under a scope. This RPC supports custom
         constraints and the following 10 canned constraints:
@@ -3508,8 +3662,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         flattened_params = [scope, constraint, filter]
         has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3530,11 +3683,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
+        # fmt: off
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
                 ("scope", request.scope),
             )),
         )
+        # fmt: on
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3611,10 +3766,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3622,7 +3774,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -3631,18 +3787,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             raise e
 
 
-
-
-
-
-
-
-
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = (
-    "AssetServiceClient",
-)
+__all__ = ("AssetServiceClient",)

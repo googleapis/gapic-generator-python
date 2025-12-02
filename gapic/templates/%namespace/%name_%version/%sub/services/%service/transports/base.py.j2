@@ -17,7 +17,7 @@ from google.api_core import retry as retries
 from google.api_core import operations_v1
 {% endif %}
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account # type: ignore
+from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 {% filter sort_lines %}
@@ -35,13 +35,13 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% if api.has_location_mixin %}
-from google.cloud.location import locations_pb2 # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 {% endif %}
 {% if api.has_operations_mixin %}
 {% set import_ns.has_operations_mixin = True %}
 {% endif %}
 {% if import_ns.has_operations_mixin %}
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 {% filter sort_lines %}
@@ -59,31 +59,35 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class {{ service.name }}Transport(abc.ABC):
     """Abstract transport class for {{ service.name }}."""
 
+    {# Omit formatting for this code block to avoid keeping track of whether this dict is empty #}
+    # fmt: off
     AUTH_SCOPES = (
         {% for scope in service.oauth_scopes %}
-        '{{ scope }}',
+        "{{ scope }}",
         {% endfor %}
     )
+    # fmt: on
 
-    DEFAULT_HOST: str = '{% if service.host %}{{ service.host }}{% endif %}'
+    DEFAULT_HOST: str = "{% if service.host %}{{ service.host }}{% endif %}"
 
     def __init__(
-            self, *,
-            host: str = DEFAULT_HOST,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            **kwargs,
-            ) -> None:
+        self,
+        *,
+        host: str = DEFAULT_HOST,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+        **kwargs,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
-                {{ ' ' }}The hostname to connect to {% if service.host %}(default: '{{ service.host }}'){% endif %}.
+                {{ " " }}The hostname to connect to {% if service.host %}(default: "{{ service.host }}"){% endif %}.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -122,10 +126,10 @@ class {{ service.name }}Transport(abc.ABC):
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                                credentials_file,
-                                **scopes_kwargs,
-                                quota_project_id=quota_project_id
-                            )
+                credentials_file,
+                **scopes_kwargs,
+                quota_project_id=quota_project_id,
+            )
         elif credentials is None and not self._ignore_credentials:
             credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
@@ -133,15 +137,19 @@ class {{ service.name }}Transport(abc.ABC):
                 credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
+        if (
+            always_use_jwt_access
+            and isinstance(credentials, service_account.Credentials)
+            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
+        ):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ':' not in host:
-            host += ':443'
+        if ":" not in host:
+            host += ":443"
         self._host = host
 
     @property
@@ -183,13 +191,13 @@ class {{ service.name }}Transport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            {% endfor %} {# method_name in api.mixin_api_methods.keys() #}
+            {% endfor %}{# method_name in api.mixin_api_methods.keys() #}
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
+        .. warning::
             Only call this method if the transport is NOT shared
             with other clients - this may cause errors in other clients!
         """
@@ -204,14 +212,20 @@ class {{ service.name }}Transport(abc.ABC):
     {% endif %}
     {% for method in service.methods.values() %}
 
+    {# Turn off code formatting here to avoid calculating line length to determine whether to wrap code #}
+    # fmt: off
     @property
-    def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
-            [{{ method.input.ident }}],
-            Union[
-                {{ method.output.ident }},
-                Awaitable[{{ method.output.ident }}]
-            ]]:
+    def {{ method.transport_safe_name|snake_case }}(
+        self,
+    ) -> Callable[
+        [{{ method.input.ident }}],
+        Union[
+            {{ method.output.ident }},
+            Awaitable[{{ method.output.ident }}]
+        ],
+    ]:
         raise NotImplementedError()
+    # fmt: on
     {% endfor %}
 
     {% if api.has_operations_mixin %}
@@ -230,10 +244,7 @@ class {{ service.name }}Transport(abc.ABC):
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
     {% endif %}
 
@@ -241,10 +252,7 @@ class {{ service.name }}Transport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.CancelOperationRequest],
-        None,
-    ]:
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
         raise NotImplementedError()
     {% endif %}
 
@@ -252,10 +260,7 @@ class {{ service.name }}Transport(abc.ABC):
     @property
     def delete_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.DeleteOperationRequest],
-        None,
-    ]:
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
         raise NotImplementedError()
     {% endif %}
 
@@ -263,10 +268,7 @@ class {{ service.name }}Transport(abc.ABC):
     @property
     def wait_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.WaitOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.WaitOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
     {% endif %}
     {% endif %}
@@ -277,10 +279,7 @@ class {{ service.name }}Transport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
     {% endif %}
 
@@ -288,10 +287,7 @@ class {{ service.name }}Transport(abc.ABC):
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
     {% endif %}
 
@@ -313,21 +309,17 @@ class {{ service.name }}Transport(abc.ABC):
     {% if api.has_location_mixin %}
     {% if "GetLocation" in api.mixin_api_methods %}
     @property
-    def get_location(self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    def get_location(
+        self,
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]]]:
         raise NotImplementedError()
     {% endif %}
 
     {% if "ListLocations" in api.mixin_api_methods %}
     @property
-    def list_locations(self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],
-    ]:
+    def list_locations(
+        self,
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]]]:
         raise NotImplementedError()
     {% endif %}
     {% endif %}
@@ -337,31 +329,19 @@ class {{ service.name }}Transport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]]]:
         raise NotImplementedError()
     {% endif %}
 
@@ -385,7 +365,5 @@ class {{ service.name }}Transport(abc.ABC):
     {% endfor %}
 
 
-__all__ = (
-    '{{ service.name }}Transport',
-)
+__all__ = ("{{ service.name }}Transport",)
 {% endblock %}

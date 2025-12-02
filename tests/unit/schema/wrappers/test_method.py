@@ -466,7 +466,7 @@ def test_body_fields():
     method = make_method("PutSquid", input_message=input_message, http_rule=http_rule)
     assert set(method.body_fields) == {"mantle"}
     mock_value = method.body_fields["mantle"].mock_value
-    assert mock_value == "baz.Mantle(mantle_stuff='mantle_stuff_value')"
+    assert mock_value == 'baz.Mantle(mantle_stuff="mantle_stuff_value")'
 
 
 def test_body_fields_no_body():

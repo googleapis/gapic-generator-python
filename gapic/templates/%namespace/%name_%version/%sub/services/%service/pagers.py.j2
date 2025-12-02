@@ -12,6 +12,7 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import retry_async as retries_async
 from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator, Union
+
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -48,14 +49,17 @@ class {{ method.name }}Pager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., {{ method.output.ident }}],
-            request: {{ method.input.ident }},
-            response: {{ method.output.ident }},
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            {{ shared_macros.client_method_metadata_argument()|indent(4) }} = {{ shared_macros.client_method_metadata_default_value() }}):
+
+    def __init__(
+        self,
+        method: Callable[..., {{ method.output.ident }}],
+        request: {{ method.input.ident }},
+        response: {{ method.output.ident }},
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        {{ shared_macros.client_method_metadata_argument()|indent(4) }} = {{ shared_macros.client_method_metadata_default_value() }}
+    ):
         """Instantiate the pager.
 
         Args:
@@ -102,7 +106,7 @@ class {{ method.name }}Pager:
     {% endif %}
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 {# TODO(yon-mg): remove on rest async transport impl #}
@@ -124,14 +128,17 @@ class {{ method.name }}AsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[{{ method.output.ident }}]],
-            request: {{ method.input.ident }},
-            response: {{ method.output.ident }},
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            {{ shared_macros.client_method_metadata_argument()|indent(4) }} = {{ shared_macros.client_method_metadata_default_value() }}):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[{{ method.output.ident }}]],
+        request: {{ method.input.ident }},
+        response: {{ method.output.ident }},
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        {{ shared_macros.client_method_metadata_argument()|indent(4) }} = {{ shared_macros.client_method_metadata_default_value() }}
+    ):
         """Instantiates the pager.
 
         Args:
@@ -163,6 +170,7 @@ class {{ method.name }}AsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
+
     {% if method.paged_result_field.map %}
     def __aiter__(self) -> Iterator[Tuple[str, {{ method.paged_result_field.type.fields.get('value').ident }}]]:
         async def async_generator():
@@ -186,7 +194,7 @@ class {{ method.name }}AsyncPager:
 
     {% endif %}
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 {% endif %}
 {% endfor %}

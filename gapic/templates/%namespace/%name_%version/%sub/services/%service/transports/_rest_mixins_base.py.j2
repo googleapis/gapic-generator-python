@@ -29,22 +29,24 @@
         def _get_transcoded_request(http_options, request):
             request_kwargs = json_format.MessageToDict(request)
             transcoded_request = path_template.transcode(
-                http_options, **request_kwargs)
+                http_options,
+                **request_kwargs,
+            )
             return transcoded_request
 
         {% set body_spec = api.mixin_http_options["{}".format(name)][0].body %}
-        {%- if body_spec %}
+        {% if body_spec %}
 
         @staticmethod
         def _get_request_body_json(transcoded_request):
-            body = json.dumps(transcoded_request['body'])
+            body = json.dumps(transcoded_request["body"])
             return body
 
-        {%- endif %} {# body_spec #}
+        {% endif %} {# body_spec #}
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
             return query_params
 
     {% endfor %}

@@ -29,7 +29,7 @@ from google.protobuf import json_format
 from google.api_core import operations_v1
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.cloud.location import locations_pb2 # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 
 from requests import __version__ as requests_version
 import dataclasses
@@ -57,6 +57,7 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -237,7 +238,12 @@ class EventarcRestInterceptor:
 
 
     """
-    def pre_create_channel(self, request: eventarc.CreateChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.CreateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+
+    def pre_create_channel(
+        self,
+        request: eventarc.CreateChannelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.CreateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -245,7 +251,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_create_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_create_channel(
+        self,
+        response: operations_pb2.Operation,
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel
 
         DEPRECATED. Please use the `post_create_channel_with_metadata`
@@ -258,7 +267,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_create_channel_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_create_channel_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_channel
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -273,7 +286,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_create_channel_connection(self, request: eventarc.CreateChannelConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.CreateChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_create_channel_connection(
+        self,
+        request: eventarc.CreateChannelConnectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.CreateChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_channel_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -281,7 +298,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_create_channel_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_create_channel_connection(
+        self,
+        response: operations_pb2.Operation,
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel_connection
 
         DEPRECATED. Please use the `post_create_channel_connection_with_metadata`
@@ -294,7 +314,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_create_channel_connection_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_create_channel_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_channel_connection
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -309,7 +333,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_create_trigger(self, request: eventarc.CreateTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.CreateTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_create_trigger(
+        self,
+        request: eventarc.CreateTriggerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.CreateTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -317,7 +345,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_create_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_create_trigger(
+        self,
+        response: operations_pb2.Operation,
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_trigger
 
         DEPRECATED. Please use the `post_create_trigger_with_metadata`
@@ -330,7 +361,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_create_trigger_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_create_trigger_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_trigger
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -345,7 +380,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_delete_channel(self, request: eventarc.DeleteChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.DeleteChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_delete_channel(
+        self,
+        request: eventarc.DeleteChannelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.DeleteChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -353,7 +392,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_delete_channel(
+        self,
+        response: operations_pb2.Operation,
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_channel
 
         DEPRECATED. Please use the `post_delete_channel_with_metadata`
@@ -366,7 +408,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_delete_channel_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_delete_channel_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_channel
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -381,7 +427,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_delete_channel_connection(self, request: eventarc.DeleteChannelConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.DeleteChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_delete_channel_connection(
+        self,
+        request: eventarc.DeleteChannelConnectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.DeleteChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_channel_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -389,7 +439,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_channel_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_delete_channel_connection(
+        self,
+        response: operations_pb2.Operation,
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_channel_connection
 
         DEPRECATED. Please use the `post_delete_channel_connection_with_metadata`
@@ -402,7 +455,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_delete_channel_connection_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_delete_channel_connection_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_channel_connection
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -417,7 +474,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_delete_trigger(self, request: eventarc.DeleteTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.DeleteTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_delete_trigger(
+        self,
+        request: eventarc.DeleteTriggerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.DeleteTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -425,7 +486,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_delete_trigger(
+        self,
+        response: operations_pb2.Operation,
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_trigger
 
         DEPRECATED. Please use the `post_delete_trigger_with_metadata`
@@ -438,7 +502,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_delete_trigger_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_delete_trigger_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_trigger
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -453,7 +521,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_channel(self, request: eventarc.GetChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.GetChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_get_channel(
+        self,
+        request: eventarc.GetChannelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.GetChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -461,7 +533,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_channel(self, response: channel.Channel) -> channel.Channel:
+    def post_get_channel(
+        self,
+        response: channel.Channel,
+    ) -> channel.Channel:
         """Post-rpc interceptor for get_channel
 
         DEPRECATED. Please use the `post_get_channel_with_metadata`
@@ -474,7 +549,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_get_channel_with_metadata(self, response: channel.Channel, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[channel.Channel, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_get_channel_with_metadata(
+        self,
+        response: channel.Channel,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[channel.Channel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_channel
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -489,7 +568,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_channel_connection(self, request: eventarc.GetChannelConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.GetChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_get_channel_connection(
+        self,
+        request: eventarc.GetChannelConnectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.GetChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_channel_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -497,7 +580,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_channel_connection(self, response: channel_connection.ChannelConnection) -> channel_connection.ChannelConnection:
+    def post_get_channel_connection(
+        self,
+        response: channel_connection.ChannelConnection,
+    ) -> channel_connection.ChannelConnection:
         """Post-rpc interceptor for get_channel_connection
 
         DEPRECATED. Please use the `post_get_channel_connection_with_metadata`
@@ -510,7 +596,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_get_channel_connection_with_metadata(self, response: channel_connection.ChannelConnection, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[channel_connection.ChannelConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_get_channel_connection_with_metadata(
+        self,
+        response: channel_connection.ChannelConnection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[channel_connection.ChannelConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_channel_connection
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -525,7 +615,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_google_channel_config(self, request: eventarc.GetGoogleChannelConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.GetGoogleChannelConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_get_google_channel_config(
+        self,
+        request: eventarc.GetGoogleChannelConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.GetGoogleChannelConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_google_channel_config
 
         Override in a subclass to manipulate the request or metadata
@@ -533,7 +627,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_google_channel_config(self, response: google_channel_config.GoogleChannelConfig) -> google_channel_config.GoogleChannelConfig:
+    def post_get_google_channel_config(
+        self,
+        response: google_channel_config.GoogleChannelConfig,
+    ) -> google_channel_config.GoogleChannelConfig:
         """Post-rpc interceptor for get_google_channel_config
 
         DEPRECATED. Please use the `post_get_google_channel_config_with_metadata`
@@ -546,7 +643,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_get_google_channel_config_with_metadata(self, response: google_channel_config.GoogleChannelConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[google_channel_config.GoogleChannelConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_get_google_channel_config_with_metadata(
+        self,
+        response: google_channel_config.GoogleChannelConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[google_channel_config.GoogleChannelConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_google_channel_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -561,7 +662,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_provider(self, request: eventarc.GetProviderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.GetProviderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_get_provider(
+        self,
+        request: eventarc.GetProviderRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.GetProviderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_provider
 
         Override in a subclass to manipulate the request or metadata
@@ -569,7 +674,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_provider(self, response: discovery.Provider) -> discovery.Provider:
+    def post_get_provider(
+        self,
+        response: discovery.Provider,
+    ) -> discovery.Provider:
         """Post-rpc interceptor for get_provider
 
         DEPRECATED. Please use the `post_get_provider_with_metadata`
@@ -582,7 +690,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_get_provider_with_metadata(self, response: discovery.Provider, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[discovery.Provider, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_get_provider_with_metadata(
+        self,
+        response: discovery.Provider,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[discovery.Provider, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_provider
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -597,7 +709,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_get_trigger(self, request: eventarc.GetTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.GetTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_get_trigger(
+        self,
+        request: eventarc.GetTriggerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.GetTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -605,7 +721,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_trigger(self, response: trigger.Trigger) -> trigger.Trigger:
+    def post_get_trigger(
+        self,
+        response: trigger.Trigger,
+    ) -> trigger.Trigger:
         """Post-rpc interceptor for get_trigger
 
         DEPRECATED. Please use the `post_get_trigger_with_metadata`
@@ -618,7 +737,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_get_trigger_with_metadata(self, response: trigger.Trigger, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[trigger.Trigger, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_get_trigger_with_metadata(
+        self,
+        response: trigger.Trigger,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[trigger.Trigger, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_trigger
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -633,7 +756,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_channel_connections(self, request: eventarc.ListChannelConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListChannelConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_list_channel_connections(
+        self,
+        request: eventarc.ListChannelConnectionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.ListChannelConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_channel_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -641,7 +768,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_channel_connections(self, response: eventarc.ListChannelConnectionsResponse) -> eventarc.ListChannelConnectionsResponse:
+    def post_list_channel_connections(
+        self,
+        response: eventarc.ListChannelConnectionsResponse,
+    ) -> eventarc.ListChannelConnectionsResponse:
         """Post-rpc interceptor for list_channel_connections
 
         DEPRECATED. Please use the `post_list_channel_connections_with_metadata`
@@ -654,7 +784,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_list_channel_connections_with_metadata(self, response: eventarc.ListChannelConnectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListChannelConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_list_channel_connections_with_metadata(
+        self,
+        response: eventarc.ListChannelConnectionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.ListChannelConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_channel_connections
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -669,7 +803,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_channels(self, request: eventarc.ListChannelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListChannelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_list_channels(
+        self,
+        request: eventarc.ListChannelsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.ListChannelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_channels
 
         Override in a subclass to manipulate the request or metadata
@@ -677,7 +815,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_channels(self, response: eventarc.ListChannelsResponse) -> eventarc.ListChannelsResponse:
+    def post_list_channels(
+        self,
+        response: eventarc.ListChannelsResponse,
+    ) -> eventarc.ListChannelsResponse:
         """Post-rpc interceptor for list_channels
 
         DEPRECATED. Please use the `post_list_channels_with_metadata`
@@ -690,7 +831,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_list_channels_with_metadata(self, response: eventarc.ListChannelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListChannelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_list_channels_with_metadata(
+        self,
+        response: eventarc.ListChannelsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.ListChannelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_channels
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -705,7 +850,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_providers(self, request: eventarc.ListProvidersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListProvidersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_list_providers(
+        self,
+        request: eventarc.ListProvidersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.ListProvidersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_providers
 
         Override in a subclass to manipulate the request or metadata
@@ -713,7 +862,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_providers(self, response: eventarc.ListProvidersResponse) -> eventarc.ListProvidersResponse:
+    def post_list_providers(
+        self,
+        response: eventarc.ListProvidersResponse,
+    ) -> eventarc.ListProvidersResponse:
         """Post-rpc interceptor for list_providers
 
         DEPRECATED. Please use the `post_list_providers_with_metadata`
@@ -726,7 +878,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_list_providers_with_metadata(self, response: eventarc.ListProvidersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListProvidersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_list_providers_with_metadata(
+        self,
+        response: eventarc.ListProvidersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.ListProvidersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_providers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -741,7 +897,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_list_triggers(self, request: eventarc.ListTriggersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListTriggersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_list_triggers(
+        self,
+        request: eventarc.ListTriggersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.ListTriggersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_triggers
 
         Override in a subclass to manipulate the request or metadata
@@ -749,7 +909,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_triggers(self, response: eventarc.ListTriggersResponse) -> eventarc.ListTriggersResponse:
+    def post_list_triggers(
+        self,
+        response: eventarc.ListTriggersResponse,
+    ) -> eventarc.ListTriggersResponse:
         """Post-rpc interceptor for list_triggers
 
         DEPRECATED. Please use the `post_list_triggers_with_metadata`
@@ -762,7 +925,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_list_triggers_with_metadata(self, response: eventarc.ListTriggersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.ListTriggersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_list_triggers_with_metadata(
+        self,
+        response: eventarc.ListTriggersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.ListTriggersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_triggers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -777,7 +944,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_update_channel(self, request: eventarc.UpdateChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.UpdateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_update_channel(
+        self,
+        request: eventarc.UpdateChannelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.UpdateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_channel
 
         Override in a subclass to manipulate the request or metadata
@@ -785,7 +956,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_update_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_update_channel(
+        self,
+        response: operations_pb2.Operation,
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_channel
 
         DEPRECATED. Please use the `post_update_channel_with_metadata`
@@ -798,7 +972,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_update_channel_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_update_channel_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_channel
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -813,7 +991,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_update_google_channel_config(self, request: eventarc.UpdateGoogleChannelConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.UpdateGoogleChannelConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_update_google_channel_config(
+        self,
+        request: eventarc.UpdateGoogleChannelConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.UpdateGoogleChannelConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_google_channel_config
 
         Override in a subclass to manipulate the request or metadata
@@ -821,7 +1003,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_update_google_channel_config(self, response: gce_google_channel_config.GoogleChannelConfig) -> gce_google_channel_config.GoogleChannelConfig:
+    def post_update_google_channel_config(
+        self,
+        response: gce_google_channel_config.GoogleChannelConfig,
+    ) -> gce_google_channel_config.GoogleChannelConfig:
         """Post-rpc interceptor for update_google_channel_config
 
         DEPRECATED. Please use the `post_update_google_channel_config_with_metadata`
@@ -834,7 +1019,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_update_google_channel_config_with_metadata(self, response: gce_google_channel_config.GoogleChannelConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[gce_google_channel_config.GoogleChannelConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_update_google_channel_config_with_metadata(
+        self,
+        response: gce_google_channel_config.GoogleChannelConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gce_google_channel_config.GoogleChannelConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_google_channel_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -849,7 +1038,11 @@ class EventarcRestInterceptor:
         """
         return response, metadata
 
-    def pre_update_trigger(self, request: eventarc.UpdateTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[eventarc.UpdateTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def pre_update_trigger(
+        self,
+        request: eventarc.UpdateTriggerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[eventarc.UpdateTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -857,7 +1050,10 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_update_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+    def post_update_trigger(
+        self,
+        response: operations_pb2.Operation,
+    ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_trigger
 
         DEPRECATED. Please use the `post_update_trigger_with_metadata`
@@ -870,7 +1066,11 @@ class EventarcRestInterceptor:
         """
         return response
 
-    def post_update_trigger_with_metadata(self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+    def post_update_trigger_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_trigger
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -886,7 +1086,9 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+        self,
+        request: locations_pb2.GetLocationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
@@ -896,7 +1098,8 @@ class EventarcRestInterceptor:
         return request, metadata
 
     def post_get_location(
-        self, response: locations_pb2.Location
+        self,
+        response: locations_pb2.Location,
     ) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
@@ -907,7 +1110,9 @@ class EventarcRestInterceptor:
         return response
 
     def pre_list_locations(
-        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+        self,
+        request: locations_pb2.ListLocationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
@@ -917,7 +1122,8 @@ class EventarcRestInterceptor:
         return request, metadata
 
     def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
+        self,
+        response: locations_pb2.ListLocationsResponse,
     ) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
@@ -928,7 +1134,9 @@ class EventarcRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+        self,
+        request: iam_policy_pb2.GetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
@@ -938,7 +1146,8 @@ class EventarcRestInterceptor:
         return request, metadata
 
     def post_get_iam_policy(
-        self, response: policy_pb2.Policy
+        self,
+        response: policy_pb2.Policy,
     ) -> policy_pb2.Policy:
         """Post-rpc interceptor for get_iam_policy
 
@@ -949,7 +1158,9 @@ class EventarcRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+        self,
+        request: iam_policy_pb2.SetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
@@ -959,7 +1170,8 @@ class EventarcRestInterceptor:
         return request, metadata
 
     def post_set_iam_policy(
-        self, response: policy_pb2.Policy
+        self,
+        response: policy_pb2.Policy,
     ) -> policy_pb2.Policy:
         """Post-rpc interceptor for set_iam_policy
 
@@ -970,7 +1182,9 @@ class EventarcRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+        self,
+        request: iam_policy_pb2.TestIamPermissionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
@@ -980,7 +1194,8 @@ class EventarcRestInterceptor:
         return request, metadata
 
     def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
+        self,
+        response: iam_policy_pb2.TestIamPermissionsResponse,
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
@@ -991,7 +1206,9 @@ class EventarcRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+        self,
+        request: operations_pb2.CancelOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
@@ -1001,7 +1218,8 @@ class EventarcRestInterceptor:
         return request, metadata
 
     def post_cancel_operation(
-        self, response: None
+        self,
+        response: None,
     ) -> None:
         """Post-rpc interceptor for cancel_operation
 
@@ -1012,7 +1230,9 @@ class EventarcRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+        self,
+        request: operations_pb2.DeleteOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
@@ -1022,7 +1242,8 @@ class EventarcRestInterceptor:
         return request, metadata
 
     def post_delete_operation(
-        self, response: None
+        self,
+        response: None,
     ) -> None:
         """Post-rpc interceptor for delete_operation
 
@@ -1033,7 +1254,9 @@ class EventarcRestInterceptor:
         return response
 
     def pre_get_operation(
-        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+        self,
+        request: operations_pb2.GetOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
@@ -1043,7 +1266,8 @@ class EventarcRestInterceptor:
         return request, metadata
 
     def post_get_operation(
-        self, response: operations_pb2.Operation
+        self,
+        response: operations_pb2.Operation,
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
@@ -1054,7 +1278,9 @@ class EventarcRestInterceptor:
         return response
 
     def pre_list_operations(
-        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+        self,
+        request: operations_pb2.ListOperationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
@@ -1064,7 +1290,8 @@ class EventarcRestInterceptor:
         return request, metadata
 
     def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
+        self,
+        response: operations_pb2.ListOperationsResponse,
     ) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
@@ -1096,29 +1323,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(self, *,
-            host: str = 'eventarc.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            client_cert_source_for_mtls: Optional[Callable[[
-                ], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            url_scheme: str = 'https',
-            interceptor: Optional[EventarcRestInterceptor] = None,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "eventarc.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
+        interceptor: Optional[EventarcRestInterceptor] = None,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
-       NOTE: This REST transport functionality is currently in a beta
-       state (preview). We welcome your feedback via a GitHub issue in
-       this library's repository. Thank you!
+        NOTE: This REST transport functionality is currently in a beta
+        state (preview). We welcome your feedback via a GitHub issue in
+        this library's repository. Thank you!
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to (default: 'eventarc.googleapis.com').
+                 The hostname to connect to (default: "eventarc.googleapis.com").
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -1157,10 +1385,9 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience
+            api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST)
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1177,40 +1404,41 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
-                'google.longrunning.Operations.CancelOperation': [
+                "google.longrunning.Operations.CancelOperation": [
                     {
-                        'method': 'post',
-                        'uri': '/v1/{name=projects/*/locations/*/operations/*}:cancel',
-                        'body': '*',
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
+                        "body": "*",
                     },
                 ],
-                'google.longrunning.Operations.DeleteOperation': [
+                "google.longrunning.Operations.DeleteOperation": [
                     {
-                        'method': 'delete',
-                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
                 ],
-                'google.longrunning.Operations.GetOperation': [
+                "google.longrunning.Operations.GetOperation": [
                     {
-                        'method': 'get',
-                        'uri': '/v1/{name=projects/*/locations/*/operations/*}',
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
                     },
                 ],
-                'google.longrunning.Operations.ListOperations': [
+                "google.longrunning.Operations.ListOperations": [
                     {
-                        'method': 'get',
-                        'uri': '/v1/{name=projects/*/locations/*}/operations',
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*}/operations",
                     },
                 ],
             }
 
             rest_transport = operations_v1.OperationsRestTransport(
-                    host=self._host,
-                    # use the credentials which are saved
-                    credentials=self._credentials,
-                    scopes=self._scopes,
-                    http_options=http_options,
-                    path_prefix="v1")
+                host=self._host,
+                # use the credentials which are saved
+                credentials=self._credentials,
+                scopes=self._scopes,
+                http_options=http_options,
+                path_prefix="v1",
+            )
 
             self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
@@ -1229,27 +1457,29 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.CreateChannelRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: eventarc.CreateChannelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the create channel method over HTTP.
 
             Args:
@@ -1283,21 +1513,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseCreateChannel._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.CreateChannel",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateChannel",
                         "httpRequest": http_request,
@@ -1306,7 +1536,15 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._CreateChannel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EventarcRestTransport._CreateChannel._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1326,13 +1564,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.create_channel_",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateChannel",
                         "metadata": http_response["headers"],
@@ -1353,27 +1591,29 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.CreateChannelConnectionRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: eventarc.CreateChannelConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the create channel connection method over HTTP.
 
             Args:
@@ -1407,21 +1647,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.CreateChannelConnection",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateChannelConnection",
                         "httpRequest": http_request,
@@ -1430,7 +1670,15 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._CreateChannelConnection._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EventarcRestTransport._CreateChannelConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1450,13 +1698,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.create_channel_connection",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateChannelConnection",
                         "metadata": http_response["headers"],
@@ -1477,27 +1725,29 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.CreateTriggerRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: eventarc.CreateTriggerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the create trigger method over HTTP.
 
             Args:
@@ -1531,21 +1781,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseCreateTrigger._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.CreateTrigger",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateTrigger",
                         "httpRequest": http_request,
@@ -1554,7 +1804,15 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._CreateTrigger._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EventarcRestTransport._CreateTrigger._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1574,13 +1832,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.create_trigger",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CreateTrigger",
                         "metadata": http_response["headers"],
@@ -1601,26 +1859,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.DeleteChannelRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: eventarc.DeleteChannelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the delete channel method over HTTP.
 
             Args:
@@ -1652,21 +1912,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseDeleteChannel._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.DeleteChannel",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteChannel",
                         "httpRequest": http_request,
@@ -1675,7 +1935,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._DeleteChannel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._DeleteChannel._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1695,13 +1962,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.delete_channel",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteChannel",
                         "metadata": http_response["headers"],
@@ -1722,26 +1989,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.DeleteChannelConnectionRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: eventarc.DeleteChannelConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the delete channel connection method over HTTP.
 
             Args:
@@ -1773,21 +2042,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.DeleteChannelConnection",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteChannelConnection",
                         "httpRequest": http_request,
@@ -1796,7 +2065,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._DeleteChannelConnection._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._DeleteChannelConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1816,13 +2092,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.delete_channel_connection",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteChannelConnection",
                         "metadata": http_response["headers"],
@@ -1843,26 +2119,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.DeleteTriggerRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: eventarc.DeleteTriggerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the delete trigger method over HTTP.
 
             Args:
@@ -1894,21 +2172,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseDeleteTrigger._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.DeleteTrigger",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteTrigger",
                         "httpRequest": http_request,
@@ -1917,7 +2195,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._DeleteTrigger._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._DeleteTrigger._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1937,13 +2222,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.delete_trigger",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteTrigger",
                         "metadata": http_response["headers"],
@@ -1964,26 +2249,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.GetChannelRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> channel.Channel:
+        def __call__(
+            self,
+            request: eventarc.GetChannelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> channel.Channel:
             r"""Call the get channel method over HTTP.
 
             Args:
@@ -2020,21 +2307,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseGetChannel._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetChannel",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetChannel",
                         "httpRequest": http_request,
@@ -2043,7 +2330,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._GetChannel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._GetChannel._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2065,13 +2359,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.get_channel",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetChannel",
                         "metadata": http_response["headers"],
@@ -2092,26 +2386,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.GetChannelConnectionRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> channel_connection.ChannelConnection:
+        def __call__(
+            self,
+            request: eventarc.GetChannelConnectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> channel_connection.ChannelConnection:
             r"""Call the get channel connection method over HTTP.
 
             Args:
@@ -2147,21 +2443,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseGetChannelConnection._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetChannelConnection",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetChannelConnection",
                         "httpRequest": http_request,
@@ -2170,7 +2466,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._GetChannelConnection._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._GetChannelConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2192,13 +2495,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.get_channel_connection",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetChannelConnection",
                         "metadata": http_response["headers"],
@@ -2219,26 +2522,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.GetGoogleChannelConfigRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> google_channel_config.GoogleChannelConfig:
+        def __call__(
+            self,
+            request: eventarc.GetGoogleChannelConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> google_channel_config.GoogleChannelConfig:
             r"""Call the get google channel config method over HTTP.
 
             Args:
@@ -2275,21 +2580,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetGoogleChannelConfig",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetGoogleChannelConfig",
                         "httpRequest": http_request,
@@ -2298,7 +2603,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._GetGoogleChannelConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._GetGoogleChannelConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2320,13 +2632,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.get_google_channel_config",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetGoogleChannelConfig",
                         "metadata": http_response["headers"],
@@ -2347,26 +2659,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.GetProviderRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> discovery.Provider:
+        def __call__(
+            self,
+            request: eventarc.GetProviderRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> discovery.Provider:
             r"""Call the get provider method over HTTP.
 
             Args:
@@ -2397,21 +2711,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseGetProvider._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetProvider",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetProvider",
                         "httpRequest": http_request,
@@ -2420,7 +2734,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._GetProvider._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._GetProvider._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2442,13 +2763,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.get_provider",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetProvider",
                         "metadata": http_response["headers"],
@@ -2469,26 +2790,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.GetTriggerRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> trigger.Trigger:
+        def __call__(
+            self,
+            request: eventarc.GetTriggerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> trigger.Trigger:
             r"""Call the get trigger method over HTTP.
 
             Args:
@@ -2519,21 +2842,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseGetTrigger._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetTrigger",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetTrigger",
                         "httpRequest": http_request,
@@ -2542,7 +2865,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._GetTrigger._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._GetTrigger._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2564,13 +2894,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.get_trigger",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetTrigger",
                         "metadata": http_response["headers"],
@@ -2591,26 +2921,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.ListChannelConnectionsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> eventarc.ListChannelConnectionsResponse:
+        def __call__(
+            self,
+            request: eventarc.ListChannelConnectionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> eventarc.ListChannelConnectionsResponse:
             r"""Call the list channel connections method over HTTP.
 
             Args:
@@ -2641,21 +2973,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseListChannelConnections._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListChannelConnections",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListChannelConnections",
                         "httpRequest": http_request,
@@ -2664,7 +2996,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._ListChannelConnections._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._ListChannelConnections._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2686,13 +3025,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.list_channel_connections",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListChannelConnections",
                         "metadata": http_response["headers"],
@@ -2713,26 +3052,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.ListChannelsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> eventarc.ListChannelsResponse:
+        def __call__(
+            self,
+            request: eventarc.ListChannelsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> eventarc.ListChannelsResponse:
             r"""Call the list channels method over HTTP.
 
             Args:
@@ -2761,21 +3102,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseListChannels._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListChannels",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListChannels",
                         "httpRequest": http_request,
@@ -2784,7 +3125,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._ListChannels._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._ListChannels._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2806,13 +3154,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.list_channels",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListChannels",
                         "metadata": http_response["headers"],
@@ -2833,26 +3181,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.ListProvidersRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> eventarc.ListProvidersResponse:
+        def __call__(
+            self,
+            request: eventarc.ListProvidersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> eventarc.ListProvidersResponse:
             r"""Call the list providers method over HTTP.
 
             Args:
@@ -2881,21 +3231,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseListProviders._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListProviders",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListProviders",
                         "httpRequest": http_request,
@@ -2904,7 +3254,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._ListProviders._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._ListProviders._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2926,13 +3283,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.list_providers",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListProviders",
                         "metadata": http_response["headers"],
@@ -2953,26 +3310,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.ListTriggersRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> eventarc.ListTriggersResponse:
+        def __call__(
+            self,
+            request: eventarc.ListTriggersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> eventarc.ListTriggersResponse:
             r"""Call the list triggers method over HTTP.
 
             Args:
@@ -3001,21 +3360,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseListTriggers._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListTriggers",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListTriggers",
                         "httpRequest": http_request,
@@ -3024,7 +3383,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._ListTriggers._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._ListTriggers._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3046,13 +3412,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.list_triggers",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListTriggers",
                         "metadata": http_response["headers"],
@@ -3073,27 +3439,29 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.UpdateChannelRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: eventarc.UpdateChannelRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the update channel method over HTTP.
 
             Args:
@@ -3127,21 +3495,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseUpdateChannel._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.UpdateChannel",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateChannel",
                         "httpRequest": http_request,
@@ -3150,7 +3518,15 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._UpdateChannel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EventarcRestTransport._UpdateChannel._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3170,13 +3546,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.update_channel",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateChannel",
                         "metadata": http_response["headers"],
@@ -3197,29 +3573,30 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.UpdateGoogleChannelConfigRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> gce_google_channel_config.GoogleChannelConfig:
-            r"""Call the update google channel
-        config method over HTTP.
+        def __call__(
+            self,
+            request: eventarc.UpdateGoogleChannelConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gce_google_channel_config.GoogleChannelConfig:
+            r"""Call the update google channel config method over HTTP.
 
             Args:
                 request (~.eventarc.UpdateGoogleChannelConfigRequest):
@@ -3257,21 +3634,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.UpdateGoogleChannelConfig",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateGoogleChannelConfig",
                         "httpRequest": http_request,
@@ -3280,7 +3657,15 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._UpdateGoogleChannelConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EventarcRestTransport._UpdateGoogleChannelConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3302,13 +3687,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.update_google_channel_config",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateGoogleChannelConfig",
                         "metadata": http_response["headers"],
@@ -3329,27 +3714,29 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-                request: eventarc.UpdateTriggerRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-                ) -> operations_pb2.Operation:
+        def __call__(
+            self,
+            request: eventarc.UpdateTriggerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the update trigger method over HTTP.
 
             Args:
@@ -3383,21 +3770,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseUpdateTrigger._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.UpdateTrigger",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateTrigger",
                         "httpRequest": http_request,
@@ -3406,7 +3793,15 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._UpdateTrigger._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EventarcRestTransport._UpdateTrigger._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3426,13 +3821,13 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 except:
                     response_payload = None
                 http_response = {
-                "payload": response_payload,
-                "headers":  dict(response.headers),
-                "status": response.status_code,
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcClient.update_trigger",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "UpdateTrigger",
                         "metadata": http_response["headers"],
@@ -3441,153 +3836,189 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
+    # fmt: off
     @property
-    def create_channel_(self) -> Callable[
-            [eventarc.CreateChannelRequest],
-            operations_pb2.Operation]:
+    def create_channel_(
+        self
+    ) -> Callable[[eventarc.CreateChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateChannel(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateChannel(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def create_channel_connection(self) -> Callable[
-            [eventarc.CreateChannelConnectionRequest],
-            operations_pb2.Operation]:
+    def create_channel_connection(
+        self
+    ) -> Callable[[eventarc.CreateChannelConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateChannelConnection(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def create_trigger(self) -> Callable[
-            [eventarc.CreateTriggerRequest],
-            operations_pb2.Operation]:
+    def create_trigger(
+        self
+    ) -> Callable[[eventarc.CreateTriggerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateTrigger(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateTrigger(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def delete_channel(self) -> Callable[
-            [eventarc.DeleteChannelRequest],
-            operations_pb2.Operation]:
+    def delete_channel(
+        self
+    ) -> Callable[[eventarc.DeleteChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteChannel(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteChannel(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def delete_channel_connection(self) -> Callable[
-            [eventarc.DeleteChannelConnectionRequest],
-            operations_pb2.Operation]:
+    def delete_channel_connection(
+        self
+    ) -> Callable[[eventarc.DeleteChannelConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteChannelConnection(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def delete_trigger(self) -> Callable[
-            [eventarc.DeleteTriggerRequest],
-            operations_pb2.Operation]:
+    def delete_trigger(
+        self
+    ) -> Callable[[eventarc.DeleteTriggerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteTrigger(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteTrigger(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def get_channel(self) -> Callable[
-            [eventarc.GetChannelRequest],
-            channel.Channel]:
+    def get_channel(
+        self
+    ) -> Callable[[eventarc.GetChannelRequest], channel.Channel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetChannel(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetChannel(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def get_channel_connection(self) -> Callable[
-            [eventarc.GetChannelConnectionRequest],
-            channel_connection.ChannelConnection]:
+    def get_channel_connection(
+        self
+    ) -> Callable[[eventarc.GetChannelConnectionRequest], channel_connection.ChannelConnection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetChannelConnection(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def get_google_channel_config(self) -> Callable[
-            [eventarc.GetGoogleChannelConfigRequest],
-            google_channel_config.GoogleChannelConfig]:
+    def get_google_channel_config(
+        self
+    ) -> Callable[[eventarc.GetGoogleChannelConfigRequest], google_channel_config.GoogleChannelConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetGoogleChannelConfig(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetGoogleChannelConfig(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def get_provider(self) -> Callable[
-            [eventarc.GetProviderRequest],
-            discovery.Provider]:
+    def get_provider(
+        self
+    ) -> Callable[[eventarc.GetProviderRequest], discovery.Provider]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetProvider(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetProvider(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def get_trigger(self) -> Callable[
-            [eventarc.GetTriggerRequest],
-            trigger.Trigger]:
+    def get_trigger(
+        self
+    ) -> Callable[[eventarc.GetTriggerRequest], trigger.Trigger]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetTrigger(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetTrigger(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def list_channel_connections(self) -> Callable[
-            [eventarc.ListChannelConnectionsRequest],
-            eventarc.ListChannelConnectionsResponse]:
+    def list_channel_connections(
+        self
+    ) -> Callable[[eventarc.ListChannelConnectionsRequest], eventarc.ListChannelConnectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListChannelConnections(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListChannelConnections(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def list_channels(self) -> Callable[
-            [eventarc.ListChannelsRequest],
-            eventarc.ListChannelsResponse]:
+    def list_channels(
+        self
+    ) -> Callable[[eventarc.ListChannelsRequest], eventarc.ListChannelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListChannels(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListChannels(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def list_providers(self) -> Callable[
-            [eventarc.ListProvidersRequest],
-            eventarc.ListProvidersResponse]:
+    def list_providers(
+        self
+    ) -> Callable[[eventarc.ListProvidersRequest], eventarc.ListProvidersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListProviders(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListProviders(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def list_triggers(self) -> Callable[
-            [eventarc.ListTriggersRequest],
-            eventarc.ListTriggersResponse]:
+    def list_triggers(
+        self
+    ) -> Callable[[eventarc.ListTriggersRequest], eventarc.ListTriggersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListTriggers(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListTriggers(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def update_channel(self) -> Callable[
-            [eventarc.UpdateChannelRequest],
-            operations_pb2.Operation]:
+    def update_channel(
+        self
+    ) -> Callable[[eventarc.UpdateChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateChannel(self._session, self._host, self._interceptor) # type: ignore
+        return self._UpdateChannel(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def update_google_channel_config(self) -> Callable[
-            [eventarc.UpdateGoogleChannelConfigRequest],
-            gce_google_channel_config.GoogleChannelConfig]:
+    def update_google_channel_config(
+        self
+    ) -> Callable[[eventarc.UpdateGoogleChannelConfigRequest], gce_google_channel_config.GoogleChannelConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateGoogleChannelConfig(self._session, self._host, self._interceptor) # type: ignore
+        return self._UpdateGoogleChannelConfig(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
+    # fmt: off
     @property
-    def update_trigger(self) -> Callable[
-            [eventarc.UpdateTriggerRequest],
-            operations_pb2.Operation]:
+    def update_trigger(
+        self
+    ) -> Callable[[eventarc.UpdateTriggerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateTrigger(self._session, self._host, self._interceptor) # type: ignore
+        return self._UpdateTrigger(self._session, self._host, self._interceptor)  # type: ignore
+    # fmt: on
 
     @property
     def get_location(self):
-        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _GetLocation(_BaseEventarcRestTransport._BaseGetLocation, EventarcRestStub):
         def __hash__(self):
@@ -3601,27 +4032,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-            request: locations_pb2.GetLocationRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> locations_pb2.Location:
-
+        def __call__(
+            self,
+            request: locations_pb2.GetLocationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
             Args:
@@ -3648,21 +4080,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetLocation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetLocation",
                         "httpRequest": http_request,
@@ -3671,7 +4103,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3689,12 +4128,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.GetLocation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetLocation",
                         "httpResponse": http_response,
@@ -3705,7 +4144,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def list_locations(self):
-        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
     class _ListLocations(_BaseEventarcRestTransport._BaseListLocations, EventarcRestStub):
         def __hash__(self):
@@ -3719,27 +4158,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-            request: locations_pb2.ListLocationsRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> locations_pb2.ListLocationsResponse:
-
+        def __call__(
+            self,
+            request: locations_pb2.ListLocationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
             Args:
@@ -3766,21 +4206,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListLocations",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListLocations",
                         "httpRequest": http_request,
@@ -3789,7 +4229,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3807,12 +4254,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.ListLocations",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListLocations",
                         "httpResponse": http_response,
@@ -3823,7 +4270,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def get_iam_policy(self):
-        return self._GetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     class _GetIamPolicy(_BaseEventarcRestTransport._BaseGetIamPolicy, EventarcRestStub):
         def __hash__(self):
@@ -3837,27 +4284,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-            request: iam_policy_pb2.GetIamPolicyRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> policy_pb2.Policy:
-
+        def __call__(
+            self,
+            request: iam_policy_pb2.GetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
             Args:
@@ -3884,21 +4332,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetIamPolicy",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetIamPolicy",
                         "httpRequest": http_request,
@@ -3907,7 +4355,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._GetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3925,12 +4380,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.GetIamPolicy",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetIamPolicy",
                         "httpResponse": http_response,
@@ -3941,7 +4396,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def set_iam_policy(self):
-        return self._SetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     class _SetIamPolicy(_BaseEventarcRestTransport._BaseSetIamPolicy, EventarcRestStub):
         def __hash__(self):
@@ -3955,28 +4410,29 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-            request: iam_policy_pb2.SetIamPolicyRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> policy_pb2.Policy:
-
+        def __call__(
+            self,
+            request: iam_policy_pb2.SetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
             Args:
@@ -4005,21 +4461,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.SetIamPolicy",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "SetIamPolicy",
                         "httpRequest": http_request,
@@ -4028,7 +4484,15 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._SetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EventarcRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4046,12 +4510,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.SetIamPolicy",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "SetIamPolicy",
                         "httpResponse": http_response,
@@ -4062,7 +4526,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def test_iam_permissions(self):
-        return self._TestIamPermissions(self._session, self._host, self._interceptor) # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     class _TestIamPermissions(_BaseEventarcRestTransport._BaseTestIamPermissions, EventarcRestStub):
         def __hash__(self):
@@ -4076,28 +4540,29 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-            request: iam_policy_pb2.TestIamPermissionsRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> iam_policy_pb2.TestIamPermissionsResponse:
-
+        def __call__(
+            self,
+            request: iam_policy_pb2.TestIamPermissionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
             Args:
@@ -4126,21 +4591,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.TestIamPermissions",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "TestIamPermissions",
                         "httpRequest": http_request,
@@ -4149,7 +4614,15 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._TestIamPermissions._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EventarcRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4167,12 +4640,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.TestIamPermissions",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "TestIamPermissions",
                         "httpResponse": http_response,
@@ -4183,7 +4656,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _CancelOperation(_BaseEventarcRestTransport._BaseCancelOperation, EventarcRestStub):
         def __hash__(self):
@@ -4197,28 +4670,29 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
             return response
 
-        def __call__(self,
-            request: operations_pb2.CancelOperationRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> None:
-
+        def __call__(
+            self,
+            request: operations_pb2.CancelOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
             r"""Call the cancel operation method over HTTP.
 
             Args:
@@ -4244,21 +4718,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.CancelOperation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "CancelOperation",
                         "httpRequest": http_request,
@@ -4267,7 +4741,15 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
+            response = EventarcRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4278,7 +4760,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def delete_operation(self):
-        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _DeleteOperation(_BaseEventarcRestTransport._BaseDeleteOperation, EventarcRestStub):
         def __hash__(self):
@@ -4292,27 +4774,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-            request: operations_pb2.DeleteOperationRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> None:
-
+        def __call__(
+            self,
+            request: operations_pb2.DeleteOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
             r"""Call the delete operation method over HTTP.
 
             Args:
@@ -4336,21 +4819,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.DeleteOperation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "DeleteOperation",
                         "httpRequest": http_request,
@@ -4359,7 +4842,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4370,7 +4860,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _GetOperation(_BaseEventarcRestTransport._BaseGetOperation, EventarcRestStub):
         def __hash__(self):
@@ -4384,27 +4874,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-            request: operations_pb2.GetOperationRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> operations_pb2.Operation:
-
+        def __call__(
+            self,
+            request: operations_pb2.GetOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
             Args:
@@ -4431,21 +4922,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.GetOperation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetOperation",
                         "httpRequest": http_request,
@@ -4454,7 +4945,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4472,12 +4970,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.GetOperation",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "GetOperation",
                         "httpResponse": http_response,
@@ -4488,7 +4986,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
     class _ListOperations(_BaseEventarcRestTransport._BaseListOperations, EventarcRestStub):
         def __hash__(self):
@@ -4502,27 +5000,28 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None):
-
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
             return response
 
-        def __call__(self,
-            request: operations_pb2.ListOperationsRequest, *,
-            retry: OptionalRetry=gapic_v1.method.DEFAULT,
-            timeout: Optional[float]=None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
-            ) -> operations_pb2.ListOperationsResponse:
-
+        def __call__(
+            self,
+            request: operations_pb2.ListOperationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
             Args:
@@ -4549,21 +5048,21 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             query_params = _BaseEventarcRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
-                method = transcoded_request['method']
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
+                method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
                 except:
                     request_payload = None
                 http_request = {
-                  "payload": request_payload,
-                  "requestMethod": method,
-                  "requestUrl": request_url,
-                  "headers": dict(metadata),
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.eventarc_v1.EventarcClient.ListOperations",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListOperations",
                         "httpRequest": http_request,
@@ -4572,7 +5071,14 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
+            response = EventarcRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4590,12 +5096,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     response_payload = None
                 http_response = {
                     "payload": response_payload,
-                    "headers":  dict(response.headers),
+                    "headers": dict(response.headers),
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.eventarc_v1.EventarcAsyncClient.ListOperations",
-                    extra = {
+                    extra={
                         "serviceName": "google.cloud.eventarc.v1.Eventarc",
                         "rpcName": "ListOperations",
                         "httpResponse": http_response,
@@ -4612,6 +5118,4 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         self._session.close()
 
 
-__all__=(
-    'EventarcRestTransport',
-)
+__all__ = ("EventarcRestTransport",)

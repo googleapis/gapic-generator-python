@@ -25,23 +25,24 @@ from google.api_core import grpc_helpers_async
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry_async as retries
 from google.api_core import operations_v1
-from google.auth import credentials as ga_credentials   # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 
-import grpc                        # type: ignore
-import proto                       # type: ignore
+import grpc  # type: ignore
+import proto  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.location import locations_pb2 # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.cloud.redis_v1.types import cloud_redis
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from .base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .grpc import CloudRedisGrpcTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -61,10 +62,12 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
+            # fmt: off
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
                 for key, value in request_metadata
             }
+            # fmt: on
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -72,7 +75,7 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.redis.v1.CloudRedis",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -98,7 +101,7 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
             }
             _LOGGER.debug(
                 f"Received response to rpc {client_call_details.method}.",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.redis.v1.CloudRedis",
                     "rpcName": str(client_call_details.method),
                     "response": grpc_response,
@@ -145,13 +148,15 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(cls,
-                       host: str = 'redis.googleapis.com',
-                       credentials: Optional[ga_credentials.Credentials] = None,
-                       credentials_file: Optional[str] = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       quota_project_id: Optional[str] = None,
-                       **kwargs) -> aio.Channel:
+    def create_channel(
+        cls,
+        host: str = "redis.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -182,29 +187,31 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs
+            **kwargs,
         )
 
-    def __init__(self, *,
-            host: str = 'redis.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
-            api_mtls_endpoint: Optional[str] = None,
-            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "redis.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[Union[aio.Channel, Callable[..., aio.Channel]]] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to (default: 'redis.googleapis.com').
+                 The hostname to connect to (default: "redis.googleapis.com").
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -279,7 +286,8 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
                 if client_cert_source:
                     cert, key = client_cert_source()
                     self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
+                        certificate_chain=cert,
+                        private_key=key,
                     )
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
@@ -288,7 +296,8 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
                     self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
+                        certificate_chain=cert,
+                        private_key=key,
                     )
 
         # The base transport sets the host, credentials and scopes
@@ -348,17 +357,15 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_instances(self) -> Callable[
-            [cloud_redis.ListInstancesRequest],
-            Awaitable[cloud_redis.ListInstancesResponse]]:
+    def list_instances(
+        self,
+    ) -> Callable[[cloud_redis.ListInstancesRequest], Awaitable[cloud_redis.ListInstancesResponse]]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists all Redis instances owned by a project in either the
@@ -382,18 +389,18 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_instances' not in self._stubs:
-            self._stubs['list_instances'] = self._logged_channel.unary_unary(
-                '/google.cloud.redis.v1.CloudRedis/ListInstances',
+        if "list_instances" not in self._stubs:
+            self._stubs["list_instances"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.v1.CloudRedis/ListInstances",
                 request_serializer=cloud_redis.ListInstancesRequest.serialize,
                 response_deserializer=cloud_redis.ListInstancesResponse.deserialize,
             )
-        return self._stubs['list_instances']
+        return self._stubs["list_instances"]
 
     @property
-    def get_instance(self) -> Callable[
-            [cloud_redis.GetInstanceRequest],
-            Awaitable[cloud_redis.Instance]]:
+    def get_instance(
+        self,
+    ) -> Callable[[cloud_redis.GetInstanceRequest], Awaitable[cloud_redis.Instance]]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets the details of a specific Redis instance.
@@ -408,18 +415,18 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_instance' not in self._stubs:
-            self._stubs['get_instance'] = self._logged_channel.unary_unary(
-                '/google.cloud.redis.v1.CloudRedis/GetInstance',
+        if "get_instance" not in self._stubs:
+            self._stubs["get_instance"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.v1.CloudRedis/GetInstance",
                 request_serializer=cloud_redis.GetInstanceRequest.serialize,
                 response_deserializer=cloud_redis.Instance.deserialize,
             )
-        return self._stubs['get_instance']
+        return self._stubs["get_instance"]
 
     @property
-    def create_instance(self) -> Callable[
-            [cloud_redis.CreateInstanceRequest],
-            Awaitable[operations_pb2.Operation]]:
+    def create_instance(
+        self,
+    ) -> Callable[[cloud_redis.CreateInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates a Redis instance based on the specified tier and memory
@@ -447,18 +454,18 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_instance' not in self._stubs:
-            self._stubs['create_instance'] = self._logged_channel.unary_unary(
-                '/google.cloud.redis.v1.CloudRedis/CreateInstance',
+        if "create_instance" not in self._stubs:
+            self._stubs["create_instance"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.v1.CloudRedis/CreateInstance",
                 request_serializer=cloud_redis.CreateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_instance']
+        return self._stubs["create_instance"]
 
     @property
-    def update_instance(self) -> Callable[
-            [cloud_redis.UpdateInstanceRequest],
-            Awaitable[operations_pb2.Operation]]:
+    def update_instance(
+        self,
+    ) -> Callable[[cloud_redis.UpdateInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update instance method over gRPC.
 
         Updates the metadata and configuration of a specific
@@ -478,18 +485,18 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_instance' not in self._stubs:
-            self._stubs['update_instance'] = self._logged_channel.unary_unary(
-                '/google.cloud.redis.v1.CloudRedis/UpdateInstance',
+        if "update_instance" not in self._stubs:
+            self._stubs["update_instance"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.v1.CloudRedis/UpdateInstance",
                 request_serializer=cloud_redis.UpdateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['update_instance']
+        return self._stubs["update_instance"]
 
     @property
-    def delete_instance(self) -> Callable[
-            [cloud_redis.DeleteInstanceRequest],
-            Awaitable[operations_pb2.Operation]]:
+    def delete_instance(
+        self,
+    ) -> Callable[[cloud_redis.DeleteInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes a specific Redis instance.  Instance stops
@@ -505,16 +512,16 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_instance' not in self._stubs:
-            self._stubs['delete_instance'] = self._logged_channel.unary_unary(
-                '/google.cloud.redis.v1.CloudRedis/DeleteInstance',
+        if "delete_instance" not in self._stubs:
+            self._stubs["delete_instance"] = self._logged_channel.unary_unary(
+                "/google.cloud.redis.v1.CloudRedis/DeleteInstance",
                 request_serializer=cloud_redis.DeleteInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['delete_instance']
+        return self._stubs["delete_instance"]
 
     def _prep_wrapped_messages(self, client_info):
-        """ Precompute the wrapped methods, overriding the base class method to use async wrappers."""
+        """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.list_instances: self._wrap_method(
                 self.list_instances,
@@ -594,8 +601,7 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     def delete_operation(
         self,
     ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
-        r"""Return a callable for the delete_operation method over gRPC.
-        """
+        r"""Return a callable for the delete_operation method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -612,8 +618,7 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     def cancel_operation(
         self,
     ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
-        r"""Return a callable for the cancel_operation method over gRPC.
-        """
+        r"""Return a callable for the cancel_operation method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -630,8 +635,7 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     def wait_operation(
         self,
     ) -> Callable[[operations_pb2.WaitOperationRequest], None]:
-        r"""Return a callable for the wait_operation method over gRPC.
-        """
+        r"""Return a callable for the wait_operation method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -648,8 +652,7 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     def get_operation(
         self,
     ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC.
-        """
+        r"""Return a callable for the get_operation method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -666,8 +669,7 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     def list_operations(
         self,
     ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
-        r"""Return a callable for the list_operations method over gRPC.
-        """
+        r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -684,8 +686,7 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     def list_locations(
         self,
     ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
-        r"""Return a callable for the list locations method over gRPC.
-        """
+        r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -702,8 +703,7 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     def get_location(
         self,
     ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
-        r"""Return a callable for the list locations method over gRPC.
-        """
+        r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -717,6 +717,4 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
         return self._stubs["get_location"]
 
 
-__all__ = (
-    'CloudRedisGrpcAsyncIOTransport',
-)
+__all__ = ("CloudRedisGrpcAsyncIOTransport",)

@@ -975,7 +975,7 @@ def test_generate_access_token(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.GenerateAccessTokenResponse(
-            access_token='access_token_value',
+            access_token="access_token_value",
         )
         response = client.generate_access_token(request)
 
@@ -987,7 +987,7 @@ def test_generate_access_token(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
-    assert response.access_token == 'access_token_value'
+    assert response.access_token == "access_token_value"
 
 
 def test_generate_access_token_non_empty_request_with_auto_populated_field():
@@ -1002,7 +1002,7 @@ def test_generate_access_token_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = common.GenerateAccessTokenRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1014,7 +1014,7 @@ def test_generate_access_token_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateAccessTokenRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_generate_access_token_use_cached_wrapped_rpc():
@@ -1100,7 +1100,7 @@ async def test_generate_access_token_async(transport: str = 'grpc_asyncio', requ
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateAccessTokenResponse(
-            access_token='access_token_value',
+            access_token="access_token_value",
         ))
         response = await client.generate_access_token(request)
 
@@ -1112,7 +1112,7 @@ async def test_generate_access_token_async(transport: str = 'grpc_asyncio', requ
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
-    assert response.access_token == 'access_token_value'
+    assert response.access_token == "access_token_value"
 
 
 @pytest.mark.asyncio
@@ -1128,7 +1128,7 @@ def test_generate_access_token_field_headers():
     # a field header. Set these to a non-empty value.
     request = common.GenerateAccessTokenRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1160,7 +1160,7 @@ async def test_generate_access_token_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = common.GenerateAccessTokenRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1196,9 +1196,9 @@ def test_generate_access_token_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.generate_access_token(
-            name='name_value',
-            delegates=['delegates_value'],
-            scope=['scope_value'],
+            name="name_value",
+            delegates=["delegates_value"],
+            scope=["scope_value"],
             lifetime=duration_pb2.Duration(seconds=751),
         )
 
@@ -1207,13 +1207,13 @@ def test_generate_access_token_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].delegates
-        mock_val = ['delegates_value']
+        mock_val = ["delegates_value"]
         assert arg == mock_val
         arg = args[0].scope
-        mock_val = ['scope_value']
+        mock_val = ["scope_value"]
         assert arg == mock_val
         assert DurationRule().to_proto(args[0].lifetime) == duration_pb2.Duration(seconds=751)
 
@@ -1228,9 +1228,9 @@ def test_generate_access_token_flattened_error():
     with pytest.raises(ValueError):
         client.generate_access_token(
             common.GenerateAccessTokenRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
-            scope=['scope_value'],
+            name="name_value",
+            delegates=["delegates_value"],
+            scope=["scope_value"],
             lifetime=duration_pb2.Duration(seconds=751),
         )
 
@@ -1251,9 +1251,9 @@ async def test_generate_access_token_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.generate_access_token(
-            name='name_value',
-            delegates=['delegates_value'],
-            scope=['scope_value'],
+            name="name_value",
+            delegates=["delegates_value"],
+            scope=["scope_value"],
             lifetime=duration_pb2.Duration(seconds=751),
         )
 
@@ -1262,13 +1262,13 @@ async def test_generate_access_token_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].delegates
-        mock_val = ['delegates_value']
+        mock_val = ["delegates_value"]
         assert arg == mock_val
         arg = args[0].scope
-        mock_val = ['scope_value']
+        mock_val = ["scope_value"]
         assert arg == mock_val
         assert DurationRule().to_proto(args[0].lifetime) == duration_pb2.Duration(seconds=751)
 
@@ -1283,9 +1283,9 @@ async def test_generate_access_token_flattened_error_async():
     with pytest.raises(ValueError):
         await client.generate_access_token(
             common.GenerateAccessTokenRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
-            scope=['scope_value'],
+            name="name_value",
+            delegates=["delegates_value"],
+            scope=["scope_value"],
             lifetime=duration_pb2.Duration(seconds=751),
         )
 
@@ -1310,7 +1310,7 @@ def test_generate_id_token(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.GenerateIdTokenResponse(
-            token='token_value',
+            token="token_value",
         )
         response = client.generate_id_token(request)
 
@@ -1322,7 +1322,7 @@ def test_generate_id_token(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
-    assert response.token == 'token_value'
+    assert response.token == "token_value"
 
 
 def test_generate_id_token_non_empty_request_with_auto_populated_field():
@@ -1337,8 +1337,8 @@ def test_generate_id_token_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = common.GenerateIdTokenRequest(
-        name='name_value',
-        audience='audience_value',
+        name="name_value",
+        audience="audience_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1350,8 +1350,8 @@ def test_generate_id_token_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateIdTokenRequest(
-            name='name_value',
-            audience='audience_value',
+            name="name_value",
+            audience="audience_value",
         )
 
 def test_generate_id_token_use_cached_wrapped_rpc():
@@ -1437,7 +1437,7 @@ async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse(
-            token='token_value',
+            token="token_value",
         ))
         response = await client.generate_id_token(request)
 
@@ -1449,7 +1449,7 @@ async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
-    assert response.token == 'token_value'
+    assert response.token == "token_value"
 
 
 @pytest.mark.asyncio
@@ -1465,7 +1465,7 @@ def test_generate_id_token_field_headers():
     # a field header. Set these to a non-empty value.
     request = common.GenerateIdTokenRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1497,7 +1497,7 @@ async def test_generate_id_token_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = common.GenerateIdTokenRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1533,9 +1533,9 @@ def test_generate_id_token_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.generate_id_token(
-            name='name_value',
-            delegates=['delegates_value'],
-            audience='audience_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            audience="audience_value",
             include_email=True,
         )
 
@@ -1544,13 +1544,13 @@ def test_generate_id_token_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].delegates
-        mock_val = ['delegates_value']
+        mock_val = ["delegates_value"]
         assert arg == mock_val
         arg = args[0].audience
-        mock_val = 'audience_value'
+        mock_val = "audience_value"
         assert arg == mock_val
         arg = args[0].include_email
         mock_val = True
@@ -1567,9 +1567,9 @@ def test_generate_id_token_flattened_error():
     with pytest.raises(ValueError):
         client.generate_id_token(
             common.GenerateIdTokenRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
-            audience='audience_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            audience="audience_value",
             include_email=True,
         )
 
@@ -1590,9 +1590,9 @@ async def test_generate_id_token_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.generate_id_token(
-            name='name_value',
-            delegates=['delegates_value'],
-            audience='audience_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            audience="audience_value",
             include_email=True,
         )
 
@@ -1601,13 +1601,13 @@ async def test_generate_id_token_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].delegates
-        mock_val = ['delegates_value']
+        mock_val = ["delegates_value"]
         assert arg == mock_val
         arg = args[0].audience
-        mock_val = 'audience_value'
+        mock_val = "audience_value"
         assert arg == mock_val
         arg = args[0].include_email
         mock_val = True
@@ -1624,9 +1624,9 @@ async def test_generate_id_token_flattened_error_async():
     with pytest.raises(ValueError):
         await client.generate_id_token(
             common.GenerateIdTokenRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
-            audience='audience_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            audience="audience_value",
             include_email=True,
         )
 
@@ -1651,7 +1651,7 @@ def test_sign_blob(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.SignBlobResponse(
-            key_id='key_id_value',
+            key_id="key_id_value",
             signed_blob=b'signed_blob_blob',
         )
         response = client.sign_blob(request)
@@ -1664,7 +1664,7 @@ def test_sign_blob(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignBlobResponse)
-    assert response.key_id == 'key_id_value'
+    assert response.key_id == "key_id_value"
     assert response.signed_blob == b'signed_blob_blob'
 
 
@@ -1680,7 +1680,7 @@ def test_sign_blob_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = common.SignBlobRequest(
-        name='name_value',
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1692,7 +1692,7 @@ def test_sign_blob_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignBlobRequest(
-            name='name_value',
+            name="name_value",
         )
 
 def test_sign_blob_use_cached_wrapped_rpc():
@@ -1778,7 +1778,7 @@ async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=com
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(common.SignBlobResponse(
-            key_id='key_id_value',
+            key_id="key_id_value",
             signed_blob=b'signed_blob_blob',
         ))
         response = await client.sign_blob(request)
@@ -1791,7 +1791,7 @@ async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=com
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignBlobResponse)
-    assert response.key_id == 'key_id_value'
+    assert response.key_id == "key_id_value"
     assert response.signed_blob == b'signed_blob_blob'
 
 
@@ -1808,7 +1808,7 @@ def test_sign_blob_field_headers():
     # a field header. Set these to a non-empty value.
     request = common.SignBlobRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1840,7 +1840,7 @@ async def test_sign_blob_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = common.SignBlobRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1876,8 +1876,8 @@ def test_sign_blob_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.sign_blob(
-            name='name_value',
-            delegates=['delegates_value'],
+            name="name_value",
+            delegates=["delegates_value"],
             payload=b'payload_blob',
         )
 
@@ -1886,10 +1886,10 @@ def test_sign_blob_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].delegates
-        mock_val = ['delegates_value']
+        mock_val = ["delegates_value"]
         assert arg == mock_val
         arg = args[0].payload
         mock_val = b'payload_blob'
@@ -1906,8 +1906,8 @@ def test_sign_blob_flattened_error():
     with pytest.raises(ValueError):
         client.sign_blob(
             common.SignBlobRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
+            name="name_value",
+            delegates=["delegates_value"],
             payload=b'payload_blob',
         )
 
@@ -1928,8 +1928,8 @@ async def test_sign_blob_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.sign_blob(
-            name='name_value',
-            delegates=['delegates_value'],
+            name="name_value",
+            delegates=["delegates_value"],
             payload=b'payload_blob',
         )
 
@@ -1938,10 +1938,10 @@ async def test_sign_blob_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].delegates
-        mock_val = ['delegates_value']
+        mock_val = ["delegates_value"]
         assert arg == mock_val
         arg = args[0].payload
         mock_val = b'payload_blob'
@@ -1958,8 +1958,8 @@ async def test_sign_blob_flattened_error_async():
     with pytest.raises(ValueError):
         await client.sign_blob(
             common.SignBlobRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
+            name="name_value",
+            delegates=["delegates_value"],
             payload=b'payload_blob',
         )
 
@@ -1984,8 +1984,8 @@ def test_sign_jwt(request_type, transport: str = 'grpc'):
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.SignJwtResponse(
-            key_id='key_id_value',
-            signed_jwt='signed_jwt_value',
+            key_id="key_id_value",
+            signed_jwt="signed_jwt_value",
         )
         response = client.sign_jwt(request)
 
@@ -1997,8 +1997,8 @@ def test_sign_jwt(request_type, transport: str = 'grpc'):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignJwtResponse)
-    assert response.key_id == 'key_id_value'
-    assert response.signed_jwt == 'signed_jwt_value'
+    assert response.key_id == "key_id_value"
+    assert response.signed_jwt == "signed_jwt_value"
 
 
 def test_sign_jwt_non_empty_request_with_auto_populated_field():
@@ -2013,8 +2013,8 @@ def test_sign_jwt_non_empty_request_with_auto_populated_field():
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
     request = common.SignJwtRequest(
-        name='name_value',
-        payload='payload_value',
+        name="name_value",
+        payload="payload_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2026,8 +2026,8 @@ def test_sign_jwt_non_empty_request_with_auto_populated_field():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignJwtRequest(
-            name='name_value',
-            payload='payload_value',
+            name="name_value",
+            payload="payload_value",
         )
 
 def test_sign_jwt_use_cached_wrapped_rpc():
@@ -2113,8 +2113,8 @@ async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=comm
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(common.SignJwtResponse(
-            key_id='key_id_value',
-            signed_jwt='signed_jwt_value',
+            key_id="key_id_value",
+            signed_jwt="signed_jwt_value",
         ))
         response = await client.sign_jwt(request)
 
@@ -2126,8 +2126,8 @@ async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=comm
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignJwtResponse)
-    assert response.key_id == 'key_id_value'
-    assert response.signed_jwt == 'signed_jwt_value'
+    assert response.key_id == "key_id_value"
+    assert response.signed_jwt == "signed_jwt_value"
 
 
 @pytest.mark.asyncio
@@ -2143,7 +2143,7 @@ def test_sign_jwt_field_headers():
     # a field header. Set these to a non-empty value.
     request = common.SignJwtRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2175,7 +2175,7 @@ async def test_sign_jwt_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = common.SignJwtRequest()
 
-    request.name = 'name_value'
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2211,9 +2211,9 @@ def test_sign_jwt_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.sign_jwt(
-            name='name_value',
-            delegates=['delegates_value'],
-            payload='payload_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            payload="payload_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2221,13 +2221,13 @@ def test_sign_jwt_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].delegates
-        mock_val = ['delegates_value']
+        mock_val = ["delegates_value"]
         assert arg == mock_val
         arg = args[0].payload
-        mock_val = 'payload_value'
+        mock_val = "payload_value"
         assert arg == mock_val
 
 
@@ -2241,9 +2241,9 @@ def test_sign_jwt_flattened_error():
     with pytest.raises(ValueError):
         client.sign_jwt(
             common.SignJwtRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
-            payload='payload_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            payload="payload_value",
         )
 
 @pytest.mark.asyncio
@@ -2263,9 +2263,9 @@ async def test_sign_jwt_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.sign_jwt(
-            name='name_value',
-            delegates=['delegates_value'],
-            payload='payload_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            payload="payload_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -2273,13 +2273,13 @@ async def test_sign_jwt_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].name
-        mock_val = 'name_value'
+        mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].delegates
-        mock_val = ['delegates_value']
+        mock_val = ["delegates_value"]
         assert arg == mock_val
         arg = args[0].payload
-        mock_val = 'payload_value'
+        mock_val = "payload_value"
         assert arg == mock_val
 
 @pytest.mark.asyncio
@@ -2293,9 +2293,9 @@ async def test_sign_jwt_flattened_error_async():
     with pytest.raises(ValueError):
         await client.sign_jwt(
             common.SignJwtRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
-            payload='payload_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            payload="payload_value",
         )
 
 
@@ -2353,17 +2353,17 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
-    jsonified_request["scope"] = 'scope_value'
+    jsonified_request["name"] = "name_value"
+    jsonified_request["scope"] = "scope_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_access_token._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
     assert "scope" in jsonified_request
-    assert jsonified_request["scope"] == 'scope_value'
+    assert jsonified_request["scope"] == "scope_value"
 
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2432,9 +2432,9 @@ def test_generate_access_token_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
-            delegates=['delegates_value'],
-            scope=['scope_value'],
+            name="name_value",
+            delegates=["delegates_value"],
+            scope=["scope_value"],
             lifetime=duration_pb2.Duration(seconds=751),
         )
         mock_args.update(sample_request)
@@ -2469,9 +2469,9 @@ def test_generate_access_token_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.generate_access_token(
             common.GenerateAccessTokenRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
-            scope=['scope_value'],
+            name="name_value",
+            delegates=["delegates_value"],
+            scope=["scope_value"],
             lifetime=duration_pb2.Duration(seconds=751),
         )
 
@@ -2530,17 +2530,17 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
-    jsonified_request["audience"] = 'audience_value'
+    jsonified_request["name"] = "name_value"
+    jsonified_request["audience"] = "audience_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_id_token._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
     assert "audience" in jsonified_request
-    assert jsonified_request["audience"] == 'audience_value'
+    assert jsonified_request["audience"] == "audience_value"
 
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2609,9 +2609,9 @@ def test_generate_id_token_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
-            delegates=['delegates_value'],
-            audience='audience_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            audience="audience_value",
             include_email=True,
         )
         mock_args.update(sample_request)
@@ -2646,9 +2646,9 @@ def test_generate_id_token_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.generate_id_token(
             common.GenerateIdTokenRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
-            audience='audience_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            audience="audience_value",
             include_email=True,
         )
 
@@ -2707,7 +2707,7 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
+    jsonified_request["name"] = "name_value"
     jsonified_request["payload"] = b'payload_blob'
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).sign_blob._get_unset_required_fields(jsonified_request)
@@ -2715,7 +2715,7 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
     assert "payload" in jsonified_request
     assert jsonified_request["payload"] == b'payload_blob'
 
@@ -2786,8 +2786,8 @@ def test_sign_blob_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
-            delegates=['delegates_value'],
+            name="name_value",
+            delegates=["delegates_value"],
             payload=b'payload_blob',
         )
         mock_args.update(sample_request)
@@ -2822,8 +2822,8 @@ def test_sign_blob_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.sign_blob(
             common.SignBlobRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
+            name="name_value",
+            delegates=["delegates_value"],
             payload=b'payload_blob',
         )
 
@@ -2882,17 +2882,17 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
 
     # verify required fields with default values are now present
 
-    jsonified_request["name"] = 'name_value'
-    jsonified_request["payload"] = 'payload_value'
+    jsonified_request["name"] = "name_value"
+    jsonified_request["payload"] = "payload_value"
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).sign_jwt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
-    assert jsonified_request["name"] == 'name_value'
+    assert jsonified_request["name"] == "name_value"
     assert "payload" in jsonified_request
-    assert jsonified_request["payload"] == 'payload_value'
+    assert jsonified_request["payload"] == "payload_value"
 
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2961,9 +2961,9 @@ def test_sign_jwt_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            name='name_value',
-            delegates=['delegates_value'],
-            payload='payload_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            payload="payload_value",
         )
         mock_args.update(sample_request)
 
@@ -2997,9 +2997,9 @@ def test_sign_jwt_rest_flattened_error(transport: str = 'rest'):
     with pytest.raises(ValueError):
         client.sign_jwt(
             common.SignJwtRequest(),
-            name='name_value',
-            delegates=['delegates_value'],
-            payload='payload_value',
+            name="name_value",
+            delegates=["delegates_value"],
+            payload="payload_value",
         )
 
 
@@ -3227,7 +3227,7 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateAccessTokenResponse(
-            access_token='access_token_value',
+            access_token="access_token_value",
         ))
         await client.generate_access_token(request=None)
 
@@ -3254,7 +3254,7 @@ async def test_generate_id_token_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.GenerateIdTokenResponse(
-            token='token_value',
+            token="token_value",
         ))
         await client.generate_id_token(request=None)
 
@@ -3281,7 +3281,7 @@ async def test_sign_blob_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SignBlobResponse(
-            key_id='key_id_value',
+            key_id="key_id_value",
             signed_blob=b'signed_blob_blob',
         ))
         await client.sign_blob(request=None)
@@ -3309,8 +3309,8 @@ async def test_sign_jwt_empty_call_grpc_asyncio():
             '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SignJwtResponse(
-            key_id='key_id_value',
-            signed_jwt='signed_jwt_value',
+            key_id="key_id_value",
+            signed_jwt="signed_jwt_value",
         ))
         await client.sign_jwt(request=None)
 
@@ -3369,7 +3369,7 @@ def test_generate_access_token_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = common.GenerateAccessTokenResponse(
-              access_token='access_token_value',
+              access_token="access_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -3386,7 +3386,7 @@ def test_generate_access_token_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
-    assert response.access_token == 'access_token_value'
+    assert response.access_token == "access_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3475,7 +3475,7 @@ def test_generate_id_token_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = common.GenerateIdTokenResponse(
-              token='token_value',
+              token="token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -3492,7 +3492,7 @@ def test_generate_id_token_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
-    assert response.token == 'token_value'
+    assert response.token == "token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3581,7 +3581,7 @@ def test_sign_blob_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = common.SignBlobResponse(
-              key_id='key_id_value',
+              key_id="key_id_value",
               signed_blob=b'signed_blob_blob',
         )
 
@@ -3599,7 +3599,7 @@ def test_sign_blob_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignBlobResponse)
-    assert response.key_id == 'key_id_value'
+    assert response.key_id == "key_id_value"
     assert response.signed_blob == b'signed_blob_blob'
 
 
@@ -3689,8 +3689,8 @@ def test_sign_jwt_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         return_value = common.SignJwtResponse(
-              key_id='key_id_value',
-              signed_jwt='signed_jwt_value',
+              key_id="key_id_value",
+              signed_jwt="signed_jwt_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -3707,8 +3707,8 @@ def test_sign_jwt_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SignJwtResponse)
-    assert response.key_id == 'key_id_value'
-    assert response.signed_jwt == 'signed_jwt_value'
+    assert response.key_id == "key_id_value"
+    assert response.signed_jwt == "signed_jwt_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

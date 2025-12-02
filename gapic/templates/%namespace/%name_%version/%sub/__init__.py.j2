@@ -46,11 +46,10 @@ from .types.{{ proto.module_name }} import {{ enum.name }}
 {% endfor %}
 {% endfor %}
 
-if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER
-    {# TODO(api_core): remove `type:ignore` below when minimum version of api_core makes the else clause unnecessary. #}
-    api_core.check_python_version("{{package_path}}") # type: ignore
-    api_core.check_dependency_versions("{{package_path}}") # type: ignore
-else:   # pragma: NO COVER
+if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):  # pragma: NO COVER
+    api_core.check_python_version("{{package_path}}")  # type: ignore
+    api_core.check_dependency_versions("{{package_path}}")  # type: ignore
+else:  # pragma: NO COVER
 {# TODO(api_core): Remove this try-catch when we require api-core at a version that
    supports the changes in https://github.com/googleapis/python-api-core/pull/832
 
@@ -66,20 +65,24 @@ else:   # pragma: NO COVER
         _py_version_str = sys.version.split()[0]
         _package_label = "{{package_path}}"
         if sys.version_info < (3, 9):
-            warnings.warn("You are using a non-supported Python version " +
-                          f"({_py_version_str}).  Google will not post any further " +
-                          f"updates to {_package_label} supporting this Python version. " +
-                          "Please upgrade to the latest Python version, or at " +
-                          f"least to Python 3.9, and then update {_package_label}.",
-                          FutureWarning)
+            warnings.warn(
+                "You are using a non-supported Python version "
+                + f"({_py_version_str}).  Google will not post any further "
+                + f"updates to {_package_label} supporting this Python version. "
+                + "Please upgrade to the latest Python version, or at "
+                + f"least to Python 3.9, and then update {_package_label}.",
+                FutureWarning,
+            )
         if sys.version_info[:2] == (3, 9):
-            warnings.warn(f"You are using a Python version ({_py_version_str}) " +
-                          f"which Google will stop supporting in {_package_label} in " +
-                          "January 2026. Please " +
-                          "upgrade to the latest Python version, or at " +
-                          "least to Python 3.10, before then, and " +
-                          f"then update {_package_label}.",
-                          FutureWarning)
+            warnings.warn(
+                f"You are using a Python version ({_py_version_str}) "
+                + f"which Google will stop supporting in {_package_label} in "
+                + "January 2026. Please "
+                + "upgrade to the latest Python version, or at "
+                + "least to Python 3.10, before then, and "
+                + f"then update {_package_label}.",
+                FutureWarning,
+            )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
@@ -117,51 +120,59 @@ else:   # pragma: NO COVER
         _recommendation = " (we recommend 6.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
-            warnings.warn(f"Package {_package_label} depends on " +
-                          f"{_dependency_package}, currently installed at version " +
-                          f"{_version_used_string}. Future updates to " +
-                          f"{_package_label} will require {_dependency_package} at " +
-                          f"version {_next_supported_version} or higher{_recommendation}." +
-                          " Please ensure " +
-                          "that either (a) your Python environment doesn't pin the " +
-                          f"version of {_dependency_package}, so that updates to " +
-                          f"{_package_label} can require the higher version, or " +
-                          "(b) you manually update your Python environment to use at " +
-                          f"least version {_next_supported_version} of " +
-                          f"{_dependency_package}.",
-                          FutureWarning)
+            warnings.warn(
+                f"Package {_package_label} depends on "
+                + f"{_dependency_package}, currently installed at version "
+                + f"{_version_used_string}. Future updates to "
+                + f"{_package_label} will require {_dependency_package} at "
+                + f"version {_next_supported_version} or higher{_recommendation}."
+                + " Please ensure "
+                + "that either (a) your Python environment doesn't pin the "
+                + f"version of {_dependency_package}, so that updates to "
+                + f"{_package_label} can require the higher version, or "
+                + "(b) you manually update your Python environment to use at "
+                + f"least version {_next_supported_version} of "
+                + f"{_dependency_package}.",
+                FutureWarning,
+            )
     except Exception:
-            warnings.warn("Could not determine the version of Python " +
-                          "currently being used. To continue receiving " +
-                          "updates for {_package_label}, ensure you are " +
-                          "using a supported version of Python; see " +
-                          "https://devguide.python.org/versions/")
+        warnings.warn(
+            "Could not determine the version of Python "
+            + "currently being used. To continue receiving "
+            + "updates for {_package_label}, ensure you are "
+            + "using a supported version of Python; see "
+            + "https://devguide.python.org/versions/"
+        )
 
 {#  Define __all__.
     This requires the full set of imported names, so we iterate over
     them again.
 -#}
-__all__ = (
-    {% filter sort_lines -%}
-    {% for subpackage in api.subpackages -%}
-    '{{ subpackage }}',
-    {% endfor -%}
+
+
+{% with imported_names = [] %}
+__all__ = ({% for subpackage in api.subpackages %}
+    {% do imported_names.append(subpackage) %}
+    {% endfor %}    
     {% for service in api.services.values()
-            if service.meta.address.subpackage == api.subpackage_view -%}
-    '{{ service.client_name }}',
+        if service.meta.address.subpackage == api.subpackage_view %}
+     {% do imported_names.append(service.client_name) %}
     {% if 'grpc' in opts.transport %}
-    '{{ service.async_client_name }}',
+     {% do imported_names.append(service.async_client_name) %}
     {% endif %}
-    {% endfor -%}
+    {% endfor %}
     {% for proto in api.protos.values()
-            if proto.meta.address.subpackage == api.subpackage_view -%}
-    {% for message in proto.messages.values()|sort(attribute='name') -%}
-    '{{ message.name }}',
-    {% endfor -%}
-    {% for enum in proto.enums.values() -%}
-    '{{ enum.name }}',
-    {% endfor -%}
-    {% endfor -%}
-    {% endfilter %}
+            if proto.meta.address.subpackage == api.subpackage_view %}
+    {% for message in proto.messages.values()|sort(attribute='name') %}
+     {% do imported_names.append(message.name) %}
+    {% endfor %}
+    {% for enum in proto.enums.values() %}
+    {% do imported_names.append(enum.name) %}
+    {% endfor %}
+    {% endfor %}
+    {% for name in imported_names|sort %}
+    "{{ name }}",
+    {% endfor %}
 )
+{% endwith %}
 {% endblock %}

@@ -273,7 +273,7 @@ def test_mock_value_original_type_bool():
 
 def test_mock_value_str():
     field = make_field(name="foo_bar", type="TYPE_STRING")
-    assert field.mock_value == "'foo_bar_value'"
+    assert field.mock_value == '"foo_bar_value"'
 
 
 def test_mock_value_original_type_str():
@@ -293,7 +293,7 @@ def test_mock_value_original_type_bytes():
 
 def test_mock_value_repeated():
     field = make_field(name="foo_bar", type="TYPE_STRING", label=3)
-    assert field.mock_value == "['foo_bar_value']"
+    assert field.mock_value == '["foo_bar_value"]'
 
 
 def test_mock_value_original_type_repeated():
@@ -318,7 +318,7 @@ def test_mock_value_map():
         type="TYPE_MESSAGE",
     )
 
-    assert field.mock_value == "{'key_value': 'value_value'}"
+    assert field.mock_value == '{"key_value": "value_value"}'
 
 
 def test_mock_value_enum():

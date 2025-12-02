@@ -785,7 +785,7 @@ def test_{{ method_name }}_field_headers():
     assert (
         'x-goog-request-params',
         '{% for field_header in method.field_headers -%}
-        {{ field_header.raw }}={{ method.input.get_field(field_header.disambiguated).mock_value|trim("'") }}
+        {{ field_header.raw }}={{ method.input.get_field(field_header.disambiguated).mock_value|trim('"') }}
         {%- if not loop.last %}&{% endif %}
         {%- endfor -%}',
     ) in kw['metadata']

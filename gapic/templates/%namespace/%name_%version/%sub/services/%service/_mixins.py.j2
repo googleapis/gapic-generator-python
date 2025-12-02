@@ -1,6 +1,7 @@
     {# LRO mixins #}
     {% if api.has_operations_mixin %}
     {% if "ListOperations" in api.mixin_api_methods %}
+    
     def list_operations(
         self,
         request: Optional[operations_pb2.ListOperationsRequest] = None,
@@ -35,10 +36,7 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -46,7 +44,11 @@
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -55,8 +57,8 @@
             raise e
 
     {% endif %}
-
     {% if "GetOperation" in api.mixin_api_methods %}
+
     def get_operation(
         self,
         request: Optional[operations_pb2.GetOperationRequest] = None,
@@ -91,10 +93,7 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -102,7 +101,11 @@
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -110,8 +113,8 @@
             self._add_cred_info_for_auth_errors(e)
             raise e
     {% endif %}
-
     {% if "DeleteOperation" in api.mixin_api_methods %}
+
     def delete_operation(
         self,
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
@@ -150,19 +153,21 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
     {% endif %}
-
     {% if "CancelOperation" in api.mixin_api_methods %}
+
     def cancel_operation(
         self,
         request: Optional[operations_pb2.CancelOperationRequest] = None,
@@ -200,19 +205,21 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
     {% endif %}
-
     {% if "WaitOperation" in api.mixin_api_methods %}
+
     def wait_operation(
         self,
         request: Optional[operations_pb2.WaitOperationRequest] = None,
@@ -253,10 +260,7 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -264,7 +268,11 @@
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -273,12 +281,11 @@
             raise e
     {% endif %}
     {% endif %} {# LRO #}
-    
     {# IAM mixins #}
-
     {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if not opts.add_iam_methods and api.has_iam_mixin %}
     {% if "SetIamPolicy" in api.mixin_api_methods %}
+
     def set_iam_policy(
         self,
         request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
@@ -379,10 +386,7 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -390,7 +394,11 @@
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -398,8 +406,8 @@
             self._add_cred_info_for_auth_errors(e)
             raise e
     {% endif %}
-
     {% if "GetIamPolicy" in api.mixin_api_methods %}
+
     def get_iam_policy(
         self,
         request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
@@ -501,10 +509,7 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -512,7 +517,11 @@
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -520,8 +529,8 @@
             self._add_cred_info_for_auth_errors(e)
             raise e
     {% endif %}
-
     {% if "TestIamPermissions" in api.mixin_api_methods %}
+
     def test_iam_permissions(
         self,
         request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
@@ -561,10 +570,7 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -572,7 +578,11 @@
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -581,11 +591,10 @@
             raise e
     {% endif %}
     {% endif %}
-
     {# Location mixin #}
-
     {% if api.has_location_mixin %}
     {% if "GetLocation" in api.mixin_api_methods %}
+
     def get_location(
         self,
         request: Optional[locations_pb2.GetLocationRequest] = None,
@@ -620,10 +629,7 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -631,7 +637,11 @@
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response
@@ -639,8 +649,8 @@
             self._add_cred_info_for_auth_errors(e)
             raise e
     {% endif %}
-
     {% if "ListLocations" in api.mixin_api_methods %}
+
     def list_locations(
         self,
         request: Optional[locations_pb2.ListLocationsRequest] = None,
@@ -675,10 +685,7 @@
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -686,7 +693,11 @@
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
             # Done; return the response.
             return response

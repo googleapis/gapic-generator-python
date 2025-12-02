@@ -16,10 +16,10 @@ from .{{proto.module_name }} import (
 __all__ = (
   {% for _, proto in api.protos|dictsort if proto.file_to_generate %}
   {% for _, message in proto.messages|dictsort %}
-    '{{ message.name }}',
+    "{{ message.name }}",
   {% endfor %}
   {% for _, enum in proto.enums|dictsort %}
-    '{{ enum.name }}',
+    "{{ enum.name }}",
   {% endfor %}
   {% endfor %}
 )
