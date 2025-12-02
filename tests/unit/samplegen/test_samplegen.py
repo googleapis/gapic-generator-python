@@ -2110,6 +2110,29 @@ def test_validate_request_non_terminal_primitive_field(dummy_api_schema):
         v.validate_and_transform_request(types.CallingForm.Request, request)
 
 
+class TestSamplegenRequest:
+    def setup_method(self):
+        self.dummy_api_schema = DummyApiSchema(
+            services={
+                "Mollusc": DummyService(
+                    client_name="MolluscClient",
+                )
+            },
+            naming=DummyNaming(),
+        )
+
+    def test_validate_request_bytes_value(self):
+        request_type = message_factory("mollusc.species_bytes")
+        v = samplegen.Validator(DummyMethod(input=request_type), self.dummy_api_schema)
+        _, attr_setup = v._normal_request_setup(
+            {},
+            b"bytes_value",
+            {"value": b"bytes_value", "field": "species_bytes"},
+            "species_bytes",
+        )
+        assert attr_setup.value == 'b"bytes_value"'
+
+
 def test_parse_invalid_handwritten_spec(fs):
     fpath = "sampledir/sample.yaml"
     fs.create_file(

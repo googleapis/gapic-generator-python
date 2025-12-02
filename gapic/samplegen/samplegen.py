@@ -416,7 +416,7 @@ class Validator:
                 )
             del request["field"]
 
-        if isinstance(request["value"], str):
+        if isinstance(request["value"], str) or isinstance(request["value"], list):
             # Passing value through json is a safe and simple way of
             # making sure strings are properly wrapped and quotes escaped.
             # This statement both wraps enums in quotes and escapes quotes
@@ -426,6 +426,9 @@ class Validator:
             # This is preferable to adding the necessary import statement
             # and requires less munging of the assigned value
             request["value"] = json.dumps(request["value"])
+        elif isinstance(request["value"], bytes):
+            # Use double quotes for bytes literals for consistency.
+            request["value"] = f'b"{request["value"].decode("utf-8")}"'
 
         # Mypy isn't smart enough to handle dictionary unpacking,
         # so disable it for the AttributeRequestSetup ctor call.

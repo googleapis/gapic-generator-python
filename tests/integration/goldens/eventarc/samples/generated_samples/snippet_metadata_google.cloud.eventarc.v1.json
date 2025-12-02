@@ -68,12 +68,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_CreateChannelConnection_async",
       "segments": [
         {
-          "end": 61,
+          "end": 62,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 61,
+          "end": 62,
           "start": 27,
           "type": "SHORT"
         },
@@ -93,7 +93,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 62,
+          "end": 63,
           "start": 59,
           "type": "RESPONSE_HANDLING"
         }
@@ -156,12 +156,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_CreateChannelConnection_sync",
       "segments": [
         {
-          "end": 61,
+          "end": 62,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 61,
+          "end": 62,
           "start": 27,
           "type": "SHORT"
         },
@@ -181,7 +181,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 62,
+          "end": 63,
           "start": 59,
           "type": "RESPONSE_HANDLING"
         }
@@ -245,12 +245,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_CreateChannel_async",
       "segments": [
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "SHORT"
         },
@@ -270,7 +270,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 63,
+          "end": 64,
           "start": 60,
           "type": "RESPONSE_HANDLING"
         }
@@ -333,12 +333,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_CreateChannel_sync",
       "segments": [
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 62,
+          "end": 63,
           "start": 27,
           "type": "SHORT"
         },
@@ -358,7 +358,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 63,
+          "end": 64,
           "start": 60,
           "type": "RESPONSE_HANDLING"
         }
@@ -422,12 +422,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_CreateTrigger_async",
       "segments": [
         {
-          "end": 65,
+          "end": 66,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 65,
+          "end": 66,
           "start": 27,
           "type": "SHORT"
         },
@@ -447,7 +447,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 66,
+          "end": 67,
           "start": 63,
           "type": "RESPONSE_HANDLING"
         }
@@ -510,12 +510,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_CreateTrigger_sync",
       "segments": [
         {
-          "end": 65,
+          "end": 66,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 65,
+          "end": 66,
           "start": 27,
           "type": "SHORT"
         },
@@ -535,7 +535,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 66,
+          "end": 67,
           "start": 63,
           "type": "RESPONSE_HANDLING"
         }
@@ -591,12 +591,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_DeleteChannelConnection_async",
       "segments": [
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -616,7 +616,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
@@ -671,12 +671,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_DeleteChannelConnection_sync",
       "segments": [
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -696,7 +696,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
@@ -752,12 +752,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_DeleteChannel_async",
       "segments": [
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -777,7 +777,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
+          "end": 58,
           "start": 54,
           "type": "RESPONSE_HANDLING"
         }
@@ -832,12 +832,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_DeleteChannel_sync",
       "segments": [
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -857,7 +857,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
+          "end": 58,
           "start": 54,
           "type": "RESPONSE_HANDLING"
         }
@@ -917,12 +917,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_DeleteTrigger_async",
       "segments": [
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -942,7 +942,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
+          "end": 58,
           "start": 54,
           "type": "RESPONSE_HANDLING"
         }
@@ -1001,12 +1001,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_DeleteTrigger_sync",
       "segments": [
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 27,
           "type": "SHORT"
         },
@@ -1026,7 +1026,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
+          "end": 58,
           "start": 54,
           "type": "RESPONSE_HANDLING"
         }
@@ -1082,12 +1082,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_GetChannelConnection_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1107,7 +1107,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1162,12 +1162,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_GetChannelConnection_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1187,7 +1187,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1243,12 +1243,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_GetChannel_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1268,7 +1268,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1323,12 +1323,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_GetChannel_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1348,7 +1348,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1404,12 +1404,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_GetGoogleChannelConfig_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1429,7 +1429,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1484,12 +1484,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_GetGoogleChannelConfig_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1509,7 +1509,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1565,12 +1565,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_GetProvider_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1590,7 +1590,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1645,12 +1645,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_GetProvider_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1670,7 +1670,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1726,12 +1726,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_GetTrigger_async",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1751,7 +1751,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1806,12 +1806,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_GetTrigger_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -1831,7 +1831,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1887,12 +1887,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_ListChannelConnections_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -1912,7 +1912,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -1967,12 +1967,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_ListChannelConnections_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -1992,7 +1992,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2048,12 +2048,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_ListChannels_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2073,7 +2073,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2128,12 +2128,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_ListChannels_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2153,7 +2153,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2209,12 +2209,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_ListProviders_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2234,7 +2234,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2289,12 +2289,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_ListProviders_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2314,7 +2314,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2370,12 +2370,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_ListTriggers_async",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2395,7 +2395,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2450,12 +2450,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_ListTriggers_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -2475,7 +2475,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 54,
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
@@ -2535,12 +2535,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_UpdateChannel_async",
       "segments": [
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -2560,7 +2560,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
@@ -2619,12 +2619,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_UpdateChannel_sync",
       "segments": [
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -2644,7 +2644,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
@@ -2704,12 +2704,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_UpdateGoogleChannelConfig_async",
       "segments": [
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -2729,7 +2729,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
@@ -2788,12 +2788,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_UpdateGoogleChannelConfig_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -2813,7 +2813,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
@@ -2877,12 +2877,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_UpdateTrigger_async",
       "segments": [
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -2902,7 +2902,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
@@ -2965,12 +2965,12 @@
       "regionTag": "eventarc_v1_generated_Eventarc_UpdateTrigger_sync",
       "segments": [
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 56,
           "start": 27,
           "type": "SHORT"
         },
@@ -2990,7 +2990,7 @@
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
+          "end": 57,
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }

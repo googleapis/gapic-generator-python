@@ -2939,8 +2939,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
-                request = asset_v1.UpdateSavedQueryRequest(
-                )
+                request = asset_v1.UpdateSavedQueryRequest()
 
                 # Make the request
                 response = client.update_saved_query(request=request)
@@ -3158,7 +3157,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Initialize request argument(s)
                 request = asset_v1.BatchGetEffectiveIamPoliciesRequest(
                     scope="scope_value",
-                    names=['names_value1', 'names_value2'],
+                    names=["names_value1", "names_value2"],
                 )
 
                 # Make the request

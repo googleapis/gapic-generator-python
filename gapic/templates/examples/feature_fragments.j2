@@ -174,11 +174,15 @@ client = {{ module_name }}.{{ client_name }}()
 {% endif %}
 {% endfor %}
 {% if not full_request.flattenable %}
+{% if full_request.request_list|length > 0 %}
 request = {{ module_name }}.{{ request_type.ident.name }}(
 {% for parameter in full_request.request_list %}
     {{ parameter.base }}={{ parameter.base if parameter.body else parameter.single.value }},
 {% endfor %}
 )
+{% else %}
+request = {{ module_name }}.{{ request_type.ident.name }}()
+{% endif %}
 {# Note: This template assumes only one request needs to be sent. When samples accept
 configs the client streaming logic should be modified to allow 2+ request objects. #}
 {# If client streaming, wrap the single request in a generator that produces 'requests' #}
@@ -256,8 +260,8 @@ operation
 # Make the request
 {% if calling_form in [calling_form_enum.Request, calling_form_enum.RequestStreamingClient] %}
 {% if response_statements %}response = {% endif %}{{ method_invocation_text|trim }}
-
 {% if response_statements %}
+
 # Handle the response
 {% for statement in response_statements %}
 {{ dispatch_statement(statement)|trim }}

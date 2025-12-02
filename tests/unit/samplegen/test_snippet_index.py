@@ -52,6 +52,7 @@ def sample_classify(video, location):
     # Handle the response
     print(f"Mollusc is a \"{response.taxonomy}\"")
 
+
 # [END mollusc_classify_sync]"""
 
 
@@ -69,12 +70,12 @@ def test_snippet_init(sample_str):
         "language": "PYTHON",
         "title": "classify_squid.py",
         "segments": [
-            {"end": 28, "start": 2, "type": "FULL"},
-            {"end": 28, "start": 2, "type": "SHORT"},
+            {"end": 29, "start": 2, "type": "FULL"},
+            {"end": 29, "start": 2, "type": "SHORT"},
             {"end": 8, "start": 6, "type": "CLIENT_INITIALIZATION"},
             {"end": 22, "start": 9, "type": "REQUEST_INITIALIZATION"},
             {"end": 25, "start": 23, "type": "REQUEST_EXECUTION"},
-            {"end": 29, "start": 26, "type": "RESPONSE_HANDLING"},
+            {"end": 30, "start": 26, "type": "RESPONSE_HANDLING"},
         ],
     }
 
@@ -106,6 +107,7 @@ def sample_classify(video, location):
 
     # Handle the response
     print(f"Mollusc is a \"{response.taxonomy}\"")
+
 
 """
 
@@ -278,12 +280,12 @@ def test_get_metadata_json(sample_str):
                     }
                 },
                 "segments": [
-                    {"end": 28, "start": 2, "type": "FULL"},
-                    {"end": 28, "start": 2, "type": "SHORT"},
+                    {"end": 29, "start": 2, "type": "FULL"},
+                    {"end": 29, "start": 2, "type": "SHORT"},
                     {"end": 8, "start": 6, "type": "CLIENT_INITIALIZATION"},
                     {"end": 22, "start": 9, "type": "REQUEST_INITIALIZATION"},
                     {"end": 25, "start": 23, "type": "REQUEST_EXECUTION"},
-                    {"end": 29, "start": 26, "type": "RESPONSE_HANDLING"},
+                    {"end": 30, "start": 26, "type": "RESPONSE_HANDLING"},
                 ],
             }
         ],
