@@ -131,7 +131,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
     """
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -139,7 +139,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -410,7 +410,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
+    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -496,7 +496,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
