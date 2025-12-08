@@ -348,6 +348,14 @@ jobs:
         run: |
             sudo apt-get update
             sudo apt-get install -y pandoc gcc git
+      - name: Install protoc.
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip --output /usr/src/protoc/protoc-${PROTOC_VERSION}.zip
+            cd /usr/src/protoc/
+            unzip protoc-${PROTOC_VERSION}.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
         run: |
             python -m pip install nox
