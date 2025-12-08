@@ -173,6 +173,8 @@ def fragment(session, use_ads_templates=False):
         "pytest-asyncio",
         "grpcio-tools",
     )
+    session.install("-e", ".")
+
     # The specific failure is `Plugin output is unparseable`
     if session.python in ("3.9", "3.10"):
         session.install("google-api-core<2.28")
