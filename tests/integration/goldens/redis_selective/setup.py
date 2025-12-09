@@ -47,7 +47,7 @@ dependencies = [
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "proto-plus >= 1.22.3, <2.0.0",
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf >= 4.25.8, <5.0.0dev",
 ]
 extras = {
     "async_rest": [
@@ -84,8 +84,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
@@ -97,7 +95,7 @@ setuptools.setup(
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     install_requires=dependencies,
     extras_require=extras,
     include_package_data=True,
