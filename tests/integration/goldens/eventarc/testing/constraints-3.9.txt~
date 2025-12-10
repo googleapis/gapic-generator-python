@@ -1,27 +1,27 @@
 # -*- coding: utf-8 -*-
 # This constraints file is used to check that lower bounds
 # are correct in setup.py
-# List all library dependencies and extras in this file.
 <<<<<<< conflict 1 of 1
-%%%%%%% diff from: kyqlvtkx ef41a402 "Update protobuf dependency in ads template" (parents of rebased revision)
-\\\\\\\        to: kyqlvtkx ef41a402 "Update protobuf dependency in ads template" (rebased revision)
- google-api-core
- google-auth
- grpcio
- proto-plus
- protobuf
-+# cryptography is a direct dependency of google-auth
-+cryptography
- grpc-google-iam-v1
-+++++++ zysqyomp 15cd6d4a "Update goldens" (rebased revision)
-# Pin the version to the lower bound.
-# e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
-# Then this file should have google-cloud-foo==1.14.0
-google-api-core==1.34.1
+%%%%%%% diff from: qvnlxwmk ec800d7a "Allow protobuf 6.x" (rebased revision)
+\\\\\\\        to: mrtsuqst bb734c37 "Allow protobuf 6.x" (rebase destination)
+ # List all library dependencies and extras in this file.
++ grpc-google-iam-v1
+ # Pin the version to the lower bound.
+ # e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
+ # Then this file should have google-cloud-foo==1.14.0
+ google-api-core==1.34.1
++++++++ ppyqnrkr 85365cff "Require google-api-core>=2.11.0 to allow protobuf>=4.25.8" (rebased revision)
+# List all library dependencies and extras in this file,
+# pinning their versions to their lower bounds.
+# For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
+# then this file should have google-cloud-foo==1.14.0
+google-api-core==2.11.0
+>>>>>>> conflict 1 of 1 ends
 google-auth==2.35.0
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2453)
 # Add the minimum supported version of grpcio to constraints files
 proto-plus==1.22.3
 protobuf==4.25.8
+# cryptography is a direct dependency of google-auth
+cryptography
 grpc-google-iam-v1==0.14.0
->>>>>>> conflict 1 of 1 ends
