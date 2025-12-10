@@ -2,11 +2,11 @@
 {% from '_pypi_packages.j2' import pypi_packages %}
 # This constraints file is used to check that lower bounds
 # are correct in setup.py
-# List all library dependencies and extras in this file.
-# Pin the version to the lower bound.
-# e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
-# Then this file should have google-cloud-foo==1.14.0
-google-api-core==1.34.1
+# List all library dependencies and extras in this file,
+# pinning their versions to their lower bounds.
+# For example, if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0",
+# then this file should have google-cloud-foo==1.14.0
+google-api-core==2.11.0
 google-auth==2.35.0
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2453)
 # Add the minimum supported version of grpcio to constraints files
