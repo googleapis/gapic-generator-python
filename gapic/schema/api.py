@@ -64,6 +64,14 @@ from gapic.utils import nth
 from gapic.utils import Options
 from gapic.utils import to_snake_case
 from gapic.utils import RESERVED_NAMES
+import time
+
+LOG_FILE = "/tmp/gapic_profile.log"
+
+def _log(msg):
+    # Append mode so we don't wipe logs from previous steps/APIs
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(f"[{time.strftime('%H:%M:%S')}] {msg}\n")
 
 
 TRANSPORT_GRPC = "grpc"
@@ -456,7 +464,9 @@ class API:
         # load the services and methods with the full scope of types.
         pre_protos: Dict[str, Proto] = dict(prior_protos or {})
         for fd in file_descriptors:
+            t0 = time.time()
             fd.name = disambiguate_keyword_sanitize_fname(fd.name, pre_protos)
+            is_target = fd.package.startswith(package)
             pre_protos[fd.name] = Proto.build(
                 file_descriptor=fd,
                 file_to_generate=fd.package.startswith(package),
@@ -466,6 +476,9 @@ class API:
                 # Ugly, ugly hack.
                 load_services=False,
             )
+            if is_target:
+                duration = time.time() - t0
+                _log(f"API.build (Pass 1 - Messages Only): {fd.name} took {duration:.4f}s")
 
         # A file descriptor's file-level resources are NOT visible to any importers.
         # The only way to make referenced resources visible is to aggregate them at
@@ -477,8 +490,12 @@ class API:
         # Second pass uses all the messages and enums defined in the entire API.
         # This allows LRO returning methods to see all the types in the API,
         # bypassing the above missing import problem.
-        protos: Dict[str, Proto] = {
-            name: Proto.build(
+        protos: Dict[str, Proto] = {}
+        
+        for name, proto in pre_protos.items():
+            t0 = time.time()
+            
+            protos[name] = Proto.build(
                 file_descriptor=proto.file_pb2,
                 file_to_generate=proto.file_to_generate,
                 naming=naming,
@@ -486,15 +503,20 @@ class API:
                 prior_protos=pre_protos,
                 all_resources=MappingProxyType(all_file_resources),
             )
-            for name, proto in pre_protos.items()
-        }
+            
+            # Log timing only for the target file
+            if proto.file_to_generate:
+                duration = time.time() - t0
+                _log(f"API.build (Pass 2): {name} took {duration:.4f}s")
 
         # Parse the google.api.Service proto from the service_yaml data.
+        t0_yaml = time.time()
         service_yaml_config = service_pb2.Service()
         ParseDict(
             opts.service_yaml_config, service_yaml_config, ignore_unknown_fields=True
         )
         gapic_version = opts.gapic_version
+        _log(f"API.build (Service YAML Parse) took {time.time() - t0_yaml:.4f}s")
 
         # Third pass for various selective GAPIC settings; these require
         # settings in the service.yaml and so we build the API object

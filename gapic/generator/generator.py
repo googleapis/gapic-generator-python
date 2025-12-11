@@ -19,6 +19,8 @@ import re
 import os
 import pathlib
 import typing
+import time
+import sys
 from typing import Any, DefaultDict, Dict, Mapping, Optional, Tuple
 from hashlib import sha256
 from collections import OrderedDict, defaultdict
@@ -34,8 +36,17 @@ from gapic.generator import formatter
 from gapic.schema import api
 from gapic import utils
 from gapic.utils import Options
+from gapic.utils import rst as rst_module
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
+# <--- Profiling Global --->
+LOG_FILE = "/tmp/gapic_profile.log"
+
+def _log(msg):
+    # Append mode so we don't wipe logs from previous steps/APIs
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(f"[{time.strftime('%H:%M:%S')}] {msg}\n")
+# <--- End Profiling Global --->
 
 class Generator:
     """A protoc code generator for client libraries.
@@ -91,6 +102,11 @@ class Generator:
             ~.CodeGeneratorResponse: A response describing appropriate
             files and contents. See ``plugin.proto``.
         """
+        # <--- Profiling Start --->
+        _log(f"--- GENERATION STARTED (get_response) FOR {api_schema.naming.proto_package} ---")
+        start_time = time.time() # FIXED: Variable name matches end usage
+        # <--- Profiling End --->
+
         output_files: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
         sample_templates, client_templates = utils.partition(
             lambda fname: os.path.basename(fname) == samplegen.DEFAULT_TEMPLATE_NAME,
@@ -101,6 +117,7 @@ class Generator:
         # can be inserted into method docstrings.
         snippet_idx = snippet_index.SnippetIndex(api_schema)
         if sample_templates:
+            t_samples = time.time()
             sample_output, snippet_idx = self._generate_samples_and_manifest(
                 api_schema,
                 snippet_idx,
@@ -108,6 +125,7 @@ class Generator:
                 opts=opts,
             )
             output_files.update(sample_output)
+            _log(f"Phase: Sample Gen took {time.time() - t_samples:.4f}s")
 
         # Iterate over each template and add the appropriate output files
         # based on that template.
@@ -119,8 +137,9 @@ class Generator:
             filename = template_name.split("/")[-1]
             if filename.startswith("_") and filename != "__init__.py.j2":
                 continue
-
-            # Append to the output files dictionary.
+            
+            # <--- Profiling Template --->
+            t_tpl = time.time()
             output_files.update(
                 self._render_template(
                     template_name,
@@ -129,12 +148,18 @@ class Generator:
                     snippet_index=snippet_idx,
                 )
             )
+            duration = time.time() - t_tpl
+            if duration > 1.0:
+                 _log(f"Phase: Template [{template_name}] took {duration:.4f}s")
+            # <--- End Profiling Template --->
 
         # Return the CodeGeneratorResponse output.
         res = CodeGeneratorResponse(
             file=[i for i in output_files.values()]
         )  # type: ignore
         res.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL  # type: ignore
+        
+        _log(f"TOTAL GENERATION COMPLETE (get_response): {time.time() - start_time:.4f}s")
         return res
 
     def _generate_samples_and_manifest(
@@ -400,6 +425,10 @@ class Generator:
             context=context,
         )
 
+        # <--- Profiling Render Start --->
+        t_render = time.time()
+        # <--- End Profiling Render Start --->
+
         # Render the file contents.
         cgr_file = CodeGeneratorResponse.File(
             content=formatter.fix_whitespace(
@@ -409,6 +438,12 @@ class Generator:
             ),
             name=fn,
         )
+
+        # <--- Profiling Render End --->
+        duration = time.time() - t_render
+        if duration > 0.5:
+             _log(f"  > RENDER: {fn} ({duration:.4f}s)")
+        # <--- End Profiling Render End --->
 
         # Quick check: Do not render empty files.
         if utils.empty(cgr_file.content) and not fn.endswith(
