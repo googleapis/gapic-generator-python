@@ -122,6 +122,7 @@ class Proto:
         opts: Options = Options(),
         prior_protos: Optional[Mapping[str, "Proto"]] = None,
         load_services: bool = True,
+        skip_context_analysis: bool = False,
         all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ) -> "Proto":
         """Build and return a Proto instance.
@@ -146,6 +147,7 @@ class Proto:
             opts=opts,
             prior_protos=prior_protos or {},
             load_services=load_services,
+            skip_context_analysis=skip_context_analysis,
             all_resources=all_resources or {},
         ).proto
 
@@ -475,6 +477,7 @@ class API:
                 prior_protos=pre_protos,
                 # Ugly, ugly hack.
                 load_services=False,
+                skip_context_analysis=True,
             )
             if is_target:
                 duration = time.time() - t0
@@ -1120,6 +1123,7 @@ class _ProtoBuilder:
         opts: Options = Options(),
         prior_protos: Optional[Mapping[str, Proto]] = None,
         load_services: bool = True,
+        skip_context_analysis: bool = False,
         all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ):
         self.proto_messages: Dict[str, wrappers.MessageType] = {}
@@ -1129,6 +1133,7 @@ class _ProtoBuilder:
         self.file_to_generate = file_to_generate
         self.prior_protos = prior_protos or {}
         self.opts = opts
+        self.skip_context_analysis = skip_context_analysis
 
         # Iterate over the documentation and place it into a dictionary.
         #
@@ -1235,7 +1240,7 @@ class _ProtoBuilder:
 
         # If this is not a file being generated, we do not need to
         # do anything else.
-        if not self.file_to_generate:
+        if not self.file_to_generate or self.skip_context_analysis:
             return naive
 
         visited_messages: Set[wrappers.MessageType] = set()
