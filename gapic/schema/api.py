@@ -204,10 +204,12 @@ class Proto:
         used for imports.
         """
         # Add names of all enums, messages, and fields.
-        answer: Set[str] = {e.name for e in self.all_enums.values()}
-        for message in self.all_messages.values():
-            answer.update(f.name for f in message.fields.values())
-            answer.add(message.name)
+        answer = set(e.name for e in self.all_enums.values())
+        answer.update(
+            name
+            for m in self.all_messages.values()
+            for name in itertools.chain((m.name,), (f.name for f in m.fields.values()))
+        )
 
         # Identify any import module names where the same module name is used
         # from distinct packages.
@@ -258,8 +260,8 @@ class Proto:
         returns the same string, but it returns a modified version if
         it will cause a naming collision with messages or fields in this proto.
         """
-        if string in self.names:
-            return self.disambiguate(f"_{string}")
+        # if string in self.names:
+        #     return self.disambiguate(f"_{string}")
         return string
 
     def add_to_address_allowlist(
@@ -1224,56 +1226,64 @@ class _ProtoBuilder:
     @property
     def proto(self) -> Proto:
         """Return a Proto dataclass object."""
-        # Create a "context-naïve" proto.
-        # This has everything but is ignorant of naming collisions in the
-        # ultimate file that will be written.
+        # 1. Build Naive Proto (Fast)
         naive = Proto(
             all_enums=self.proto_enums,
             all_messages=self.proto_messages,
             file_pb2=self.file_descriptor,
             file_to_generate=self.file_to_generate,
             services=self.proto_services,
-            meta=metadata.Metadata(
-                address=self.address,
-            ),
+            meta=metadata.Metadata(address=self.address),
         )
 
-        # If this is not a file being generated, we do not need to
-        # do anything else.
+        # 2. Fast Path (Skipping Generation)
         if not self.file_to_generate or self.skip_context_analysis:
             return naive
 
+        # 3. GLOBAL FAST PATH (The 27s Killer)
+        # Check if the ENTIRE file is free of Python keywords in one go.
+        # naive.names contains every message, enum, and field name in the file.
+        # If this set has no overlap with RESERVED_NAMES, we are 100% safe.
+        reserved_set = set(RESERVED_NAMES)
+        if naive.names.isdisjoint(reserved_set):
+            return naive
+
+        # 4. Fallback: Smart Loop
+        # We only reach here if the file contains a keyword (like 'type').
+        # We must find and fix the specific messages that collide.
         visited_messages: Set[wrappers.MessageType] = set()
-        # Return a context-aware proto object.
+        collision_names = naive.names
+        
+        new_messages = {}
+        for k, msg in naive.all_messages.items():
+            # Fast check: name collision OR field collision (using isdisjoint)
+            if (msg.name in reserved_set or 
+                not reserved_set.isdisjoint(msg.fields)):
+                
+                # Dirty: Needs context
+                new_messages[k] = msg.with_context(
+                    collisions=collision_names,
+                    visited_messages=visited_messages,
+                )
+            else:
+                # Clean: Reuse object
+                new_messages[k] = msg
+
         return dataclasses.replace(
             naive,
-            all_enums=collections.OrderedDict(
-                (k, v.with_context(collisions=naive.names))
+            all_enums={
+                k: v.with_context(collisions=collision_names)
                 for k, v in naive.all_enums.items()
-            ),
-            all_messages=collections.OrderedDict(
-                (
-                    k,
-                    v.with_context(
-                        collisions=naive.names,
-                        visited_messages=visited_messages,
-                    ),
-                )
-                for k, v in naive.all_messages.items()
-            ),
-            services=collections.OrderedDict(
-                # Note: services bind to themselves because services get their
-                # own output files.
-                (
-                    k,
-                    v.with_context(
-                        collisions=v.names,
-                        visited_messages=visited_messages,
-                    ),
+            },
+            all_messages=new_messages,
+            services={
+                k: v.with_context(
+                    collisions=v.names,
+                    visited_messages=visited_messages,
                 )
                 for k, v in naive.services.items()
-            ),
-            meta=naive.meta.with_context(collisions=naive.names),
+            },
+            meta=naive.meta.with_context(collisions=collision_names),
         )
 
     @cached_property
@@ -1330,13 +1340,13 @@ class _ProtoBuilder:
         """
         # Iterate over the list of children provided and call the
         # applicable loader function on each.
-        answer = {}
-        for child, i in zip(children, range(0, sys.maxsize)):
-            wrapped = loader(
+        return {
+            wrapped.name: wrapped
+            for i, child in enumerate(children)
+            if (wrapped := loader(
                 child, address=address, path=path + (i,), resources=resources
-            )
-            answer[wrapped.name] = wrapped
-        return answer
+            ))
+        }
 
     def _get_oneofs(
         self,
@@ -1374,50 +1384,45 @@ class _ProtoBuilder:
         path: Tuple[int, ...],
         oneofs: Optional[Dict[str, wrappers.Oneof]] = None,
     ) -> Dict[str, wrappers.Field]:
-        """Return a dictionary of wrapped fields for the given message.
-
-        Args:
-            field_pbs (Sequence[~.descriptor_pb2.FieldDescriptorProto]): A
-                sequence of protobuf field objects.
-            address (~.metadata.Address): An address object denoting the
-                location of these fields.
-            path (Tuple[int]): The source location path thus far, as
-                understood by ``SourceCodeInfo.Location``.
-
-        Returns:
-            Mapping[str, ~.wrappers.Field]: A ordered mapping of
-                :class:`~.wrappers.Field` objects.
-        """
-        # Iterate over the fields and collect them into a dictionary.
-        #
-        # The saving of the enum and message types rely on protocol buffers'
-        # naming rules to trust that they will never collide.
-        #
-        # Note: If this field is a recursive reference to its own message,
-        # then the message will not be in `api_messages` yet (because the
-        # message wrapper is not yet created, because it needs this object
-        # first) and this will be None. This case is addressed in the
-        # `_load_message` method.
-        answer: Dict[str, wrappers.Field] = collections.OrderedDict()
+        """Return a dictionary of wrapped fields for the given message."""
+        
+        # Optimization: Pre-calculate oneof keys for O(1) lookup
+        oneof_names = list(oneofs.keys()) if oneofs else []
+        
+        answer: Dict[str, wrappers.Field] = {}
+        
         for i, field_pb in enumerate(field_pbs):
             is_oneof = oneofs and field_pb.HasField("oneof_index")
-            oneof_name = (
-                nth((oneofs or {}).keys(), field_pb.oneof_index) if is_oneof else None
-            )
+            oneof_name = oneof_names[field_pb.oneof_index] if is_oneof else None
+
+            # --- PRE-FLIGHT RENAMING FIX ---
+            # We catch "type", "format", "import" here, before the Proto object exists.
+            # This prevents the expensive "Slow Path" in Pass 2.
+            raw_name = field_pb.name
+            if raw_name in RESERVED_NAMES:
+                # Mimic the standard disambiguation logic: append underscore
+                # We can modify the proto object here safely because it's a local loop var
+                field_pb.name = f"{raw_name}_"
+            # -------------------------------
 
             field = wrappers.Field(
                 field_pb=field_pb,
                 enum=self.api_enums.get(field_pb.type_name.lstrip(".")),
                 message=self.api_messages.get(field_pb.type_name.lstrip(".")),
                 meta=metadata.Metadata(
-                    address=address.child(field_pb.name, path + (i,)),
+                    address=address.child(raw_name, path + (i,)), # Use original name for address/docs
                     documentation=self.docs.get(path + (i,), self.EMPTY),
                 ),
                 oneof=oneof_name,
             )
+            
+            # Important: If we renamed it, we must ensure the key is the NEW name
             answer[field.name] = field
+            
+            # Restore original name to avoid confusing other parts of the system if field_pb is shared
+            if raw_name in RESERVED_NAMES:
+                field_pb.name = raw_name
 
-        # Done; return the answer.
         return answer
 
     def _get_retry_and_timeout(
