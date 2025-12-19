@@ -523,6 +523,9 @@ def prerelease_deps(session, protobuf_implementation):
                 f"import {version_namespace}; print({version_namespace}.__version__)",
             )
 
+    # Required by google-auth v3.x
+    session.install("cryptography")
+
     session.run(
         "py.test",
         "tests/unit",
@@ -595,6 +598,9 @@ def core_deps_from_source(session, protobuf_implementation):
     for dep in core_dependencies_from_source:
         session.install(dep, "--no-deps", "--ignore-installed")
         print(f"Installed {dep}")
+
+    # Required by google-auth v3.x
+    session.install("cryptography")
 
     session.run(
         "py.test",
