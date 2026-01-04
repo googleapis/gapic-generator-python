@@ -21,6 +21,8 @@ import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable, AsyncIterable
+import urllib.parse
+
 from google.protobuf import json_format
 {% endif %}
 import json
