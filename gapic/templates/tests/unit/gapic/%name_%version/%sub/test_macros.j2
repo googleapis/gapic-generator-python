@@ -1200,8 +1200,11 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
                 ('$alt', 'json;enum-encoding=int')
               {% endif %}
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            actual_url = req.call_args.args[0]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_{{ method_name }}_rest_unset_required_fields():

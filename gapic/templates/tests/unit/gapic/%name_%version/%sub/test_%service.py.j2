@@ -22,6 +22,7 @@ from grpc.experimental import aio
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable, AsyncIterable
 from google.protobuf import json_format
+import urllib.parse
 {% endif %}
 import json
 import math
