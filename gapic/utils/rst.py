@@ -47,7 +47,7 @@ def rst(
     # do not convert it.
     # (This makes code generation significantly faster; calling out to pandoc
     # is by far the most expensive thing we do.)
-    if not re.search(r"[|*`_[\]]", text):
+    if not re.search(r"```|[|*_\[\]]", text):
         answer = wrap(
             text,
             indent=indent,
