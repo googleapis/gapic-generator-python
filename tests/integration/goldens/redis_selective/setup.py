@@ -47,7 +47,10 @@ dependencies = [
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "proto-plus >= 1.22.3, <2.0.0",
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-    "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "protobuf>=3.20.2; python_version == '3.7'",
+    "protobuf>=4.21.6; python_version == '3.8'",
+    "protobuf>=5.0.0; python_version == '3.9'",
+    "protobuf>=6.0.0,<7.0.0; python_version >= '3.10'",
 ]
 extras = {
     "async_rest": [
