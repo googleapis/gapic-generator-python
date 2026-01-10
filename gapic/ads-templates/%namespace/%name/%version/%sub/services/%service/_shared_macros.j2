@@ -183,7 +183,7 @@ def _get_http_options():
     _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
     _request_url = "{host}{uri}".format(host=host, uri=uri)
     if _query_params:
-        _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))  # pragma: NO COVER
+        _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
     response = {{ await_prefix }}getattr(session, method)(
         _request_url,
         timeout=timeout,

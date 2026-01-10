@@ -169,7 +169,6 @@ def _get_http_options():
     method = transcoded_request['method']
     headers = dict(metadata)
     headers['Content-Type'] = 'application/json'
-    # Coverage is insufficient for the `urlencode` call below. Use pragma to skip it.
     # Build query string manually to avoid URL-encoding special characters like '$'.
     # The `requests` library encodes '$' as '%24' when using the `params` argument,
     # which causes API errors for parameters like '$alt'. See:
@@ -177,7 +176,7 @@ def _get_http_options():
     _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
     _request_url = "{host}{uri}".format(host=host, uri=uri)
     if _query_params:
-        _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))  # pragma: NO COVER
+        _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
     response = {{ await_prefix }}getattr(session, method)(
         _request_url,
         timeout=timeout,
