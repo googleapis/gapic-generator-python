@@ -4430,9 +4430,9 @@ def test_method_settings_unsupported_auto_populated_field_field_info_format_rais
     the format of the field is `IPV4`.
     """
     field_options = descriptor_pb2.FieldOptions()
-    field_options.Extensions[field_info_pb2.field_info].format = (
-        field_info_pb2.FieldInfo.Format.Value("IPV4")
-    )
+    field_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("IPV4")
     squid = make_field_pb2(
         name="squid", type="TYPE_STRING", options=field_options, number=1
     )
@@ -4499,3 +4499,84 @@ def test_method_settings_invalid_multiple_issues():
     assert re.match(".*squid.*not.*uuid4.*", error_yaml[method_example1][1].lower())
     assert re.match(".*octopus.*not.*uuid4.*", error_yaml[method_example1][2].lower())
     assert re.match(".*method.*not found.*", error_yaml[method_example2][0].lower())
+
+
+def test_proto_build_skip_context_analysis():
+    """Test that Proto.build works with skip_context_analysis=True."""
+    fdp = make_file_pb2(
+        name="my_proto.proto",
+        package="google.example.v1",
+        messages=(make_message_pb2(name="MyMessage"),),
+    )
+
+    # When skip_context_analysis is True, it should still return a Proto object
+    # but skip the context analysis phase (resolving collisions etc which happens in with_context).
+    # Since we can't easily check internal state of "naive" vs "context-aware" without
+    # relying on implementation details, we at least ensure it runs and returns a Proto.
+
+    proto = api.Proto.build(
+        fdp, file_to_generate=True, naming=make_naming(), skip_context_analysis=True
+    )
+
+    assert isinstance(proto, api.Proto)
+    assert "google.example.v1.MyMessage" in proto.messages
+    assert proto.file_to_generate is True
+
+
+def test_api_build_uses_skip_context_analysis():
+    """Test that API.build calls Proto.build with skip_context_analysis=True in the first pass."""
+
+    fd = make_file_pb2(
+        name="test.proto",
+        package="google.example.v1",
+        messages=(make_message_pb2(name="Msg"),),
+    )
+
+    with mock.patch.object(
+        api.Proto, "build", side_effect=api.Proto.build
+    ) as mock_proto_build:
+        api.API.build([fd], package="google.example.v1")
+
+        # API.build makes 2 passes (plus maybe more for other things).
+        # The first pass should have skip_context_analysis=True.
+
+        # Gather all calls
+        calls = mock_proto_build.call_args_list
+
+        # There should be at least 2 calls for our file (Pass 1 and Pass 2).
+        # We look for the one with skip_context_analysis=True.
+
+        found_skip = False
+        for call in calls:
+            # call.kwargs contains arguments
+            if call.kwargs.get("skip_context_analysis") is True:
+                found_skip = True
+                # Also verify load_services is False as per current implementation of Pass 1
+                assert call.kwargs.get("load_services") is False
+                break
+
+        assert found_skip, "Proto.build was not called with skip_context_analysis=True"
+
+
+def test_proto_builder_skip_context_analysis_property():
+    """Test that _ProtoBuilder sets the skip_context_analysis property correctly."""
+    fdp = descriptor_pb2.FileDescriptorProto(
+        name="my_proto_file.proto",
+        package="google.example.v1",
+    )
+
+    builder = api._ProtoBuilder(
+        fdp,
+        file_to_generate=True,
+        naming=make_naming(),
+        skip_context_analysis=True,
+    )
+
+    assert builder.skip_context_analysis is True
+
+    # Verify that .proto property returns the naive proto when skip_context_analysis is True
+    # We can check if the return value is the same as the 'naive' one constructed inside.
+    # But since we can't access 'naive' local variable, we verify behavior.
+
+    proto = builder.proto
+    assert isinstance(proto, api.Proto)
