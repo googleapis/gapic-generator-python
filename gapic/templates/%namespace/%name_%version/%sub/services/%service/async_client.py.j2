@@ -442,7 +442,7 @@ class {{ service.async_client_name }}:
     {% if opts.add_iam_methods %}
     async def set_iam_policy(
         self,
-        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -530,6 +530,8 @@ class {{ service.async_client_name }}:
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
 
@@ -554,7 +556,7 @@ class {{ service.async_client_name }}:
 
     async def get_iam_policy(
         self,
-        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -644,6 +646,8 @@ class {{ service.async_client_name }}:
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
 
@@ -668,7 +672,7 @@ class {{ service.async_client_name }}:
 
     async def test_iam_permissions(
         self,
-        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -696,6 +700,8 @@ class {{ service.async_client_name }}:
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
 
