@@ -131,7 +131,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
     """
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -139,7 +139,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -149,6 +149,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # could not parse api_endpoint; return as-is
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -410,7 +414,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
+    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -496,7 +500,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -1375,7 +1379,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def list_operations(
         self,
-        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        request: Optional[Union[operations_pb2.ListOperationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1401,6 +1405,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.ListOperationsRequest(**request)
 
@@ -1431,7 +1437,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1457,6 +1463,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.GetOperationRequest(**request)
 
@@ -1487,7 +1495,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def delete_operation(
         self,
-        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        request: Optional[Union[operations_pb2.DeleteOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1517,6 +1525,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.DeleteOperationRequest(**request)
 
@@ -1539,7 +1549,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def cancel_operation(
         self,
-        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1568,6 +1578,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.CancelOperationRequest(**request)
 
@@ -1590,7 +1602,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def wait_operation(
         self,
-        request: Optional[operations_pb2.WaitOperationRequest] = None,
+        request: Optional[Union[operations_pb2.WaitOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1622,6 +1634,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.WaitOperationRequest(**request)
 
@@ -1652,7 +1666,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1678,6 +1692,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = locations_pb2.GetLocationRequest(**request)
 
@@ -1708,7 +1724,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1734,6 +1750,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = locations_pb2.ListLocationsRequest(**request)
 

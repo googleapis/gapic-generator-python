@@ -168,7 +168,7 @@ class BaseConfigServiceV2AsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -3898,7 +3898,7 @@ class BaseConfigServiceV2AsyncClient:
 
     async def list_operations(
         self,
-        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        request: Optional[Union[operations_pb2.ListOperationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3924,6 +3924,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.ListOperationsRequest(**request)
 
@@ -3950,7 +3952,7 @@ class BaseConfigServiceV2AsyncClient:
 
     async def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3976,6 +3978,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.GetOperationRequest(**request)
 
@@ -4002,7 +4006,7 @@ class BaseConfigServiceV2AsyncClient:
 
     async def cancel_operation(
         self,
-        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4031,6 +4035,8 @@ class BaseConfigServiceV2AsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.CancelOperationRequest(**request)
 
