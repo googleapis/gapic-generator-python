@@ -108,7 +108,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            Optikonal[str]: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
