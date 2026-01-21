@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 import abc
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
+from typing import Any, Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.eventarc_v1 import gapic_version as package_version
 
@@ -127,6 +127,8 @@ class EventarcTransport(abc.ABC):
         if ':' not in host:
             host += ':443'
         self._host = host
+
+        self._wrapped_methods: Dict[Callable[..., Any], Callable[..., Any]] = {}
 
     @property
     def host(self):
