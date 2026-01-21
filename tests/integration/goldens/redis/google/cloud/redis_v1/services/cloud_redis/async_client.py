@@ -178,7 +178,7 @@ class CloudRedisAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -1771,7 +1771,7 @@ class CloudRedisAsyncClient:
 
     async def list_operations(
         self,
-        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        request: Optional[Union[operations_pb2.ListOperationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1797,6 +1797,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.ListOperationsRequest(**request)
 
@@ -1823,7 +1825,7 @@ class CloudRedisAsyncClient:
 
     async def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1849,6 +1851,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.GetOperationRequest(**request)
 
@@ -1875,7 +1879,7 @@ class CloudRedisAsyncClient:
 
     async def delete_operation(
         self,
-        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        request: Optional[Union[operations_pb2.DeleteOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1905,6 +1909,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.DeleteOperationRequest(**request)
 
@@ -1927,7 +1933,7 @@ class CloudRedisAsyncClient:
 
     async def cancel_operation(
         self,
-        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1956,6 +1962,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.CancelOperationRequest(**request)
 
@@ -1978,7 +1986,7 @@ class CloudRedisAsyncClient:
 
     async def wait_operation(
         self,
-        request: Optional[operations_pb2.WaitOperationRequest] = None,
+        request: Optional[Union[operations_pb2.WaitOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2010,6 +2018,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = operations_pb2.WaitOperationRequest(**request)
 
@@ -2036,7 +2046,7 @@ class CloudRedisAsyncClient:
 
     async def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2062,6 +2072,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = locations_pb2.GetLocationRequest(**request)
 
@@ -2088,7 +2100,7 @@ class CloudRedisAsyncClient:
 
     async def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2114,6 +2126,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
+        if request is None:
+            request = {}
         if isinstance(request, dict):
             request = locations_pb2.ListLocationsRequest(**request)
 
