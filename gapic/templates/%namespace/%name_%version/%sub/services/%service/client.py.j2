@@ -798,9 +798,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = iam_policy_pb2.SetIamPolicyRequest(**request)
+            request_pb = iam_policy_pb2.SetIamPolicyRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.SetIamPolicyRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -814,7 +816,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
+                (("resource", request_pb.resource),)),
         )
 
         # Validate the universe domain.
@@ -823,7 +825,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -924,9 +926,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = iam_policy_pb2.GetIamPolicyRequest(**request)
+            request_pb = iam_policy_pb2.GetIamPolicyRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.GetIamPolicyRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -940,7 +944,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
+                (("resource", request_pb.resource),)),
         )
         
         # Validate the universe domain.
@@ -949,7 +953,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -988,9 +992,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
+            request_pb = iam_policy_pb2.TestIamPermissionsRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.TestIamPermissionsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1004,7 +1010,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("resource", request.resource),)),
+                (("resource", request_pb.resource),)),
         )
 
         # Validate the universe domain.
@@ -1013,7 +1019,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
