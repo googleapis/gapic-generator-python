@@ -52,5 +52,7 @@ def mypy(session):
         {% else %}
         '{{ api.naming.versioned_module_name }}',
         {% endif %}
+        "--check-untyped-defs",
+        *session.posargs,
     )
 {% endblock %}
