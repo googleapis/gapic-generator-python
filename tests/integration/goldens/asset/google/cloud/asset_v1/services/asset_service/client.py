@@ -623,7 +623,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = AssetServiceClient._read_environment_variables()
         self._client_cert_source = AssetServiceClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = AssetServiceClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
-        self._api_endpoint = None # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False

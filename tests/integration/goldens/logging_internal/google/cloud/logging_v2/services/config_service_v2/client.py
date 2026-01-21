@@ -616,7 +616,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = BaseConfigServiceV2Client._read_environment_variables()
         self._client_cert_source = BaseConfigServiceV2Client._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = BaseConfigServiceV2Client._get_universe_domain(universe_domain_opt, self._universe_domain_env)
-        self._api_endpoint = None # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -4347,9 +4347,11 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.ListOperationsRequest(**request)
+            request_pb = operations_pb2.ListOperationsRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.ListOperationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4359,7 +4361,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4368,7 +4370,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -4405,9 +4407,11 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4417,7 +4421,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4426,7 +4430,7 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -4466,9 +4470,11 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.CancelOperationRequest(**request)
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4478,14 +4484,14 @@ class BaseConfigServiceV2Client(metaclass=BaseConfigServiceV2ClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
 
 

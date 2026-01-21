@@ -3181,9 +3181,11 @@ class AssetServiceAsyncClient:
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -3193,7 +3195,7 @@ class AssetServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -3201,7 +3203,7 @@ class AssetServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response

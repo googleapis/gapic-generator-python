@@ -587,7 +587,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = CloudRedisClient._read_environment_variables()
         self._client_cert_source = CloudRedisClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
         self._universe_domain = CloudRedisClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
-        self._api_endpoint = None # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -2207,9 +2207,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.ListOperationsRequest(**request)
+            request_pb = operations_pb2.ListOperationsRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.ListOperationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2219,7 +2221,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2228,7 +2230,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -2265,9 +2267,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2277,7 +2281,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2286,7 +2290,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -2327,9 +2331,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.DeleteOperationRequest(**request)
+            request_pb = operations_pb2.DeleteOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.DeleteOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2339,14 +2345,14 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
     def cancel_operation(
         self,
@@ -2380,9 +2386,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.CancelOperationRequest(**request)
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2392,14 +2400,14 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._validate_universe_domain()
 
         # Send the request.
-        rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
     def wait_operation(
         self,
@@ -2436,9 +2444,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.WaitOperationRequest(**request)
+            request_pb = operations_pb2.WaitOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.WaitOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2448,7 +2458,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2457,7 +2467,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -2494,9 +2504,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = locations_pb2.GetLocationRequest(**request)
+            request_pb = locations_pb2.GetLocationRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.GetLocationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2506,7 +2518,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2515,7 +2527,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response
@@ -2552,9 +2564,11 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = locations_pb2.ListLocationsRequest(**request)
+            request_pb = locations_pb2.ListLocationsRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.ListLocationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2564,7 +2578,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2573,7 +2587,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request, retry=retry, timeout=timeout, metadata=metadata,)
+                request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
             # Done; return the response.
             return response

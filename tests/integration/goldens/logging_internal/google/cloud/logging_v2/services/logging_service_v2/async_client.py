@@ -1040,9 +1040,11 @@ class LoggingServiceV2AsyncClient:
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.ListOperationsRequest(**request)
+            request_pb = operations_pb2.ListOperationsRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.ListOperationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1052,7 +1054,7 @@ class LoggingServiceV2AsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1060,7 +1062,7 @@ class LoggingServiceV2AsyncClient:
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1094,9 +1096,11 @@ class LoggingServiceV2AsyncClient:
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1106,7 +1110,7 @@ class LoggingServiceV2AsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1114,7 +1118,7 @@ class LoggingServiceV2AsyncClient:
 
         # Send the request.
         response = await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,)
+            request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1151,9 +1155,11 @@ class LoggingServiceV2AsyncClient:
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if request is None:
-            request = {}
-        if isinstance(request, dict):
-            request = operations_pb2.CancelOperationRequest(**request)
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1163,14 +1169,14 @@ class LoggingServiceV2AsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("name", request.name),)),
+                (("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
         # Send the request.
-        await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        await rpc(request_pb, retry=retry, timeout=timeout, metadata=metadata,)
 
     async def __aenter__(self) -> "LoggingServiceV2AsyncClient":
         return self
