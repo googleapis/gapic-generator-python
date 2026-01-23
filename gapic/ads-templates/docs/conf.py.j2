@@ -14,9 +14,10 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
+import logging
 import os
 import shlex
+import sys
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -361,4 +362,21 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+# --- Specific warning filters not covered by suppress_warnings ---
+
+class UnexpectedUnindentFilter(logging.Filter):
+    """Filter out warnings about unexpected unindentation following bullet lists."""
+    def filter(self, record):
+        # Return False to suppress the warning, True to allow it
+        msg = record.getMessage()
+        if "Bullet list ends without a blank line" in msg:
+            return False
+        return True
+
+def setup(app):
+    # Sphinx's logger is hierarchical. Adding a filter to the
+    # root 'sphinx' logger will catch warnings from all sub-loggers.
+    logger = logging.getLogger('sphinx')
+    logger.addFilter(UnexpectedUnindentFilter())
 {% endblock %}
