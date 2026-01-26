@@ -1,6 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+{% from "docs/common_setup.py.j2" import sphinx_setup %}
 
 #
 # {{ api.naming.warehouse_package_name }} documentation build configuration file
@@ -361,4 +362,6 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+{{ sphinx_setup() }}
 {% endblock %}
