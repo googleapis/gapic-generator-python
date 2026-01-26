@@ -1,7 +1,9 @@
-{% macro sphinx_setup() -%}
+{% macro sphinx_imports() -%}
 import logging
 from typing import Any
+{%- endmacro %}
 
+{% macro sphinx_setup() -%}
 class UnexpectedUnindentFilter(logging.Filter):
     """Filter out warnings about unexpected unindentation following bullet lists."""
 
