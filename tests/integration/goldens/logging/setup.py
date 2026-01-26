@@ -17,20 +17,20 @@ import io
 import os
 import re
 
-import setuptools # type: ignore
+import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = 'google-cloud-logging'
+name = "google-cloud-logging"
 
 
 description = "Google Cloud Logging API client library"
 
 version = None
 
-with open(os.path.join(package_root, 'google/cloud/logging/gapic_version.py')) as fp:
+with open(os.path.join(package_root, "google/cloud/logging/gapic_version.py")) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
-    assert (len(version_candidates) == 1)
+    assert len(version_candidates) == 1
     version = version_candidates[0]
 
 if version[0] == "0":
@@ -49,8 +49,7 @@ dependencies = [
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
     "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
-extras = {
-}
+extras = {}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-logging"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
@@ -59,11 +58,7 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-packages = [
-    package
-    for package in setuptools.find_namespace_packages()
-    if package.startswith("google")
-]
+packages = [package for package in setuptools.find_namespace_packages() if package.startswith("google")]
 
 setuptools.setup(
     name=name,
