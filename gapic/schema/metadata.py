@@ -356,7 +356,7 @@ class Address(BaseAddress):
             str: An absolute selector.
         """
         if "." not in selector:
-            return f'{".".join(self.package)}.{selector}'
+            return f"{'.'.join(self.package)}.{selector}"
         return selector
 
     def with_context(self, *, collisions: Set[str]) -> "Address":
