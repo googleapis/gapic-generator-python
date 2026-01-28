@@ -17,7 +17,22 @@ from typing import Optional
 
 import pypandoc  # type: ignore
 
+import functools
+
 from gapic.utils.lines import wrap
+
+@functools.lru_cache(maxsize=2048)
+def _convert_pandoc(text: str, columns: int, source_format: str) -> str:
+    """Cached helper to run pypandoc with specific column width.
+    
+    Args:
+        columns: Must be positive. Enforced by caller.
+    """
+    return pypandoc.convert_text(text, 'rst',
+        format=source_format,
+        extra_args=['--columns=%d' % columns],
+    ).strip()
+
 
 
 def rst(
@@ -56,17 +71,11 @@ def rst(
         )
     else:
         # Convert from CommonMark to ReStructured Text.
-        answer = (
-            pypandoc.convert_text(
-                text,
-                "rst",
-                format=source_format,
-                verify_format=False,
-                extra_args=["--columns=%d" % (width - indent)],
-            )
-            .strip()
-            .replace("\n", f"\n{' ' * indent}")
-        )
+        answer = _convert_pandoc(
+            str(text), 
+            width - indent, 
+            str(source_format)
+        ).replace('\n', f"\n{' ' * indent}")
 
     # Add a newline to the end of the document if any line breaks are
     # already present.
