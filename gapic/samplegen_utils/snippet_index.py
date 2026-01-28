@@ -118,8 +118,8 @@ class SnippetIndex:
             api_schema.naming.warehouse_package_name
         )
         self.metadata_index.client_library.language = (
-            snippet_metadata_pb2.Language.PYTHON
-        )  # type: ignore
+            snippet_metadata_pb2.Language.PYTHON  # type: ignore
+        )
 
         self.metadata_index.client_library.version = api_schema.gapic_version
 
