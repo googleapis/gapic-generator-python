@@ -17,11 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import proto  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import (
+    duration_pb2,  # type: ignore
+    field_mask_pb2,  # type: ignore
+    struct_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
 from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import proto  # type: ignore
@@ -116,6 +119,7 @@ class ContentType(proto.Enum):
         RELATIONSHIP (7):
             The related resources.
     """
+
     CONTENT_TYPE_UNSPECIFIED = 0
     RESOURCE = 1
     IAM_POLICY = 2
@@ -910,6 +914,7 @@ class PartitionSpec(proto.Message):
                 timestamp column representing when the request
                 was received.
         """
+
         PARTITION_KEY_UNSPECIFIED = 0
         READ_TIME = 1
         REQUEST_TIME = 2
@@ -1863,23 +1868,23 @@ class AnalyzeIamPolicyResponse(proto.Message):
             number=1,
             message="IamPolicyAnalysisQuery",
         )
-        analysis_results: MutableSequence[
-            gca_assets.IamPolicyAnalysisResult
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message=gca_assets.IamPolicyAnalysisResult,
+        analysis_results: MutableSequence[gca_assets.IamPolicyAnalysisResult] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message=gca_assets.IamPolicyAnalysisResult,
+            )
         )
         fully_explored: bool = proto.Field(
             proto.BOOL,
             number=3,
         )
-        non_critical_errors: MutableSequence[
-            gca_assets.IamPolicyAnalysisState
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message=gca_assets.IamPolicyAnalysisState,
+        non_critical_errors: MutableSequence[gca_assets.IamPolicyAnalysisState] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message=gca_assets.IamPolicyAnalysisState,
+            )
         )
 
     main_analysis: IamPolicyAnalysis = proto.Field(
@@ -1887,12 +1892,12 @@ class AnalyzeIamPolicyResponse(proto.Message):
         number=1,
         message=IamPolicyAnalysis,
     )
-    service_account_impersonation_analysis: MutableSequence[
-        IamPolicyAnalysis
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=IamPolicyAnalysis,
+    service_account_impersonation_analysis: MutableSequence[IamPolicyAnalysis] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=IamPolicyAnalysis,
+        )
     )
     fully_explored: bool = proto.Field(
         proto.BOOL,
@@ -2007,6 +2012,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
                     additional timestamp column representing when
                     the request was received.
             """
+
             PARTITION_KEY_UNSPECIFIED = 0
             REQUEST_TIME = 1
 
@@ -2423,6 +2429,7 @@ class AnalyzeMoveRequest(proto.Message):
                 will prevent the specified resource move at
                 runtime.
         """
+
         ANALYSIS_VIEW_UNSPECIFIED = 0
         FULL = 1
         BASIC = 2
@@ -3270,6 +3277,7 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
                     constraints. Indicate that enforcement is on for
                     boolean constraints.
             """
+
             CONSTRAINT_DEFAULT_UNSPECIFIED = 0
             ALLOW = 1
             DENY = 2
@@ -3396,6 +3404,7 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
                     Constraint applied when deleting the
                     resource.
             """
+
             METHOD_TYPE_UNSPECIFIED = 0
             CREATE = 1
             UPDATE = 2
@@ -3412,6 +3421,7 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
                 DENY (2):
                     Deny action type.
             """
+
             ACTION_TYPE_UNSPECIFIED = 0
             ALLOW = 1
             DENY = 2

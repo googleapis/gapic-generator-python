@@ -17,8 +17,12 @@ import os
 import pathlib
 import re
 import shutil
+<<<<<<< HEAD
 from typing import Dict, List
+=======
+>>>>>>> 5b735723 ( forma nox session with ruff)
 import warnings
+from typing import Dict, List
 
 import nox
 
@@ -159,7 +163,9 @@ def lint(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """(Deprecated) Legacy session. Please use 'nox -s format'."""
-    session.log("WARNING: The 'blacken' session is deprecated and will be removed in the next release. Please use 'nox -s format' in the future.")
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in the next release. Please use 'nox -s format' in the future."
+    )
 
     # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
     session.install(RUFF_VERSION)
@@ -178,8 +184,10 @@ def format(session):
     # check --select I: Enables strict import sorting
     # --fix: Applies the changes automatically
     session.run(
-        "ruff", "check",
-        "--select", "I",
+        "ruff",
+        "check",
+        "--select",
+        "I",
         "--fix",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
@@ -187,7 +195,8 @@ def format(session):
 
     # 3. Run Ruff to format code
     session.run(
-        "ruff", "format",
+        "ruff",
+        "format",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
