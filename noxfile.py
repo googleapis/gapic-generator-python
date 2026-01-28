@@ -82,7 +82,6 @@ def unit(session):
                 path.join("tests", "unit"),
             ]
         ),
-        external=True,
     )
 
 
