@@ -17,23 +17,14 @@ from typing import Optional
 
 import pypandoc  # type: ignore
 
-import functools
-
 from gapic.utils.lines import wrap
 
-@functools.lru_cache(maxsize=None)
-def _convert_pandoc(text: str, columns: int, source_format: str) -> str:
-    """Cached helper to run pypandoc with specific column width.
-    
-    Args:
-        columns: Must be positive. Enforced by caller.
-    """
-    return pypandoc.convert_text(text, 'rst',
-        format=source_format,
-        extra_args=['--columns=%d' % columns],
-        verify_format=False,
-    ).strip()
 
+import functools
+
+@functools.lru_cache(maxsize=None)
+def _p(t, c, f):
+    return pypandoc.convert_text(t, "rst", format=f, verify_format=False, extra_args=["--columns=%d" % c]).strip()
 
 
 def rst(
@@ -71,29 +62,12 @@ def rst(
             width=width - indent,
         )
     else:
-        # Check if snake_case-only AND NOT a list.
-        # This regex excludes underscores surrounded by word characters, meaning it finds "real" formatting.
-        has_real_formatting = re.search(r"(?<!\w)_|_(?!\w)|[|*`\[\]]", text)
-        is_list = re.search(r"^\s*([-+*]|\d+\.)\s+", text, re.MULTILINE)
-
-        if not has_real_formatting and not is_list:
-            # Mimic Pandoc behavior for plain text with snake_case:
-            # 1. Collapse multiple spaces (Markdown behavior)
-            text_normalized = re.sub(r'[ \t]+', ' ', text)
-            # 2. Wrap without the specific 'docstring first line' offset
-            answer = wrap(
-                text_normalized,
-                indent=indent,
-                offset=0,
-                width=width - indent,
-            )
+        # Fast path for snake_case and other simple symbols
+        if not re.search(r"[*`]|(?<!\w)_|_(?!\w)|\[.*\]\s*[(\[]|^\||^\s*([-+*]|\d+\.)\s+", text, re.M):
+            answer = wrap(re.sub(r"[ \t]+", " ", text).replace("|", "\\|"), indent=indent, width=width - indent)
         else:
-            # Convert from CommonMark to ReStructured Text.
-            answer = _convert_pandoc(
-                str(text), 
-                width - indent, 
-                str(source_format)
-            ).replace('\n', f"\n{' ' * indent}")
+            # Convert from CommonMark to ReStructured Text (cached).
+            answer = _p(str(text), width - indent, str(source_format)).replace("\n", f"\n{' ' * indent}")
 
     # Add a newline to the end of the document if any line breaks are
     # already present.
