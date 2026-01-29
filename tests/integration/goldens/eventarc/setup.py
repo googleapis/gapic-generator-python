@@ -17,20 +17,20 @@ import io
 import os
 import re
 
-import setuptools # type: ignore
+import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = 'google-cloud-eventarc'
+name = "google-cloud-eventarc"
 
 
 description = "Google Cloud Eventarc API client library"
 
 version = None
 
-with open(os.path.join(package_root, 'google/cloud/eventarc_v1/gapic_version.py')) as fp:
+with open(os.path.join(package_root, "google/cloud/eventarc_v1/gapic_version.py")) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
-    assert (len(version_candidates) == 1)
+    assert len(version_candidates) == 1
     version = version_candidates[0]
 
 if version[0] == "0":
@@ -50,8 +50,7 @@ dependencies = [
     "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
 ]
-extras = {
-}
+extras = {}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-eventarc"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
@@ -60,11 +59,7 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-packages = [
-    package
-    for package in setuptools.find_namespace_packages()
-    if package.startswith("google")
-]
+packages = [package for package in setuptools.find_namespace_packages() if package.startswith("google")]
 
 setuptools.setup(
     name=name,
