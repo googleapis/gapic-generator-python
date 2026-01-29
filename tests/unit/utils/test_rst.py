@@ -32,6 +32,14 @@ def test_rst_formatted():
         assert convert_text.call_count == 1
         assert convert_text.mock_calls[0][1][1] == "rst"
         assert convert_text.mock_calls[0][2]["format"] == "commonmark"
+        assert convert_text.mock_calls[0][2]["verify_format"] is False
+
+
+def test_rst_snake_case():
+    with mock.patch.object(pypandoc, "convert_text") as convert_text:
+        s = "some_variable_name"
+        assert utils.rst(s) == s
+        assert convert_text.call_count == 0
 
 
 def test_rst_add_newline():

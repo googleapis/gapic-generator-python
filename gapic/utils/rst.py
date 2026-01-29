@@ -21,7 +21,7 @@ import functools
 
 from gapic.utils.lines import wrap
 
-@functools.lru_cache(maxsize=2048)
+@functools.lru_cache(maxsize=None)
 def _convert_pandoc(text: str, columns: int, source_format: str) -> str:
     """Cached helper to run pypandoc with specific column width.
     
@@ -31,6 +31,7 @@ def _convert_pandoc(text: str, columns: int, source_format: str) -> str:
     return pypandoc.convert_text(text, 'rst',
         format=source_format,
         extra_args=['--columns=%d' % columns],
+        verify_format=False,
     ).strip()
 
 
@@ -62,7 +63,7 @@ def rst(
     # do not convert it.
     # (This makes code generation significantly faster; calling out to pandoc
     # is by far the most expensive thing we do.)
-    if not re.search(r"[|*`_[\]]", text):
+    if not re.search(r"(?<!\w)_|_(?!\w)|[|*`\[\]]", text):
         answer = wrap(
             text,
             indent=indent,
