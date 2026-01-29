@@ -69,5 +69,5 @@ def test_cached_proto_context():
 
     # 3. Context Cleared
     # Everything should be forgotten now.
-    assert getattr(cache._thread_local, "cache", None) is None
+    assert getattr(cache._proto_collisions_cache_state, "resolved_collisions", None) is None
     assert foo.with_context(collisions={"a"}) == "val-3"

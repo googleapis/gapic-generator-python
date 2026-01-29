@@ -49,7 +49,7 @@ def cached_property(fx):
 
 # Thread-local storage for the simple cache dictionary.
 # This ensures that parallel generation tasks (if any) do not corrupt each other's cache.
-_thread_local = threading.local()
+_proto_collisions_cache_state = threading.local()
 
 
 @contextlib.contextmanager
@@ -67,13 +67,13 @@ def generation_cache_context():
     large Proto objects that were pinned during generation.
     """
     # Initialize the cache as a standard dictionary.
-    _thread_local.cache = {}
+    _proto_collisions_cache_state.resolved_collisions = {}
     try:
         yield
     finally:
         # Delete the dictionary to free all memory and pinned objects.
         # This is essential to prevent memory leaks in long-running processes.
-        del _thread_local.cache
+        del _proto_collisions_cache_state.resolved_collisions
 
 
 def cached_proto_context(func):
@@ -103,7 +103,7 @@ def cached_proto_context(func):
     def wrapper(self, *, collisions, **kwargs):
 
         # 1. Check for active cache (returns None if context is not active)
-        context_cache = getattr(_thread_local, "cache", None)
+        context_cache = getattr(_proto_collisions_cache_state, "resolved_collisions", None)
 
         # If we are not inside a generation_cache_context (e.g. unit tests),
         # bypass the cache entirely.
