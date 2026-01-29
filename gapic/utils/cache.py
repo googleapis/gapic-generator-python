@@ -103,7 +103,9 @@ def cached_proto_context(func):
     def wrapper(self, *, collisions, **kwargs):
 
         # 1. Check for active cache (returns None if context is not active)
-        context_cache = getattr(_proto_collisions_cache_state, "resolved_collisions", None)
+        context_cache = getattr(
+            _proto_collisions_cache_state, "resolved_collisions", None
+        )
 
         # If we are not inside a generation_cache_context (e.g. unit tests),
         # bypass the cache entirely.
