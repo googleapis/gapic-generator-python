@@ -63,7 +63,7 @@ def rst(
     # do not convert it.
     # (This makes code generation significantly faster; calling out to pandoc
     # is by far the most expensive thing we do.)
-    if not re.search(r"(?<!\w)_|_(?!\w)|[|*`\[\]]", text):
+    if not re.search(r"[|*`_[\]]", text):
         answer = wrap(
             text,
             indent=indent,
@@ -71,12 +71,29 @@ def rst(
             width=width - indent,
         )
     else:
-        # Convert from CommonMark to ReStructured Text.
-        answer = _convert_pandoc(
-            str(text), 
-            width - indent, 
-            str(source_format)
-        ).replace('\n', f"\n{' ' * indent}")
+        # Check if snake_case-only AND NOT a list.
+        # This regex excludes underscores surrounded by word characters, meaning it finds "real" formatting.
+        has_real_formatting = re.search(r"(?<!\w)_|_(?!\w)|[|*`\[\]]", text)
+        is_list = re.search(r"^\s*([-+*]|\d+\.)\s+", text, re.MULTILINE)
+
+        if not has_real_formatting and not is_list:
+            # Mimic Pandoc behavior for plain text with snake_case:
+            # 1. Collapse multiple spaces (Markdown behavior)
+            text_normalized = re.sub(r'[ \t]+', ' ', text)
+            # 2. Wrap without the specific 'docstring first line' offset
+            answer = wrap(
+                text_normalized,
+                indent=indent,
+                offset=0,
+                width=width - indent,
+            )
+        else:
+            # Convert from CommonMark to ReStructured Text.
+            answer = _convert_pandoc(
+                str(text), 
+                width - indent, 
+                str(source_format)
+            ).replace('\n', f"\n{' ' * indent}")
 
     # Add a newline to the end of the document if any line breaks are
     # already present.
