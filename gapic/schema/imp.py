@@ -16,14 +16,11 @@ import dataclasses
 from typing import Tuple
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, , order=True)
 class Import:
     package: Tuple[str, ...]
     module: str
     alias: str = ""
-
-    def __lt__(self, other) -> bool:
-        return str(self) < str(other)
 
     def __eq__(self, other) -> bool:
         return self.package == other.package and self.module == other.module
