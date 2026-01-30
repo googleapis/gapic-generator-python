@@ -26,11 +26,25 @@ class Import:
         return self.package == other.package and self.module == other.module
 
     def __str__(self) -> str:
-        answer = f"import {self.module}"
+        # Determine if we need to suppress type checking for this import.
+        # We do this for protobuf generated files (_pb2) and api_core
+        # internals where type information might be missing or incomplete.
+        needs_type_ignore = self.module.endswith("_pb2") or "api_core" in self.package
+
+        if needs_type_ignore:
+            # Use 'import absolute.path as module' syntax to prevent Ruff/isort
+            # from combining this with other imports. This ensures the
+            # '# type: ignore' comment remains effective for this specific import.
+            full_module = ".".join(self.package + (self.module,))
+            alias = self.alias or self.module
+            return f"import {full_module} as {alias}  # type: ignore"
+
+        # Standard import generation
+        import_clause = f"import {self.module}"
         if self.package:
-            answer = f"from {'.'.join(self.package)} {answer}"
+            import_clause = f"from {'.'.join(self.package)} {import_clause}"
+
         if self.alias:
-            answer += f" as {self.alias}"
-        if self.module.endswith("_pb2") or "api_core" in self.package:
-            answer += "  # type: ignore"
-        return answer
+            import_clause += f" as {self.alias}"
+
+        return import_clause
