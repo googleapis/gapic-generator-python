@@ -20,6 +20,13 @@ import pypandoc  # type: ignore
 from gapic.utils.lines import wrap
 
 
+import functools
+
+@functools.lru_cache(maxsize=None)
+def _p(t, c, f):
+    return pypandoc.convert_text(t, "rst", format=f, verify_format=False, extra_args=["--columns=%d" % c]).strip()
+
+
 def rst(
     text: str,
     width: int = 72,
@@ -55,18 +62,12 @@ def rst(
             width=width - indent,
         )
     else:
-        # Convert from CommonMark to ReStructured Text.
-        answer = (
-            pypandoc.convert_text(
-                text,
-                "rst",
-                format=source_format,
-                verify_format=False,
-                extra_args=["--columns=%d" % (width - indent)],
-            )
-            .strip()
-            .replace("\n", f"\n{' ' * indent}")
-        )
+        # Fast path for snake_case and other simple symbols
+        if not re.search(r"[*`]|(?<!\w)_|_(?!\w)|\[.*\]\s*[(\[]|^\||^\s*([-+*]|\d+\.)\s+", text, re.M):
+            answer = wrap(re.sub(r"[ \t]+", " ", text).replace("|", "\\|"), indent=indent, width=width - indent)
+        else:
+            # Convert from CommonMark to ReStructured Text (cached).
+            answer = _p(str(text), width - indent, str(source_format)).replace("\n", f"\n{' ' * indent}")
 
     # Add a newline to the end of the document if any line breaks are
     # already present.
