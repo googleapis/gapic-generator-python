@@ -607,8 +607,7 @@ def showcase_mypy(
     """Perform typecheck analysis on the generated Showcase library."""
 
     session.install(
-        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2410): Use the latest version of mypy
-        "mypy<1.16.0",
+        "mypy",
         "types-setuptools",
         "types-protobuf",
         "types-requests",
@@ -619,7 +618,7 @@ def showcase_mypy(
         session.chdir(lib)
 
         # Run the tests.
-        session.run("mypy", "-p", "google")
+        session.run("mypy", "-p", "google", "--check-untyped-defs")
 
 
 @nox.session(python=NEWEST_PYTHON)
