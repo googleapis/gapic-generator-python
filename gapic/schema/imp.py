@@ -16,11 +16,14 @@ import dataclasses
 from typing import Tuple
 
 
-@dataclasses.dataclass(frozen=True, order=True)
+@dataclasses.dataclass(frozen=True)
 class Import:
     package: Tuple[str, ...]
     module: str
     alias: str = ""
+
+    def __lt__(self, other) -> bool:
+        return str(self) < str(other)
 
     def __eq__(self, other) -> bool:
         return self.package == other.package and self.module == other.module
@@ -30,8 +33,15 @@ class Import:
         # We do this for protobuf generated files (_pb2) and api_core
         # internals where type information might be missing or incomplete.
         needs_type_ignore = self.module.endswith("_pb2") or "api_core" in self.package
-
-        if needs_type_ignore:
+        if not needs_type_ignore:
+            # Standard import generation
+            answer = f"import {self.module}"
+            if self.package:
+                answer = f"from {'.'.join(self.package)} {answer}"
+            if self.alias:
+                answer += f" as {self.alias}"
+            return answer
+        else:
             # Use 'import absolute.path as module' syntax to prevent Ruff/isort
             # from combining this with other imports. This ensures the
             # '# type: ignore' comment remains effective for this specific import.
@@ -39,10 +49,3 @@ class Import:
             alias = self.alias or self.module
             return f"import {full_module} as {alias}  # type: ignore"
 
-        # Standard import generation
-        answer = f"import {self.module}"
-        if self.package:
-            answer = f"from {'.'.join(self.package)} {answer}"
-        if self.alias:
-            answer += f" as {self.alias}"
-        return answer
