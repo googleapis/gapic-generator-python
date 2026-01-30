@@ -40,11 +40,9 @@ class Import:
             return f"import {full_module} as {alias}  # type: ignore"
 
         # Standard import generation
-        import_clause = f"import {self.module}"
+        answer = f"import {self.module}"
         if self.package:
-            import_clause = f"from {'.'.join(self.package)} {import_clause}"
-
+            answer = f"from {'.'.join(self.package)} {answer}"
         if self.alias:
-            import_clause += f" as {self.alias}"
-
-        return import_clause
+            answer += f" as {self.alias}"
+        return answer
