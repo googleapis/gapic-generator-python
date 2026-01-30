@@ -31,14 +31,6 @@ class Import:
         # internals where type information might be missing or incomplete.
         needs_type_ignore = self.module.endswith("_pb2") or "api_core" in self.package
         if not needs_type_ignore:
-            # Standard import generation
-            answer = f"import {self.module}"
-            if self.package:
-                answer = f"from {'.'.join(self.package)} {answer}"
-            if self.alias:
-                answer += f" as {self.alias}"
-            return answer
-        else:
             # Use 'import absolute.path as module' syntax to prevent Ruff/isort
             # from combining this with other imports. This ensures the
             # '# type: ignore' comment remains effective for this specific import.
@@ -46,3 +38,9 @@ class Import:
             alias = self.alias or self.module
             return f"import {full_module} as {alias}  # type: ignore"
 
+        answer = f"import {self.module}"
+        if self.package:
+            answer = f"from {'.'.join(self.package)} {answer}"
+        if self.alias:
+            answer += f" as {self.alias}"
+        return answer
