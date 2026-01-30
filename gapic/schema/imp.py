@@ -16,7 +16,7 @@ import dataclasses
 from typing import Tuple
 
 
-@dataclasses.dataclass(frozen=True, , order=True)
+@dataclasses.dataclass(frozen=True, order=True)
 class Import:
     package: Tuple[str, ...]
     module: str
