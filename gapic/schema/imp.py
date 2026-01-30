@@ -30,7 +30,7 @@ class Import:
         # We do this for protobuf generated files (_pb2) and api_core
         # internals where type information might be missing or incomplete.
         needs_type_ignore = self.module.endswith("_pb2") or "api_core" in self.package
-        if not needs_type_ignore:
+        if needs_type_ignore:
             # Use 'import absolute.path as module' syntax to prevent Ruff/isort
             # from combining this with other imports. This ensures the
             # '# type: ignore' comment remains effective for this specific import.
