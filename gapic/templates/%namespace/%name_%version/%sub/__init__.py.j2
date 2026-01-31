@@ -53,7 +53,7 @@ if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_depend
     {# TODO(api_core): remove `type:ignore` below when minimum version of api_core makes the else clause unnecessary. #}
     api_core.check_python_version("{{package_path}}") # type: ignore
     api_core.check_dependency_versions("{{package_path}}") # type: ignore
-{# Add `# pragma: NO COVER` to keep `# pragma: NO COVER` on the same line #}
+{# Add `# fmt: skip` to keep `# pragma: NO COVER` on the same line #}
 else:   # pragma: NO COVER # fmt: skip
 {# TODO(api_core): Remove this try-catch when we require api-core at a version that
    supports the changes in https://github.com/googleapis/python-api-core/pull/832
