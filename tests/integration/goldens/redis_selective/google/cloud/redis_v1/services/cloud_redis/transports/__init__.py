@@ -37,7 +37,7 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudRedisTransport]
 _transport_registry['grpc'] = CloudRedisGrpcTransport
 _transport_registry['grpc_asyncio'] = CloudRedisGrpcAsyncIOTransport
 _transport_registry['rest'] = CloudRedisRestTransport
-if HAS_REST_ASYNC:  # pragma: NO COVER
+if HAS_REST_ASYNC:  # pragma: NO COVER # fmt: skip
     _transport_registry['rest_asyncio'] = AsyncCloudRedisRestTransport
 
 __all__ = (
