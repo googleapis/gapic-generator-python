@@ -104,7 +104,7 @@ except ImportError:  # pragma: NO COVER
     `add_google_api_core_version_header_import` to add the necessary import statements.
 #}
     {% if service_version %}
-        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER
+        if HAS_GOOGLE_API_CORE_VERSION_HEADER:  # pragma: NO COVER # fmt: skip
             metadata = tuple(metadata) + (
                 version_header.to_api_version_header("{{ service_version }}"),
             )
@@ -215,7 +215,7 @@ def _get_http_options():
     # Jsonify the query params
     query_params = _Base{{ service_name }}RestTransport._Base{{method_name}}._get_query_params_json(transcoded_request)
 
-    if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+    if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
         request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
         method = transcoded_request['method']
         try:
@@ -257,7 +257,7 @@ def _get_http_options():
         request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
         method = transcoded_request['method']
         {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2137): Remove `type:  ignore` once version check is added for google-api-core. #}
-        raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+        raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore # fmt: skip
         {% else %}
         raise core_exceptions.from_http_response(response)
         {% endif %}{# is_async #}
@@ -267,7 +267,7 @@ def _get_http_options():
 
 {% macro unary_request_interceptor_common(service) %}
         logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
-        if logging_enabled:  # pragma: NO COVER
+        if logging_enabled:  # pragma: NO COVER # fmt: skip
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
                 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2293): Investigate if we can improve this logic
@@ -355,7 +355,7 @@ See related issue: https://github.com/googleapis/gapic-generator-python/issues/2
 {% macro wrap_async_method_macro() %}
 def _wrap_method(self, func, *args, **kwargs):
     {# TODO: Remove `pragma: NO COVER` once https://github.com/googleapis/python-api-core/pull/688 is merged. #}
-    if self._wrap_with_kind:  # pragma: NO COVER
+    if self._wrap_with_kind:  # pragma: NO COVER # fmt: skip
         kwargs["kind"] = self.kind
     return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 {% endmacro %}
@@ -489,7 +489,7 @@ class {{ async_method_name_prefix }}{{ service.name }}RestInterceptor:
 
 @property
 def {{ name|snake_case }}(self):
-    return self.{{ name|make_private }}(self._session, self._host, self._interceptor) # type: ignore
+    return self.{{ name|make_private }}(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
 
 class {{ name|make_private }}(_Base{{ service.name }}RestTransport._Base{{name}}, {{ async_method_name_prefix }}{{service.name}}RestStub):
     def __hash__(self):
@@ -535,7 +535,7 @@ class {{ name|make_private }}(_Base{{ service.name }}RestTransport._Base{{name}}
         resp = {{ sig.response_type }}()
         resp = json_format.Parse(content, resp)
         resp = {{ await_prefix }}self._interceptor.post_{{ name|snake_case }}(resp)
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
             try:
                 response_payload = json_format.MessageToJson(resp)
             except:

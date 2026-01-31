@@ -273,7 +273,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {{method.output.ident}}]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore
+        return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
 
     {% endfor %}
 

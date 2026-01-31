@@ -56,7 +56,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER # fmt: skip
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
@@ -263,7 +263,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_{{ method.name|snake_case }}_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
                 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2389): #}
                 {# Depending how we want to log (a) receiving a streaming response vs (b) exposing the next streamed item to the user, we could possibly want to log something here #}
                 {# (a) should always happen in api-core #}
@@ -311,7 +311,7 @@ class {{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {{method.output.ident}}]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore
+        return self._{{method.name}}(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
 
     {% endfor %}
 
