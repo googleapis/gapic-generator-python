@@ -97,8 +97,12 @@ class IAMCredentialsAsyncClient:
         Returns:
             IAMCredentialsAsyncClient: The constructed client.
         """
+<<<<<<< HEAD
         sa_info_func = IAMCredentialsClient.from_service_account_info.__func__  # type: ignore
         return sa_info_func(IAMCredentialsAsyncClient, info, *args, **kwargs)
+=======
+        return IAMCredentialsClient.from_service_account_info.__func__(IAMCredentialsAsyncClient, info, *args, **kwargs)  # type: ignore # fmt: skip
+>>>>>>> 70d9f452 (update goldens)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -114,8 +118,12 @@ class IAMCredentialsAsyncClient:
         Returns:
             IAMCredentialsAsyncClient: The constructed client.
         """
+<<<<<<< HEAD
         sa_file_func = IAMCredentialsClient.from_service_account_file.__func__  # type: ignore
         return sa_file_func(IAMCredentialsAsyncClient, filename, *args, **kwargs)
+=======
+        return IAMCredentialsClient.from_service_account_file.__func__(IAMCredentialsAsyncClient, filename, *args, **kwargs)  # type: ignore # fmt: skip
+>>>>>>> 70d9f452 (update goldens)
 
     from_service_account_json = from_service_account_file
 
@@ -151,7 +159,7 @@ class IAMCredentialsAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return IAMCredentialsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return IAMCredentialsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore # fmt: skip
 
     @property
     def transport(self) -> IAMCredentialsTransport:
@@ -249,7 +257,7 @@ class IAMCredentialsAsyncClient:
 
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER # fmt: skip
             _LOGGER.debug(
                 "Created client `google.iam.credentials_v1.IAMCredentialsAsyncClient`.",
                 extra = {
@@ -860,7 +868,7 @@ class IAMCredentialsAsyncClient:
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER # fmt: skip
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 

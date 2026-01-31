@@ -106,8 +106,12 @@ class AssetServiceAsyncClient:
         Returns:
             AssetServiceAsyncClient: The constructed client.
         """
+<<<<<<< HEAD
         sa_info_func = AssetServiceClient.from_service_account_info.__func__  # type: ignore
         return sa_info_func(AssetServiceAsyncClient, info, *args, **kwargs)
+=======
+        return AssetServiceClient.from_service_account_info.__func__(AssetServiceAsyncClient, info, *args, **kwargs)  # type: ignore # fmt: skip
+>>>>>>> 70d9f452 (update goldens)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -123,8 +127,12 @@ class AssetServiceAsyncClient:
         Returns:
             AssetServiceAsyncClient: The constructed client.
         """
+<<<<<<< HEAD
         sa_file_func = AssetServiceClient.from_service_account_file.__func__  # type: ignore
         return sa_file_func(AssetServiceAsyncClient, filename, *args, **kwargs)
+=======
+        return AssetServiceClient.from_service_account_file.__func__(AssetServiceAsyncClient, filename, *args, **kwargs)  # type: ignore # fmt: skip
+>>>>>>> 70d9f452 (update goldens)
 
     from_service_account_json = from_service_account_file
 
@@ -160,7 +168,7 @@ class AssetServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return AssetServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return AssetServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore # fmt: skip
 
     @property
     def transport(self) -> AssetServiceTransport:
@@ -258,7 +266,7 @@ class AssetServiceAsyncClient:
 
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER # fmt: skip
             _LOGGER.debug(
                 "Created client `google.cloud.asset_v1.AssetServiceAsyncClient`.",
                 extra = {
@@ -3214,7 +3222,7 @@ class AssetServiceAsyncClient:
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER # fmt: skip
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 

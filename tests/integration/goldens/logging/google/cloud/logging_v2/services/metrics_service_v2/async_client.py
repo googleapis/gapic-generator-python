@@ -90,8 +90,12 @@ class MetricsServiceV2AsyncClient:
         Returns:
             MetricsServiceV2AsyncClient: The constructed client.
         """
+<<<<<<< HEAD
         sa_info_func = MetricsServiceV2Client.from_service_account_info.__func__  # type: ignore
         return sa_info_func(MetricsServiceV2AsyncClient, info, *args, **kwargs)
+=======
+        return MetricsServiceV2Client.from_service_account_info.__func__(MetricsServiceV2AsyncClient, info, *args, **kwargs)  # type: ignore # fmt: skip
+>>>>>>> 70d9f452 (update goldens)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -107,8 +111,12 @@ class MetricsServiceV2AsyncClient:
         Returns:
             MetricsServiceV2AsyncClient: The constructed client.
         """
+<<<<<<< HEAD
         sa_file_func = MetricsServiceV2Client.from_service_account_file.__func__  # type: ignore
         return sa_file_func(MetricsServiceV2AsyncClient, filename, *args, **kwargs)
+=======
+        return MetricsServiceV2Client.from_service_account_file.__func__(MetricsServiceV2AsyncClient, filename, *args, **kwargs)  # type: ignore # fmt: skip
+>>>>>>> 70d9f452 (update goldens)
 
     from_service_account_json = from_service_account_file
 
@@ -144,7 +152,7 @@ class MetricsServiceV2AsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return MetricsServiceV2Client.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return MetricsServiceV2Client.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore # fmt: skip
 
     @property
     def transport(self) -> MetricsServiceV2Transport:
@@ -239,7 +247,7 @@ class MetricsServiceV2AsyncClient:
 
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER # fmt: skip
             _LOGGER.debug(
                 "Created client `google.logging_v2.MetricsServiceV2AsyncClient`.",
                 extra = {
@@ -1027,7 +1035,7 @@ class MetricsServiceV2AsyncClient:
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER # fmt: skip
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 

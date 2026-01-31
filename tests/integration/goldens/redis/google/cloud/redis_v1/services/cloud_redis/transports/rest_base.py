@@ -73,7 +73,7 @@ class _BaseCloudRedisRestTransport(CloudRedisTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER # fmt: skip
 
         url_match_items = maybe_url_match.groupdict()
 

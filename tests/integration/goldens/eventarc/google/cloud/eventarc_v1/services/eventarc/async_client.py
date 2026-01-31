@@ -124,8 +124,12 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
+<<<<<<< HEAD
         sa_info_func = EventarcClient.from_service_account_info.__func__  # type: ignore
         return sa_info_func(EventarcAsyncClient, info, *args, **kwargs)
+=======
+        return EventarcClient.from_service_account_info.__func__(EventarcAsyncClient, info, *args, **kwargs)  # type: ignore # fmt: skip
+>>>>>>> 70d9f452 (update goldens)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -141,8 +145,12 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
+<<<<<<< HEAD
         sa_file_func = EventarcClient.from_service_account_file.__func__  # type: ignore
         return sa_file_func(EventarcAsyncClient, filename, *args, **kwargs)
+=======
+        return EventarcClient.from_service_account_file.__func__(EventarcAsyncClient, filename, *args, **kwargs)  # type: ignore # fmt: skip
+>>>>>>> 70d9f452 (update goldens)
 
     from_service_account_json = from_service_account_file
 
@@ -178,7 +186,7 @@ class EventarcAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return EventarcClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return EventarcClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore # fmt: skip
 
     @property
     def transport(self) -> EventarcTransport:
@@ -276,7 +284,7 @@ class EventarcAsyncClient:
 
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER # fmt: skip
             _LOGGER.debug(
                 "Created client `google.cloud.eventarc_v1.EventarcAsyncClient`.",
                 extra = {
@@ -3163,7 +3171,7 @@ class EventarcAsyncClient:
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER # fmt: skip
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
