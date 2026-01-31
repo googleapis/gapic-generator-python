@@ -1829,3 +1829,346 @@ async def test_test_iam_permissions_from_dict_async():
         call.assert_called()
 {% endif %}
 {% endif %}
+
+{# REST transport tests for mixin URL query params encoding #}
+{% if 'rest' in opts.transport %}
+
+{# Operations mixin REST URL encoding tests #}
+{% if api.has_operations_mixin %}
+
+{% if "ListOperations" in api.mixin_api_methods %}
+def test_list_operations_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for mixin methods.
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.list_operations.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+{% endif %}
+
+{% if "GetOperation" in api.mixin_api_methods %}
+def test_get_operation_rest_url_query_params_encoding():
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.get_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+{% endif %}
+
+{% if "DeleteOperation" in api.mixin_api_methods %}
+def test_delete_operation_rest_url_query_params_encoding():
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.delete_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1',
+            'method': 'delete',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.delete.called
+        call_url = mock_session.delete.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+{% endif %}
+
+{% if "CancelOperation" in api.mixin_api_methods %}
+def test_cancel_operation_rest_url_query_params_encoding():
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.cancel_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.post.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1:cancel',
+            'method': 'post',
+            'body': {},
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+            body={},
+        )
+
+        assert mock_session.post.called
+        call_url = mock_session.post.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+{% endif %}
+
+{% endif %} {# operations_mixin #}
+
+{# Location mixin REST URL encoding tests #}
+{% if api.has_location_mixin %}
+
+{% if "ListLocations" in api.mixin_api_methods %}
+def test_list_locations_rest_url_query_params_encoding():
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.list_locations.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/projects/p1/locations',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+{% endif %}
+
+{% if "GetLocation" in api.mixin_api_methods %}
+def test_get_location_rest_url_query_params_encoding():
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.get_location.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/projects/p1/locations/l1',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+{% endif %}
+
+{% endif %} {# location_mixin #}
+
+{# IAM mixin REST URL encoding tests #}
+{% if api.has_iam_mixin or opts.add_iam_methods %}
+
+{% if "SetIamPolicy" in api.mixin_api_methods or opts.add_iam_methods %}
+def test_set_iam_policy_rest_url_query_params_encoding():
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.set_iam_policy.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.post.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/resource:setIamPolicy',
+            'method': 'post',
+            'body': {},
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+            body={},
+        )
+
+        assert mock_session.post.called
+        call_url = mock_session.post.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+{% endif %}
+
+{% if "GetIamPolicy" in api.mixin_api_methods or opts.add_iam_methods %}
+def test_get_iam_policy_rest_url_query_params_encoding():
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.get_iam_policy.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/resource:getIamPolicy',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+{% endif %}
+
+{% if "TestIamPermissions" in api.mixin_api_methods or opts.add_iam_methods %}
+def test_test_iam_permissions_rest_url_query_params_encoding():
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.test_iam_permissions.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.post.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/resource:testIamPermissions',
+            'method': 'post',
+            'body': {},
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+            body={},
+        )
+
+        assert mock_session.post.called
+        call_url = mock_session.post.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+{% endif %}
+
+{% endif %} {# iam_mixin #}
+
+{% endif %} {# rest transport #}
