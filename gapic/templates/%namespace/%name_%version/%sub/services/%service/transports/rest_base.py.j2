@@ -89,6 +89,7 @@ class _Base{{ service.name }}RestTransport({{service.name}}Transport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
+            {# Add `# fmt: skip` to keep `# pragma: NO COVER` on the same line #}
             raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER # fmt: skip
 
         url_match_items = maybe_url_match.groupdict()

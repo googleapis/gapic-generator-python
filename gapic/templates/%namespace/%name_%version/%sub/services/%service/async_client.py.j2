@@ -152,6 +152,7 @@ class {{ service.async_client_name }}:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
+        {# Add `# fmt: skip` to keep `# type: ignore` on the same line #}
         return {{ service.client_name }}.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore # fmt: skip
 
     @property
@@ -254,6 +255,7 @@ class {{ service.async_client_name }}:
 
         )
 
+        {# Add ` # fmt: skip` to keep `# pragma: NO COVER` on the same line #}
         if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER # fmt: skip
             _LOGGER.debug(
                 "Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.async_client_name }}`.",

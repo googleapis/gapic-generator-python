@@ -68,6 +68,7 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
     async def intercept_unary_unary(self, continuation, client_call_details, request):
 {{ shared_macros.unary_request_interceptor_common(service) }}
         response = await continuation(client_call_details, request)
+        {# Add `# fmt: skip` to keep `# pragma: NO COVER` on the same line #}
         if logging_enabled:  # pragma: NO COVER # fmt: skip
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples

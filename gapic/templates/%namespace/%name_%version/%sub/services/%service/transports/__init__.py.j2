@@ -39,6 +39,7 @@ _transport_registry['grpc_asyncio'] = {{ service.name }}GrpcAsyncIOTransport
 {% if 'rest' in opts.transport %}
 _transport_registry['rest'] = {{ service.name }}RestTransport
 {% if rest_async_io_enabled %}
+{# Add ` # fmt: skip` to keep `# pragma: NO COVER` on the same line #}
 if HAS_REST_ASYNC:  # pragma: NO COVER # fmt: skip
     _transport_registry['rest_asyncio'] = Async{{ service.name }}RestTransport
 {% endif %}{# if rest_async_io_enabled #}

@@ -127,6 +127,7 @@ class {{ service.client_name }}Meta(type):
         {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2121): Remove this condition when async rest is GA. #}
         {% if rest_async_io_enabled %}
         {# NOTE: `pragma: NO COVER` is needed since the coverage for presubmits isn't combined. #}
+        {# Add ` # fmt: skip` to keep `# pragma: NO COVER` on the same line #}
         if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER # fmt: skip
             raise ASYNC_REST_EXCEPTION
         {% endif %}
@@ -175,6 +176,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = {% if service.host %}"{{ service.host }}"{% else %}None{% endif %}
 
+    {# Add `# fmt: skip` to keep `# type: ignore` on the same line #}
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore # fmt: skip
         DEFAULT_ENDPOINT
     )
@@ -568,6 +570,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
+        {# Add ` # fmt: skip` to keep `# pragma: NO COVER` on the same line #}
         if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER # fmt: skip
             # Setup logging.
             client_logging.initialize_logging()
@@ -660,6 +663,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             )
         
         if "async" not in str(self._transport):
+            {# Add ` # pragma: NO COVER` to keep `# type: ignore` on the same line #}
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER # fmt: skip
                 _LOGGER.debug(
                     "Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}`.",
@@ -1014,6 +1018,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
+{# Add ` # fmt: skip` to keep `# pragma: NO COVER` on the same line #}
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER # fmt: skip
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
