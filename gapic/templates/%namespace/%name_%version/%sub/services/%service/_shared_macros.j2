@@ -270,8 +270,7 @@ def _get_http_options():
 
 {% macro unary_request_interceptor_common(service) %}
         logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
-        {# Add `# fmt: skip` to keep `# pragma: NO COVER` on the same line #}
-        if logging_enabled:  # pragma: NO COVER # fmt: skip
+        if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
                 {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2293): Investigate if we can improve this logic
