@@ -80,7 +80,7 @@ class CloudRedisClientMeta(type):
     _transport_registry["grpc"] = CloudRedisGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudRedisGrpcAsyncIOTransport
     _transport_registry["rest"] = CloudRedisRestTransport
-    if HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
+    if HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER # fmt: skip
         _transport_registry["rest_asyncio"] = AsyncCloudRedisRestTransport
 
     def get_transport_class(cls,
@@ -96,7 +96,7 @@ class CloudRedisClientMeta(type):
             The transport class to use.
         """
         # If a specific transport is requested, return that one.
-        if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER
+        if label == "rest_asyncio" and not HAS_ASYNC_REST_DEPENDENCIES:  # pragma: NO COVER # fmt: skip
             raise ASYNC_REST_EXCEPTION
         if label:
             return cls._transport_registry[label]
@@ -162,7 +162,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "redis.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore # fmt: skip
         DEFAULT_ENDPOINT
     )
 
@@ -183,7 +183,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
         """
         # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
+        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER # fmt: skip
             return mtls.should_use_client_cert()
         else: # pragma: NO COVER
             # if unsupported, fallback to reading from env var
@@ -588,7 +588,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
-        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER # fmt: skip
             # Setup logging.
             client_logging.initialize_logging()
 
@@ -667,7 +667,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER # fmt: skip
                 _LOGGER.debug(
                     "Created client `google.cloud.redis_v1.CloudRedisClient`.",
                     extra = {
@@ -1765,7 +1765,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER # fmt: skip
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = (

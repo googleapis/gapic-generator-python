@@ -72,7 +72,7 @@ CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
 async def mock_async_gen(data, chunk_size=1):
-    for i in range(0, len(data)):  # pragma: NO COVER
+    for i in range(0, len(data)):  # pragma: NO COVER # fmt: skip
         chunk = data[i : i + chunk_size]
         yield chunk.encode("utf-8")
 

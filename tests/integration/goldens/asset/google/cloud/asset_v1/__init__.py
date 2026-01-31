@@ -20,9 +20,9 @@ import sys
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
+if sys.version_info >= (3, 8):  # pragma: NO COVER # fmt: skip
     from importlib import metadata
-else:  # pragma: NO COVER
+else:  # pragma: NO COVER # fmt: skip
     # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
@@ -109,10 +109,10 @@ from .types.assets import TemporalAsset
 from .types.assets import TimeWindow
 from .types.assets import VersionedResource
 
-if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER
+if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER # fmt: skip
     api_core.check_python_version("google.cloud.asset_v1") # type: ignore
     api_core.check_dependency_versions("google.cloud.asset_v1") # type: ignore
-else:   # pragma: NO COVER
+else:   # pragma: NO COVER # fmt: skip
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
