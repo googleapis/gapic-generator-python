@@ -663,7 +663,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             )
         
         if "async" not in str(self._transport):
-            {# Add ` # pragma: NO COVER` to keep `# type: ignore` on the same line #}
+            {# Add `# fmt: skip` to keep `# pragma: NO COVER` on the same line #}
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER # fmt: skip
                 _LOGGER.debug(
                     "Created client `{{ service.meta.address.proto_package_versioned }}.{{ service.client_name }}`.",
