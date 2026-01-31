@@ -227,7 +227,7 @@ def _get_http_options():
         request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
         method = transcoded_request['method']
         {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2137): Remove `type:  ignore` once version check is added for google-api-core. #}
-        raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+        raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore # fmt: skip
         {% else %}
         raise core_exceptions.from_http_response(response)
         {% endif %}{# is_async #}

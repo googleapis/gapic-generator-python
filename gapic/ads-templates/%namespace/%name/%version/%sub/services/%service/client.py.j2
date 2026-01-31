@@ -131,7 +131,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     DEFAULT_ENDPOINT = {% if service.host %}"{{ service.host }}"{% else %}None{% endif %}
 
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore # fmt: skip
         DEFAULT_ENDPOINT
     )
 
