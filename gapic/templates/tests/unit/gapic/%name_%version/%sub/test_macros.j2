@@ -1635,8 +1635,7 @@ def test_unsupported_parameter_rest_asyncio():
         pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     options = client_options.ClientOptions(quota_project_id="octopus")
     {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2137): Remove `type: ignore` once we add a version check for google-api-core. #}
-    {# Add `# fmt: skip` to keep `# type: ignore` on the same line #}
-    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore # fmt: skip
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
         client = {{ get_client(service, True) }}(
             credentials={{get_credentials(True)}},
             transport="rest_asyncio",

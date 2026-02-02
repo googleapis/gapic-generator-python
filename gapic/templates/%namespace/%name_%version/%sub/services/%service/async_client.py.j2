@@ -152,8 +152,7 @@ class {{ service.async_client_name }}:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        {# Add `# fmt: skip` to keep `# type: ignore` on the same line #}
-        return {{ service.client_name }}.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore # fmt: skip
+        return {{ service.client_name }}.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
     def transport(self) -> {{ service.name }}Transport:
