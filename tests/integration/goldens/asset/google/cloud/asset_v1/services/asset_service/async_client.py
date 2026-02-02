@@ -107,11 +107,16 @@ class AssetServiceAsyncClient:
             AssetServiceAsyncClient: The constructed client.
         """
 <<<<<<< HEAD
+<<<<<<< HEAD
         sa_info_func = AssetServiceClient.from_service_account_info.__func__  # type: ignore
         return sa_info_func(AssetServiceAsyncClient, info, *args, **kwargs)
 =======
         return AssetServiceClient.from_service_account_info.__func__(AssetServiceAsyncClient, info, *args, **kwargs)  # type: ignore # fmt: skip
 >>>>>>> 70d9f452 (update goldens)
+=======
+        sa_info_func = AssetServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(AssetServiceAsyncClient, info, *args, **kwargs)
+>>>>>>> 10a19604 (fix line length)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -128,11 +133,16 @@ class AssetServiceAsyncClient:
             AssetServiceAsyncClient: The constructed client.
         """
 <<<<<<< HEAD
+<<<<<<< HEAD
         sa_file_func = AssetServiceClient.from_service_account_file.__func__  # type: ignore
         return sa_file_func(AssetServiceAsyncClient, filename, *args, **kwargs)
 =======
         return AssetServiceClient.from_service_account_file.__func__(AssetServiceAsyncClient, filename, *args, **kwargs)  # type: ignore # fmt: skip
 >>>>>>> 70d9f452 (update goldens)
+=======
+        sa_file_func = AssetServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(AssetServiceAsyncClient, filename, *args, **kwargs)
+>>>>>>> 10a19604 (fix line length)
 
     from_service_account_json = from_service_account_file
 

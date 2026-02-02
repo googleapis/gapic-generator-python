@@ -105,11 +105,16 @@ class BaseConfigServiceV2AsyncClient:
             BaseConfigServiceV2AsyncClient: The constructed client.
         """
 <<<<<<< HEAD
+<<<<<<< HEAD
         sa_info_func = BaseConfigServiceV2Client.from_service_account_info.__func__  # type: ignore
         return sa_info_func(BaseConfigServiceV2AsyncClient, info, *args, **kwargs)
 =======
         return BaseConfigServiceV2Client.from_service_account_info.__func__(BaseConfigServiceV2AsyncClient, info, *args, **kwargs)  # type: ignore # fmt: skip
 >>>>>>> 70d9f452 (update goldens)
+=======
+        sa_info_func = BaseConfigServiceV2Client.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(BaseConfigServiceV2AsyncClient, info, *args, **kwargs)
+>>>>>>> 10a19604 (fix line length)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -126,11 +131,16 @@ class BaseConfigServiceV2AsyncClient:
             BaseConfigServiceV2AsyncClient: The constructed client.
         """
 <<<<<<< HEAD
+<<<<<<< HEAD
         sa_file_func = BaseConfigServiceV2Client.from_service_account_file.__func__  # type: ignore
         return sa_file_func(BaseConfigServiceV2AsyncClient, filename, *args, **kwargs)
 =======
         return BaseConfigServiceV2Client.from_service_account_file.__func__(BaseConfigServiceV2AsyncClient, filename, *args, **kwargs)  # type: ignore # fmt: skip
 >>>>>>> 70d9f452 (update goldens)
+=======
+        sa_file_func = BaseConfigServiceV2Client.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(BaseConfigServiceV2AsyncClient, filename, *args, **kwargs)
+>>>>>>> 10a19604 (fix line length)
 
     from_service_account_json = from_service_account_file
 

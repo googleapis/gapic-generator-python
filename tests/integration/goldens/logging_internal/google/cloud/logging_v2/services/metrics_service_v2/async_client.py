@@ -91,11 +91,16 @@ class BaseMetricsServiceV2AsyncClient:
             BaseMetricsServiceV2AsyncClient: The constructed client.
         """
 <<<<<<< HEAD
+<<<<<<< HEAD
         sa_info_func = BaseMetricsServiceV2Client.from_service_account_info.__func__  # type: ignore
         return sa_info_func(BaseMetricsServiceV2AsyncClient, info, *args, **kwargs)
 =======
         return BaseMetricsServiceV2Client.from_service_account_info.__func__(BaseMetricsServiceV2AsyncClient, info, *args, **kwargs)  # type: ignore # fmt: skip
 >>>>>>> 70d9f452 (update goldens)
+=======
+        sa_info_func = BaseMetricsServiceV2Client.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(BaseMetricsServiceV2AsyncClient, info, *args, **kwargs)
+>>>>>>> 10a19604 (fix line length)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -112,11 +117,16 @@ class BaseMetricsServiceV2AsyncClient:
             BaseMetricsServiceV2AsyncClient: The constructed client.
         """
 <<<<<<< HEAD
+<<<<<<< HEAD
         sa_file_func = BaseMetricsServiceV2Client.from_service_account_file.__func__  # type: ignore
         return sa_file_func(BaseMetricsServiceV2AsyncClient, filename, *args, **kwargs)
 =======
         return BaseMetricsServiceV2Client.from_service_account_file.__func__(BaseMetricsServiceV2AsyncClient, filename, *args, **kwargs)  # type: ignore # fmt: skip
 >>>>>>> 70d9f452 (update goldens)
+=======
+        sa_file_func = BaseMetricsServiceV2Client.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(BaseMetricsServiceV2AsyncClient, filename, *args, **kwargs)
+>>>>>>> 10a19604 (fix line length)
 
     from_service_account_json = from_service_account_file
 
