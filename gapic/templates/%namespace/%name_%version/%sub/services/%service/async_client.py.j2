@@ -98,8 +98,8 @@ class {{ service.async_client_name }}:
         Returns:
             {{ service.async_client_name }}: The constructed client.
         """
-        {# Add `# fmt: skip` to keep `# type: ignore` on the same line #}
-        return {{ service.client_name }}.from_service_account_info.__func__({{ service.async_client_name }}, info, *args, **kwargs)  # type: ignore # fmt: skip
+        sa_info_func = {{ service.client_name }}.from_service_account_info.__func__  # type: ignore
+        return sa_info_func({{ service.async_client_name }}, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -115,8 +115,8 @@ class {{ service.async_client_name }}:
         Returns:
             {{ service.async_client_name }}: The constructed client.
         """
-        {# Add `# fmt: skip` to keep `# type: ignore` on the same line #}
-        return {{ service.client_name }}.from_service_account_file.__func__({{ service.async_client_name }}, filename, *args, **kwargs)  # type: ignore # fmt: skip
+        sa_file_func = {{ service.client_name }}.from_service_account_file.__func__  # type: ignore
+        return sa_file_func({{ service.async_client_name }}, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
