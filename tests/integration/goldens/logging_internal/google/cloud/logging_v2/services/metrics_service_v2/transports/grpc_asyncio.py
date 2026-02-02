@@ -51,7 +51,7 @@ _LOGGER = std_logging.getLogger(__name__)
 class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
         logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
-        if logging_enabled:  # pragma: NO COVER # fmt: skip
+        if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
                 request_payload = type(request).to_json(request)
@@ -79,7 +79,7 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
                 },
             )
         response = await continuation(client_call_details, request)
-        if logging_enabled:  # pragma: NO COVER # fmt: skip
+        if logging_enabled:
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
             metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
@@ -537,7 +537,7 @@ class MetricsServiceV2GrpcAsyncIOTransport(MetricsServiceV2Transport):
         }
 
     def _wrap_method(self, func, *args, **kwargs):
-        if self._wrap_with_kind:  # pragma: NO COVER # fmt: skip
+        if self._wrap_with_kind:  # pragma: NO COVER
             kwargs["kind"] = self.kind
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 

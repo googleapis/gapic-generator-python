@@ -89,7 +89,7 @@ CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
 async def mock_async_gen(data, chunk_size=1):
-    for i in range(0, len(data)):  # pragma: NO COVER # fmt: skip
+    for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
         yield chunk.encode("utf-8")
 
@@ -4508,7 +4508,7 @@ def test_create_instance_rest_call_success(request_type):
             if is_field_type_proto_plus_type:
                 message_fields = field.message.meta.fields.values()
             # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else: # pragma: NO COVER # fmt: skip
+            else: # pragma: NO COVER
                 message_fields = field.message.DESCRIPTOR.fields
         return message_fields
 
@@ -4522,7 +4522,7 @@ def test_create_instance_rest_call_success(request_type):
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["instance"].items(): # pragma: NO COVER # fmt: skip
+    for field, value in request_init["instance"].items(): # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -4542,7 +4542,7 @@ def test_create_instance_rest_call_success(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER # fmt: skip
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
         field = subfield_to_delete.get("field")
         field_repeated = subfield_to_delete.get("is_repeated")
         subfield = subfield_to_delete.get("subfield")
@@ -4673,7 +4673,7 @@ def test_update_instance_rest_call_success(request_type):
             if is_field_type_proto_plus_type:
                 message_fields = field.message.meta.fields.values()
             # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else: # pragma: NO COVER # fmt: skip
+            else: # pragma: NO COVER
                 message_fields = field.message.DESCRIPTOR.fields
         return message_fields
 
@@ -4687,7 +4687,7 @@ def test_update_instance_rest_call_success(request_type):
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["instance"].items(): # pragma: NO COVER # fmt: skip
+    for field, value in request_init["instance"].items(): # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -4707,7 +4707,7 @@ def test_update_instance_rest_call_success(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER # fmt: skip
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
         field = subfield_to_delete.get("field")
         field_repeated = subfield_to_delete.get("is_repeated")
         subfield = subfield_to_delete.get("subfield")
@@ -5737,7 +5737,7 @@ async def test_create_instance_rest_asyncio_call_success(request_type):
             if is_field_type_proto_plus_type:
                 message_fields = field.message.meta.fields.values()
             # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else: # pragma: NO COVER # fmt: skip
+            else: # pragma: NO COVER
                 message_fields = field.message.DESCRIPTOR.fields
         return message_fields
 
@@ -5751,7 +5751,7 @@ async def test_create_instance_rest_asyncio_call_success(request_type):
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["instance"].items(): # pragma: NO COVER # fmt: skip
+    for field, value in request_init["instance"].items(): # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -5771,7 +5771,7 @@ async def test_create_instance_rest_asyncio_call_success(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER # fmt: skip
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
         field = subfield_to_delete.get("field")
         field_repeated = subfield_to_delete.get("is_repeated")
         subfield = subfield_to_delete.get("subfield")
@@ -5909,7 +5909,7 @@ async def test_update_instance_rest_asyncio_call_success(request_type):
             if is_field_type_proto_plus_type:
                 message_fields = field.message.meta.fields.values()
             # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else: # pragma: NO COVER # fmt: skip
+            else: # pragma: NO COVER
                 message_fields = field.message.DESCRIPTOR.fields
         return message_fields
 
@@ -5923,7 +5923,7 @@ async def test_update_instance_rest_asyncio_call_success(request_type):
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["instance"].items(): # pragma: NO COVER # fmt: skip
+    for field, value in request_init["instance"].items(): # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -5943,7 +5943,7 @@ async def test_update_instance_rest_asyncio_call_success(request_type):
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER # fmt: skip
+    for subfield_to_delete in subfields_not_in_runtime: # pragma: NO COVER
         field = subfield_to_delete.get("field")
         field_repeated = subfield_to_delete.get("is_repeated")
         subfield = subfield_to_delete.get("subfield")
@@ -6679,7 +6679,7 @@ def test_unsupported_parameter_rest_asyncio():
     if not HAS_ASYNC_REST_EXTRA:
         pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
     options = client_options.ClientOptions(quota_project_id="octopus")
-    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore # fmt: skip
+    with pytest.raises(core_exceptions.AsyncRestUnsupportedParameterError, match="google.api_core.client_options.ClientOptions.quota_project_id") as exc:  # type: ignore
         client = CloudRedisAsyncClient(
             credentials=async_anonymous_credentials(),
             transport="rest_asyncio",

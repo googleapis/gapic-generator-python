@@ -135,7 +135,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "iamcredentials.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore # fmt: skip
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
 
@@ -156,7 +156,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
         """
         # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER # fmt: skip
+        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
             return mtls.should_use_client_cert()
         else: # pragma: NO COVER
             # if unsupported, fallback to reading from env var
@@ -561,7 +561,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
-        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER # fmt: skip
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
             # Setup logging.
             client_logging.initialize_logging()
 
@@ -618,7 +618,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.iam.credentials_v1.IAMCredentialsClient`.",
                     extra = {
@@ -1238,7 +1238,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER # fmt: skip
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = (

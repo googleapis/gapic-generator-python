@@ -61,7 +61,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER # fmt: skip
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
@@ -948,7 +948,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -986,7 +986,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_create_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1069,7 +1069,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1107,7 +1107,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_delete_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1193,7 +1193,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseExportInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1231,7 +1231,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_export_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_export_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1317,7 +1317,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseFailoverInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1355,7 +1355,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_failover_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_failover_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1435,7 +1435,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1475,7 +1475,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_redis.Instance.to_json(response)
                 except:
@@ -1555,7 +1555,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetInstanceAuthString._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1595,7 +1595,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_get_instance_auth_string(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_instance_auth_string_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_redis.InstanceAuthString.to_json(response)
                 except:
@@ -1681,7 +1681,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseImportInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1719,7 +1719,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_import_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_import_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1801,7 +1801,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1841,7 +1841,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_redis.ListInstancesResponse.to_json(response)
                 except:
@@ -1927,7 +1927,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseRescheduleMaintenance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1965,7 +1965,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_reschedule_maintenance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_reschedule_maintenance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2051,7 +2051,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2089,7 +2089,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_update_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2175,7 +2175,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseUpgradeInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2213,7 +2213,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = self._interceptor.post_upgrade_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_upgrade_instance_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2240,7 +2240,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateInstance(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._CreateInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def delete_instance(self) -> Callable[
@@ -2248,7 +2248,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteInstance(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._DeleteInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def export_instance(self) -> Callable[
@@ -2256,7 +2256,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ExportInstance(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ExportInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def failover_instance(self) -> Callable[
@@ -2264,7 +2264,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FailoverInstance(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._FailoverInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_instance(self) -> Callable[
@@ -2272,7 +2272,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             cloud_redis.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetInstance(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_instance_auth_string(self) -> Callable[
@@ -2280,7 +2280,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             cloud_redis.InstanceAuthString]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetInstanceAuthString(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetInstanceAuthString(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def import_instance(self) -> Callable[
@@ -2288,7 +2288,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ImportInstance(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ImportInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def list_instances(self) -> Callable[
@@ -2296,7 +2296,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             cloud_redis.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListInstances(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListInstances(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def reschedule_maintenance(self) -> Callable[
@@ -2304,7 +2304,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RescheduleMaintenance(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._RescheduleMaintenance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def update_instance(self) -> Callable[
@@ -2312,7 +2312,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateInstance(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._UpdateInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def upgrade_instance(self) -> Callable[
@@ -2320,11 +2320,11 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpgradeInstance(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._UpgradeInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_location(self):
-        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetLocation(_BaseCloudRedisRestTransport._BaseGetLocation, CloudRedisRestStub):
         def __hash__(self):
@@ -2384,7 +2384,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2419,7 +2419,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2442,7 +2442,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def list_locations(self):
-        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
 
     class _ListLocations(_BaseCloudRedisRestTransport._BaseListLocations, CloudRedisRestStub):
         def __hash__(self):
@@ -2502,7 +2502,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2537,7 +2537,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2560,7 +2560,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _CancelOperation(_BaseCloudRedisRestTransport._BaseCancelOperation, CloudRedisRestStub):
         def __hash__(self):
@@ -2617,7 +2617,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2652,7 +2652,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def delete_operation(self):
-        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _DeleteOperation(_BaseCloudRedisRestTransport._BaseDeleteOperation, CloudRedisRestStub):
         def __hash__(self):
@@ -2709,7 +2709,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2744,7 +2744,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetOperation(_BaseCloudRedisRestTransport._BaseGetOperation, CloudRedisRestStub):
         def __hash__(self):
@@ -2804,7 +2804,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2839,7 +2839,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2862,7 +2862,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
     class _ListOperations(_BaseCloudRedisRestTransport._BaseListOperations, CloudRedisRestStub):
         def __hash__(self):
@@ -2922,7 +2922,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2957,7 +2957,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2980,7 +2980,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
 
     @property
     def wait_operation(self):
-        return self._WaitOperation(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._WaitOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _WaitOperation(_BaseCloudRedisRestTransport._BaseWaitOperation, CloudRedisRestStub):
         def __hash__(self):
@@ -3043,7 +3043,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             # Jsonify the query params
             query_params = _BaseCloudRedisRestTransport._BaseWaitOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3078,7 +3078,7 @@ class CloudRedisRestTransport(_BaseCloudRedisRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_wait_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
