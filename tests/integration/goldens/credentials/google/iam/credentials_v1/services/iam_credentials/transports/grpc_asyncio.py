@@ -77,7 +77,7 @@ class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pra
                 },
             )
         response = await continuation(client_call_details, request)
-        if logging_enabled:
+        if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
             metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
