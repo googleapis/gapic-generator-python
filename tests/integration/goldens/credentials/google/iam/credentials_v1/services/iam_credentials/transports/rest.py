@@ -58,7 +58,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER # fmt: skip
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
@@ -418,7 +418,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             # Jsonify the query params
             query_params = _BaseIAMCredentialsRestTransport._BaseGenerateAccessToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -458,7 +458,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = self._interceptor.post_generate_access_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_generate_access_token_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common.GenerateAccessTokenResponse.to_json(response)
                 except:
@@ -540,7 +540,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             # Jsonify the query params
             query_params = _BaseIAMCredentialsRestTransport._BaseGenerateIdToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -580,7 +580,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = self._interceptor.post_generate_id_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_generate_id_token_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common.GenerateIdTokenResponse.to_json(response)
                 except:
@@ -662,7 +662,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             # Jsonify the query params
             query_params = _BaseIAMCredentialsRestTransport._BaseSignBlob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -702,7 +702,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = self._interceptor.post_sign_blob(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_sign_blob_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common.SignBlobResponse.to_json(response)
                 except:
@@ -784,7 +784,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             # Jsonify the query params
             query_params = _BaseIAMCredentialsRestTransport._BaseSignJwt._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -824,7 +824,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             resp = self._interceptor.post_sign_jwt(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_sign_jwt_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = common.SignJwtResponse.to_json(response)
                 except:
@@ -851,7 +851,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             common.GenerateAccessTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateAccessToken(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GenerateAccessToken(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def generate_id_token(self) -> Callable[
@@ -859,7 +859,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             common.GenerateIdTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateIdToken(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GenerateIdToken(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def sign_blob(self) -> Callable[
@@ -867,7 +867,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             common.SignBlobResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SignBlob(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._SignBlob(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def sign_jwt(self) -> Callable[
@@ -875,7 +875,7 @@ class IAMCredentialsRestTransport(_BaseIAMCredentialsRestTransport):
             common.SignJwtResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SignJwt(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._SignJwt(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def kind(self) -> str:

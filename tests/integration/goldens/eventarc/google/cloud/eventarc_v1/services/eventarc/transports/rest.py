@@ -69,7 +69,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER # fmt: skip
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
@@ -1282,7 +1282,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseCreateChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1320,7 +1320,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_create_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_channel_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1406,7 +1406,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1444,7 +1444,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_create_channel_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_channel_connection_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1530,7 +1530,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseCreateTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1568,7 +1568,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_create_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_trigger_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1651,7 +1651,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseDeleteChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1689,7 +1689,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_delete_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_delete_channel_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1772,7 +1772,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1810,7 +1810,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_delete_channel_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_delete_channel_connection_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1893,7 +1893,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseDeleteTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1931,7 +1931,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_delete_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_delete_trigger_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2019,7 +2019,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2059,7 +2059,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_channel_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = channel.Channel.to_json(response)
                 except:
@@ -2146,7 +2146,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetChannelConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2186,7 +2186,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_channel_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_channel_connection_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = channel_connection.ChannelConnection.to_json(response)
                 except:
@@ -2274,7 +2274,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2314,7 +2314,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_google_channel_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_google_channel_config_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = google_channel_config.GoogleChannelConfig.to_json(response)
                 except:
@@ -2396,7 +2396,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetProvider._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2436,7 +2436,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_provider(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_provider_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = discovery.Provider.to_json(response)
                 except:
@@ -2518,7 +2518,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2558,7 +2558,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_get_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_trigger_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = trigger.Trigger.to_json(response)
                 except:
@@ -2640,7 +2640,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListChannelConnections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2680,7 +2680,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_list_channel_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_channel_connections_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListChannelConnectionsResponse.to_json(response)
                 except:
@@ -2760,7 +2760,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListChannels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2800,7 +2800,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_list_channels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_channels_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListChannelsResponse.to_json(response)
                 except:
@@ -2880,7 +2880,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListProviders._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2920,7 +2920,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_list_providers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_providers_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListProvidersResponse.to_json(response)
                 except:
@@ -3000,7 +3000,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListTriggers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3040,7 +3040,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_list_triggers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_triggers_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListTriggersResponse.to_json(response)
                 except:
@@ -3126,7 +3126,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseUpdateChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3164,7 +3164,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_update_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_channel_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3256,7 +3256,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3296,7 +3296,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_update_google_channel_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_google_channel_config_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gce_google_channel_config.GoogleChannelConfig.to_json(response)
                 except:
@@ -3382,7 +3382,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseUpdateTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3420,7 +3420,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = self._interceptor.post_update_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_trigger_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3447,7 +3447,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateChannel(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._CreateChannel(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def create_channel_connection(self) -> Callable[
@@ -3455,7 +3455,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateChannelConnection(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._CreateChannelConnection(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def create_trigger(self) -> Callable[
@@ -3463,7 +3463,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateTrigger(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._CreateTrigger(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def delete_channel(self) -> Callable[
@@ -3471,7 +3471,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteChannel(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._DeleteChannel(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def delete_channel_connection(self) -> Callable[
@@ -3479,7 +3479,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteChannelConnection(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._DeleteChannelConnection(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def delete_trigger(self) -> Callable[
@@ -3487,7 +3487,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteTrigger(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._DeleteTrigger(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_channel(self) -> Callable[
@@ -3495,7 +3495,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             channel.Channel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetChannel(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetChannel(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_channel_connection(self) -> Callable[
@@ -3503,7 +3503,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             channel_connection.ChannelConnection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetChannelConnection(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetChannelConnection(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_google_channel_config(self) -> Callable[
@@ -3511,7 +3511,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             google_channel_config.GoogleChannelConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetGoogleChannelConfig(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetGoogleChannelConfig(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_provider(self) -> Callable[
@@ -3519,7 +3519,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             discovery.Provider]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetProvider(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetProvider(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_trigger(self) -> Callable[
@@ -3527,7 +3527,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             trigger.Trigger]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetTrigger(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetTrigger(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def list_channel_connections(self) -> Callable[
@@ -3535,7 +3535,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             eventarc.ListChannelConnectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListChannelConnections(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListChannelConnections(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def list_channels(self) -> Callable[
@@ -3543,7 +3543,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             eventarc.ListChannelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListChannels(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListChannels(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def list_providers(self) -> Callable[
@@ -3551,7 +3551,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             eventarc.ListProvidersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListProviders(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListProviders(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def list_triggers(self) -> Callable[
@@ -3559,7 +3559,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             eventarc.ListTriggersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListTriggers(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListTriggers(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def update_channel(self) -> Callable[
@@ -3567,7 +3567,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateChannel(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._UpdateChannel(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def update_google_channel_config(self) -> Callable[
@@ -3575,7 +3575,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             gce_google_channel_config.GoogleChannelConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateGoogleChannelConfig(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._UpdateGoogleChannelConfig(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def update_trigger(self) -> Callable[
@@ -3583,11 +3583,11 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateTrigger(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._UpdateTrigger(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_location(self):
-        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetLocation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetLocation(_BaseEventarcRestTransport._BaseGetLocation, EventarcRestStub):
         def __hash__(self):
@@ -3647,7 +3647,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3682,7 +3682,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3705,7 +3705,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def list_locations(self):
-        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListLocations(self._session, self._host, self._interceptor) # type: ignore
 
     class _ListLocations(_BaseEventarcRestTransport._BaseListLocations, EventarcRestStub):
         def __hash__(self):
@@ -3765,7 +3765,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3800,7 +3800,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3823,7 +3823,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def get_iam_policy(self):
-        return self._GetIamPolicy(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetIamPolicy(_BaseEventarcRestTransport._BaseGetIamPolicy, EventarcRestStub):
         def __hash__(self):
@@ -3883,7 +3883,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3918,7 +3918,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3941,7 +3941,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def set_iam_policy(self):
-        return self._SetIamPolicy(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._SetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
 
     class _SetIamPolicy(_BaseEventarcRestTransport._BaseSetIamPolicy, EventarcRestStub):
         def __hash__(self):
@@ -4004,7 +4004,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -4039,7 +4039,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4062,7 +4062,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def test_iam_permissions(self):
-        return self._TestIamPermissions(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._TestIamPermissions(self._session, self._host, self._interceptor) # type: ignore
 
     class _TestIamPermissions(_BaseEventarcRestTransport._BaseTestIamPermissions, EventarcRestStub):
         def __hash__(self):
@@ -4125,7 +4125,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -4160,7 +4160,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4183,7 +4183,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def cancel_operation(self):
-        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._CancelOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _CancelOperation(_BaseEventarcRestTransport._BaseCancelOperation, EventarcRestStub):
         def __hash__(self):
@@ -4243,7 +4243,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -4278,7 +4278,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def delete_operation(self):
-        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._DeleteOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _DeleteOperation(_BaseEventarcRestTransport._BaseDeleteOperation, EventarcRestStub):
         def __hash__(self):
@@ -4335,7 +4335,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -4370,7 +4370,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetOperation(_BaseEventarcRestTransport._BaseGetOperation, EventarcRestStub):
         def __hash__(self):
@@ -4430,7 +4430,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -4465,7 +4465,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4488,7 +4488,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
     @property
     def list_operations(self):
-        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListOperations(self._session, self._host, self._interceptor) # type: ignore
 
     class _ListOperations(_BaseEventarcRestTransport._BaseListOperations, EventarcRestStub):
         def __hash__(self):
@@ -4548,7 +4548,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             # Jsonify the query params
             query_params = _BaseEventarcRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -4583,7 +4583,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

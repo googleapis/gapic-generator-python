@@ -20,9 +20,9 @@ import sys
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER # fmt: skip
+if sys.version_info >= (3, 8):  # pragma: NO COVER
     from importlib import metadata
-else:  # pragma: NO COVER # fmt: skip
+else:  # pragma: NO COVER
     # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
@@ -59,10 +59,10 @@ from .types.cloud_redis import UpgradeInstanceRequest
 from .types.cloud_redis import WeeklyMaintenanceWindow
 from .types.cloud_redis import ZoneMetadata
 
-if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER # fmt: skip
+if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):   # pragma: NO COVER
     api_core.check_python_version("google.cloud.redis_v1") # type: ignore
     api_core.check_dependency_versions("google.cloud.redis_v1") # type: ignore
-else:   # pragma: NO COVER # fmt: skip
+else:   # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:

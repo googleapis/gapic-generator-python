@@ -61,7 +61,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER # fmt: skip
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
@@ -1237,7 +1237,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1277,7 +1277,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_analyze_iam_policy_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.AnalyzeIamPolicyResponse.to_json(response)
                 except:
@@ -1364,7 +1364,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeIamPolicyLongrunning._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1402,7 +1402,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_iam_policy_longrunning(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_analyze_iam_policy_longrunning_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1484,7 +1484,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeMove._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1524,7 +1524,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_move(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_analyze_move_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.AnalyzeMoveResponse.to_json(response)
                 except:
@@ -1606,7 +1606,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1646,7 +1646,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_org_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_analyze_org_policies_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.AnalyzeOrgPoliciesResponse.to_json(response)
                 except:
@@ -1729,7 +1729,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1769,7 +1769,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_org_policy_governed_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_analyze_org_policy_governed_assets_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(response)
                 except:
@@ -1852,7 +1852,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseAnalyzeOrgPolicyGovernedContainers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -1892,7 +1892,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_analyze_org_policy_governed_containers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_analyze_org_policy_governed_containers_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(response)
                 except:
@@ -1971,7 +1971,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseBatchGetAssetsHistory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2011,7 +2011,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_batch_get_assets_history(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_batch_get_assets_history_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.BatchGetAssetsHistoryResponse.to_json(response)
                 except:
@@ -2094,7 +2094,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseBatchGetEffectiveIamPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2134,7 +2134,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_batch_get_effective_iam_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_batch_get_effective_iam_policies_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(response)
                 except:
@@ -2224,7 +2224,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseCreateFeed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2264,7 +2264,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_create_feed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_feed_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.Feed.to_json(response)
                 except:
@@ -2348,7 +2348,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseCreateSavedQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2388,7 +2388,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_create_saved_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_create_saved_query_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.SavedQuery.to_json(response)
                 except:
@@ -2463,7 +2463,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseDeleteFeed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2548,7 +2548,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseDeleteSavedQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2643,7 +2643,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseExportAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2681,7 +2681,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_export_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_export_assets_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2768,7 +2768,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseGetFeed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2808,7 +2808,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_get_feed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_feed_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.Feed.to_json(response)
                 except:
@@ -2889,7 +2889,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseGetSavedQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -2929,7 +2929,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_get_saved_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_saved_query_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.SavedQuery.to_json(response)
                 except:
@@ -3008,7 +3008,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3048,7 +3048,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_list_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_assets_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.ListAssetsResponse.to_json(response)
                 except:
@@ -3127,7 +3127,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseListFeeds._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3167,7 +3167,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_list_feeds(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_feeds_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.ListFeedsResponse.to_json(response)
                 except:
@@ -3246,7 +3246,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseListSavedQueries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3286,7 +3286,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_list_saved_queries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_saved_queries_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.ListSavedQueriesResponse.to_json(response)
                 except:
@@ -3368,7 +3368,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseQueryAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3408,7 +3408,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_query_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_query_assets_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.QueryAssetsResponse.to_json(response)
                 except:
@@ -3487,7 +3487,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3527,7 +3527,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_search_all_iam_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_search_all_iam_policies_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.SearchAllIamPoliciesResponse.to_json(response)
                 except:
@@ -3606,7 +3606,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3646,7 +3646,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_search_all_resources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_search_all_resources_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.SearchAllResourcesResponse.to_json(response)
                 except:
@@ -3736,7 +3736,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseUpdateFeed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3776,7 +3776,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_update_feed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_feed_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.Feed.to_json(response)
                 except:
@@ -3860,7 +3860,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseUpdateSavedQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -3900,7 +3900,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = self._interceptor.post_update_saved_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_update_saved_query_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = asset_service.SavedQuery.to_json(response)
                 except:
@@ -3927,7 +3927,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.AnalyzeIamPolicyResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AnalyzeIamPolicy(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._AnalyzeIamPolicy(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def analyze_iam_policy_longrunning(self) -> Callable[
@@ -3935,7 +3935,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AnalyzeIamPolicyLongrunning(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._AnalyzeIamPolicyLongrunning(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def analyze_move(self) -> Callable[
@@ -3943,7 +3943,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.AnalyzeMoveResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AnalyzeMove(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._AnalyzeMove(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def analyze_org_policies(self) -> Callable[
@@ -3951,7 +3951,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.AnalyzeOrgPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AnalyzeOrgPolicies(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._AnalyzeOrgPolicies(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def analyze_org_policy_governed_assets(self) -> Callable[
@@ -3959,7 +3959,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AnalyzeOrgPolicyGovernedAssets(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._AnalyzeOrgPolicyGovernedAssets(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def analyze_org_policy_governed_containers(self) -> Callable[
@@ -3967,7 +3967,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.AnalyzeOrgPolicyGovernedContainersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AnalyzeOrgPolicyGovernedContainers(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._AnalyzeOrgPolicyGovernedContainers(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def batch_get_assets_history(self) -> Callable[
@@ -3975,7 +3975,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.BatchGetAssetsHistoryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchGetAssetsHistory(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._BatchGetAssetsHistory(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def batch_get_effective_iam_policies(self) -> Callable[
@@ -3983,7 +3983,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.BatchGetEffectiveIamPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchGetEffectiveIamPolicies(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._BatchGetEffectiveIamPolicies(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def create_feed(self) -> Callable[
@@ -3991,7 +3991,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.Feed]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateFeed(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._CreateFeed(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def create_saved_query(self) -> Callable[
@@ -3999,7 +3999,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.SavedQuery]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateSavedQuery(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._CreateSavedQuery(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def delete_feed(self) -> Callable[
@@ -4007,7 +4007,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteFeed(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._DeleteFeed(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def delete_saved_query(self) -> Callable[
@@ -4015,7 +4015,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteSavedQuery(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._DeleteSavedQuery(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def export_assets(self) -> Callable[
@@ -4023,7 +4023,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ExportAssets(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ExportAssets(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_feed(self) -> Callable[
@@ -4031,7 +4031,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.Feed]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetFeed(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetFeed(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_saved_query(self) -> Callable[
@@ -4039,7 +4039,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.SavedQuery]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSavedQuery(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetSavedQuery(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def list_assets(self) -> Callable[
@@ -4047,7 +4047,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.ListAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAssets(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListAssets(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def list_feeds(self) -> Callable[
@@ -4055,7 +4055,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.ListFeedsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListFeeds(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListFeeds(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def list_saved_queries(self) -> Callable[
@@ -4063,7 +4063,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.ListSavedQueriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSavedQueries(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._ListSavedQueries(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def query_assets(self) -> Callable[
@@ -4071,7 +4071,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.QueryAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._QueryAssets(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._QueryAssets(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def search_all_iam_policies(self) -> Callable[
@@ -4079,7 +4079,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.SearchAllIamPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SearchAllIamPolicies(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._SearchAllIamPolicies(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def search_all_resources(self) -> Callable[
@@ -4087,7 +4087,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.SearchAllResourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SearchAllResources(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._SearchAllResources(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def update_feed(self) -> Callable[
@@ -4095,7 +4095,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.Feed]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateFeed(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._UpdateFeed(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def update_saved_query(self) -> Callable[
@@ -4103,11 +4103,11 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             asset_service.SavedQuery]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateSavedQuery(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._UpdateSavedQuery(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def get_operation(self):
-        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore # fmt: skip
+        return self._GetOperation(self._session, self._host, self._interceptor) # type: ignore
 
     class _GetOperation(_BaseAssetServiceRestTransport._BaseGetOperation, AssetServiceRestStub):
         def __hash__(self):
@@ -4167,7 +4167,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             # Jsonify the query params
             query_params = _BaseAssetServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
@@ -4202,7 +4202,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER # fmt: skip
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

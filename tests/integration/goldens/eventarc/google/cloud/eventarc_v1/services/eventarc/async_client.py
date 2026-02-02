@@ -186,7 +186,7 @@ class EventarcAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return EventarcClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore # fmt: skip
+        return EventarcClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
     def transport(self) -> EventarcTransport:
@@ -284,7 +284,7 @@ class EventarcAsyncClient:
 
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER # fmt: skip
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.eventarc_v1.EventarcAsyncClient`.",
                 extra = {
@@ -3171,7 +3171,7 @@ class EventarcAsyncClient:
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER # fmt: skip
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
