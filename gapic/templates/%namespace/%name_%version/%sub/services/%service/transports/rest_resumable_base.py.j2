@@ -1,3 +1,4 @@
+{% if service.has_resumable_upload %}
 # -*- coding: utf-8 -*-
 # Copyright 2025 Google LLC
 #
@@ -21,25 +22,18 @@ from google.api_core import gapic_v1, path_template
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
-from .base import DEFAULT_CLIENT_INFO, YouTubeVideoUploadServiceTransport
+from .base import DEFAULT_CLIENT_INFO, {{ service.name }}Transport
 
-class _BaseYouTubeVideoUploadServiceRestResumableTransport(YouTubeVideoUploadServiceTransport):
-    """Base REST backend transport for YouTubeVideoUploadService.
+class _Base{{ service.name }}RestResumableTransport({{ service.name }}Transport):
+    """Base REST Resumable backend transport for {{ service.name }}.
 
-    Note: This class is not meant to be used directly. Use its sync and
-    async sub-classes instead.
-
-    This class defines the same methods as the primary client, so the
-    primary client can load the underlying transport implementation
-    and call it.
-
-    It sends JSON representations of protocol buffers over HTTP/1.1
+    Note: This class is not meant to be used directly.
     """
 
     def __init__(
         self,
         *,
-        host: str = "googleads.googleapis.com",
+        host: str = "{{ service.host }}",
         credentials: Optional[Any] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
@@ -49,7 +43,7 @@ class _BaseYouTubeVideoUploadServiceRestResumableTransport(YouTubeVideoUploadSer
         """Instantiate the transport.
         Args:
             host (Optional[str]):
-                 The hostname to connect to (default: 'googleads.googleapis.com').
+                 The hostname to connect to (default: '{{ service.host }}').
             credentials (Optional[Any]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -85,19 +79,26 @@ class _BaseYouTubeVideoUploadServiceRestResumableTransport(YouTubeVideoUploadSer
             api_audience=api_audience,
         )
 
-    class _BaseCreateYouTubeVideoUploadRequest:
+    {% for method in service.methods.values() if method.is_resumable_upload %}
+    class _Base{{ method.name }}Request:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
-        
+
         @staticmethod
         def _get_http_options():
             http_options: List[Dict[str, str]] = [
+                {% for option in method.http_options %}
                 {
-                    "method": "post",
-                    "uri": "/resumable/upload/v999/customers/{customer_id}/youTubeVideoUploads:create",
-                    "body": "*",
+                    "method": "{{ option.method }}",
+                    "uri": "/resumable/upload/{{ option.uri }}",
+                    {% if option.body %}
+                    "body": "{{ option.body }}",
+                    {% endif %}
                 },
+                {% endfor %}
             ]
             return http_options
+    {% endfor %}
 
-__all__ = ("_BaseYouTubeVideoUploadServiceRestResumableTransport",)
+__all__ = ("_Base{{ service.name }}RestResumableTransport",)
+{% endif %}
