@@ -390,6 +390,26 @@ class {{ service.async_client_name }}:
         {% endfor %}
         {% endif %}
 
+        {% if method.is_resumable_upload %}
+{{ shared_macros.create_metadata(method) }}
+{{ shared_macros.add_api_version_header_to_metadata(service.version) }}
+{{ shared_macros.auto_populate_uuid4_fields(api, method) }}
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = self._client._rest_resumable_transport.{{ method.name|snake_case }}_scotty(
+            request=request,
+            stream=stream,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+        {% else %}
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.{{ method.transport_safe_name|snake_case }}]
@@ -439,6 +459,7 @@ class {{ service.async_client_name }}:
 
         # Done; return the response.
         return response
+        {% endif %}
         {% endif %}
         {{ "\n" }}
     {% endfor %}

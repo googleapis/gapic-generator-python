@@ -70,6 +70,9 @@ from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 from .transports.base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
+{% if service.has_resumable_upload %}
+from .transports.rest_resumable import {{ service.name }}RestResumableTransport
+{% endif %}
 {% if 'grpc' in opts.transport %}
 from .transports.grpc import {{ service.grpc_transport_name }}
 from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
@@ -592,6 +595,14 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 )
             self._transport = cast({{ service.name }}Transport, transport)
             self._api_endpoint = self._transport.host
+            {% if service.has_resumable_upload %}
+            self._rest_resumable_transport = {{ service.name }}RestResumableTransport(
+                credentials=self._transport._credentials,
+                credentials_file=None,
+                host=self._transport.host,
+                scopes=self._transport._scopes
+            )
+            {% endif %}
 
         self._api_endpoint = (self._api_endpoint or
             {{ service.client_name }}._get_api_endpoint(
@@ -658,6 +669,21 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 always_use_jwt_access=True,
                 api_audience=self._client_options.api_audience,
             )
+            {% if service.has_resumable_upload %}
+            
+            # Initialize a separate transport for the rest resumable uploads
+            self._rest_resumable_transport = {{ service.name }}RestResumableTransport(
+                credentials=credentials,
+                credentials_file=self._client_options.credentials_file,
+                host=self._api_endpoint,
+                scopes=self._client_options.scopes,
+                client_cert_source_for_mtls=self._client_cert_source,
+                quota_project_id=self._client_options.quota_project_id,
+                client_info=client_info,
+                always_use_jwt_access=True,
+                api_audience=self._client_options.api_audience,
+            )
+            {% endif %}
         
         if "async" not in str(self._transport):
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER

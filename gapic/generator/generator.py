@@ -385,7 +385,7 @@ class Generator:
             "__init__",
             "base",
             "README",
-            "rest_resumable",
+            "resumable",
         ] + opts.transport
         return any(transport in template_name for transport in desired_transports)
 

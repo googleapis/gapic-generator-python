@@ -48,7 +48,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-_DEFAULT_CHUNKSIZE = 10485760  # 10 MiB
+DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024 # 10MB
 _DEFAULT_TIMEOUT = 14400
 _DEFAULT_CONTENT_TYPE = "application/octet-stream"
 
@@ -151,7 +151,7 @@ class {{ service.name }}RestResumableTransport(_Base{{ service.name }}RestResuma
         request: {{ service.module_name }}_types.{{ method.input.name }},
         *,
         stream: BinaryIO,
-        rewind: bool,
+        rewind: bool = False,
         size: Optional[int] = None,
         content_type: Optional[str] = None,
         chunk_size: Optional[int] = None,
