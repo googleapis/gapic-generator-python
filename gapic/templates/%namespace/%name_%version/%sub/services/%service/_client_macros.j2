@@ -21,12 +21,12 @@
             {% if not method.client_streaming %}
             request: Optional[Union[{{ method.input.ident }}, dict]] = None,
             *,
-            {% if method.is_resumable_upload %}
-            stream: Optional[BinaryIO] = None,
-            {% endif %}
             {% for field in method.flattened_fields.values() %}
             {{ field.name }}: Optional[{{ field.ident }}] = None,
             {% endfor %}
+            {% if method.is_resumable_upload %}
+            stream: Optional[BinaryIO] = None,
+            {% endif %}
             {% else %}
             requests: Optional[Iterator[{{ method.input.ident }}]] = None,
             *,
@@ -56,10 +56,6 @@
             request (Union[{{ method.input.ident.sphinx }}, dict]):
                 The request object.{{ " " }}
                 {{- method.input.meta.doc|rst(width=72, indent=16, nl=False) }}
-            {% if method.is_resumable_upload %}
-            stream (BinaryIO):
-                The stream to upload.
-            {% endif %}
             {% for key, field in method.flattened_fields.items() %}
             {{ field.name }} ({{ field.ident.sphinx }}):
                 {{ field.meta.doc|rst(width=72, indent=16) }}
@@ -67,6 +63,10 @@
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             {% endfor %}
+            {% if method.is_resumable_upload %}
+            stream (BinaryIO):
+                The stream to upload.
+            {% endif %}
             {% else %}
             requests (Iterator[{{ method.input.ident.sphinx }}]):
                 The request object iterator.{{ " " }}
@@ -156,7 +156,7 @@
         self._validate_universe_domain()
 
         # Send the request.
-        response = self._rest_resumable_transport.{{ method.name|snake_case }}_scotty(
+        response = self._rest_resumable_transport.{{ method.name|snake_case }}_resumable(
             request=request,
             stream=stream,
             retry=retry,

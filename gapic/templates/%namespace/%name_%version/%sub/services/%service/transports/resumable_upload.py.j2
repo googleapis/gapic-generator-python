@@ -10,7 +10,7 @@ import requests
 
 _LOGGER = logging.getLogger(__name__)
 
-DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024 # 10MB
+_DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024 # 10MB
 
 @dataclass(frozen=True)
 class ResumableUploadStatus:
@@ -35,11 +35,11 @@ class ResumableUpload:
         self.stream = stream
         self.size = size
         self.content_type = content_type
-        self.chunk_size = chunk_size or DEFAULT_CHUNK_SIZE
+        self.chunk_size = chunk_size or _DEFAULT_CHUNK_SIZE
         self.deadline = deadline
         self.extra_headers = dict(headers or [])
         self.on_progress = on_progress
-        
+
         self.session_url = None
         self.bytes_uploaded = 0
         self.finished = False

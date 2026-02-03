@@ -35,8 +35,12 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-{% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
-from {{ package_path }}.services.{{ service.module_name }} import types as {{ service.module_name }}_types
+{% filter sort_lines %}
+{% for method in service.methods.values() if method.is_resumable_upload %}
+{{ method.input.ident.python_import }}
+{{ method.output.ident.python_import }}
+{% endfor %}
+{% endfilter %}
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_resumable_base import _Base{{ service.name }}RestResumableTransport
@@ -48,7 +52,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024 # 10MB
+_DEFAULT_CHUNK_SIZE = 10 * 1024 * 1024 # 10MB
 _DEFAULT_TIMEOUT = 14400
 _DEFAULT_CONTENT_TYPE = "application/octet-stream"
 
@@ -148,7 +152,7 @@ class {{ service.name }}RestResumableTransport(_Base{{ service.name }}RestResuma
 
     {% for method in service.methods.values() if method.is_resumable_upload %}
     def {{ method.name|snake_case }}_resumable(self,
-        request: {{ service.module_name }}_types.{{ method.input.name }},
+        request: {{ method.input.ident }},
         *,
         stream: BinaryIO,
         rewind: bool = False,
@@ -158,11 +162,11 @@ class {{ service.name }}RestResumableTransport(_Base{{ service.name }}RestResuma
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> {{ service.module_name }}_types.{{ method.output.name }}:
+        ) -> {{ method.output.ident }}:
         r"""{{ method.meta.doc }}
 
         Args:
-            request (Union[{{ service.module_name }}_types.{{ method.input.name }}, dict]):
+            request (Union[{{ method.input.ident }}, dict]):
                 The request object. Request message for
                 [{{ service.name }}.{{ method.name }}][].
             stream (BinaryIO): A stream of bytes, such as a file opened in binary mode for reading.
@@ -179,7 +183,7 @@ class {{ service.name }}RestResumableTransport(_Base{{ service.name }}RestResuma
                 be of type `bytes`.
 
         Returns:
-            {{ service.module_name }}_types.{{ method.output.name }}:
+            {{ method.output.ident }}:
                 Response message for
                 [{{ service.name }}.{{ method.name }}][].
 
@@ -187,12 +191,9 @@ class {{ service.name }}RestResumableTransport(_Base{{ service.name }}RestResuma
 
         self._maybe_rewind(stream, rewind=rewind)
 
-        uri_template = _Base{{ service.name }}RestResumableTransport._Base{{ method.name }}Request._get_http_options()[0]["uri"]
-        uri = uri_template.format(**{{ service.module_name }}_types.{{ method.input.name }}.to_dict(request))
-        request_url = "{host}{uri}".format(
-            host=self._host, 
-            uri=uri
-        )
+        http_options = _Base{{ service.name }}RestResumableTransport._Base{{ method.name }}Request._get_http_options()
+        transcoded_request = _Base{{ service.name }}RestResumableTransport._Base{{ method.name }}Request._get_transcoded_request(http_options, request)
+        request_url = "{host}/resumable/upload{uri}".format(host=self._host, uri=transcoded_request['uri'])
 
         # preserving_proto_field_name=True ensures we get snake case "customer_id" 
         json_body = json_format.MessageToJson(
@@ -201,7 +202,7 @@ class {{ service.name }}RestResumableTransport(_Base{{ service.name }}RestResuma
         )
 
         if chunk_size is None:
-            chunk_size = _DEFAULT_CHUNKSIZE
+            chunk_size = _DEFAULT_CHUNK_SIZE
         if retry is gapic_v1.method.DEFAULT:
             retry = _DEFAULT_RETRY
         if timeout is None or timeout is gapic_v1.method.DEFAULT:
@@ -227,7 +228,7 @@ class {{ service.name }}RestResumableTransport(_Base{{ service.name }}RestResuma
         )  
 
         data = response.json()
-        response_message = {{ service.module_name }}_types.{{ method.output.name }}()
+        response_message = {{ method.output.ident }}()
         json_format.ParseDict(data, response_message._pb, ignore_unknown_fields=True)
         
         return response_message

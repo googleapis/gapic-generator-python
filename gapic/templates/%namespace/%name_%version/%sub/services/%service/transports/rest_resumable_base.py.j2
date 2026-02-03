@@ -1,3 +1,4 @@
+{% import "%namespace/%name_%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 {% if service.has_resumable_upload %}
 # -*- coding: utf-8 -*-
 # Copyright 2025 Google LLC
@@ -22,12 +23,20 @@ from google.api_core import gapic_v1, path_template
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
+{% filter sort_lines %}
+{% for method in service.methods.values() if method.is_resumable_upload %}
+{{ method.input.ident.python_import }}
+{{ method.output.ident.python_import }}
+{% endfor %}
+{% endfilter %}
+
 from .base import DEFAULT_CLIENT_INFO, {{ service.name }}Transport
 
 class _Base{{ service.name }}RestResumableTransport({{ service.name }}Transport):
     """Base REST Resumable backend transport for {{ service.name }}.
 
-    Note: This class is not meant to be used directly.
+    Note: This class is not meant to be used directly. Only services that has RPCs
+    that should be invoked as resumable upload should instantiate it and use it.
     """
 
     def __init__(
@@ -83,21 +92,20 @@ class _Base{{ service.name }}RestResumableTransport({{ service.name }}Transport)
     class _Base{{ method.name }}Request:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
+        
+        {% set method_http_options = method.http_options %}
+        {{ shared_macros.http_options_method(method_http_options)|indent(8) }}
 
         @staticmethod
-        def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {% for option in method.http_options %}
-                {
-                    "method": "{{ option.method }}",
-                    "uri": "/resumable/upload/{{ option.uri }}",
-                    {% if option.body %}
-                    "body": "{{ option.body }}",
-                    {% endif %}
-                },
-                {% endfor %}
-            ]
-            return http_options
+        def _get_transcoded_request(http_options, request):
+            {% if method.input.ident.is_proto_plus_type %}
+            pb_request = {{method.input.ident}}.pb(request)
+            {% else %}
+            pb_request = request
+            {% endif %}
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
     {% endfor %}
 
 __all__ = ("_Base{{ service.name }}RestResumableTransport",)
