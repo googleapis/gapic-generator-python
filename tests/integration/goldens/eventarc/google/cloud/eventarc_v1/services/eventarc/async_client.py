@@ -34,8 +34,6 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.cloud.eventarc_v1.services.eventarc import pagers
 from google.cloud.eventarc_v1.types import channel
 from google.cloud.eventarc_v1.types import channel as gce_channel
@@ -51,8 +49,10 @@ from google.cloud.location import locations_pb2 # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from .transports.base import EventarcTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import EventarcGrpcAsyncIOTransport
 from .client import EventarcClient
@@ -124,7 +124,8 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
-        return EventarcClient.from_service_account_info.__func__(EventarcAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = EventarcClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(EventarcAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -140,7 +141,8 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
-        return EventarcClient.from_service_account_file.__func__(EventarcAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = EventarcClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(EventarcAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

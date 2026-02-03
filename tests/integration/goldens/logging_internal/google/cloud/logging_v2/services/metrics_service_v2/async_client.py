@@ -34,12 +34,12 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api import distribution_pb2  # type: ignore
-from google.api import metric_pb2  # type: ignore
 from google.cloud.logging_v2.services.metrics_service_v2 import pagers
 from google.cloud.logging_v2.types import logging_metrics
 from google.longrunning import operations_pb2 # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api.distribution_pb2 as distribution_pb2  # type: ignore
+import google.api.metric_pb2 as metric_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from .transports.base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import MetricsServiceV2GrpcAsyncIOTransport
 from .client import BaseMetricsServiceV2Client
@@ -90,7 +90,8 @@ class BaseMetricsServiceV2AsyncClient:
         Returns:
             BaseMetricsServiceV2AsyncClient: The constructed client.
         """
-        return BaseMetricsServiceV2Client.from_service_account_info.__func__(BaseMetricsServiceV2AsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = BaseMetricsServiceV2Client.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(BaseMetricsServiceV2AsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -106,7 +107,8 @@ class BaseMetricsServiceV2AsyncClient:
         Returns:
             BaseMetricsServiceV2AsyncClient: The constructed client.
         """
-        return BaseMetricsServiceV2Client.from_service_account_file.__func__(BaseMetricsServiceV2AsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = BaseMetricsServiceV2Client.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(BaseMetricsServiceV2AsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
