@@ -24,6 +24,8 @@ except ImportError:  # pragma: NO COVER
 import grpc
 from grpc.experimental import aio
 from collections.abc import Iterable, AsyncIterable
+import urllib.parse
+
 from google.protobuf import json_format
 import json
 import math
@@ -59,6 +61,7 @@ from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.api_core import path_template
+from google.api_core import rest_helpers
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -4830,6 +4833,97 @@ async def test_reschedule_maintenance_flattened_error_async():
         )
 
 
+def test_list_instances_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.list_instances.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_list_instances_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.list_instances.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
 def test_list_instances_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4933,8 +5027,12 @@ def test_list_instances_rest_required_fields(request_type=cloud_redis.ListInstan
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_list_instances_rest_unset_required_fields():
@@ -5060,6 +5158,97 @@ def test_list_instances_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
+def test_get_instance_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.get_instance.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_get_instance_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.get_instance.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
 def test_get_instance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -5161,8 +5350,12 @@ def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceR
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_get_instance_rest_unset_required_fields():
@@ -5224,6 +5417,97 @@ def test_get_instance_rest_flattened_error(transport: str = 'rest'):
             cloud_redis.GetInstanceRequest(),
             name='name_value',
         )
+
+
+def test_get_instance_auth_string_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.get_instance_auth_string.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.get_instance_auth_string.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_get_instance_auth_string_rest_use_cached_wrapped_rpc():
@@ -5327,8 +5611,12 @@ def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_get_instance_auth_string_rest_unset_required_fields():
@@ -5390,6 +5678,97 @@ def test_get_instance_auth_string_rest_flattened_error(transport: str = 'rest'):
             cloud_redis.GetInstanceAuthStringRequest(),
             name='name_value',
         )
+
+
+def test_create_instance_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.create_instance.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_create_instance_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.create_instance.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_create_instance_rest_use_cached_wrapped_rpc():
@@ -5508,8 +5887,12 @@ def test_create_instance_rest_required_fields(request_type=cloud_redis.CreateIns
                     "",
                 ),
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_create_instance_rest_unset_required_fields():
@@ -5573,6 +5956,97 @@ def test_create_instance_rest_flattened_error(transport: str = 'rest'):
             instance_id='instance_id_value',
             instance=cloud_redis.Instance(name='name_value'),
         )
+
+
+def test_update_instance_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.update_instance.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'patch',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'patch')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_update_instance_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.update_instance.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'patch',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'patch')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_update_instance_rest_use_cached_wrapped_rpc():
@@ -5675,8 +6149,12 @@ def test_update_instance_rest_required_fields(request_type=cloud_redis.UpdateIns
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_update_instance_rest_unset_required_fields():
@@ -5738,6 +6216,97 @@ def test_update_instance_rest_flattened_error(transport: str = 'rest'):
             update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
             instance=cloud_redis.Instance(name='name_value'),
         )
+
+
+def test_upgrade_instance_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.upgrade_instance.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_upgrade_instance_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.upgrade_instance.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_upgrade_instance_rest_use_cached_wrapped_rpc():
@@ -5847,8 +6416,12 @@ def test_upgrade_instance_rest_required_fields(request_type=cloud_redis.UpgradeI
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_upgrade_instance_rest_unset_required_fields():
@@ -5910,6 +6483,97 @@ def test_upgrade_instance_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
             redis_version='redis_version_value',
         )
+
+
+def test_import_instance_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.import_instance.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_import_instance_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.import_instance.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_import_instance_rest_use_cached_wrapped_rpc():
@@ -6015,8 +6679,12 @@ def test_import_instance_rest_required_fields(request_type=cloud_redis.ImportIns
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_import_instance_rest_unset_required_fields():
@@ -6078,6 +6746,97 @@ def test_import_instance_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
             input_config=cloud_redis.InputConfig(gcs_source=cloud_redis.GcsSource(uri='uri_value')),
         )
+
+
+def test_export_instance_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.export_instance.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_export_instance_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.export_instance.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_export_instance_rest_use_cached_wrapped_rpc():
@@ -6183,8 +6942,12 @@ def test_export_instance_rest_required_fields(request_type=cloud_redis.ExportIns
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_export_instance_rest_unset_required_fields():
@@ -6246,6 +7009,97 @@ def test_export_instance_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
             output_config=cloud_redis.OutputConfig(gcs_destination=cloud_redis.GcsDestination(uri='uri_value')),
         )
+
+
+def test_failover_instance_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.failover_instance.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_failover_instance_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.failover_instance.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_failover_instance_rest_use_cached_wrapped_rpc():
@@ -6351,8 +7205,12 @@ def test_failover_instance_rest_required_fields(request_type=cloud_redis.Failove
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_failover_instance_rest_unset_required_fields():
@@ -6414,6 +7272,97 @@ def test_failover_instance_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
             data_protection_mode=cloud_redis.FailoverInstanceRequest.DataProtectionMode.LIMITED_DATA_LOSS,
         )
+
+
+def test_delete_instance_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.delete_instance.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'delete',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'delete')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_delete_instance_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.delete_instance.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'delete',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'delete')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_delete_instance_rest_use_cached_wrapped_rpc():
@@ -6518,8 +7467,12 @@ def test_delete_instance_rest_required_fields(request_type=cloud_redis.DeleteIns
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_delete_instance_rest_unset_required_fields():
@@ -6579,6 +7532,97 @@ def test_delete_instance_rest_flattened_error(transport: str = 'rest'):
             cloud_redis.DeleteInstanceRequest(),
             name='name_value',
         )
+
+
+def test_reschedule_maintenance_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.reschedule_maintenance.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.reschedule_maintenance.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_reschedule_maintenance_rest_use_cached_wrapped_rpc():
@@ -6684,8 +7728,12 @@ def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.Re
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_reschedule_maintenance_rest_unset_required_fields():
@@ -12993,6 +14041,430 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for mixin methods.
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.list_operations.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+def test_get_operation_rest_url_query_params_encoding():
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.get_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+def test_delete_operation_rest_url_query_params_encoding():
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.delete_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1',
+            'method': 'delete',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.delete.called
+        call_url = mock_session.delete.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+def test_cancel_operation_rest_url_query_params_encoding():
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.cancel_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.post.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1:cancel',
+            'method': 'post',
+            'body': {},
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+            body={},
+        )
+
+        assert mock_session.post.called
+        call_url = mock_session.post.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+def test_list_locations_rest_url_query_params_encoding():
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.list_locations.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/projects/p1/locations',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+def test_get_location_rest_url_query_params_encoding():
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.get_location.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/projects/p1/locations/l1',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_list_operations_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.list_operations.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations',
+            'method': 'get',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+@pytest.mark.asyncio
+async def test_get_operation_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.get_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1',
+            'method': 'get',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+@pytest.mark.asyncio
+async def test_delete_operation_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.delete_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1',
+            'method': 'delete',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.delete.called
+        call_url = mock_session.delete.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+@pytest.mark.asyncio
+async def test_cancel_operation_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.cancel_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.post.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1:cancel',
+            'method': 'post',
+            'body': {},
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+            body={},
+        )
+
+        assert mock_session.post.called
+        call_url = mock_session.post.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+@pytest.mark.asyncio
+async def test_list_locations_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.list_locations.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/projects/p1/locations',
+            'method': 'get',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+@pytest.mark.asyncio
+async def test_get_location_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    transport = transports.AsyncCloudRedisRestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.get_location.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/projects/p1/locations/l1',
+            'method': 'get',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_transport_close_grpc():

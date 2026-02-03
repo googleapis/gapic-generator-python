@@ -1000,7 +1000,7 @@ def test_{{ method_name }}_raw_page_lro():
 {% endif %}{# method.paged_result_field #}{% endwith %}
 {% endmacro %}
 
-{% macro rest_required_tests(method, service, numeric_enums=False, full_extended_lro=False) %}
+{% macro rest_required_tests(method, service, numeric_enums=False, full_extended_lro=False, rest_async_io_enabled=False) %}
 {% with method_name = method.client_method_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.client_method_name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}{% if method.http_options %}
 {# TODO(kbandes): remove this if condition when lro and client streaming are supported. #}
 {% if not method.client_streaming %}
@@ -1050,6 +1050,53 @@ def test_{{ method_name }}_rest_url_query_params_encoding():
         assert '%24alt' not in call_url
         assert 'foo=bar' in call_url
 
+{% if rest_async_io_enabled %}
+
+@pytest.mark.asyncio
+async def test_{{ method_name }}_rest_asyncio_url_query_params_encoding():
+    if not HAS_ASYNC_REST_EXTRA:
+        pytest.skip("the library must be installed with the `async_rest` extra to test this feature.")
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for the async REST transport.
+    transport = transports.Async{{ service.name }}RestTransport(credentials=async_anonymous_credentials())
+    method_class = transport.{{ method.transport_safe_name|snake_case }}.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.AsyncMock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': '{{ method.http_options[0].method }}',
+        }
+
+        await get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        session_method = getattr(mock_session, '{{ method.http_options[0].method }}')
+        assert session_method.called
+
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+{% endif %}{# if rest_async_io_enabled #}
 
 def test_{{ method_name }}_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,

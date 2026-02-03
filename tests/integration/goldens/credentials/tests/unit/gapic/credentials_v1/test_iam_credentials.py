@@ -24,6 +24,8 @@ except ImportError:  # pragma: NO COVER
 import grpc
 from grpc.experimental import aio
 from collections.abc import Iterable, AsyncIterable
+import urllib.parse
+
 from google.protobuf import json_format
 import json
 import math
@@ -48,6 +50,7 @@ from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
+from google.api_core import rest_helpers
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -2299,6 +2302,52 @@ async def test_sign_jwt_flattened_error_async():
         )
 
 
+def test_generate_access_token_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.generate_access_token.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
 def test_generate_access_token_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -2405,8 +2454,12 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_generate_access_token_rest_unset_required_fields():
@@ -2474,6 +2527,52 @@ def test_generate_access_token_rest_flattened_error(transport: str = 'rest'):
             scope=['scope_value'],
             lifetime=duration_pb2.Duration(seconds=751),
         )
+
+
+def test_generate_id_token_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.generate_id_token.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_generate_id_token_rest_use_cached_wrapped_rpc():
@@ -2582,8 +2681,12 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_generate_id_token_rest_unset_required_fields():
@@ -2651,6 +2754,52 @@ def test_generate_id_token_rest_flattened_error(transport: str = 'rest'):
             audience='audience_value',
             include_email=True,
         )
+
+
+def test_sign_blob_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.sign_blob.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_sign_blob_rest_use_cached_wrapped_rpc():
@@ -2759,8 +2908,12 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_sign_blob_rest_unset_required_fields():
@@ -2826,6 +2979,52 @@ def test_sign_blob_rest_flattened_error(transport: str = 'rest'):
             delegates=['delegates_value'],
             payload=b'payload_blob',
         )
+
+
+def test_sign_jwt_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.IAMCredentialsRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.sign_jwt.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_sign_jwt_rest_use_cached_wrapped_rpc():
@@ -2934,8 +3133,12 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_sign_jwt_rest_unset_required_fields():

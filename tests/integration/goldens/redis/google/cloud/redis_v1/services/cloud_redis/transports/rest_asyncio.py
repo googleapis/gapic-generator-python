@@ -38,9 +38,10 @@ from google.protobuf import json_format
 from google.api_core import operations_v1
 from google.cloud.location import locations_pb2 # type: ignore
 
-import json  # type: ignore
 import dataclasses
+import json  # type: ignore
 from typing import Any, Dict, List, Callable, Tuple, Optional, Sequence, Union
+from urllib.parse import urlencode
 
 
 from google.cloud.redis_v1.types import cloud_redis
@@ -930,11 +931,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
                 )
             return response
@@ -1060,11 +1068,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
             return response
 
@@ -1187,11 +1202,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
                 )
             return response
@@ -1317,11 +1339,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
                 )
             return response
@@ -1447,11 +1476,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
             return response
 
@@ -1571,11 +1607,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
             return response
 
@@ -1695,11 +1738,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
                 )
             return response
@@ -1825,11 +1875,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
             return response
 
@@ -1951,11 +2008,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
                 )
             return response
@@ -2081,11 +2145,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
                 )
             return response
@@ -2211,11 +2282,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
                 )
             return response
@@ -2467,11 +2545,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
             return response
 
@@ -2589,11 +2674,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
             return response
 
@@ -2711,11 +2803,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
             return response
 
@@ -2807,11 +2906,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
             return response
 
@@ -2903,11 +3009,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
             return response
 
@@ -3025,11 +3138,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 )
             return response
 
@@ -3147,11 +3267,18 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
             method = transcoded_request['method']
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
+            # Build query string manually to avoid URL-encoding special characters like '$'.
+            # The `requests` library encodes '$' as '%24' when using the `params` argument,
+            # which causes API errors for parameters like '$alt'. See:
+            # https://github.com/googleapis/gapic-generator-python/issues/2514
+            _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+            _request_url = "{host}{uri}".format(host=host, uri=uri)
+            if _query_params:
+                _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
             response = await getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
+                _request_url,
                 timeout=timeout,
                 headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
                 )
             return response
