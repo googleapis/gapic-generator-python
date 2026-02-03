@@ -40,6 +40,8 @@ __protobuf__ = proto.module(
         'RelatedAssets',
         'RelationshipAttributes',
         'RelatedAsset',
+        'Tag',
+        'EffectiveTagDetails',
         'ResourceSearchResult',
         'VersionedResource',
         'AttachedResource',
@@ -199,17 +201,17 @@ class Asset(proto.Message):
             There can be more than one organization policy with
             different constraints set on a given resource.
         access_policy (google.identity.accesscontextmanager.v1.access_policy_pb2.AccessPolicy):
-            Please also refer to the `access policy user
+            Also refer to the `access policy user
             guide <https://cloud.google.com/access-context-manager/docs/overview#access-policies>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
         access_level (google.identity.accesscontextmanager.v1.access_level_pb2.AccessLevel):
-            Please also refer to the `access level user
+            Also refer to the `access level user
             guide <https://cloud.google.com/access-context-manager/docs/overview#access-levels>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
         service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
-            Please also refer to the `service perimeter user
+            Also refer to the `service perimeter user
             guide <https://cloud.google.com/vpc-service-controls/docs/overview>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
@@ -343,8 +345,6 @@ class Resource(proto.Message):
             hierarchy <https://cloud.google.com/iam/docs/overview#policy_hierarchy>`__.
             Example:
             ``//cloudresourcemanager.googleapis.com/projects/my_project_123``
-
-            For third-party assets, this field may be set differently.
         data (google.protobuf.struct_pb2.Struct):
             The content of the resource, in which some
             sensitive fields are removed and may not be
@@ -509,9 +509,99 @@ class RelatedAsset(proto.Message):
     )
 
 
+class Tag(proto.Message):
+    r"""The key and value for a
+    `tag <https://cloud.google.com/resource-manager/docs/tags/tags-overview>`__.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        tag_key (str):
+            TagKey namespaced name, in the format of
+            {ORG_ID}/{TAG_KEY_SHORT_NAME}.
+
+            This field is a member of `oneof`_ ``_tag_key``.
+        tag_key_id (str):
+            TagKey ID, in the format of tagKeys/{TAG_KEY_ID}.
+
+            This field is a member of `oneof`_ ``_tag_key_id``.
+        tag_value (str):
+            TagValue namespaced name, in the format of
+            {ORG_ID}/{TAG_KEY_SHORT_NAME}/{TAG_VALUE_SHORT_NAME}.
+
+            This field is a member of `oneof`_ ``_tag_value``.
+        tag_value_id (str):
+            TagValue ID, in the format of tagValues/{TAG_VALUE_ID}.
+
+            This field is a member of `oneof`_ ``_tag_value_id``.
+    """
+
+    tag_key: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    tag_key_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    tag_value: str = proto.Field(
+        proto.STRING,
+        number=3,
+        optional=True,
+    )
+    tag_value_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+        optional=True,
+    )
+
+
+class EffectiveTagDetails(proto.Message):
+    r"""The effective tags and the ancestor resources from which they
+    were inherited.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        attached_resource (str):
+            The `full resource
+            name <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
+            of the ancestor from which an [effective_tag][] is
+            inherited, according to `tag
+            inheritance <https://cloud.google.com/resource-manager/docs/tags/tags-overview#inheritance>`__.
+
+            This field is a member of `oneof`_ ``_attached_resource``.
+        effective_tags (MutableSequence[google.cloud.asset_v1.types.Tag]):
+            The effective tags inherited from the
+            [attached_resource][google.cloud.asset.v1.EffectiveTagDetails.attached_resource].
+            Note that tags with the same key but different values may
+            attach to resources at a different hierarchy levels. The
+            lower hierarchy tag value will overwrite the higher
+            hierarchy tag value of the same tag key. In this case, the
+            tag value at the higher hierarchy level will be removed. For
+            more information, see `tag
+            inheritance <https://cloud.google.com/resource-manager/docs/tags/tags-overview#inheritance>`__.
+    """
+
+    attached_resource: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    effective_tags: MutableSequence['Tag'] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message='Tag',
+    )
+
+
 class ResourceSearchResult(proto.Message):
     r"""A result of Resource Search, containing information of a
-    cloud resource. Next ID: 32
+    cloud resource. Next ID: 34
 
     Attributes:
         name (str):
@@ -630,10 +720,10 @@ class ResourceSearchResult(proto.Message):
             name.
 
             This field only presents for the purpose of backward
-            compatibility. Please use the ``kms_keys`` field to retrieve
-            Cloud KMS key information. This field is available only when
-            the resource's Protobuf contains it and will only be
-            populated for `these resource
+            compatibility. Use the ``kms_keys`` field to retrieve Cloud
+            KMS key information. This field is available only when the
+            resource's Protobuf contains it and will only be populated
+            for `these resource
             types <https://cloud.google.com/asset-inventory/docs/legacy-field-names#resource_types_with_the_to_be_deprecated_kmskey_field>`__
             for backward compatible purposes.
 
@@ -715,7 +805,7 @@ class ResourceSearchResult(proto.Message):
             provided by the corresponding Google Cloud service (e.g.,
             Compute Engine). see `API references and supported
             searchable
-            attributes <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__
+            attributes <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
             to see which fields are included.
 
             You can search values of these fields through free text
@@ -764,6 +854,9 @@ class ResourceSearchResult(proto.Message):
             ``INSTANCE_TO_INSTANCEGROUP``. See `supported relationship
             types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#supported_relationship_types>`__.
         tag_keys (MutableSequence[str]):
+            This field is only present for the purpose of backward
+            compatibility. Use the ``tags`` field instead.
+
             TagKey namespaced names, in the format of
             {ORG_ID}/{TAG_KEY_SHORT_NAME}. To search against the
             ``tagKeys``:
@@ -778,6 +871,9 @@ class ResourceSearchResult(proto.Message):
 
               - ``env``
         tag_values (MutableSequence[str]):
+            This field is only present for the purpose of backward
+            compatibility. Use the ``tags`` field instead.
+
             TagValue namespaced names, in the format of
             {ORG_ID}/{TAG_KEY_SHORT_NAME}/{TAG_VALUE_SHORT_NAME}. To
             search against the ``tagValues``:
@@ -793,17 +889,59 @@ class ResourceSearchResult(proto.Message):
 
               - ``prod``
         tag_value_ids (MutableSequence[str]):
+            This field is only present for the purpose of backward
+            compatibility. Use the ``tags`` field instead.
+
             TagValue IDs, in the format of tagValues/{TAG_VALUE_ID}. To
             search against the ``tagValueIds``:
 
             - Use a field query. Example:
 
-              - ``tagValueIds:"456"``
               - ``tagValueIds="tagValues/456"``
 
             - Use a free text query. Example:
 
               - ``456``
+        tags (MutableSequence[google.cloud.asset_v1.types.Tag]):
+            The tags directly attached to this resource.
+
+            To search against the ``tags``:
+
+            - Use a field query. Example:
+
+              - ``tagKeys:"123456789/env*"``
+              - ``tagKeys="123456789/env"``
+              - ``tagKeys:"env"``
+              - ``tagKeyIds="tagKeys/123"``
+              - ``tagValues:"env"``
+              - ``tagValues:"env/prod"``
+              - ``tagValues:"123456789/env/prod*"``
+              - ``tagValues="123456789/env/prod"``
+              - ``tagValueIds="tagValues/456"``
+
+            - Use a free text query. Example:
+
+              - ``env/prod``
+        effective_tags (MutableSequence[google.cloud.asset_v1.types.EffectiveTagDetails]):
+            The effective tags on this resource. All of the tags that
+            are both attached to and inherited by a resource are
+            collectively called the effective tags. For more
+            information, see `tag
+            inheritance <https://cloud.google.com/resource-manager/docs/tags/tags-overview#inheritance>`__.
+
+            To search against the ``effective_tags``:
+
+            - Use a field query. Example:
+
+              - ``effectiveTagKeys:"123456789/env*"``
+              - ``effectiveTagKeys="123456789/env"``
+              - ``effectiveTagKeys:"env"``
+              - ``effectiveTagKeyIds="tagKeys/123"``
+              - ``effectiveTagValues:"env"``
+              - ``effectiveTagValues:"env/prod"``
+              - ``effectiveTagValues:"123456789/env/prod*"``
+              - ``effectiveTagValues="123456789/env/prod"``
+              - ``effectiveTagValueIds="tagValues/456"``
         parent_asset_type (str):
             The type of this resource's immediate parent, if there is
             one.
@@ -814,6 +952,18 @@ class ResourceSearchResult(proto.Message):
               ``parentAssetType:"cloudresourcemanager.googleapis.com/Project"``
             - Use a free text query. Example:
               ``cloudresourcemanager.googleapis.com/Project``
+        scc_security_marks (MutableMapping[str, str]):
+            The actual content of Security Command Center security marks
+            associated with the asset.
+
+            To search against SCC SecurityMarks field:
+
+            - Use a field query:
+
+              - query by a given key value pair. Example:
+                ``sccSecurityMarks.foo=bar``
+              - query by a given key's existence. Example:
+                ``sccSecurityMarks.foo:*``
     """
 
     name: str = proto.Field(
@@ -916,9 +1066,24 @@ class ResourceSearchResult(proto.Message):
         proto.STRING,
         number=26,
     )
+    tags: MutableSequence['Tag'] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=29,
+        message='Tag',
+    )
+    effective_tags: MutableSequence['EffectiveTagDetails'] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=30,
+        message='EffectiveTagDetails',
+    )
     parent_asset_type: str = proto.Field(
         proto.STRING,
         number=103,
+    )
+    scc_security_marks: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=32,
     )
 
 
@@ -945,7 +1110,7 @@ class VersionedResource(proto.Message):
 
             You can find the resource definition for each supported
             resource type in this table:
-            ``https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types``
+            ``https://cloud.google.com/asset-inventory/docs/supported-asset-types``
     """
 
     version: str = proto.Field(
@@ -972,7 +1137,7 @@ class AttachedResource(proto.Message):
 
             You can find the supported attached asset types of each
             resource in this table:
-            ``https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types``
+            ``https://cloud.google.com/asset-inventory/docs/supported-asset-types``
         versioned_resources (MutableSequence[google.cloud.asset_v1.types.VersionedResource]):
             Versioned resource representations of this
             attached resource. This is repeated because
@@ -1213,7 +1378,7 @@ class IamPolicyAnalysisState(proto.Message):
 
 
 class ConditionEvaluation(proto.Message):
-    r"""The Condition evaluation.
+    r"""The condition evaluation.
 
     Attributes:
         evaluation_value (google.cloud.asset_v1.types.ConditionEvaluation.EvaluationValue):
@@ -1232,7 +1397,7 @@ class ConditionEvaluation(proto.Message):
             CONDITIONAL (3):
                 The evaluation result is ``conditional`` when the condition
                 expression contains variables that are either missing input
-                values or have not been supported by Analyzer yet.
+                values or have not been supported by Policy Analyzer yet.
         """
         EVALUATION_VALUE_UNSPECIFIED = 0
         TRUE = 1
@@ -1340,10 +1505,10 @@ class IamPolicyAnalysisResult(proto.Message):
 
         Attributes:
             name (str):
-                The identity name in any form of members appear in `IAM
+                The identity of members, formatted as appear in an `IAM
                 policy
-                binding <https://cloud.google.com/iam/reference/rest/v1/Binding>`__,
-                such as:
+                binding <https://cloud.google.com/iam/reference/rest/v1/Binding>`__.
+                For example, they might be formatted like the following:
 
                 - user:foo@google.com
                 - group:group1@google.com
@@ -1351,7 +1516,6 @@ class IamPolicyAnalysisResult(proto.Message):
                 - projectOwner:some_project_id
                 - domain:google.com
                 - allUsers
-                - etc.
             analysis_state (google.cloud.asset_v1.types.IamPolicyAnalysisState):
                 The analysis state of this identity.
         """
