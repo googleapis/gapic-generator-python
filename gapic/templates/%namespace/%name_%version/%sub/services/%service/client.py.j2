@@ -15,7 +15,7 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}{% if service.has_resumable_upload %}BinaryIO, {% endif %}Sequence, Tuple, Type, Union, cast
 {% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
 import uuid
 {% endif %}

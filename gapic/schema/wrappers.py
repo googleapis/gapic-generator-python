@@ -1937,6 +1937,26 @@ class Method:
         """Return True if this method has no return value, False otherwise."""
         return self.output.ident.proto == "google.protobuf.Empty"
 
+    @property
+    def is_resumable_upload(self) -> bool:
+        fullMethodName = self.ident.proto
+        if fullMethodName.startswith("google.ads.googleads.v") and fullMethodName.endswith("YouTubeVideoUploadService.CreateYouTubeVideoUpload"):
+            if any(
+                [
+                    self.client_streaming,
+                    self.server_streaming,
+                    self.lro,
+                    self.extended_lro,
+                    self.paged_result_field,
+                ]
+            ):
+                raise ValueError(
+                    f"Method {self.ident.proto} is a resumable upload but "
+                    "also has other features which are mutually exclusive."
+                )
+            return True
+        return False
+
     def with_context(
         self,
         *,
@@ -2179,6 +2199,11 @@ class Service:
     @property
     def has_extended_lro(self) -> bool:
         return any(m.extended_lro for m in self.methods.values())
+
+    @property
+    def has_resumable_upload(self) -> bool:
+        """Return whether the service has a resumable upload method."""
+        return any(m.is_resumable_upload for m in self.methods.values())
 
     @property
     def has_pagers(self) -> bool:
