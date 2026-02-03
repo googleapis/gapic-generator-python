@@ -149,7 +149,13 @@ def lint(session):
     session.install("flake8", RUFF_VERSION)
 
     # 2. Check formatting
-    session.run("ruff", "format", "--check", "--line-length=88", *LINT_PATHS)
+    session.run(
+        "ruff", "format",
+        "--check",
+        "--target-version=py38",
+        "--line-length=88", 
+        *LINT_PATHS,
+    )
 
 
 {% if api.naming.module_namespace %}
@@ -166,7 +172,12 @@ def blacken(session):
     
     # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
     session.install(RUFF_VERSION)
-    session.run("ruff", "format", "--line-length=88", *LINT_PATHS)
+    session.run(
+        "ruff", "format",
+        "--target-version=py38",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -184,6 +195,7 @@ def format(session):
         "ruff", "check",
         "--select", "I",
         "--fix",
+        "--target-version=py38",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
@@ -191,6 +203,7 @@ def format(session):
     # 3. Run Ruff to format code
     session.run(
         "ruff", "format",
+        "--target-version=py38",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
