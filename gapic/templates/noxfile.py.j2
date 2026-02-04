@@ -152,6 +152,9 @@ def lint(session):
     session.run(
         "ruff", "format",
         "--check",
+        {#  TODO(https://github.com/googleapis/gapic-generator-python/issues/2557): 
+            Remove target version once support is dropped for Python 3.8.
+        #}
         "--target-version=py38",
         "--line-length=88", 
         *LINT_PATHS,
@@ -174,6 +177,9 @@ def blacken(session):
     session.install(RUFF_VERSION)
     session.run(
         "ruff", "format",
+        {#  TODO(https://github.com/googleapis/gapic-generator-python/issues/2557): 
+            Remove target version once support is dropped for Python 3.8.
+        #}
         "--target-version=py38",
         "--line-length=88",
         *LINT_PATHS,
@@ -195,6 +201,9 @@ def format(session):
         "ruff", "check",
         "--select", "I",
         "--fix",
+        {#  TODO(https://github.com/googleapis/gapic-generator-python/issues/2557): 
+            Remove target version once support is dropped for Python 3.8.
+        #}
         "--target-version=py38",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
@@ -203,6 +212,9 @@ def format(session):
     # 3. Run Ruff to format code
     session.run(
         "ruff", "format",
+        {#  TODO(https://github.com/googleapis/gapic-generator-python/issues/2557): 
+            Remove target version once support is dropped for Python 3.8.
+        #}
         "--target-version=py38",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
