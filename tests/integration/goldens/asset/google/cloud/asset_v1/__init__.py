@@ -95,7 +95,6 @@ from .types.asset_service import ContentType
 from .types.assets import Asset
 from .types.assets import AttachedResource
 from .types.assets import ConditionEvaluation
-from .types.assets import EffectiveTagDetails
 from .types.assets import IamPolicyAnalysisResult
 from .types.assets import IamPolicyAnalysisState
 from .types.assets import IamPolicySearchResult
@@ -106,7 +105,6 @@ from .types.assets import RelatedResources
 from .types.assets import RelationshipAttributes
 from .types.assets import Resource
 from .types.assets import ResourceSearchResult
-from .types.assets import Tag
 from .types.assets import TemporalAsset
 from .types.assets import TimeWindow
 from .types.assets import VersionedResource
@@ -226,7 +224,6 @@ __all__ = (
 'CreateSavedQueryRequest',
 'DeleteFeedRequest',
 'DeleteSavedQueryRequest',
-'EffectiveTagDetails',
 'ExportAssetsRequest',
 'ExportAssetsResponse',
 'Feed',
@@ -271,7 +268,6 @@ __all__ = (
 'SearchAllResourcesResponse',
 'TableFieldSchema',
 'TableSchema',
-'Tag',
 'TemporalAsset',
 'TimeWindow',
 'UpdateFeedRequest',
