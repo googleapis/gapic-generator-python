@@ -168,7 +168,7 @@ def lint(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """(Deprecated) Legacy session. Please use 'nox -s format'."""
-    session.log("WARNING: The 'blacken' session is deprecated and will be removed in the next release. Please use 'nox -s format' in the future.")
+    session.log("WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future.")
     
     # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
     session.install(RUFF_VERSION)
