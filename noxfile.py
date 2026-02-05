@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Helpful notes for local usage:
+#   unset PYENV_VERSION
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   PIP_INDEX_URL=https://pypi.org/simple nox
+
 from __future__ import absolute_import
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
