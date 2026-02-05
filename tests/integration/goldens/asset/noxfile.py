@@ -155,7 +155,7 @@ def lint(session):
     session.run(
         "ruff", "format",
         "--check",
-        "--target-version=py38",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
     )
@@ -172,7 +172,7 @@ def blacken(session):
     session.install(RUFF_VERSION)
     session.run(
         "ruff", "format",
-        "--target-version=py38",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
     )
@@ -193,7 +193,7 @@ def format(session):
         "ruff", "check",
         "--select", "I",
         "--fix",
-        "--target-version=py38",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
@@ -201,7 +201,7 @@ def format(session):
     # 3. Run Ruff to format code
     session.run(
         "ruff", "format",
-        "--target-version=py38",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",  # Standard Black line length
         *LINT_PATHS,
     )
