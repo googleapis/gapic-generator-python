@@ -124,17 +124,8 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
-<<<<<<< HEAD
-<<<<<<< HEAD
         sa_info_func = EventarcClient.from_service_account_info.__func__  # type: ignore
         return sa_info_func(EventarcAsyncClient, info, *args, **kwargs)
-=======
-        return EventarcClient.from_service_account_info.__func__(EventarcAsyncClient, info, *args, **kwargs)  # type: ignore # fmt: skip
->>>>>>> 70d9f452 (update goldens)
-=======
-        sa_info_func = EventarcClient.from_service_account_info.__func__  # type: ignore
-        return sa_info_func(EventarcAsyncClient, info, *args, **kwargs)
->>>>>>> 10a19604 (fix line length)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -150,17 +141,8 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
-<<<<<<< HEAD
-<<<<<<< HEAD
         sa_file_func = EventarcClient.from_service_account_file.__func__  # type: ignore
         return sa_file_func(EventarcAsyncClient, filename, *args, **kwargs)
-=======
-        return EventarcClient.from_service_account_file.__func__(EventarcAsyncClient, filename, *args, **kwargs)  # type: ignore # fmt: skip
->>>>>>> 70d9f452 (update goldens)
-=======
-        sa_file_func = EventarcClient.from_service_account_file.__func__  # type: ignore
-        return sa_file_func(EventarcAsyncClient, filename, *args, **kwargs)
->>>>>>> 10a19604 (fix line length)
 
     from_service_account_json = from_service_account_file
 

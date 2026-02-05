@@ -114,17 +114,8 @@ class CloudRedisAsyncClient:
         Returns:
             CloudRedisAsyncClient: The constructed client.
         """
-<<<<<<< HEAD
-<<<<<<< HEAD
         sa_info_func = CloudRedisClient.from_service_account_info.__func__  # type: ignore
         return sa_info_func(CloudRedisAsyncClient, info, *args, **kwargs)
-=======
-        return CloudRedisClient.from_service_account_info.__func__(CloudRedisAsyncClient, info, *args, **kwargs)  # type: ignore # fmt: skip
->>>>>>> 70d9f452 (update goldens)
-=======
-        sa_info_func = CloudRedisClient.from_service_account_info.__func__  # type: ignore
-        return sa_info_func(CloudRedisAsyncClient, info, *args, **kwargs)
->>>>>>> 10a19604 (fix line length)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -140,17 +131,8 @@ class CloudRedisAsyncClient:
         Returns:
             CloudRedisAsyncClient: The constructed client.
         """
-<<<<<<< HEAD
-<<<<<<< HEAD
         sa_file_func = CloudRedisClient.from_service_account_file.__func__  # type: ignore
         return sa_file_func(CloudRedisAsyncClient, filename, *args, **kwargs)
-=======
-        return CloudRedisClient.from_service_account_file.__func__(CloudRedisAsyncClient, filename, *args, **kwargs)  # type: ignore # fmt: skip
->>>>>>> 70d9f452 (update goldens)
-=======
-        sa_file_func = CloudRedisClient.from_service_account_file.__func__  # type: ignore
-        return sa_file_func(CloudRedisAsyncClient, filename, *args, **kwargs)
->>>>>>> 10a19604 (fix line length)
 
     from_service_account_json = from_service_account_file
 
