@@ -27,10 +27,12 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 
-from requests import __version__ as requests_version
 import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
+from urllib.parse import urlencode
 import warnings
+
+from requests import __version__ as requests_version
 
 {{ shared_macros.operations_mixin_imports(api, service, opts) }}
 
