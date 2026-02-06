@@ -35,8 +35,8 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.iam.credentials_v1.types import common
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from .transports.base import IAMCredentialsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import IAMCredentialsGrpcAsyncIOTransport
 from .client import IAMCredentialsClient
@@ -97,7 +97,8 @@ class IAMCredentialsAsyncClient:
         Returns:
             IAMCredentialsAsyncClient: The constructed client.
         """
-        return IAMCredentialsClient.from_service_account_info.__func__(IAMCredentialsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = IAMCredentialsClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(IAMCredentialsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -113,7 +114,8 @@ class IAMCredentialsAsyncClient:
         Returns:
             IAMCredentialsAsyncClient: The constructed client.
         """
-        return IAMCredentialsClient.from_service_account_file.__func__(IAMCredentialsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = IAMCredentialsClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(IAMCredentialsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
