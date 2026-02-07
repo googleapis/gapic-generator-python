@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.30.7](https://github.com/googleapis/gapic-generator-python/compare/v1.30.6...v1.30.7) (2026-02-05)
+
+
+### Bug Fixes
+
+* updates tests for ListValue response fields (#2532) ([cb659ad2ba5b1a169b9acb5f9055e5ee003f84bd](https://github.com/googleapis/gapic-generator-python/commit/cb659ad2ba5b1a169b9acb5f9055e5ee003f84bd))
+
+## [1.30.6](https://github.com/googleapis/gapic-generator-python/compare/v1.30.5...v1.30.6) (2026-01-30)
+
+
+### Bug Fixes
+
+* fix incorrect REST request serialization (#2549) ([46e765e5fa2677b5b0d5c85ae5bdad495f9f7e60](https://github.com/googleapis/gapic-generator-python/commit/46e765e5fa2677b5b0d5c85ae5bdad495f9f7e60))
+* filter sphinx warnings related to adding a new line after lists (#2533) ([ae0a9e817513c6d4d03fc86685f66be8d9699862](https://github.com/googleapis/gapic-generator-python/commit/ae0a9e817513c6d4d03fc86685f66be8d9699862))
+
 ## [1.30.5](https://github.com/googleapis/gapic-generator-python/compare/v1.30.4...v1.30.5) (2026-01-26)
 
 
