@@ -97,7 +97,9 @@ class IAMCredentialsAsyncClient:
         Returns:
             IAMCredentialsAsyncClient: The constructed client.
         """
-        sa_info_func = IAMCredentialsClient.from_service_account_info.__func__  # type: ignore
+        sa_info_func = (
+            IAMCredentialsClient.from_service_account_info.__func__  # type: ignore
+        )
         return sa_info_func(IAMCredentialsAsyncClient, info, *args, **kwargs)
 
     @classmethod

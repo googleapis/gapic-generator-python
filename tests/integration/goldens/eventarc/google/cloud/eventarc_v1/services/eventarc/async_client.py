@@ -124,7 +124,9 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
-        sa_info_func = EventarcClient.from_service_account_info.__func__  # type: ignore
+        sa_info_func = (
+            EventarcClient.from_service_account_info.__func__  # type: ignore
+        )
         return sa_info_func(EventarcAsyncClient, info, *args, **kwargs)
 
     @classmethod

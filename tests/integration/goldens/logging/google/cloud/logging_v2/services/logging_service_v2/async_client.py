@@ -89,7 +89,9 @@ class LoggingServiceV2AsyncClient:
         Returns:
             LoggingServiceV2AsyncClient: The constructed client.
         """
-        sa_info_func = LoggingServiceV2Client.from_service_account_info.__func__  # type: ignore
+        sa_info_func = (
+            LoggingServiceV2Client.from_service_account_info.__func__  # type: ignore
+        )
         return sa_info_func(LoggingServiceV2AsyncClient, info, *args, **kwargs)
 
     @classmethod

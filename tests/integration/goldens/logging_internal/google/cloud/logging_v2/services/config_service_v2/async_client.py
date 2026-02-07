@@ -104,7 +104,9 @@ class BaseConfigServiceV2AsyncClient:
         Returns:
             BaseConfigServiceV2AsyncClient: The constructed client.
         """
-        sa_info_func = BaseConfigServiceV2Client.from_service_account_info.__func__  # type: ignore
+        sa_info_func = (
+            BaseConfigServiceV2Client.from_service_account_info.__func__  # type: ignore
+        )
         return sa_info_func(BaseConfigServiceV2AsyncClient, info, *args, **kwargs)
 
     @classmethod

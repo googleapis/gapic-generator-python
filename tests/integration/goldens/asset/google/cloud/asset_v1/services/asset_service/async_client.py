@@ -106,7 +106,9 @@ class AssetServiceAsyncClient:
         Returns:
             AssetServiceAsyncClient: The constructed client.
         """
-        sa_info_func = AssetServiceClient.from_service_account_info.__func__  # type: ignore
+        sa_info_func = (
+            AssetServiceClient.from_service_account_info.__func__  # type: ignore
+        )
         return sa_info_func(AssetServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
