@@ -123,7 +123,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
         m = mtls_endpoint_re.match(api_endpoint)
         if m is None:
-            # could not parse api_endpoint; return as-is
+            # Could not parse api_endpoint; return as-is.
             return api_endpoint
 
         name, mtls, sandbox, googledomain = m.groups()

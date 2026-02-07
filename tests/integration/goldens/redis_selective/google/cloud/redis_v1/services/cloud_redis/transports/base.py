@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 import abc
-from typing import Any, Awaitable, Callable, Dict, Optional, Sequence, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 from google.cloud.redis_v1 import gapic_version as package_version
 
@@ -120,7 +120,7 @@ class CloudRedisTransport(abc.ABC):
             host += ':443'
         self._host = host
 
-        self._wrapped_methods: Dict[Callable[..., Any], Callable[..., Any]] = {}
+        self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
