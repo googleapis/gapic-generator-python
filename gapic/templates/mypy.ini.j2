@@ -1,13 +1,12 @@
 [mypy]
 python_version = 3.14
 namespace_packages = True
+ignore_missing_imports = False
 
-# FIX: Prevents failure when dependencies (like google-iam) lack type hints
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2563):
+# Dependencies that historically lacks py.typed markers
+[mypy-google.iam.*]
 ignore_missing_imports = True
-
-# FIX: Silences the "note: By default the bodies of untyped functions are not checked"
-# This keeps CI logs clean and focused on actual errors.
-check_untyped_defs = False
 
 # Helps mypy navigate the 'google' namespace more reliably in 3.10+
 explicit_package_bases = True
