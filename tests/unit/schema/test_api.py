@@ -4499,3 +4499,55 @@ def test_method_settings_invalid_multiple_issues():
     assert re.match(".*squid.*not.*uuid4.*", error_yaml[method_example1][1].lower())
     assert re.match(".*octopus.*not.*uuid4.*", error_yaml[method_example1][2].lower())
     assert re.match(".*method.*not found.*", error_yaml[method_example2][0].lower())
+
+def test_api_has_resumable_upload():
+    # Setup a service with a method that is a resumable upload.
+    # The implementation of is_resumable_upload currently hardcodes certain Ads methods.
+    fd = make_file_pb2(
+        name="foo.proto",
+        package="google.ads.googleads.v555.services",
+        messages=(
+            make_message_pb2(name="CreateYouTubeVideoUploadRequest"),
+            make_message_pb2(name="CreateYouTubeVideoUploadResponse"),
+        ),
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="YouTubeVideoUploadService",
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name="CreateYouTubeVideoUpload",
+                        input_type="google.ads.googleads.v555.services.CreateYouTubeVideoUploadRequest",
+                        output_type="google.ads.googleads.v555.services.CreateYouTubeVideoUploadResponse",
+                    ),
+                ),
+            ),
+        ),
+    )
+    api_schema = api.API.build([fd], package="google.ads.googleads.v555.services")
+    assert api_schema.has_resumable_upload
+
+
+def test_api_not_has_resumable_upload():
+    # Setup a service with a method that is NOT a resumable upload.
+    fd = make_file_pb2(
+        name="foo.proto",
+        package="google.example.v1",
+        messages=(
+            make_message_pb2(name="GetFooRequest"),
+            make_message_pb2(name="GetFooResponse"),
+        ),
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="FooService",
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name="GetFoo",
+                        input_type="google.example.v1.GetFooRequest",
+                        output_type="google.example.v1.GetFooResponse",
+                    ),
+                ),
+            ),
+        ),
+    )
+    api_schema = api.API.build([fd], package="google.example.v1")
+    assert not api_schema.has_resumable_upload

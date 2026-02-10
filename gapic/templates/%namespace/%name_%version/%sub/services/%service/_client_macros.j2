@@ -25,7 +25,7 @@
             {{ field.name }}: Optional[{{ field.ident }}] = None,
             {% endfor %}
             {% if method.is_resumable_upload %}
-            stream: Optional[BinaryIO] = None,
+            stream: BinaryIO,
             {% endif %}
             {% else %}
             requests: Optional[Iterator[{{ method.input.ident }}]] = None,
@@ -148,6 +148,9 @@
             {% endif %} {# method.client_streaming #}
 
         {% if method.is_resumable_upload %}
+        if stream is None:
+            raise ValueError("stream is required for resumable upload methods")
+
 {{ shared_macros.create_metadata(method) }}
 {{ shared_macros.add_api_version_header_to_metadata(service.version) }}
 {{ shared_macros.auto_populate_uuid4_fields(api, method) }}
