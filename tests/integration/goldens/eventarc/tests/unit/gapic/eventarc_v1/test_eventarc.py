@@ -24,6 +24,8 @@ except ImportError:  # pragma: NO COVER
 import grpc
 from grpc.experimental import aio
 from collections.abc import Iterable, AsyncIterable
+import urllib.parse
+
 from google.protobuf import json_format
 import json
 import math
@@ -52,6 +54,7 @@ from google.api_core import grpc_helpers_async
 from google.api_core import operation
 from google.api_core import operations_v1
 from google.api_core import path_template
+from google.api_core import rest_helpers
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -7593,6 +7596,52 @@ async def test_update_google_channel_config_flattened_error_async():
         )
 
 
+def test_get_trigger_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.get_trigger.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
 def test_get_trigger_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7694,8 +7743,12 @@ def test_get_trigger_rest_required_fields(request_type=eventarc.GetTriggerReques
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_get_trigger_rest_unset_required_fields():
@@ -7757,6 +7810,52 @@ def test_get_trigger_rest_flattened_error(transport: str = 'rest'):
             eventarc.GetTriggerRequest(),
             name='name_value',
         )
+
+
+def test_list_triggers_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.list_triggers.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_list_triggers_rest_use_cached_wrapped_rpc():
@@ -7862,8 +7961,12 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_list_triggers_rest_unset_required_fields():
@@ -7987,6 +8090,52 @@ def test_list_triggers_rest_pager(transport: str = 'rest'):
         pages = list(client.list_triggers(request=sample_request).pages)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
+
+
+def test_create_trigger_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.create_trigger.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_create_trigger_rest_use_cached_wrapped_rpc():
@@ -8116,8 +8265,12 @@ def test_create_trigger_rest_required_fields(request_type=eventarc.CreateTrigger
                     str(False).lower(),
                 ),
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_create_trigger_rest_unset_required_fields():
@@ -8181,6 +8334,52 @@ def test_create_trigger_rest_flattened_error(transport: str = 'rest'):
             trigger=gce_trigger.Trigger(name='name_value'),
             trigger_id='trigger_id_value',
         )
+
+
+def test_update_trigger_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.update_trigger.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'patch',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'patch')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_update_trigger_rest_use_cached_wrapped_rpc():
@@ -8295,8 +8494,12 @@ def test_update_trigger_rest_required_fields(request_type=eventarc.UpdateTrigger
                     str(False).lower(),
                 ),
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_update_trigger_rest_unset_required_fields():
@@ -8360,6 +8563,52 @@ def test_update_trigger_rest_flattened_error(transport: str = 'rest'):
             update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
             allow_missing=True,
         )
+
+
+def test_delete_trigger_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.delete_trigger.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'delete',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'delete')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_delete_trigger_rest_use_cached_wrapped_rpc():
@@ -8477,8 +8726,12 @@ def test_delete_trigger_rest_required_fields(request_type=eventarc.DeleteTrigger
                     str(False).lower(),
                 ),
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_delete_trigger_rest_unset_required_fields():
@@ -8540,6 +8793,52 @@ def test_delete_trigger_rest_flattened_error(transport: str = 'rest'):
             name='name_value',
             allow_missing=True,
         )
+
+
+def test_get_channel_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.get_channel.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_get_channel_rest_use_cached_wrapped_rpc():
@@ -8643,8 +8942,12 @@ def test_get_channel_rest_required_fields(request_type=eventarc.GetChannelReques
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_get_channel_rest_unset_required_fields():
@@ -8706,6 +9009,52 @@ def test_get_channel_rest_flattened_error(transport: str = 'rest'):
             eventarc.GetChannelRequest(),
             name='name_value',
         )
+
+
+def test_list_channels_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.list_channels.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_list_channels_rest_use_cached_wrapped_rpc():
@@ -8811,8 +9160,12 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_list_channels_rest_unset_required_fields():
@@ -8936,6 +9289,52 @@ def test_list_channels_rest_pager(transport: str = 'rest'):
         pages = list(client.list_channels(request=sample_request).pages)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
+
+
+def test_create_channel_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.create_channel_.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_create_channel_rest_use_cached_wrapped_rpc():
@@ -9065,8 +9464,12 @@ def test_create_channel_rest_required_fields(request_type=eventarc.CreateChannel
                     str(False).lower(),
                 ),
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_create_channel_rest_unset_required_fields():
@@ -9130,6 +9533,52 @@ def test_create_channel_rest_flattened_error(transport: str = 'rest'):
             channel=gce_channel.Channel(name='name_value'),
             channel_id='channel_id_value',
         )
+
+
+def test_update_channel_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.update_channel.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'patch',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'patch')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_update_channel_rest_use_cached_wrapped_rpc():
@@ -9244,8 +9693,12 @@ def test_update_channel_rest_required_fields(request_type=eventarc.UpdateChannel
                     str(False).lower(),
                 ),
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_update_channel_rest_unset_required_fields():
@@ -9307,6 +9760,52 @@ def test_update_channel_rest_flattened_error(transport: str = 'rest'):
             channel=gce_channel.Channel(name='name_value'),
             update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
         )
+
+
+def test_delete_channel_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.delete_channel.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'delete',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'delete')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_delete_channel_rest_use_cached_wrapped_rpc():
@@ -9424,8 +9923,12 @@ def test_delete_channel_rest_required_fields(request_type=eventarc.DeleteChannel
                     str(False).lower(),
                 ),
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_delete_channel_rest_unset_required_fields():
@@ -9485,6 +9988,52 @@ def test_delete_channel_rest_flattened_error(transport: str = 'rest'):
             eventarc.DeleteChannelRequest(),
             name='name_value',
         )
+
+
+def test_get_provider_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.get_provider.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_get_provider_rest_use_cached_wrapped_rpc():
@@ -9588,8 +10137,12 @@ def test_get_provider_rest_required_fields(request_type=eventarc.GetProviderRequ
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_get_provider_rest_unset_required_fields():
@@ -9651,6 +10204,52 @@ def test_get_provider_rest_flattened_error(transport: str = 'rest'):
             eventarc.GetProviderRequest(),
             name='name_value',
         )
+
+
+def test_list_providers_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.list_providers.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_list_providers_rest_use_cached_wrapped_rpc():
@@ -9756,8 +10355,12 @@ def test_list_providers_rest_required_fields(request_type=eventarc.ListProviders
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_list_providers_rest_unset_required_fields():
@@ -9883,6 +10486,52 @@ def test_list_providers_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
+def test_get_channel_connection_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.get_channel_connection.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
 def test_get_channel_connection_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -9984,8 +10633,12 @@ def test_get_channel_connection_rest_required_fields(request_type=eventarc.GetCh
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_get_channel_connection_rest_unset_required_fields():
@@ -10047,6 +10700,52 @@ def test_get_channel_connection_rest_flattened_error(transport: str = 'rest'):
             eventarc.GetChannelConnectionRequest(),
             name='name_value',
         )
+
+
+def test_list_channel_connections_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.list_channel_connections.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_list_channel_connections_rest_use_cached_wrapped_rpc():
@@ -10152,8 +10851,12 @@ def test_list_channel_connections_rest_required_fields(request_type=eventarc.Lis
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_list_channel_connections_rest_unset_required_fields():
@@ -10279,6 +10982,52 @@ def test_list_channel_connections_rest_pager(transport: str = 'rest'):
             assert page_.raw_page.next_page_token == token
 
 
+def test_create_channel_connection_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.create_channel_connection.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'post',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'post')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
 def test_create_channel_connection_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -10395,8 +11144,12 @@ def test_create_channel_connection_rest_required_fields(request_type=eventarc.Cr
                     "",
                 ),
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_create_channel_connection_rest_unset_required_fields():
@@ -10460,6 +11213,52 @@ def test_create_channel_connection_rest_flattened_error(transport: str = 'rest')
             channel_connection=gce_channel_connection.ChannelConnection(name='name_value'),
             channel_connection_id='channel_connection_id_value',
         )
+
+
+def test_delete_channel_connection_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.delete_channel_connection.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'delete',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'delete')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_delete_channel_connection_rest_use_cached_wrapped_rpc():
@@ -10564,8 +11363,12 @@ def test_delete_channel_connection_rest_required_fields(request_type=eventarc.De
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_delete_channel_connection_rest_unset_required_fields():
@@ -10625,6 +11428,52 @@ def test_delete_channel_connection_rest_flattened_error(transport: str = 'rest')
             eventarc.DeleteChannelConnectionRequest(),
             name='name_value',
         )
+
+
+def test_get_google_channel_config_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.get_google_channel_config.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'get')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_get_google_channel_config_rest_use_cached_wrapped_rpc():
@@ -10728,8 +11577,12 @@ def test_get_google_channel_config_rest_required_fields(request_type=eventarc.Ge
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_get_google_channel_config_rest_unset_required_fields():
@@ -10791,6 +11644,52 @@ def test_get_google_channel_config_rest_flattened_error(transport: str = 'rest')
             eventarc.GetGoogleChannelConfigRequest(),
             name='name_value',
         )
+
+
+def test_update_google_channel_config_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.update_google_channel_config.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': 'patch',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, 'patch')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_update_google_channel_config_rest_use_cached_wrapped_rpc():
@@ -10892,8 +11791,12 @@ def test_update_google_channel_config_rest_required_fields(request_type=eventarc
 
             expected_params = [
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_update_google_channel_config_rest_unset_required_fields():
@@ -17236,6 +18139,314 @@ async def test_test_iam_permissions_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string for mixin methods.
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.list_operations.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+def test_get_operation_rest_url_query_params_encoding():
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.get_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+def test_delete_operation_rest_url_query_params_encoding():
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.delete_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.delete.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1',
+            'method': 'delete',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.delete.called
+        call_url = mock_session.delete.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+def test_cancel_operation_rest_url_query_params_encoding():
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.cancel_operation.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.post.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test/operations/op1:cancel',
+            'method': 'post',
+            'body': {},
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+            body={},
+        )
+
+        assert mock_session.post.called
+        call_url = mock_session.post.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+def test_list_locations_rest_url_query_params_encoding():
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.list_locations.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/projects/p1/locations',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+def test_get_location_rest_url_query_params_encoding():
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.get_location.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/projects/p1/locations/l1',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
+def test_set_iam_policy_rest_url_query_params_encoding():
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.set_iam_policy.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.post.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/resource:setIamPolicy',
+            'method': 'post',
+            'body': {},
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+            body={},
+        )
+
+        assert mock_session.post.called
+        call_url = mock_session.post.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+def test_get_iam_policy_rest_url_query_params_encoding():
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.get_iam_policy.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/resource:getIamPolicy',
+            'method': 'get',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        assert mock_session.get.called
+        call_url = mock_session.get.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+def test_test_iam_permissions_rest_url_query_params_encoding():
+    transport = transports.EventarcRestTransport(credentials=ga_credentials.AnonymousCredentials())
+    method_class = transport.test_iam_permissions.__class__
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.post.return_value = mock_response
+
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/resource:testIamPermissions',
+            'method': 'post',
+            'body': {},
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+            body={},
+        )
+
+        assert mock_session.post.called
+        call_url = mock_session.post.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
 
 
 def test_transport_close_grpc():

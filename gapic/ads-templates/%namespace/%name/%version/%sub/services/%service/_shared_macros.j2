@@ -171,16 +171,23 @@ def _get_http_options():
     timeout,
     transcoded_request,
     body=None):
-    
+
     uri = transcoded_request['uri']
     method = transcoded_request['method']
     headers = dict(metadata)
     headers['Content-Type'] = 'application/json'
+    # Build query string manually to avoid URL-encoding special characters like '$'.
+    # The `requests` library encodes '$' as '%24' when using the `params` argument,
+    # which causes API errors for parameters like '$alt'. See:
+    # https://github.com/googleapis/gapic-generator-python/issues/2514
+    _query_params = rest_helpers.flatten_query_params(query_params, strict=True)
+    _request_url = "{host}{uri}".format(host=host, uri=uri)
+    if _query_params:
+        _request_url = "{}?{}".format(_request_url, urlencode(_query_params, safe="$"))
     response = {{ await_prefix }}getattr(session, method)(
-        "{host}{uri}".format(host=host, uri=uri),
+        _request_url,
         timeout=timeout,
         headers=headers,
-        params=rest_helpers.flatten_query_params(query_params, strict=True),
         {% if body_spec %}
         data=body,
         {% endif %}

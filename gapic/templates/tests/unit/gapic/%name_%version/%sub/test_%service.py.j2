@@ -21,6 +21,8 @@ import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable, AsyncIterable
+import urllib.parse
+
 from google.protobuf import json_format
 {% endif %}
 import json
@@ -73,6 +75,7 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import path_template
+from google.api_core import rest_helpers
 from google.api_core import retry as retries
 {% if service.has_lro or service.has_extended_lro %}
 from google.api_core import future
@@ -1116,10 +1119,10 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
 
 {% for method in service.methods.values() if 'rest' in opts.transport %}
 {% if method.extended_lro %}
-{{ test_macros.rest_required_tests(method, service, numeric_enums=opts.rest_numeric_enums, full_extended_lro=True) }}
+{{ test_macros.rest_required_tests(method, service, numeric_enums=opts.rest_numeric_enums, full_extended_lro=True, rest_async_io_enabled=rest_async_io_enabled) }}
 
 {% endif %}
-{{ test_macros.rest_required_tests(method, service, numeric_enums=opts.rest_numeric_enums) }}
+{{ test_macros.rest_required_tests(method, service, numeric_enums=opts.rest_numeric_enums, rest_async_io_enabled=rest_async_io_enabled) }}
 
 {% endfor -%} {#- method in methods for rest #}
 
