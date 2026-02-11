@@ -31,10 +31,12 @@ nox.options.error_on_missing_interpreters = True
 
 showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
-BLACK_VERSION = "black==25.1.0"
-BLACK_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
-# exclude golden files and generated protobuf code
-BLACK_EXCLUDES = "|".join([".*golden.*", ".*pb2.py"])
+RUFF_VERSION = "ruff==0.14.14"
+LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
+# Ruff uses globs for excludes (different from Black's regex)
+# .*golden.* -> *golden*
+# .*pb2.py -> *pb2.py
+RUFF_EXCLUDES = "*golden*,*pb2.py,*pb2.pyi"
 
 ALL_PYTHON = (
     "3.7",
@@ -55,7 +57,10 @@ NEWEST_PYTHON = "3.14"
 def unit(session):
     """Run the unit test suite."""
     session.install(
-        "coverage",
+        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2478):
+        # Temporarily pin coverage to 7.11.0
+        # See https://github.com/nedbat/coveragepy/issues/2077
+        "coverage<=7.11.0",
         "pytest-cov",
         "pytest",
         "pytest-xdist",
@@ -174,6 +179,13 @@ def fragment(session, use_ads_templates=False):
     )
     session.install("-e", ".")
 
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2473):
+    # Warnings emitted from google-api-core starting in 2.28
+    # appear to cause issues when running protoc.
+    # The specific failure is `Plugin output is unparseable`
+    if session.python in ("3.7", "3.8", "3.9", "3.10"):
+        session.install("google-api-core<2.28")
+
     frag_files = (
         [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
     )
@@ -237,6 +249,13 @@ def showcase_library(
     # Install grpcio-tools for protoc
     session.install("grpcio-tools")
 
+    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2473):
+    # Warnings emitted from google-api-core starting in 2.28
+    # appear to cause issues when running protoc.
+    # The specific failure is `Plugin output is unparseable`
+    if session.python in ("3.7", "3.8", "3.9", "3.10"):
+        session.install("google-api-core<2.28")
+
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
         # Download the Showcase descriptor.
@@ -278,7 +297,7 @@ def showcase_library(
                     }
                 ]
                 update_service_yaml = _add_python_settings(tmp_dir, python_settings)
-                session.run("python", "-c" f"{update_service_yaml}")
+                session.run("python", "-c", f"{update_service_yaml}")
             # END TODO section to remove.
         if retry_config:
             session.run(
@@ -739,14 +758,19 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    session.install("flake8", RUFF_VERSION)
+
+    # 2. Check formatting
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
-        *BLACK_PATHS,
-        "--extend-exclude",
-        BLACK_EXCLUDES,
+        *LINT_PATHS,
+        "--exclude",
+        RUFF_EXCLUDES,
     )
+
+    # 3. Run Flake8
     session.run(
         "flake8",
         "gapic",
@@ -756,11 +780,54 @@ def lint(session):
 
 @nox.session(python="3.10")
 def blacken(session):
-    """Run black. Format code to uniform standard."""
-    session.install(BLACK_VERSION)
+    """Run ruff format.
+
+    DEPRECATED: This session now uses Ruff instead of Black.
+    It formats code style only (indentation, quotes, etc).
+    """
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in the next release. Please use 'nox -s format' in the future."
+    )
+
+    session.install(RUFF_VERSION)
+
+    # 1. Format Code (Replaces black)
+    # We do NOT run 'ruff check --select I' here, preserving strict parity.
     session.run(
-        "black",
-        *BLACK_PATHS,
-        "--extend-exclude",
-        BLACK_EXCLUDES,
+        "ruff",
+        "format",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+        "--exclude",
+        RUFF_EXCLUDES,
+    )
+
+
+@nox.session(python=NEWEST_PYTHON)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
     )

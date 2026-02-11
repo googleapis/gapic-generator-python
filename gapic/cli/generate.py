@@ -23,6 +23,7 @@ from google.protobuf.compiler import plugin_pb2
 from gapic import generator
 from gapic.schema import api
 from gapic.utils import Options
+from gapic.utils.cache import generation_cache_context
 
 
 @click.command()
@@ -38,7 +39,7 @@ from gapic.utils import Options
     "--output",
     type=click.File("wb"),
     default=sys.stdout.buffer,
-    help="Where to output the `CodeGeneratorResponse`. " "Defaults to stdout.",
+    help="Where to output the `CodeGeneratorResponse`. Defaults to stdout.",
 )
 def generate(request: typing.BinaryIO, output: typing.BinaryIO) -> None:
     """Generate a full API client description."""
@@ -56,15 +57,23 @@ def generate(request: typing.BinaryIO, output: typing.BinaryIO) -> None:
         [p.package for p in req.proto_file if p.name in req.file_to_generate]
     ).rstrip(".")
 
-    # Build the API model object.
-    # This object is a frozen representation of the whole API, and is sent
-    # to each template in the rendering step.
-    api_schema = api.API.build(req.proto_file, opts=opts, package=package)
+    # Create the generation cache context.
+    # This provides the shared storage for the @cached_proto_context decorator.
+    # 1. Performance: Memoizes `with_context` calls, speeding up generation significantly.
+    # 2. Safety: The decorator uses this storage to "pin" Proto objects in memory.
+    #    This prevents Python's Garbage Collector from deleting objects created during
+    #    `API.build` while `Generator.get_response` is still using their IDs.
+    #    (See `gapic.utils.cache.cached_proto_context` for the specific pinning logic).
+    with generation_cache_context():
+        # Build the API model object.
+        # This object is a frozen representation of the whole API, and is sent
+        # to each template in the rendering step.
+        api_schema = api.API.build(req.proto_file, opts=opts, package=package)
 
-    # Translate into a protobuf CodeGeneratorResponse; this reads the
-    # individual templates and renders them.
-    # If there are issues, error out appropriately.
-    res = generator.Generator(opts).get_response(api_schema, opts)
+        # Translate into a protobuf CodeGeneratorResponse; this reads the
+        # individual templates and renders them.
+        # If there are issues, error out appropriately.
+        res = generator.Generator(opts).get_response(api_schema, opts)
 
     # Output the serialized response.
     output.write(res.SerializeToString())
