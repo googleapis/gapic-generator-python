@@ -284,7 +284,7 @@ def unit(session, protobuf_implementation):
 
 
 def install_systemtest_dependencies(session, *constraints):
-    if session.python >= "3.14":
+    if session.python >= "3.12":
         session.install("--pre", "grpcio>=1.75.1")
     else:
         session.install("--pre", "grpcio<=1.62.2")
@@ -510,7 +510,7 @@ def prerelease_deps(session, protobuf_implementation):
         "google-api-core",
         "google-auth",
         "grpc-google-iam-v1",
-        "grpcio>=1.75.1" if session.python >= "3.14" else "grpcio<=1.62.2",
+        "grpcio>=1.75.1" if session.python >= "3.12" else "grpcio<=1.62.2",
         "grpcio-status",
         "protobuf",
         "proto-plus",
