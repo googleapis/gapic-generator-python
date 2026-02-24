@@ -41,6 +41,7 @@ def test_delete_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -85,6 +86,7 @@ def test_delete_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -125,6 +127,7 @@ def test_delete_operation_from_dict():
         )
         {% endif %}
         call.assert_called()
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -160,6 +163,7 @@ def test_delete_operation_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.DeleteOperationRequest()
+
 {% endfor %}
 
 {% endif %} {# DeleteOperation #}
@@ -205,6 +209,7 @@ def test_cancel_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -249,6 +254,7 @@ def test_cancel_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -289,6 +295,7 @@ def test_cancel_operation_from_dict():
         )
         {% endif %}
         call.assert_called()
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -324,6 +331,7 @@ def test_cancel_operation_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.CancelOperationRequest()
+
 {% endfor %}
 {% endif %} {# CancelOperation #}
 
@@ -368,6 +376,7 @@ def test_wait_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -412,6 +421,7 @@ def test_wait_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -452,6 +462,7 @@ def test_wait_operation_from_dict():
         )
         {% endif %}
         call.assert_called()
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -487,6 +498,7 @@ def test_wait_operation_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.WaitOperationRequest()
+
 {% endfor %}
 
 {% endif %} {# WaitOperation #}
@@ -532,6 +544,7 @@ def test_get_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -576,6 +589,7 @@ def test_get_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -616,6 +630,7 @@ def test_get_operation_from_dict():
         )
         {% endif %}
         call.assert_called()
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -651,6 +666,7 @@ def test_get_operation_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.GetOperationRequest()
+
 {% endfor %}
 
 {% endif %} {# GetOperation #}
@@ -696,6 +712,7 @@ def test_list_operations(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -740,6 +757,7 @@ def test_list_operations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -780,6 +798,7 @@ def test_list_operations_from_dict():
         )
         {% endif %}
         call.assert_called()
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -815,6 +834,7 @@ def test_list_operations_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.ListOperationsRequest()
+
 {% endfor %}
 
 {% endif %} {# ListOperations #}
@@ -866,6 +886,7 @@ def test_list_locations(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.ListLocationsResponse)
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -910,6 +931,7 @@ def test_list_locations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -950,6 +972,7 @@ def test_list_locations_from_dict():
         )
         {% endif %}
         call.assert_called()
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -985,6 +1008,7 @@ def test_list_locations_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == locations_pb2.ListLocationsRequest()
+
 {% endfor %}
 
 {% endif %} {# ListLocations #}
@@ -1032,6 +1056,7 @@ def test_get_location(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.Location)
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -1075,6 +1100,7 @@ def test_get_location_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations/abc",) in kw["metadata"]
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -1115,6 +1141,7 @@ def test_get_location_from_dict():
         )
         {% endif %}
         call.assert_called()
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -1150,6 +1177,7 @@ def test_get_location_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == locations_pb2.GetLocationRequest()
+
 {% endfor %}
 
 {% endif %} {# GetLocation #}
@@ -1204,6 +1232,7 @@ def test_set_iam_policy(transport: str = "grpc"):
     assert response.version == 774
 
     assert response.etag == b"etag_blob"
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -1248,6 +1277,7 @@ def test_set_iam_policy_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+
 {% endfor %}
 
 def test_set_iam_policy_from_dict():
@@ -1774,6 +1804,7 @@ def test_set_iam_policy(transport: str = "grpc"):
     assert response.version == 774
 
     assert response.etag == b"etag_blob"
+
 {% endfor %}
 
 {% for mode in ["", "async"] %}
@@ -1818,6 +1849,7 @@ def test_set_iam_policy_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+
 {% endfor %}
 
 def test_set_iam_policy_from_dict():
