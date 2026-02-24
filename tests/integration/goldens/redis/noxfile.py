@@ -69,6 +69,7 @@ SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
+    "pytest-asyncio"
     "google-cloud-testutils",
 ]
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
