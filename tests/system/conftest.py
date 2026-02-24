@@ -34,6 +34,7 @@ except ImportError:  # pragma: NO COVER
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.showcase import EchoClient
+from google.showcase import SequenceServiceClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
 
@@ -42,6 +43,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
     from google.showcase import EchoAsyncClient
     from google.showcase import IdentityAsyncClient
+    from google.showcase import SequenceServiceAsyncClient
 
     try:
         from google.showcase_v1beta1.services.echo.transports import (
@@ -60,6 +62,14 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = True
     except:
         HAS_ASYNC_REST_IDENTITY_TRANSPORT = False
+    try:
+        from google.showcase_v1beta1.services.seuence.transports import (
+            AsyncSequenceServiceRestTransport,
+        )
+
+        HAS_ASYNC_REST_SEQUENCE_TRANSPORT = True
+    except:
+        HAS_ASYNC_REST_SEQUENCE_TRANSPORT = False
 
     _GRPC_VERSION = grpc.__version__
 
@@ -104,6 +114,21 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             pytest.skip("Skipping test with async rest.")
         return construct_client(
             IdentityAsyncClient,
+            use_mtls,
+            transport_name=transport,
+            channel_creator=(
+                aio.insecure_channel if request.param == "grpc_asyncio" else None
+            ),
+            credentials=async_anonymous_credentials(),
+        )
+
+    @pytest.fixture(params=["grpc_asyncio", "rest_asyncio"])
+    def async_sequence(use_mtls, request, event_loop):
+        transport = request.param
+        if transport == "rest_asyncio" and not HAS_ASYNC_REST_SEQUENCE_TRANSPORT:
+            pytest.skip("Skipping test with async rest.")
+        return construct_client(
+            SequenceServiceAsyncClient,
             use_mtls,
             transport_name=transport,
             channel_creator=(
@@ -248,6 +273,13 @@ def echo_with_universe_credentials_localhost(use_mtls, request):
 @pytest.fixture(params=["grpc", "rest"])
 def identity(use_mtls, request):
     return construct_client(IdentityClient, use_mtls, transport_name=request.param)
+
+
+@pytest.fixture(params=["grpc", "rest"])
+def sequence(use_mtls, request):
+    return construct_client(
+        SequenceServiceClient, use_mtls, transport_name=request.param
+    )
 
 
 @pytest.fixture(params=["grpc", "rest"])
