@@ -16020,6 +16020,7 @@ def test_delete_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
@@ -16045,6 +16046,7 @@ async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert response is None
 
+
 def test_delete_operation_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16068,6 +16070,7 @@ def test_delete_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = EventarcAsyncClient(
@@ -16094,6 +16097,7 @@ async def test_delete_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_delete_operation_from_dict():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16109,6 +16113,7 @@ def test_delete_operation_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = EventarcAsyncClient(
@@ -16127,6 +16132,7 @@ async def test_delete_operation_from_dict_async():
         )
         call.assert_called()
 
+
 def test_delete_operation_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16141,6 +16147,7 @@ def test_delete_operation_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.DeleteOperationRequest()
+
 @pytest.mark.asyncio
 async def test_delete_operation_flattened_async():
     client = EventarcAsyncClient(
@@ -16180,6 +16187,7 @@ def test_cancel_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
@@ -16205,6 +16213,7 @@ async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert response is None
 
+
 def test_cancel_operation_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16228,6 +16237,7 @@ def test_cancel_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = EventarcAsyncClient(
@@ -16254,6 +16264,7 @@ async def test_cancel_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_cancel_operation_from_dict():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16269,6 +16280,7 @@ def test_cancel_operation_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = EventarcAsyncClient(
@@ -16287,6 +16299,7 @@ async def test_cancel_operation_from_dict_async():
         )
         call.assert_called()
 
+
 def test_cancel_operation_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16301,6 +16314,7 @@ def test_cancel_operation_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.CancelOperationRequest()
+
 @pytest.mark.asyncio
 async def test_cancel_operation_flattened_async():
     client = EventarcAsyncClient(
@@ -16340,6 +16354,7 @@ def test_get_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
+
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
@@ -16365,6 +16380,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
 
+
 def test_get_operation_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16388,6 +16404,7 @@ def test_get_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = EventarcAsyncClient(
@@ -16414,6 +16431,7 @@ async def test_get_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_get_operation_from_dict():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16429,6 +16447,7 @@ def test_get_operation_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = EventarcAsyncClient(
@@ -16447,6 +16466,7 @@ async def test_get_operation_from_dict_async():
         )
         call.assert_called()
 
+
 def test_get_operation_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16461,6 +16481,7 @@ def test_get_operation_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.GetOperationRequest()
+
 @pytest.mark.asyncio
 async def test_get_operation_flattened_async():
     client = EventarcAsyncClient(
@@ -16500,6 +16521,7 @@ def test_list_operations(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
+
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
@@ -16525,6 +16547,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
 
+
 def test_list_operations_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16548,6 +16571,7 @@ def test_list_operations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = EventarcAsyncClient(
@@ -16574,6 +16598,7 @@ async def test_list_operations_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_list_operations_from_dict():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16589,6 +16614,7 @@ def test_list_operations_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = EventarcAsyncClient(
@@ -16607,6 +16633,7 @@ async def test_list_operations_from_dict_async():
         )
         call.assert_called()
 
+
 def test_list_operations_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16621,6 +16648,7 @@ def test_list_operations_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.ListOperationsRequest()
+
 @pytest.mark.asyncio
 async def test_list_operations_flattened_async():
     client = EventarcAsyncClient(
@@ -16660,6 +16688,7 @@ def test_list_locations(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.ListLocationsResponse)
+
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
@@ -16685,6 +16714,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.ListLocationsResponse)
 
+
 def test_list_locations_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16708,6 +16738,7 @@ def test_list_locations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = EventarcAsyncClient(
@@ -16734,6 +16765,7 @@ async def test_list_locations_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_list_locations_from_dict():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16749,6 +16781,7 @@ def test_list_locations_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = EventarcAsyncClient(
@@ -16767,6 +16800,7 @@ async def test_list_locations_from_dict_async():
         )
         call.assert_called()
 
+
 def test_list_locations_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16781,6 +16815,7 @@ def test_list_locations_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == locations_pb2.ListLocationsRequest()
+
 @pytest.mark.asyncio
 async def test_list_locations_flattened_async():
     client = EventarcAsyncClient(
@@ -16820,6 +16855,7 @@ def test_get_location(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.Location)
+
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
@@ -16845,6 +16881,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, locations_pb2.Location)
 
+
 def test_get_location_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials())
@@ -16867,6 +16904,7 @@ def test_get_location_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations/abc",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = EventarcAsyncClient(
@@ -16893,6 +16931,7 @@ async def test_get_location_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations/abc",) in kw["metadata"]
 
+
 def test_get_location_from_dict():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16908,6 +16947,7 @@ def test_get_location_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = EventarcAsyncClient(
@@ -16926,6 +16966,7 @@ async def test_get_location_from_dict_async():
         )
         call.assert_called()
 
+
 def test_get_location_flattened():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16940,6 +16981,7 @@ def test_get_location_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == locations_pb2.GetLocationRequest()
+
 @pytest.mark.asyncio
 async def test_get_location_flattened_async():
     client = EventarcAsyncClient(
@@ -16984,6 +17026,7 @@ def test_set_iam_policy(transport: str = "grpc"):
     assert response.version == 774
 
     assert response.etag == b"etag_blob"
+
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = EventarcAsyncClient(
@@ -17015,6 +17058,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
 
     assert response.etag == b"etag_blob"
 
+
 def test_set_iam_policy_field_headers():
     client = EventarcClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17039,6 +17083,7 @@ def test_set_iam_policy_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = EventarcAsyncClient(
@@ -17064,6 +17109,7 @@ async def test_set_iam_policy_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+
 
 def test_set_iam_policy_from_dict():
     client = EventarcClient(

@@ -3870,6 +3870,7 @@ def test_cancel_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
+
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = LoggingServiceV2AsyncClient(
@@ -3895,6 +3896,7 @@ async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert response is None
 
+
 def test_cancel_operation_field_headers():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3918,6 +3920,7 @@ def test_cancel_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = LoggingServiceV2AsyncClient(
@@ -3944,6 +3947,7 @@ async def test_cancel_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_cancel_operation_from_dict():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3959,6 +3963,7 @@ def test_cancel_operation_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = LoggingServiceV2AsyncClient(
@@ -3977,6 +3982,7 @@ async def test_cancel_operation_from_dict_async():
         )
         call.assert_called()
 
+
 def test_cancel_operation_flattened():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3991,6 +3997,7 @@ def test_cancel_operation_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.CancelOperationRequest()
+
 @pytest.mark.asyncio
 async def test_cancel_operation_flattened_async():
     client = LoggingServiceV2AsyncClient(
@@ -4030,6 +4037,7 @@ def test_get_operation(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
+
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = LoggingServiceV2AsyncClient(
@@ -4055,6 +4063,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.Operation)
 
+
 def test_get_operation_field_headers():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4078,6 +4087,7 @@ def test_get_operation_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = LoggingServiceV2AsyncClient(
@@ -4104,6 +4114,7 @@ async def test_get_operation_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_get_operation_from_dict():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4119,6 +4130,7 @@ def test_get_operation_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = LoggingServiceV2AsyncClient(
@@ -4137,6 +4149,7 @@ async def test_get_operation_from_dict_async():
         )
         call.assert_called()
 
+
 def test_get_operation_flattened():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4151,6 +4164,7 @@ def test_get_operation_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.GetOperationRequest()
+
 @pytest.mark.asyncio
 async def test_get_operation_flattened_async():
     client = LoggingServiceV2AsyncClient(
@@ -4190,6 +4204,7 @@ def test_list_operations(transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
+
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = LoggingServiceV2AsyncClient(
@@ -4215,6 +4230,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, operations_pb2.ListOperationsResponse)
 
+
 def test_list_operations_field_headers():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4238,6 +4254,7 @@ def test_list_operations_field_headers():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
+
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = LoggingServiceV2AsyncClient(
@@ -4264,6 +4281,7 @@ async def test_list_operations_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "name=locations",) in kw["metadata"]
 
+
 def test_list_operations_from_dict():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4279,6 +4297,7 @@ def test_list_operations_from_dict():
             }
         )
         call.assert_called()
+
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = LoggingServiceV2AsyncClient(
@@ -4297,6 +4316,7 @@ async def test_list_operations_from_dict_async():
         )
         call.assert_called()
 
+
 def test_list_operations_flattened():
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4311,6 +4331,7 @@ def test_list_operations_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0] == operations_pb2.ListOperationsRequest()
+
 @pytest.mark.asyncio
 async def test_list_operations_flattened_async():
     client = LoggingServiceV2AsyncClient(
