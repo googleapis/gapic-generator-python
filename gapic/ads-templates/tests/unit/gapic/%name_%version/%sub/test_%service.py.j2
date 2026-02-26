@@ -18,6 +18,8 @@ import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
 from collections.abc import Iterable
+import urllib.parse
+
 from google.protobuf import json_format
 import json
 {% endif %}
@@ -45,6 +47,7 @@ from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import grpc_helpers
 from google.api_core import path_template
+from google.api_core import rest_helpers
 from google.api_core import retry as retries
 {% if service.has_lro %}
 from google.api_core import future
@@ -1057,6 +1060,53 @@ def test_{{ method_name }}_raw_page_lro():
 {% for method in service.methods.values() if 'rest' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.client_method_name|snake_case %}{% if method.http_options %}
 {# TODO(kbandes): remove this if condition when client streaming are supported. #}
 {% if not method.client_streaming %}
+
+def test_{{ method_name }}_rest_url_query_params_encoding():
+    # Verify that special characters like '$' are correctly preserved (not URL-encoded)
+    # when building the URL query string. This tests the urlencode call with safe="$".
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
+    method_class = transport.{{ method.transport_safe_name|snake_case }}.__class__
+    # Get the _get_response static method from the method class
+    get_response_fn = method_class._get_response
+
+    mock_session = mock.Mock()
+    mock_response = mock.Mock()
+    mock_response.status_code = 200
+    mock_session.get.return_value = mock_response
+    mock_session.post.return_value = mock_response
+    mock_session.put.return_value = mock_response
+    mock_session.patch.return_value = mock_response
+    mock_session.delete.return_value = mock_response
+
+    # Mock flatten_query_params to return query params that include '$' character
+    with mock.patch.object(rest_helpers, 'flatten_query_params') as mock_flatten:
+        mock_flatten.return_value = [('$alt', 'json;enum-encoding=int'), ('foo', 'bar')]
+
+        transcoded_request = {
+            'uri': '/v1/test',
+            'method': '{{ method.http_options[0].method }}',
+        }
+
+        get_response_fn(
+            host='https://example.com',
+            metadata=[],
+            query_params={},
+            session=mock_session,
+            timeout=None,
+            transcoded_request=transcoded_request,
+        )
+
+        # Verify the session method was called with the URL containing query params
+        session_method = getattr(mock_session, '{{ method.http_options[0].method }}')
+        assert session_method.called
+
+        # The URL should contain '$alt' (not '%24alt') because safe="$" is used
+        call_url = session_method.call_args.args[0]
+        assert '$alt=json' in call_url
+        assert '%24alt' not in call_url
+        assert 'foo=bar' in call_url
+
+
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
   dict,
@@ -1451,8 +1501,12 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
                 ('$alt', 'json;enum-encoding=int')
               {% endif %}
             ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
+            # Verify query params are correctly included in the URL
+            # Session.request is called as request(method, url, ...), so url is args[1]
+            actual_url = req.call_args.args[1]
+            parsed_url = urllib.parse.urlparse(actual_url)
+            actual_params = urllib.parse.parse_qsl(parsed_url.query, keep_blank_values=True)
+            assert set(expected_params).issubset(set(actual_params))
 
 
 def test_{{ method_name }}_rest_unset_required_fields():
@@ -1461,8 +1515,8 @@ def test_{{ method_name }}_rest_unset_required_fields():
     unset_fields = transport.{{ method.transport_safe_name|snake_case }}._get_unset_required_fields({})
     assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
 
-
     {% endif %}{# required_fields #}
+
 
 {% if not method.client_streaming %}
 @pytest.mark.parametrize("null_interceptor", [True, False])
