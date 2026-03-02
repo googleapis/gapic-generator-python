@@ -59,13 +59,13 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         # Use python 3.10 for docs to match the version for the sphinx plugin
         # https://github.com/googleapis/synthtool/pull/1891
         with:
-          python-version: "3.10"
+          python-version: "3.14"
           cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
@@ -74,13 +74,13 @@ jobs:
   docfx:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         # Use python 3.10 for docs to match the version for the sphinx plugin
         # https://github.com/googleapis/synthtool/pull/1891
         with:
-          python-version: "3.10"
+          python-version: "3.14"
           cache: 'pip'
       - name: Install nox.
         run: python -m pip install nox
@@ -95,7 +95,7 @@ jobs:
         python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python "${{ matrix.python }}"
         uses: actions/setup-python@v6
         with:
@@ -118,7 +118,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python "${{ matrix.python }}"
         uses: actions/setup-python@v6
         with:
@@ -160,7 +160,7 @@ jobs:
       max-parallel: 1
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup temp directory
         run: |
           sudo mkdir -p /tmp/workspace/tests/cert/
@@ -209,7 +209,7 @@ jobs:
     
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python "${{ matrix.python }}"
         uses: actions/setup-python@v6
         with:
@@ -238,7 +238,7 @@ jobs:
   showcase-unit-add-iam-methods:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
@@ -266,7 +266,7 @@ jobs:
       matrix:
         variant: ['', _alternative_templates]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
@@ -292,7 +292,7 @@ jobs:
     needs: all_python_setup
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
@@ -313,7 +313,7 @@ jobs:
         python: ${{ fromJSON(needs.all_python_setup.outputs.all_python) }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v6
         with:
@@ -337,7 +337,7 @@ jobs:
         variant: ['', _alternative_templates]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v6
         with:
@@ -357,10 +357,10 @@ jobs:
     runs-on: ubuntu-latest
     container: gcr.io/gapic-images/googleapis
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Cache Bazel files
         id: cache-bazel
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/bazel
           # Note: if the container is updated, the key needs to be updated as well.
@@ -385,7 +385,7 @@ jobs:
   goldens-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
@@ -404,7 +404,7 @@ jobs:
   goldens-unit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
@@ -425,7 +425,7 @@ jobs:
   goldens-prerelease:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ env.PREVIEW_PYTHON_VERSION }}
         uses: actions/setup-python@v6
         with:
@@ -447,7 +447,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ env.LATEST_STABLE_PYTHON }}
         uses: actions/setup-python@v6
         with:
