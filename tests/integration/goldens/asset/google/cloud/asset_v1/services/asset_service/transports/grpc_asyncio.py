@@ -36,7 +36,7 @@ from grpc.experimental import aio  # type: ignore
 
 from google.cloud.asset_v1.types import asset_service
 from google.longrunning import operations_pb2 # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from .base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import AssetServiceGrpcTransport
 
@@ -140,8 +140,9 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`. This argument will be
+                removed in the next major version of this library.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -190,9 +191,10 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
                 This argument is ignored if a ``channel`` instance is provided.
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if a ``channel`` instance is provided.
+                This argument will be removed in the next major version of this library.
             scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
                 service. These are only used when credentials are not specified and
                 are passed to :func:`google.auth.default`.
@@ -982,16 +984,16 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         resources or policies) under a scope. This RPC supports custom
         constraints and the following 10 canned constraints:
 
-        -  storage.uniformBucketLevelAccess
-        -  iam.disableServiceAccountKeyCreation
-        -  iam.allowedPolicyMemberDomains
-        -  compute.vmExternalIpAccess
-        -  appengine.enforceServiceAccountActAsCheck
-        -  gcp.resourceLocations
-        -  compute.trustedImageProjects
-        -  compute.skipDefaultNetworkCreation
-        -  compute.requireOsLogin
-        -  compute.disableNestedVirtualization
+        - storage.uniformBucketLevelAccess
+        - iam.disableServiceAccountKeyCreation
+        - iam.allowedPolicyMemberDomains
+        - compute.vmExternalIpAccess
+        - appengine.enforceServiceAccountActAsCheck
+        - gcp.resourceLocations
+        - compute.trustedImageProjects
+        - compute.skipDefaultNetworkCreation
+        - compute.requireOsLogin
+        - compute.disableNestedVirtualization
 
         This RPC only returns either resources of types supported by
         `searchable asset

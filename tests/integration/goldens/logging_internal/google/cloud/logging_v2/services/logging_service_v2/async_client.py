@@ -34,11 +34,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
 from google.longrunning import operations_pb2 # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 from .transports.base import LoggingServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import LoggingServiceV2GrpcAsyncIOTransport
 from .client import LoggingServiceV2Client
@@ -89,7 +89,10 @@ class LoggingServiceV2AsyncClient:
         Returns:
             LoggingServiceV2AsyncClient: The constructed client.
         """
-        return LoggingServiceV2Client.from_service_account_info.__func__(LoggingServiceV2AsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            LoggingServiceV2Client.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(LoggingServiceV2AsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -105,7 +108,10 @@ class LoggingServiceV2AsyncClient:
         Returns:
             LoggingServiceV2AsyncClient: The constructed client.
         """
-        return LoggingServiceV2Client.from_service_account_file.__func__(LoggingServiceV2AsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            LoggingServiceV2Client.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(LoggingServiceV2AsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -293,10 +299,10 @@ class LoggingServiceV2AsyncClient:
             log_name (:class:`str`):
                 Required. The resource name of the log to delete:
 
-                -  ``projects/[PROJECT_ID]/logs/[LOG_ID]``
-                -  ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
-                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
-                -  ``folders/[FOLDER_ID]/logs/[LOG_ID]``
+                - ``projects/[PROJECT_ID]/logs/[LOG_ID]``
+                - ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
+                - ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
+                - ``folders/[FOLDER_ID]/logs/[LOG_ID]``
 
                 ``[LOG_ID]`` must be URL-encoded. For example,
                 ``"projects/my-project-id/logs/syslog"``,
@@ -414,10 +420,10 @@ class LoggingServiceV2AsyncClient:
                 to all log entries in ``entries`` that do not specify a
                 value for ``log_name``:
 
-                -  ``projects/[PROJECT_ID]/logs/[LOG_ID]``
-                -  ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
-                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
-                -  ``folders/[FOLDER_ID]/logs/[LOG_ID]``
+                - ``projects/[PROJECT_ID]/logs/[LOG_ID]``
+                - ``organizations/[ORGANIZATION_ID]/logs/[LOG_ID]``
+                - ``billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]``
+                - ``folders/[FOLDER_ID]/logs/[LOG_ID]``
 
                 ``[LOG_ID]`` must be URL-encoded. For example:
 
@@ -600,17 +606,17 @@ class LoggingServiceV2AsyncClient:
                 Required. Names of one or more parent resources from
                 which to retrieve log entries:
 
-                -  ``projects/[PROJECT_ID]``
-                -  ``organizations/[ORGANIZATION_ID]``
-                -  ``billingAccounts/[BILLING_ACCOUNT_ID]``
-                -  ``folders/[FOLDER_ID]``
+                - ``projects/[PROJECT_ID]``
+                - ``organizations/[ORGANIZATION_ID]``
+                - ``billingAccounts/[BILLING_ACCOUNT_ID]``
+                - ``folders/[FOLDER_ID]``
 
                 May alternatively be one or more views:
 
-                -  ``projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
-                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
-                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
-                -  ``folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                - ``projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                - ``organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                - ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
+                - ``folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
 
                 Projects listed in the ``project_ids`` field are added
                 to this list. A maximum of 100 resources may be
@@ -848,10 +854,10 @@ class LoggingServiceV2AsyncClient:
             parent (:class:`str`):
                 Required. The resource name to list logs for:
 
-                -  ``projects/[PROJECT_ID]``
-                -  ``organizations/[ORGANIZATION_ID]``
-                -  ``billingAccounts/[BILLING_ACCOUNT_ID]``
-                -  ``folders/[FOLDER_ID]``
+                - ``projects/[PROJECT_ID]``
+                - ``organizations/[ORGANIZATION_ID]``
+                - ``billingAccounts/[BILLING_ACCOUNT_ID]``
+                - ``folders/[FOLDER_ID]``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

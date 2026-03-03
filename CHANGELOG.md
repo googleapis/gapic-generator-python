@@ -1,5 +1,139 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/gapic-generator/#history
+
+## [1.30.9](https://github.com/googleapis/gapic-generator-python/compare/v1.30.8...v1.30.9) (2026-02-19)
+
+## [1.30.8](https://github.com/googleapis/gapic-generator-python/compare/v1.30.7...v1.30.8) (2026-02-09)
+
+## [1.30.7](https://github.com/googleapis/gapic-generator-python/compare/v1.30.6...v1.30.7) (2026-02-05)
+
+
+### Bug Fixes
+
+* updates tests for ListValue response fields (#2532) ([cb659ad2ba5b1a169b9acb5f9055e5ee003f84bd](https://github.com/googleapis/gapic-generator-python/commit/cb659ad2ba5b1a169b9acb5f9055e5ee003f84bd))
+
+## [1.30.6](https://github.com/googleapis/gapic-generator-python/compare/v1.30.5...v1.30.6) (2026-01-30)
+
+
+### Bug Fixes
+
+* fix incorrect REST request serialization (#2549) ([46e765e5fa2677b5b0d5c85ae5bdad495f9f7e60](https://github.com/googleapis/gapic-generator-python/commit/46e765e5fa2677b5b0d5c85ae5bdad495f9f7e60))
+* filter sphinx warnings related to adding a new line after lists (#2533) ([ae0a9e817513c6d4d03fc86685f66be8d9699862](https://github.com/googleapis/gapic-generator-python/commit/ae0a9e817513c6d4d03fc86685f66be8d9699862))
+
+## [1.30.5](https://github.com/googleapis/gapic-generator-python/compare/v1.30.4...v1.30.5) (2026-01-26)
+
+
+### Bug Fixes
+
+* fix mypy for services with extended operations methods (#2536) ([84667d1b55a5dd895585ae40cbd32b2925ecf8e8](https://github.com/googleapis/gapic-generator-python/commit/84667d1b55a5dd895585ae40cbd32b2925ecf8e8))
+
+## [1.30.4](https://github.com/googleapis/gapic-generator-python/compare/v1.30.3...v1.30.4) (2026-01-20)
+
+
+### Bug Fixes
+
+* add cryptography to constraints file (#2527) ([595f58f258eb089fc84a3cc1c93d34f950dca77a](https://github.com/googleapis/gapic-generator-python/commit/595f58f258eb089fc84a3cc1c93d34f950dca77a))
+
+## [1.30.3](https://github.com/googleapis/gapic-generator-python/compare/v1.30.2...v1.30.3) (2026-01-13)
+
+## [1.30.2](https://github.com/googleapis/gapic-generator-python/compare/v1.30.1...v1.30.2) (2025-12-15)
+
+
+### Bug Fixes
+
+* revert changes to code formatting in 1.30.1 (#2511) ([1327d4762b02dfd47ddf7f2014f4ab7503d3963d](https://github.com/googleapis/gapic-generator-python/commit/1327d4762b02dfd47ddf7f2014f4ab7503d3963d))
+
+## [1.30.1](https://github.com/googleapis/gapic-generator-python/compare/v1.30.0...v1.30.1) (2025-12-12)
+
+
+### Bug Fixes
+
+* **perf:** specify `verify_format=False` when running pypandoc (#2504) ([211e73c14d7bf44df0fe8f9bea14944ea874df3d](https://github.com/googleapis/gapic-generator-python/commit/211e73c14d7bf44df0fe8f9bea14944ea874df3d))
+
+## [1.30.0](https://github.com/googleapis/gapic-generator-python/compare/v1.29.0...v1.30.0) (2025-11-14)
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected (#2472) ([4748760fe6d489d80cb17306157edb43d25f72b3](https://github.com/googleapis/gapic-generator-python/commit/4748760fe6d489d80cb17306157edb43d25f72b3))
+
+### Bug Fixes
+
+* drop packaging and pkg_resources (#2477) ([b4824c50ce06642d7c5bf5cb04e7a4adc02892a8](https://github.com/googleapis/gapic-generator-python/commit/b4824c50ce06642d7c5bf5cb04e7a4adc02892a8))
+* add api_version to gapic_metadata.json (#2476) ([c424e33d5e9cfd75b383b4b0c7b77211f3604b79](https://github.com/googleapis/gapic-generator-python/commit/c424e33d5e9cfd75b383b4b0c7b77211f3604b79))
+
+
+## [1.29.0](https://github.com/googleapis/gapic-generator-python/compare/v1.28.3...v1.29.0) (2025-10-23)
+
+
+### Features
+
+* Check Python and dependency versions in generated GAPICs ([#2419](https://github.com/googleapis/gapic-generator-python/issues/2419)) ([a9484c6](https://github.com/googleapis/gapic-generator-python/commit/a9484c6a29687c0f3ffb63f271e350054547d495))
+
+## [1.28.3](https://github.com/googleapis/gapic-generator-python/compare/v1.28.2...v1.28.3) (2025-10-21)
+
+
+### Bug Fixes
+
+* Only format samples if the directory exists ([#2466](https://github.com/googleapis/gapic-generator-python/issues/2466)) ([2d85dee](https://github.com/googleapis/gapic-generator-python/commit/2d85dee33cc1cd2815dcf1e9304905013ec561b6))
+
+## [1.28.2](https://github.com/googleapis/gapic-generator-python/compare/v1.28.1...v1.28.2) (2025-10-20)
+
+
+### Bug Fixes
+
+* Bump the minimum version of google-apps-card to 0.3.0 ([#2464](https://github.com/googleapis/gapic-generator-python/issues/2464)) ([bfb87e2](https://github.com/googleapis/gapic-generator-python/commit/bfb87e27a38a9c3b77902d1f61899ebc545082e8))
+
+## [1.28.1](https://github.com/googleapis/gapic-generator-python/compare/v1.28.0...v1.28.1) (2025-10-14)
+
+
+### Bug Fixes
+
+* Fix gapic-version generator option for selective gapic generation ([#2460](https://github.com/googleapis/gapic-generator-python/issues/2460)) ([d7c6072](https://github.com/googleapis/gapic-generator-python/commit/d7c6072cc65e8f166d4b5a78bef250068dca43bf))
+
+## [1.28.0](https://github.com/googleapis/gapic-generator-python/compare/v1.27.2...v1.28.0) (2025-10-07)
+
+
+### Features
+
+* Add support for Python 3.14 ([#2451](https://github.com/googleapis/gapic-generator-python/issues/2451)) ([3a854db](https://github.com/googleapis/gapic-generator-python/commit/3a854dbd2448a384dd67d683332a4c438805f5a6))
+
+
+### Bug Fixes
+
+* Require grpcio &gt;=  1.33.2 ([ccf132f](https://github.com/googleapis/gapic-generator-python/commit/ccf132f7a8510ce7ef3728fa569806ac03ccea6e))
+* Require grpcio &gt;= 1.75.1 for Python 3.14 ([ccf132f](https://github.com/googleapis/gapic-generator-python/commit/ccf132f7a8510ce7ef3728fa569806ac03ccea6e))
+
+## [1.27.2](https://github.com/googleapis/gapic-generator-python/compare/v1.27.1...v1.27.2) (2025-10-01)
+
+
+### Bug Fixes
+
+* Deprecate credentials_file ([#2454](https://github.com/googleapis/gapic-generator-python/issues/2454)) ([48c5f38](https://github.com/googleapis/gapic-generator-python/commit/48c5f3895aa638a1def7df3f96c749e746450680))
+* Resolve issue where rest-numeric-enums=False is not supported ([#2456](https://github.com/googleapis/gapic-generator-python/issues/2456)) ([3d24a50](https://github.com/googleapis/gapic-generator-python/commit/3d24a50ac992631649ad06bb2dc6c90abe88988a))
+
+## [1.27.1](https://github.com/googleapis/gapic-generator-python/compare/v1.27.0...v1.27.1) (2025-09-26)
+
+
+### Bug Fixes
+
+* Add testing for Python 3.14 Pre-release ([7f7d50e](https://github.com/googleapis/gapic-generator-python/commit/7f7d50e3154d548e8066d251b85a589afbf183d7))
+
+## [1.27.0](https://github.com/googleapis/gapic-generator-python/compare/v1.26.2...v1.27.0) (2025-09-24)
+
+
+### Features
+
+* Add gapic-version generator option ([#2440](https://github.com/googleapis/gapic-generator-python/issues/2440)) ([75eb349](https://github.com/googleapis/gapic-generator-python/commit/75eb349efcb907dc443b6e8a2c11b2056a476009))
+
+## [1.26.2](https://github.com/googleapis/gapic-generator-python/compare/v1.26.1...v1.26.2) (2025-08-30)
+
+
+### Documentation
+
+* Minor formatting improvements ([#2432](https://github.com/googleapis/gapic-generator-python/issues/2432)) ([17d6db5](https://github.com/googleapis/gapic-generator-python/commit/17d6db5355b3d64c04dcdfe9b8433493b264c60c))
 
 ## [1.26.1](https://github.com/googleapis/gapic-generator-python/compare/v1.26.0...v1.26.1) (2025-08-28)
 

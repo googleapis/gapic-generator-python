@@ -94,7 +94,7 @@ class DummyMessage:
         options=False,
         ident=False,
         resource_path=False,
-        meta=None
+        meta=None,
     ):
         self.fields = fields
         self.type = type
@@ -126,8 +126,10 @@ DummyService = namedtuple(
 )
 DummyService.__new__.__defaults__ = (False,) * len(DummyService._fields)
 
-DummyApiSchema = namedtuple("DummyApiSchema", ["services", "naming", "messages"])
-DummyApiSchema.__new__.__defaults__ = (False,) * len(DummyApiSchema._fields)
+DummyApiSchema = namedtuple(
+    "DummyApiSchema", ["services", "naming", "messages", "gapic_version"]
+)
+DummyApiSchema.__new__.__defaults__ = (False, False, False, "0.0.0")
 
 DummyNaming = namedtuple(
     "DummyNaming",

@@ -34,15 +34,15 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 from google.cloud.redis_v1.services.cloud_redis import pagers
 from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2 # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from .transports.base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 from .client import CloudRedisClient
@@ -64,19 +64,19 @@ class CloudRedisAsyncClient:
     Memorystore for Redis API and defines the following resource model
     for managing Redis instances:
 
-    -  The service works with a collection of cloud projects, named:
-       ``/projects/*``
-    -  Each project has a collection of available locations, named:
-       ``/locations/*``
-    -  Each location has a collection of Redis instances, named:
-       ``/instances/*``
-    -  As such, Redis instances are resources of the form:
-       ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+    - The service works with a collection of cloud projects, named:
+      ``/projects/*``
+    - Each project has a collection of available locations, named:
+      ``/locations/*``
+    - Each location has a collection of Redis instances, named:
+      ``/instances/*``
+    - As such, Redis instances are resources of the form:
+      ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
     Note that location_id must be referring to a GCP ``region``; for
     example:
 
-    -  ``projects/redpepper-1290/locations/us-central1/instances/my-redis``
+    - ``projects/redpepper-1290/locations/us-central1/instances/my-redis``
     """
 
     _client: CloudRedisClient
@@ -114,7 +114,10 @@ class CloudRedisAsyncClient:
         Returns:
             CloudRedisAsyncClient: The constructed client.
         """
-        return CloudRedisClient.from_service_account_info.__func__(CloudRedisAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            CloudRedisClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(CloudRedisAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -130,7 +133,10 @@ class CloudRedisAsyncClient:
         Returns:
             CloudRedisAsyncClient: The constructed client.
         """
-        return CloudRedisClient.from_service_account_file.__func__(CloudRedisAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            CloudRedisClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(CloudRedisAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -291,7 +297,7 @@ class CloudRedisAsyncClient:
 
         The location should have the following format:
 
-        -  ``projects/{project_id}/locations/{location_id}``
+        - ``projects/{project_id}/locations/{location_id}``
 
         If ``location_id`` is specified as ``-`` (wildcard), then all
         regions available to the project are queried, and the results
@@ -594,12 +600,12 @@ class CloudRedisAsyncClient:
                 Required. The logical name of the Redis instance in the
                 customer project with the following restrictions:
 
-                -  Must contain only lowercase letters, numbers, and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-40 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the customer project / location
+                - Must contain only lowercase letters, numbers, and
+                  hyphens.
+                - Must start with a letter.
+                - Must be between 1-40 characters.
+                - Must end with a number or a letter.
+                - Must be unique within the customer project / location
 
                 This corresponds to the ``instance_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -744,11 +750,11 @@ class CloudRedisAsyncClient:
                 repeated paths field may only include these fields from
                 [Instance][google.cloud.redis.v1.Instance]:
 
-                -  ``displayName``
-                -  ``labels``
-                -  ``memorySizeGb``
-                -  ``redisConfig``
-                -  ``replica_count``
+                - ``displayName``
+                - ``labels``
+                - ``memorySizeGb``
+                - ``redisConfig``
+                - ``replica_count``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

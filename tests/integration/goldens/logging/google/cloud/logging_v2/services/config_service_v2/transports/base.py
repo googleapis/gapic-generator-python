@@ -30,7 +30,7 @@ import google.protobuf
 
 from google.cloud.logging_v2.types import logging_config
 from google.longrunning import operations_pb2 # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
@@ -72,9 +72,10 @@ class ConfigServiceV2Transport(abc.ABC):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
+            credentials_file (Optional[str]): Deprecated. A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
+                This argument is mutually exclusive with credentials. This argument will be
+                removed in the next major version of this library.
             scopes (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
@@ -86,8 +87,6 @@ class ConfigServiceV2Transport(abc.ABC):
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
         """
-
-        scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
         # Save the scopes.
         self._scopes = scopes
@@ -102,11 +101,12 @@ class ConfigServiceV2Transport(abc.ABC):
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
                                 credentials_file,
-                                **scopes_kwargs,
-                                quota_project_id=quota_project_id
+                                scopes=scopes,
+                                quota_project_id=quota_project_id,
+                                default_scopes=self.AUTH_SCOPES,
                             )
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
+            credentials, _ = google.auth.default(scopes=scopes, quota_project_id=quota_project_id, default_scopes=self.AUTH_SCOPES)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
                 credentials = credentials.with_gdch_audience(api_audience if api_audience else host)

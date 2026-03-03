@@ -48,16 +48,16 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.cloud.asset_v1.services.asset_service import pagers
 from google.cloud.asset_v1.types import asset_service
 from google.cloud.asset_v1.types import assets
 from google.longrunning import operations_pb2 # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AssetServiceGrpcTransport
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
@@ -138,6 +138,32 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     _DEFAULT_ENDPOINT_TEMPLATE = "cloudasset.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
+
+    @staticmethod
+    def _use_client_cert_effective():
+        """Returns whether client certificate should be used for mTLS if the
+        google-auth version supports should_use_client_cert automatic mTLS enablement.
+
+        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
+
+        Returns:
+            bool: whether client certificate should be used for mTLS
+        Raises:
+            ValueError: (If using a version of google-auth without should_use_client_cert and
+	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+        """
+        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
+        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
+            return mtls.should_use_client_cert()
+        else: # pragma: NO COVER
+            # if unsupported, fallback to reading from env var
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError(
+                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
+                    " either `true` or `false`"
+                )
+            return use_client_cert_str == "true"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -356,16 +382,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_client_cert = AssetServiceClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
         client_cert_source = None
-        if use_client_cert == "true":
+        if use_client_cert:
             if client_options.client_cert_source:
                 client_cert_source = client_options.client_cert_source
             elif mtls.has_default_client_cert_source():
@@ -395,14 +419,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+        use_client_cert = AssetServiceClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+        return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -1610,11 +1632,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 The allowed values are:
 
-                -  projects/{PROJECT_ID} (e.g., "projects/foo-bar")
-                -  projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
-                -  folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
-                -  organizations/{ORGANIZATION_NUMBER} (e.g.,
-                   "organizations/123456")
+                - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+                - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+                - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+                - organizations/{ORGANIZATION_NUMBER} (e.g.,
+                  "organizations/123456")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1627,64 +1649,64 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 Examples:
 
-                -  ``name:Important`` to find Google Cloud resources
-                   whose name contains "Important" as a word.
-                -  ``name=Important`` to find the Google Cloud resource
-                   whose name is exactly "Important".
-                -  ``displayName:Impor*`` to find Google Cloud resources
-                   whose display name contains "Impor" as a prefix of
-                   any word in the field.
-                -  ``location:us-west*`` to find Google Cloud resources
-                   whose location contains both "us" and "west" as
-                   prefixes.
-                -  ``labels:prod`` to find Google Cloud resources whose
-                   labels contain "prod" as a key or value.
-                -  ``labels.env:prod`` to find Google Cloud resources
-                   that have a label "env" and its value is "prod".
-                -  ``labels.env:*`` to find Google Cloud resources that
-                   have a label "env".
-                -  ``kmsKey:key`` to find Google Cloud resources
-                   encrypted with a customer-managed encryption key
-                   whose name contains "key" as a word. This field is
-                   deprecated. Please use the ``kmsKeys`` field to
-                   retrieve Cloud KMS key information.
-                -  ``kmsKeys:key`` to find Google Cloud resources
-                   encrypted with customer-managed encryption keys whose
-                   name contains the word "key".
-                -  ``relationships:instance-group-1`` to find Google
-                   Cloud resources that have relationships with
-                   "instance-group-1" in the related resource name.
-                -  ``relationships:INSTANCE_TO_INSTANCEGROUP`` to find
-                   Compute Engine instances that have relationships of
-                   type "INSTANCE_TO_INSTANCEGROUP".
-                -  ``relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1``
-                   to find Compute Engine instances that have
-                   relationships with "instance-group-1" in the Compute
-                   Engine instance group resource name, for relationship
-                   type "INSTANCE_TO_INSTANCEGROUP".
-                -  ``state:ACTIVE`` to find Google Cloud resources whose
-                   state contains "ACTIVE" as a word.
-                -  ``NOT state:ACTIVE`` to find Google Cloud resources
-                   whose state doesn't contain "ACTIVE" as a word.
-                -  ``createTime<1609459200`` to find Google Cloud
-                   resources that were created before "2021-01-01
-                   00:00:00 UTC". 1609459200 is the epoch timestamp of
-                   "2021-01-01 00:00:00 UTC" in seconds.
-                -  ``updateTime>1609459200`` to find Google Cloud
-                   resources that were updated after "2021-01-01
-                   00:00:00 UTC". 1609459200 is the epoch timestamp of
-                   "2021-01-01 00:00:00 UTC" in seconds.
-                -  ``Important`` to find Google Cloud resources that
-                   contain "Important" as a word in any of the
-                   searchable fields.
-                -  ``Impor*`` to find Google Cloud resources that
-                   contain "Impor" as a prefix of any word in any of the
-                   searchable fields.
-                -  ``Important location:(us-west1 OR global)`` to find
-                   Google Cloud resources that contain "Important" as a
-                   word in any of the searchable fields and are also
-                   located in the "us-west1" region or the "global"
-                   location.
+                - ``name:Important`` to find Google Cloud resources
+                  whose name contains "Important" as a word.
+                - ``name=Important`` to find the Google Cloud resource
+                  whose name is exactly "Important".
+                - ``displayName:Impor*`` to find Google Cloud resources
+                  whose display name contains "Impor" as a prefix of any
+                  word in the field.
+                - ``location:us-west*`` to find Google Cloud resources
+                  whose location contains both "us" and "west" as
+                  prefixes.
+                - ``labels:prod`` to find Google Cloud resources whose
+                  labels contain "prod" as a key or value.
+                - ``labels.env:prod`` to find Google Cloud resources
+                  that have a label "env" and its value is "prod".
+                - ``labels.env:*`` to find Google Cloud resources that
+                  have a label "env".
+                - ``kmsKey:key`` to find Google Cloud resources
+                  encrypted with a customer-managed encryption key whose
+                  name contains "key" as a word. This field is
+                  deprecated. Please use the ``kmsKeys`` field to
+                  retrieve Cloud KMS key information.
+                - ``kmsKeys:key`` to find Google Cloud resources
+                  encrypted with customer-managed encryption keys whose
+                  name contains the word "key".
+                - ``relationships:instance-group-1`` to find Google
+                  Cloud resources that have relationships with
+                  "instance-group-1" in the related resource name.
+                - ``relationships:INSTANCE_TO_INSTANCEGROUP`` to find
+                  Compute Engine instances that have relationships of
+                  type "INSTANCE_TO_INSTANCEGROUP".
+                - ``relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1``
+                  to find Compute Engine instances that have
+                  relationships with "instance-group-1" in the Compute
+                  Engine instance group resource name, for relationship
+                  type "INSTANCE_TO_INSTANCEGROUP".
+                - ``state:ACTIVE`` to find Google Cloud resources whose
+                  state contains "ACTIVE" as a word.
+                - ``NOT state:ACTIVE`` to find Google Cloud resources
+                  whose state doesn't contain "ACTIVE" as a word.
+                - ``createTime<1609459200`` to find Google Cloud
+                  resources that were created before "2021-01-01
+                  00:00:00 UTC". 1609459200 is the epoch timestamp of
+                  "2021-01-01 00:00:00 UTC" in seconds.
+                - ``updateTime>1609459200`` to find Google Cloud
+                  resources that were updated after "2021-01-01 00:00:00
+                  UTC". 1609459200 is the epoch timestamp of "2021-01-01
+                  00:00:00 UTC" in seconds.
+                - ``Important`` to find Google Cloud resources that
+                  contain "Important" as a word in any of the searchable
+                  fields.
+                - ``Impor*`` to find Google Cloud resources that contain
+                  "Impor" as a prefix of any word in any of the
+                  searchable fields.
+                - ``Important location:(us-west1 OR global)`` to find
+                  Google Cloud resources that contain "Important" as a
+                  word in any of the searchable fields and are also
+                  located in the "us-west1" region or the "global"
+                  location.
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1697,12 +1719,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 Regular expressions are also supported. For example:
 
-                -  "compute.googleapis.com.*" snapshots resources whose
-                   asset type starts with "compute.googleapis.com".
-                -  ".*Instance" snapshots resources whose asset type
-                   ends with "Instance".
-                -  ".*Instance.*" snapshots resources whose asset type
-                   contains "Instance".
+                - "compute.googleapis.com.\*" snapshots resources whose
+                  asset type starts with "compute.googleapis.com".
+                - ".*Instance" snapshots resources whose asset type ends
+                  with "Instance".
+                - ".\ *Instance.*" snapshots resources whose asset type
+                  contains "Instance".
 
                 See `RE2 <https://github.com/google/re2/wiki/Syntax>`__
                 for all supported regular expression syntax. If the
@@ -1841,11 +1863,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 The allowed values are:
 
-                -  projects/{PROJECT_ID} (e.g., "projects/foo-bar")
-                -  projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
-                -  folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
-                -  organizations/{ORGANIZATION_NUMBER} (e.g.,
-                   "organizations/123456")
+                - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+                - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+                - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+                - organizations/{ORGANIZATION_NUMBER} (e.g.,
+                  "organizations/123456")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1865,44 +1887,42 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 Examples:
 
-                -  ``policy:amy@gmail.com`` to find IAM policy bindings
-                   that specify user "amy@gmail.com".
-                -  ``policy:roles/compute.admin`` to find IAM policy
-                   bindings that specify the Compute Admin role.
-                -  ``policy:comp*`` to find IAM policy bindings that
-                   contain "comp" as a prefix of any word in the
-                   binding.
-                -  ``policy.role.permissions:storage.buckets.update`` to
-                   find IAM policy bindings that specify a role
-                   containing "storage.buckets.update" permission. Note
-                   that if callers don't have ``iam.roles.get`` access
-                   to a role's included permissions, policy bindings
-                   that specify this role will be dropped from the
-                   search results.
-                -  ``policy.role.permissions:upd*`` to find IAM policy
-                   bindings that specify a role containing "upd" as a
-                   prefix of any word in the role permission. Note that
-                   if callers don't have ``iam.roles.get`` access to a
-                   role's included permissions, policy bindings that
-                   specify this role will be dropped from the search
-                   results.
-                -  ``resource:organizations/123456`` to find IAM policy
-                   bindings that are set on "organizations/123456".
-                -  ``resource=//cloudresourcemanager.googleapis.com/projects/myproject``
-                   to find IAM policy bindings that are set on the
-                   project named "myproject".
-                -  ``Important`` to find IAM policy bindings that
-                   contain "Important" as a word in any of the
-                   searchable fields (except for the included
-                   permissions).
-                -  ``resource:(instance1 OR instance2) policy:amy`` to
-                   find IAM policy bindings that are set on resources
-                   "instance1" or "instance2" and also specify user
-                   "amy".
-                -  ``roles:roles/compute.admin`` to find IAM policy
-                   bindings that specify the Compute Admin role.
-                -  ``memberTypes:user`` to find IAM policy bindings that
-                   contain the principal type "user".
+                - ``policy:amy@gmail.com`` to find IAM policy bindings
+                  that specify user "amy@gmail.com".
+                - ``policy:roles/compute.admin`` to find IAM policy
+                  bindings that specify the Compute Admin role.
+                - ``policy:comp*`` to find IAM policy bindings that
+                  contain "comp" as a prefix of any word in the binding.
+                - ``policy.role.permissions:storage.buckets.update`` to
+                  find IAM policy bindings that specify a role
+                  containing "storage.buckets.update" permission. Note
+                  that if callers don't have ``iam.roles.get`` access to
+                  a role's included permissions, policy bindings that
+                  specify this role will be dropped from the search
+                  results.
+                - ``policy.role.permissions:upd*`` to find IAM policy
+                  bindings that specify a role containing "upd" as a
+                  prefix of any word in the role permission. Note that
+                  if callers don't have ``iam.roles.get`` access to a
+                  role's included permissions, policy bindings that
+                  specify this role will be dropped from the search
+                  results.
+                - ``resource:organizations/123456`` to find IAM policy
+                  bindings that are set on "organizations/123456".
+                - ``resource=//cloudresourcemanager.googleapis.com/projects/myproject``
+                  to find IAM policy bindings that are set on the
+                  project named "myproject".
+                - ``Important`` to find IAM policy bindings that contain
+                  "Important" as a word in any of the searchable fields
+                  (except for the included permissions).
+                - ``resource:(instance1 OR instance2) policy:amy`` to
+                  find IAM policy bindings that are set on resources
+                  "instance1" or "instance2" and also specify user
+                  "amy".
+                - ``roles:roles/compute.admin`` to find IAM policy
+                  bindings that specify the Compute Admin role.
+                - ``memberTypes:user`` to find IAM policy bindings that
+                  contain the principal type "user".
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2559,9 +2579,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 Required. The name of the saved query and it must be in
                 the format of:
 
-                -  projects/project_number/savedQueries/saved_query_id
-                -  folders/folder_number/savedQueries/saved_query_id
-                -  organizations/organization_number/savedQueries/saved_query_id
+                - projects/project_number/savedQueries/saved_query_id
+                - folders/folder_number/savedQueries/saved_query_id
+                - organizations/organization_number/savedQueries/saved_query_id
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2794,9 +2814,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 The saved query's ``name`` field is used to identify the
                 one to update, which has format as below:
 
-                -  projects/project_number/savedQueries/saved_query_id
-                -  folders/folder_number/savedQueries/saved_query_id
-                -  organizations/organization_number/savedQueries/saved_query_id
+                - projects/project_number/savedQueries/saved_query_id
+                - folders/folder_number/savedQueries/saved_query_id
+                - organizations/organization_number/savedQueries/saved_query_id
 
                 This corresponds to the ``saved_query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2908,9 +2928,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 Required. The name of the saved query to delete. It must
                 be in the format of:
 
-                -  projects/project_number/savedQueries/saved_query_id
-                -  folders/folder_number/savedQueries/saved_query_id
-                -  organizations/organization_number/savedQueries/saved_query_id
+                - projects/project_number/savedQueries/saved_query_id
+                - folders/folder_number/savedQueries/saved_query_id
+                - organizations/organization_number/savedQueries/saved_query_id
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3098,8 +3118,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 Required. The organization to scope the request. Only
                 organization policies within the scope will be analyzed.
 
-                -  organizations/{ORGANIZATION_NUMBER} (e.g.,
-                   "organizations/123456")
+                - organizations/{ORGANIZATION_NUMBER} (e.g.,
+                  "organizations/123456")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3255,8 +3275,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 The output containers will also be limited to the ones
                 governed by those in-scope organization policies.
 
-                -  organizations/{ORGANIZATION_NUMBER} (e.g.,
-                   "organizations/123456")
+                - organizations/{ORGANIZATION_NUMBER} (e.g.,
+                  "organizations/123456")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3372,16 +3392,16 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         resources or policies) under a scope. This RPC supports custom
         constraints and the following 10 canned constraints:
 
-        -  storage.uniformBucketLevelAccess
-        -  iam.disableServiceAccountKeyCreation
-        -  iam.allowedPolicyMemberDomains
-        -  compute.vmExternalIpAccess
-        -  appengine.enforceServiceAccountActAsCheck
-        -  gcp.resourceLocations
-        -  compute.trustedImageProjects
-        -  compute.skipDefaultNetworkCreation
-        -  compute.requireOsLogin
-        -  compute.disableNestedVirtualization
+        - storage.uniformBucketLevelAccess
+        - iam.disableServiceAccountKeyCreation
+        - iam.allowedPolicyMemberDomains
+        - compute.vmExternalIpAccess
+        - appengine.enforceServiceAccountActAsCheck
+        - gcp.resourceLocations
+        - compute.trustedImageProjects
+        - compute.skipDefaultNetworkCreation
+        - compute.requireOsLogin
+        - compute.disableNestedVirtualization
 
         This RPC only returns either resources of types supported by
         `searchable asset
@@ -3426,8 +3446,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 The output assets will also be limited to the ones
                 governed by those in-scope organization policies.
 
-                -  organizations/{ORGANIZATION_NUMBER} (e.g.,
-                   "organizations/123456")
+                - organizations/{ORGANIZATION_NUMBER} (e.g.,
+                  "organizations/123456")
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -161,7 +161,7 @@ def test_options_service_yaml_config(fs):
     service_yaml_fpath = "testapi_v2.yaml"
     fs.create_file(
         service_yaml_fpath,
-        contents=("config_version: 3\n" "name: testapi.googleapis.com\n"),
+        contents=("config_version: 3\nname: testapi.googleapis.com\n"),
     )
     opt_string = f"service-yaml={service_yaml_fpath}"
     opts = Options.build(opt_string)
@@ -211,6 +211,9 @@ def test_options_bool_flags():
 
     options = Options.build("autogen-snippets=False")
     assert not options.autogen_snippets
+
+    options = Options.build("rest-numeric-enums=False")
+    assert not options.rest_numeric_enums
 
 
 def test_options_autogen_snippets_false_for_old_naming():

@@ -746,19 +746,19 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
     Memorystore for Redis API and defines the following resource model
     for managing Redis instances:
 
-    -  The service works with a collection of cloud projects, named:
-       ``/projects/*``
-    -  Each project has a collection of available locations, named:
-       ``/locations/*``
-    -  Each location has a collection of Redis instances, named:
-       ``/instances/*``
-    -  As such, Redis instances are resources of the form:
-       ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+    - The service works with a collection of cloud projects, named:
+      ``/projects/*``
+    - Each project has a collection of available locations, named:
+      ``/locations/*``
+    - Each location has a collection of Redis instances, named:
+      ``/instances/*``
+    - As such, Redis instances are resources of the form:
+      ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
     Note that location_id must be referring to a GCP ``region``; for
     example:
 
-    -  ``projects/redpepper-1290/locations/us-central1/instances/my-redis``
+    - ``projects/redpepper-1290/locations/us-central1/instances/my-redis``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -981,7 +981,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1108,7 +1108,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1238,7 +1238,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1368,7 +1368,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1746,7 +1746,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2002,7 +2002,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2132,7 +2132,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2262,7 +2262,7 @@ class AsyncCloudRedisRestTransport(_BaseCloudRedisRestTransport):
                 request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
                 method = transcoded_request['method']
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
