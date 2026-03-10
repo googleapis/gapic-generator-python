@@ -95,8 +95,7 @@ nox.options.error_on_missing_interpreters = True
 def mypy(session):
     """Run the type checker."""
     session.install(
-        # TODO(https://github.com/googleapis/gapic-generator-python/issues/2410): Use the latest version of mypy
-        "mypy<1.16.0",
+        "mypy",
         "types-requests",
         "types-protobuf",
     )
@@ -105,6 +104,8 @@ def mypy(session):
         "mypy",
         "-p",
         "google",
+        "--check-untyped-defs",
+        *session.posargs,
     )
 
 
@@ -605,7 +606,7 @@ def core_deps_from_source(session, protobuf_implementation):
     core_dependencies_from_source = [
         "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
         "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
-        "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
         "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
         "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
     ]
