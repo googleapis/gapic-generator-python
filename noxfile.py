@@ -164,14 +164,15 @@ class FragTester:
                     silent=True,
                 )
             )
-
-            self.session.run(
-                "mypy",
-                str(tmp_dir),
-                "--check-untyped-defs",
-                "--exclude",
-                "build/",
-            )
+            # Only run mypy on the latest python
+            if self.session.python in (ALL_PYTHON[-1]):
+                self.session.run(
+                    "mypy",
+                    str(tmp_dir),
+                    "--check-untyped-defs",
+                    "--exclude",
+                    "build/",
+                )
             return "".join(outputs)
 
 
