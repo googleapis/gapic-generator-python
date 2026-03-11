@@ -165,6 +165,11 @@ class FragTester:
                 )
             )
 
+            self.session.run(
+                "mypy",
+                str(tmp_dir),
+                "--check-untyped-defs",
+            )
             return "".join(outputs)
 
 
@@ -177,6 +182,9 @@ def fragment(session, use_ads_templates=False):
         "pytest-xdist",
         "pytest-asyncio",
         "grpcio-tools",
+        "mypy",
+        "types-protobuf",
+        "types-requests",
     )
     session.install("-e", ".")
 
@@ -187,6 +195,14 @@ def fragment(session, use_ads_templates=False):
     frag_files = (
         [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
     )
+
+    # Skip test_iam.proto when using ads templates
+    # There are known issues with ads mixins
+    # https://github.com/googleapis/gapic-generator-python/issues/2182
+    # In addition, ads templates may be removed soon
+    # https://github.com/googleapis/gapic-generator-python/issues/1994
+    if use_ads_templates:
+        frag_files = [f for f in frag_files if f.name != "test_iam.proto"]
 
     if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
         with ThreadPoolExecutor() as p:
