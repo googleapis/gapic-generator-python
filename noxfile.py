@@ -156,7 +156,7 @@ class FragTester:
             else:
                 # Run the fragment's generated unit tests.
                 # Don't bother parallelizing them: we already parallelize
-                # # the fragments, and there usually aren't too many tests per fragment.        
+                # # the fragments, and there usually aren't too many tests per fragment.
                 outputs.append(
                     self.session.run(
                         "py.test",
@@ -167,7 +167,7 @@ class FragTester:
                         str(Path(tmp_dir) / "tests" / "unit"),
                         silent=True,
                     )
-                )    
+                )
 
             return "".join(outputs)
 
@@ -184,7 +184,6 @@ def fragment(session, use_ads_templates=False):
     )
     session.install("-e", ".")
 
-    # The specific failure is `Plugin output is unparseable`
     if session.python in ("3.9", "3.10"):
         session.install("google-api-core<2.28")
 
@@ -192,29 +191,23 @@ def fragment(session, use_ads_templates=False):
         [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
     )
 
-    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
-        with ThreadPoolExecutor() as p:
-            all_outs = p.map(FragTester(session, use_ads_templates), frag_files)
+    is_parallel = os.environ.get("PARALLEL_FRAGMENT_TESTS", "").lower() == "true"
 
-        output = "".join(all_outs)
-        session.log(output)
-    else:
-        tester = FragTester(session, use_ads_templates)
-        for frag in frag_files:
-            session.log(tester(frag))
+    def run_tests(mypy_only=False):
+        """Helper to handle the parallel vs sequential toggle."""
+        tester = FragTester(session, use_ads_templates, mypy_only=mypy_only)
 
-    # now test mypy
+        if is_parallel:
+            with ThreadPoolExecutor() as p:
+                results = p.map(tester, frag_files)
+            session.log("".join(results))
+        else:
+            for frag in frag_files:
+                session.log(tester(frag))
+
+    run_tests(mypy_only=False)
     session.install("mypy", "types-protobuf", "types-requests")
-    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
-        with ThreadPoolExecutor() as p:
-            all_outs = p.map(FragTester(session, use_ads_templates, mypy_only=True), frag_files)
-
-        output = "".join(all_outs)
-        session.log(output)
-    else:
-        tester = FragTester(session, use_ads_templates, mypy_only=True)
-        for frag in frag_files:
-            session.log(tester(frag))
+    run_tests(mypy_only=True)
 
 
 @nox.session(python=ALL_PYTHON)
