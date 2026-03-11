@@ -102,9 +102,10 @@ FRAGMENT_FILES = tuple(
 # A callable class is necessary so that the session can be closed over
 # instead of passed in, which simplifies the invocation via map.
 class FragTester:
-    def __init__(self, session, use_ads_templates):
+    def __init__(self, session, use_ads_templates, mypy_only=False):
         self.session = session
         self.use_ads_templates = use_ads_templates
+        self.mypy_only = mypy_only
 
     def __call__(self, frag):
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -150,20 +151,23 @@ class FragTester:
                 )
                 self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
 
-            # Run the fragment's generated unit tests.
-            # Don't bother parallelizing them: we already parallelize
-            # the fragments, and there usually aren't too many tests per fragment.
-            outputs.append(
-                self.session.run(
-                    "py.test",
-                    "--quiet",
-                    f"--cov-config={str(Path(tmp_dir) / '.coveragerc')}",
-                    "--cov-report=term",
-                    "--cov-fail-under=100",
-                    str(Path(tmp_dir) / "tests" / "unit"),
-                    silent=True,
-                )
-            )
+            if self.mypy_only:
+                self.session.run("mypy", f"{tmp_dir}/google", "--check-untyped-defs")
+            else:
+                # Run the fragment's generated unit tests.
+                # Don't bother parallelizing them: we already parallelize
+                # # the fragments, and there usually aren't too many tests per fragment.        
+                outputs.append(
+                    self.session.run(
+                        "py.test",
+                        "--quiet",
+                        f"--cov-config={str(Path(tmp_dir) / '.coveragerc')}",
+                        "--cov-report=term",
+                        "--cov-fail-under=100",
+                        str(Path(tmp_dir) / "tests" / "unit"),
+                        silent=True,
+                    )
+                )    
 
             return "".join(outputs)
 
@@ -196,6 +200,19 @@ def fragment(session, use_ads_templates=False):
         session.log(output)
     else:
         tester = FragTester(session, use_ads_templates)
+        for frag in frag_files:
+            session.log(tester(frag))
+
+    # now test mypy
+    session.install("mypy", "types-protobuf", "types-requests")
+    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
+        with ThreadPoolExecutor() as p:
+            all_outs = p.map(FragTester(session, use_ads_templates, mypy_only=True), frag_files)
+
+        output = "".join(all_outs)
+        session.log(output)
+    else:
+        tester = FragTester(session, use_ads_templates, mypy_only=True)
         for frag in frag_files:
             session.log(tester(frag))
 
@@ -562,8 +579,13 @@ def showcase_unit_alternative_templates_mixins(session):
 
 
 @nox.session(python=NEWEST_PYTHON)
+@nox.parametrize(
+    "include_mixins",
+    [False, True],
+)
 def showcase_mypy(
     session,
+    include_mixins,
     templates="DEFAULT",
     other_opts: typing.Iterable[str] = (),
 ):
@@ -576,6 +598,9 @@ def showcase_mypy(
         "types-requests",
         "types-dataclasses",
     )
+
+    if include_mixins:
+        other_opts = ("add-iam-methods",)
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
