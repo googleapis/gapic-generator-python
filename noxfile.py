@@ -169,6 +169,8 @@ class FragTester:
                 "mypy",
                 str(tmp_dir),
                 "--check-untyped-defs",
+                "--exclude",
+                "build/",
             )
             return "".join(outputs)
 
