@@ -454,11 +454,6 @@ def prerelease_deps(session, protobuf_implementation):
     `pip install --pre <package>`.
     """
 
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
-    # Remove this check once support for Protobuf 3.x is dropped.
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13", "3.14"):
-        session.skip("cpp implementation is not supported in python 3.11+")
-
     # Install all dependencies
     session.install("-e", ".")
 
