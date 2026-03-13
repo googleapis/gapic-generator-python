@@ -357,17 +357,20 @@ def showcase_library(
             constraints_path = str(
                 f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
-            if rest_async_io_enabled:
-                # modify constraints file to support async_rest
-                constraints = [line.strip() for line in open(constraints_path) if "google-auth" not in line and line.strip()]
-                session.install(
-                    "-e",
-                    f"{tmp_dir}[async_rest]",
-                    *constraints
-                )
-            else:
+            if not rest_async_io_enabled:
                 # Install the library with a constraints file.
                 session.install("-e", tmp_dir, "-r", constraints_path)
+            else:
+                # modify constraints file to support async_rest
+                constraints = [
+                    line.strip()
+                    for line in open(constraints_path)
+                    if "google-auth" not in line
+                    and not line.startswith("#")
+                    and line.strip()
+                ]
+                session.install("-e", f"{tmp_dir}[async_rest]", *constraints)
+
             # Exclude `google-auth==2.40.0` which contains a regression
             # https://github.com/googleapis/gapic-generator-python/issues/2385
             session.install(
