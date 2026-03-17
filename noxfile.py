@@ -357,35 +357,21 @@ def showcase_library(
             constraints_path = str(
                 f"{tmp_dir}/testing/constraints-{session.python}.txt"
             )
-            if not rest_async_io_enabled:
-                # Install the library with a constraints file.
-                session.install("-e", tmp_dir, "-r", constraints_path)
-            else:
-                # Modify constraints file to support async_rest min constraints.
-                # TODO: Move into own contraints-async-rest.txt file once 
-                # async-rest is fully supported
-                async_rest_constraints = {
-                    "google-auth": "2.35.0",
-                    "google-api-core": "2.21.0",
-                }
-                with open(constraints_path) as f:
-                    constraints_lines = [
-                        line.strip()
-                        for line in f
-                        if line.strip() and not line.startswith("#")
-                    ]
-                # Only modify dependencies in the original constraints file.
-                replace_keys = {
-                    key for key in async_rest_constraints
-                    if any(line.startswith(key) for line in constraints_lines)
-                }
-                # Replace async_rest constraints in final output.
-                constraints = [
-                    line for line in constraints_lines
-                    if not any(line.startswith(key) for key in replace_keys)
-                ] + [f"{k}=={async_rest_constraints[k]}" for k in replace_keys]
+            extras = ""
+            if rest_async_io_enabled:
+                async_rest_constraints_path = str(
+                    f"{tmp_dir}/testing/constraints-3.9-async-rest.txt"
+                )
+                if os.path.exists(async_rest_constraints_path):
+                    # use async-rest constraints if available
+                    constraints_path = async_rest_constraints_path
+                else:
+                    session.log(
+                        f"{async_rest_constraints_path} not found. Using base constraints file"
+                    )
+                extras = "[async_rest]"
 
-                session.install("-e", f"{tmp_dir}[async_rest]", *constraints)
+            session.install("-e", f"{tmp_dir}{extras}", "-r", constraints_path)
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
