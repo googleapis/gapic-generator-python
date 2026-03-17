@@ -361,14 +361,15 @@ def showcase_library(
                 # Install the library with a constraints file.
                 session.install("-e", tmp_dir, "-r", constraints_path)
             else:
-                # modify constraints file to support async_rest
+                # modify constraints file to support async_rest min constraints
+                async_rest_constraints = {"google-auth": "2.35.0"}
                 constraints = [
                     line.strip()
                     for line in open(constraints_path)
-                    if "google-auth" not in line
+                    if all([key not in line for key in async_rest_constraints.keys()])
                     and not line.startswith("#")
                     and line.strip()
-                ]
+                ] + [f"{key}=={value}" for key, value in async_rest_constraints.items()]
                 session.install("-e", f"{tmp_dir}[async_rest]", *constraints)
 
             # Exclude `google-auth==2.40.0` which contains a regression
