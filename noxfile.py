@@ -381,7 +381,7 @@ def showcase_library(
                 }
                 # Replace async_rest constraints in final output.
                 constraints = [
-                    line for line in constraints_lines:
+                    line for line in constraints_lines
                     if not any(line.startswith(key) for key in replace_keys)
                 ] + [f"{k}=={async_rest_constraints[k]}" for k in replace_keys]
 
