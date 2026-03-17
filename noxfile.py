@@ -361,18 +361,30 @@ def showcase_library(
                 # Install the library with a constraints file.
                 session.install("-e", tmp_dir, "-r", constraints_path)
             else:
-                # modify constraints file to support async_rest min constraints
+                # Modify constraints file to support async_rest min constraints.
+                # TODO: Move into own contraints-async-rest.txt file once 
+                # async-rest is fully supported
                 async_rest_constraints = {
                     "google-auth": "2.35.0",
                     "google-api-core": "2.21.0",
                 }
+                with open(constraints_path) as f:
+                    constraints_lines = [
+                        line.strip()
+                        for line in f
+                        if line.strip() and not line.startswith("#")
+                    ]
+                # Only modify dependencies in the original constraints file.
+                replace_keys = {
+                    key for key in async_rest_constraints
+                    if any(line.startswith(key) for line in constraints_lines)
+                }
+                # Replace async_rest constraints in final output.
                 constraints = [
-                    line.strip()
-                    for line in open(constraints_path)
-                    if all([key not in line for key in async_rest_constraints.keys()])
-                    and not line.startswith("#")
-                    and line.strip()
-                ] + [f"{key}=={value}" for key, value in async_rest_constraints.items()]
+                    line for line in original_lines
+                    if not any(line.startswith(key) for key in replace_keys)
+                ] + [f"{k}=={async_rest_constraints[k]}" for k in replace_keys]
+
                 session.install("-e", f"{tmp_dir}[async_rest]", *constraints)
         else:
             # The ads templates do not have constraints files.
