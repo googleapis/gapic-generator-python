@@ -10,7 +10,11 @@
 # then this file should have google-cloud-foo==1.14.0
 google-api-core==2.21.0
 google-auth==2.35.0
-grpcio==1.33.2
+{% if api.requires_package(("google", "iam", "v1")) %}
+grpcio==1.44.0  # from grpc-google-iam-v1
+{% else %}
+grpcio==1.33.2  # from google-api-core
+{% endif %}
 proto-plus==1.22.3
 protobuf==4.25.8
 {% for package_tuple, package_info in pypi_packages.items() %}
