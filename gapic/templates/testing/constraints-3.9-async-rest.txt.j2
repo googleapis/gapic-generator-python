@@ -10,7 +10,7 @@
 # then this file should have google-cloud-foo==1.14.0
 google-api-core==2.21.0
 google-auth==2.35.0
-{% if api.requires_package(("google", "iam", "v1")) %}
+{% if api.requires_package(("google", "iam", "v1")) or api.naming.warehouse_package_name == 'google-fragment' %}
 grpcio==1.44.0  # from grpc-google-iam-v1
 {% else %}
 grpcio==1.33.2  # from google-api-core
