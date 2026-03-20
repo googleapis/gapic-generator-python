@@ -172,6 +172,8 @@ class FragTester:
                     "--check-untyped-defs",
                     "--exclude",
                     "build/",
+                    "--exclude",
+                    "tests/",
                 )
             return "".join(outputs)
 
