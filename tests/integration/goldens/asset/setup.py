@@ -47,9 +47,9 @@ dependencies = [
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "proto-plus >= 1.22.3, <2.0.0",
     "proto-plus >= 1.25.0, <2.0.0; python_version >= '3.13'",
-    "protobuf >= 4.25.8, <7.0.0",
-    "google-cloud-access-context-manager >= 0.1.2, <1.0.0",
-    "google-cloud-os-config >= 1.0.0, <2.0.0",
+    "protobuf >= 4.25.8, < 8.0.0",
+    "google-cloud-access-context-manager >= 0.2.0, <1.0.0",
+    "google-cloud-os-config >= 1.13.0, <2.0.0",
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
 ]
 extras = {
@@ -75,7 +75,7 @@ setuptools.setup(
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    license="Apache 2.0",
+    license="Apache-2.0",
     url=url,
     classifiers=[
         release_status,
